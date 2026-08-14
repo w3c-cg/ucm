@@ -1,0 +1,168 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+#################################################################
+# UCM Core Business View
+# WebVOWL-friendly visualization projection
+#################################################################
+
+<http://mdixinc.com/ucm/views/core-business> rdf:type owl:Ontology ;
+    rdfs:label "UCM Core Business View" ;
+    rdfs:comment "A simplified WebVOWL-friendly view of the UCM Core designed for business, clinical, and domain stakeholders. This file is a visualization projection and not the full authoritative UCM Core ontology." .
+
+#################################################################
+# Core Classes for Business View
+#################################################################
+
+ucm:Entity rdf:type owl:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "A stable thing that can participate in care or service processes." .
+
+ucm:Person rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Person" ;
+    rdfs:comment "An individual human being." .
+
+ucm:GroupEntity rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Group Entity" ;
+    rdfs:comment "A group or collective that can participate as a unit." .
+
+ucm:Household rdf:type owl:Class ;
+    rdfs:subClassOf ucm:GroupEntity ;
+    rdfs:label "Household" ;
+    rdfs:comment "A group entity relevant to housing, benefits, eligibility, and social care." .
+
+ucm:Organization rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Organization" ;
+    rdfs:comment "An agency, provider, payer, community organization, housing organization, or other organized entity." .
+
+ucm:Process rdf:type owl:Class ;
+    rdfs:label "Process" ;
+    rdfs:comment "An activity or event that occurs over time." .
+
+ucm:Participation rdf:type owl:Class ;
+    rdfs:label "Participation" ;
+    rdfs:comment "The way an entity is involved in a process." .
+
+ucm:Role rdf:type owl:Class ;
+    rdfs:label "Role" ;
+    rdfs:comment "The contextual capacity an entity assumes during participation." .
+
+ucm:SemanticContext rdf:type owl:Class ;
+    rdfs:label "Semantic Context" ;
+    rdfs:comment "The context in which meaning is interpreted." .
+
+ucm:Statement rdf:type owl:Class ;
+    rdfs:label "Statement" ;
+    rdfs:comment "An assertion, finding, determination, or claim made in a context." .
+
+ucm:DefinitionArtifact rdf:type owl:Class ;
+    rdfs:label "Definition Artifact" ;
+    rdfs:comment "A ruleset, policy, definition, or criteria artifact that governs interpretation." .
+
+ucm:RuleExpression rdf:type owl:Class ;
+    rdfs:subClassOf ucm:DefinitionArtifact ;
+    rdfs:label "Rule Expression" ;
+    rdfs:comment "A computable or formal expression of rules or criteria." .
+
+ucm:GroupMembership rdf:type owl:Class ;
+    rdfs:label "Group Membership" ;
+    rdfs:comment "A contextual membership relationship between an entity and a group entity." .
+
+#################################################################
+# Business View Object Properties
+#################################################################
+
+ucm:hasParticipant rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Process ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has participant" ;
+    rdfs:comment "A process has a participation." .
+
+ucm:participatingEntity rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Entity ;
+    rdfs:label "participating entity" ;
+    rdfs:comment "A participation involves an entity." .
+
+ucm:participationRole rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Role ;
+    rdfs:label "participation role" ;
+    rdfs:comment "A participation has a contextual role." .
+
+ucm:participationContext rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:SemanticContext ;
+    rdfs:label "participation context" ;
+    rdfs:comment "A participation is interpreted within a semantic context." .
+
+ucm:hasStatement rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Process ;
+    rdfs:range ucm:Statement ;
+    rdfs:label "has statement" ;
+    rdfs:comment "A process may produce or use a statement." .
+
+ucm:statementSubject rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Statement ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "statement subject" ;
+    rdfs:comment "A statement is about a contextual participation." .
+
+ucm:statementContext rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Statement ;
+    rdfs:range ucm:SemanticContext ;
+    rdfs:label "statement context" ;
+    rdfs:comment "A statement is interpreted within a semantic context." .
+
+ucm:definedBy rdf:type owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range ucm:DefinitionArtifact ;
+    rdfs:label "defined by" ;
+    rdfs:comment "Something may be defined or governed by a definition artifact." .
+
+ucm:hasExpression rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:DefinitionArtifact ;
+    rdfs:range ucm:RuleExpression ;
+    rdfs:label "has expression" ;
+    rdfs:comment "A definition artifact may have a computable rule expression." .
+
+ucm:hasHouseholdMember rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Household ;
+    rdfs:range ucm:Person ;
+    rdfs:label "has household member" ;
+    rdfs:comment "A household has person members." .
+
+ucm:memberEntity rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:GroupMembership ;
+    rdfs:range ucm:Entity ;
+    rdfs:label "member entity" ;
+    rdfs:comment "The entity that is a member." .
+
+ucm:memberOfGroup rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:GroupMembership ;
+    rdfs:range ucm:GroupEntity ;
+    rdfs:label "member of group" ;
+    rdfs:comment "The group entity in which membership exists." .
+
+ucm:conformsToDefinition rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:GroupMembership ;
+    rdfs:range ucm:DefinitionArtifact ;
+    rdfs:label "conforms to definition" ;
+    rdfs:comment "Membership may conform to a definition or ruleset." .
+
+#################################################################
+# Business Interpretation Notes
+#################################################################
+
+# Core visual pattern:
+# Entity -> Participation -> Role / SemanticContext
+# Process -> Participation
+# Statement -> Participation
+# Statement -> SemanticContext
+# Household -> Person through household membership
+# GroupMembership links Entity and GroupEntity with definition-governed conformance

@@ -1,0 +1,186 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ucm: <http://mdix.org/ucm#> .
+
+<http://mdix.org/ucm> rdf:type owl:Ontology ;
+    rdfs:label "Unified Care Model - Revised Entity Three Layer View" .
+
+#################################################################
+# Core Semantic Layer
+#################################################################
+
+ucm:Entity rdf:type owl:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "Fundamental independently identifiable semantic thing." .
+
+ucm:Person rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Person" .
+
+ucm:Organization rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Organization" ;
+    rdfs:comment "Operational or governance-oriented social entity maintaining continuity independent of membership changes." .
+
+ucm:SocialGroupEntity rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Social Group Entity" ;
+    rdfs:comment "Collective grouping of participating entities." .
+
+ucm:Household rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SocialGroupEntity ;
+    rdfs:label "Household" .
+
+ucm:CareTeam rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SocialGroupEntity ;
+    rdfs:label "Care Team" .
+
+ucm:CommunityGroup rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SocialGroupEntity ;
+    rdfs:label "Community Group" .
+
+ucm:Device rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Device" .
+
+ucm:Location rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Location" .
+
+ucm:InformationArtifact rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Information Artifact" .
+
+#################################################################
+# Participation Layer
+#################################################################
+
+ucm:Participation rdf:type owl:Class ;
+    rdfs:label "Participation" ;
+    rdfs:comment "Contextual involvement of an Entity within a Process and Semantic Context." .
+
+ucm:Role rdf:type owl:Class ;
+    rdfs:label "Role" ;
+    rdfs:comment "Anti-rigid contextual classification assumed through participation." .
+
+ucm:SemanticContext rdf:type owl:Class ;
+    rdfs:label "Semantic Context" ;
+    rdfs:comment "Interpretive space or governance boundary." .
+
+ucm:Process rdf:type owl:Class ;
+    rdfs:label "Process" ;
+    rdfs:comment "Bounded interaction or activity occurring over time." .
+
+#################################################################
+# Object Properties
+#################################################################
+
+ucm:participatesThrough rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "participates through" .
+
+ucm:assumesRole rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Role ;
+    rdfs:label "assumes role" .
+
+ucm:occursWithin rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Process ;
+    rdfs:label "occurs within" .
+
+ucm:scopedBy rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:SemanticContext ;
+    rdfs:label "scoped by" .
+
+ucm:memberOf rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:SocialGroupEntity ;
+    rdfs:label "member of" .
+
+ucm:hasMember rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:SocialGroupEntity ;
+    rdfs:range ucm:Entity ;
+    rdfs:label "has member" .
+
+ucm:affiliatedWith rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Person ;
+    rdfs:range ucm:Organization ;
+    rdfs:label "affiliated with" .
+
+ucm:locatedAt rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:Location ;
+    rdfs:label "located at" .
+
+#################################################################
+# Example Domain Semantics
+#################################################################
+
+ucm:PatientRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Patient Role" .
+
+ucm:ClinicalCareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SemanticContext ;
+    rdfs:label "Clinical Care Context" .
+
+ucm:EncounterProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Process ;
+    rdfs:label "Encounter Process" .
+
+
+#################################################################
+# Social Group Membership Semantics
+#################################################################
+
+ucm:MembershipCriteria rdf:type owl:Class ;
+    rdfs:label "Membership Criteria" ;
+    rdfs:comment "Definition artifact describing the rules or conditions for membership within a SocialGroupEntity." .
+
+ucm:Membership rdf:type owl:Class ;
+    rdfs:label "Membership" ;
+    rdfs:comment "Contextual membership relationship between an Entity and a SocialGroupEntity." .
+
+#################################################################
+# Membership Object Properties
+#################################################################
+
+ucm:hasMembership rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:Membership ;
+    rdfs:label "has membership" .
+
+ucm:membershipIn rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Membership ;
+    rdfs:range ucm:SocialGroupEntity ;
+    rdfs:label "membership in" .
+
+ucm:definedByCriteria rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:SocialGroupEntity ;
+    rdfs:range ucm:MembershipCriteria ;
+    rdfs:label "defined by criteria" .
+
+ucm:qualifiesForMembership rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:MembershipCriteria ;
+    rdfs:label "qualifies for membership" .
+
+
+#################################################################
+# Additional Role and Semantic Context Specializations
+#################################################################
+
+ucm:ClientRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Client Role" ;
+    rdfs:comment "Role assumed by a person receiving services within a social or community care context." .
+
+ucm:SocialCareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SemanticContext ;
+    rdfs:label "Social Care Context" ;
+    rdfs:comment "Semantic context governing social care, community support, and human service interactions." .

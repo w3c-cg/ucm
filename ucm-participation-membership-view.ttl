@@ -1,0 +1,66 @@
+@prefix ucm: <http://mdix.org/ucm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ucm:Entity a owl:Class .
+ucm:Process a owl:Class .
+
+ucm:SocialGroupEntity a owl:Class ;
+  rdfs:subClassOf ucm:Entity .
+
+ucm:Household a owl:Class ; rdfs:subClassOf ucm:SocialGroupEntity .
+ucm:CareTeam a owl:Class ; rdfs:subClassOf ucm:SocialGroupEntity .
+ucm:ProgramCohort a owl:Class ; rdfs:subClassOf ucm:SocialGroupEntity .
+
+ucm:Participation a owl:Class .
+ucm:Membership a owl:Class .
+
+ucm:Role a owl:Class .
+ucm:SubjectRole a owl:Class ; rdfs:subClassOf ucm:Role .
+ucm:PatientRole a owl:Class ; rdfs:subClassOf ucm:SubjectRole .
+ucm:ClientRole a owl:Class ; rdfs:subClassOf ucm:SubjectRole .
+ucm:ResidentRole a owl:Class ; rdfs:subClassOf ucm:SubjectRole .
+ucm:ProviderRole a owl:Class ; rdfs:subClassOf ucm:Role .
+ucm:CaregiverRole a owl:Class ; rdfs:subClassOf ucm:Role .
+ucm:CoordinatorRole a owl:Class ; rdfs:subClassOf ucm:Role .
+
+ucm:MemberRole a owl:Class ; rdfs:subClassOf ucm:Role .
+ucm:HouseholdMemberRole a owl:Class ; rdfs:subClassOf ucm:MemberRole .
+ucm:HeadOfHouseholdRole a owl:Class ; rdfs:subClassOf ucm:MemberRole .
+ucm:DependentRole a owl:Class ; rdfs:subClassOf ucm:MemberRole .
+ucm:CareTeamLeadRole a owl:Class ; rdfs:subClassOf ucm:MemberRole .
+ucm:ProgramParticipantRole a owl:Class ; rdfs:subClassOf ucm:MemberRole .
+
+ucm:MembershipStatus a owl:Class .
+ucm:ActiveMembership a owl:Class ; rdfs:subClassOf ucm:MembershipStatus .
+ucm:InactiveMembership a owl:Class ; rdfs:subClassOf ucm:MembershipStatus .
+ucm:PendingMembership a owl:Class ; rdfs:subClassOf ucm:MembershipStatus .
+
+ucm:participatesThrough a owl:ObjectProperty ;
+  rdfs:domain ucm:Entity ;
+  rdfs:range ucm:Participation .
+
+ucm:occursWithin a owl:ObjectProperty ;
+  rdfs:domain ucm:Participation ;
+  rdfs:range ucm:Process .
+
+ucm:participationRole a owl:ObjectProperty ;
+  rdfs:domain ucm:Participation ;
+  rdfs:range ucm:Role .
+
+ucm:hasMembership a owl:ObjectProperty ;
+  rdfs:domain ucm:Entity ;
+  rdfs:range ucm:Membership .
+
+ucm:memberOf a owl:ObjectProperty ;
+  rdfs:domain ucm:Membership ;
+  rdfs:range ucm:SocialGroupEntity .
+
+ucm:membershipRole a owl:ObjectProperty ;
+  rdfs:domain ucm:Membership ;
+  rdfs:range ucm:MemberRole .
+
+ucm:hasStatus a owl:ObjectProperty ;
+  rdfs:domain ucm:Membership ;
+  rdfs:range ucm:MembershipStatus .

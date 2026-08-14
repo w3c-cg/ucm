@@ -1,0 +1,155 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix sulo: <http://example.org/sulo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+# UCM Core SULO View
+# WebVOWL-friendly semantic grounding visualization
+#################################################################
+
+<http://mdixinc.com/ucm/views/core-sulo> rdf:type owl:Ontology ;
+    rdfs:label "UCM Core SULO View" ;
+    rdfs:comment "A WebVOWL-friendly semantic grounding view showing conceptual alignments between UCM Core concepts and SULO-oriented semantic categories. This file is intended for semantic architecture visualization and governance explanation." .
+
+#################################################################
+# Simplified SULO-Oriented Semantic Categories
+#################################################################
+
+sulo:IndependentObject rdf:type owl:Class ;
+    rdfs:label "Independent Object" ;
+    rdfs:comment "A stable independently existing thing." .
+
+sulo:SpatialObject rdf:type owl:Class ;
+    rdfs:subClassOf sulo:IndependentObject ;
+    rdfs:label "Spatial Object" ;
+    rdfs:comment "A physically existing independent object." .
+
+sulo:SocialObject rdf:type owl:Class ;
+    rdfs:subClassOf sulo:IndependentObject ;
+    rdfs:label "Social Object" ;
+    rdfs:comment "A socially constructed or organizationally defined entity." .
+
+sulo:CollectiveEntity rdf:type owl:Class ;
+    rdfs:subClassOf sulo:SocialObject ;
+    rdfs:label "Collective Entity" ;
+    rdfs:comment "A group or collective social entity." .
+
+sulo:Occurrent rdf:type owl:Class ;
+    rdfs:label "Occurrent" ;
+    rdfs:comment "Something that unfolds over time." .
+
+sulo:Process rdf:type owl:Class ;
+    rdfs:subClassOf sulo:Occurrent ;
+    rdfs:label "Process" ;
+    rdfs:comment "An activity or process occurring through time." .
+
+sulo:InformationObject rdf:type owl:Class ;
+    rdfs:label "Information Object" ;
+    rdfs:comment "An informational artifact, assertion, definition, or semantic construct." .
+
+sulo:Role rdf:type owl:Class ;
+    rdfs:label "Role" ;
+    rdfs:comment "An anti-rigid contextual classification that may be assumed or relinquished." .
+
+sulo:RelationalConstruct rdf:type owl:Class ;
+    rdfs:label "Relational Construct" ;
+    rdfs:comment "A contextual semantic relation between entities and processes." .
+
+#################################################################
+# UCM Core Classes
+#################################################################
+
+ucm:Entity rdf:type owl:Class ;
+    rdfs:label "Entity" .
+
+ucm:Person rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Person" .
+
+ucm:GroupEntity rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Group Entity" .
+
+ucm:Household rdf:type owl:Class ;
+    rdfs:subClassOf ucm:GroupEntity ;
+    rdfs:label "Household" .
+
+ucm:Organization rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Entity ;
+    rdfs:label "Organization" .
+
+ucm:Process rdf:type owl:Class ;
+    rdfs:label "Process" .
+
+ucm:Participation rdf:type owl:Class ;
+    rdfs:label "Participation" .
+
+ucm:Role rdf:type owl:Class ;
+    rdfs:label "Role" .
+
+ucm:Statement rdf:type owl:Class ;
+    rdfs:label "Statement" .
+
+ucm:SemanticContext rdf:type owl:Class ;
+    rdfs:label "Semantic Context" .
+
+ucm:DefinitionArtifact rdf:type owl:Class ;
+    rdfs:label "Definition Artifact" .
+
+ucm:RuleExpression rdf:type owl:Class ;
+    rdfs:subClassOf ucm:DefinitionArtifact ;
+    rdfs:label "Rule Expression" .
+
+ucm:GroupMembership rdf:type owl:Class ;
+    rdfs:label "Group Membership" .
+
+#################################################################
+# Alignment Relationships
+#################################################################
+
+ucm:Entity skos:closeMatch sulo:SpatialObject .
+ucm:Person skos:closeMatch sulo:SpatialObject .
+ucm:Organization skos:closeMatch sulo:SocialObject .
+ucm:GroupEntity skos:closeMatch sulo:CollectiveEntity .
+ucm:Household skos:closeMatch sulo:CollectiveEntity .
+
+ucm:Process skos:closeMatch sulo:Process .
+
+ucm:Participation skos:closeMatch sulo:RelationalConstruct .
+
+ucm:Role skos:closeMatch sulo:Role .
+
+ucm:Statement skos:closeMatch sulo:InformationObject .
+ucm:SemanticContext skos:closeMatch sulo:InformationObject .
+ucm:DefinitionArtifact skos:closeMatch sulo:InformationObject .
+ucm:RuleExpression skos:closeMatch sulo:InformationObject .
+
+ucm:GroupMembership skos:closeMatch sulo:RelationalConstruct .
+
+#################################################################
+# Explanatory Relationships
+#################################################################
+
+ucm:alignedWith rdf:type owl:ObjectProperty ;
+    rdfs:label "aligned with" ;
+    rdfs:comment "Conceptual semantic alignment relationship." .
+
+ucm:Entity ucm:alignedWith sulo:SpatialObject .
+ucm:Process ucm:alignedWith sulo:Process .
+ucm:Participation ucm:alignedWith sulo:RelationalConstruct .
+ucm:Role ucm:alignedWith sulo:Role .
+ucm:Statement ucm:alignedWith sulo:InformationObject .
+ucm:SemanticContext ucm:alignedWith sulo:InformationObject .
+ucm:DefinitionArtifact ucm:alignedWith sulo:InformationObject .
+
+#################################################################
+# Design Notes
+#################################################################
+
+# This view is intentionally simplified for WebVOWL visualization.
+# The UCM remains the authoritative semantic model.
+# SULO-oriented categories are used for semantic grounding and explanation.
+# Alignments are conceptual and governance-oriented rather than hard inheritance dependencies.

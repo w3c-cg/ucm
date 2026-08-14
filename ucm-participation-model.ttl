@@ -1,0 +1,329 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://mdixinc.com/ucm/participation> rdf:type owl:Ontology ;
+    owl:imports <http://mdixinc.com/ucm/core> ;
+    rdfs:label "Unified Care Model Participation Ontology" ;
+    rdfs:comment "Cross-domain participation, role, encounter, care interaction, semantic context, and statement semantics for the UCM." .
+
+#################################################################
+# Role hierarchy
+#################################################################
+
+ucm:SubjectRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Subject Role" ;
+    rdfs:comment "Role borne by the entity that is the focus or subject of a process or statement." .
+
+ucm:CareRecipientRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SubjectRole ;
+    rdfs:label "Care Recipient Role" ;
+    rdfs:comment "General role for an entity receiving care, support, services, benefits, or assistance." .
+
+ucm:PatientRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareRecipientRole ;
+    rdfs:label "Patient Role" ;
+    rdfs:comment "Clinical-care participation role; not an intrinsic identity of Person." .
+
+ucm:ClientRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareRecipientRole ;
+    rdfs:label "Client Role" ;
+    rdfs:comment "Service participation role for an entity receiving social care, housing, or other support services." .
+
+ucm:ResidentRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SubjectRole ;
+    rdfs:label "Resident Role" ;
+    rdfs:comment "Role assumed by an entity occupying a housing unit or residence; distinct from ClientRole." .
+
+ucm:BeneficiaryRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareRecipientRole ;
+    rdfs:label "Beneficiary Role" ;
+    rdfs:comment "Role assumed by an entity receiving a benefit, entitlement, coverage, or assistance." .
+
+ucm:CaregiverRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Caregiver Role" ;
+    rdfs:comment "Role assumed by an entity providing care, support, or assistance." .
+
+ucm:FamilyCaregiverRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CaregiverRole ;
+    rdfs:label "Family Caregiver Role" .
+
+ucm:ProfessionalCaregiverRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CaregiverRole ;
+    rdfs:label "Professional Caregiver Role" .
+
+ucm:PractitionerRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:ProfessionalCaregiverRole ;
+    rdfs:label "Practitioner Role" .
+
+ucm:CoordinatorRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Coordinator Role" .
+
+ucm:CaseManagerRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CoordinatorRole ;
+    rdfs:label "Case Manager Role" .
+
+ucm:ServiceProviderRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Service Provider Role" ;
+    rdfs:comment "Role assumed by an entity providing services; avoids conflating software or architecture terminology with care-domain provider semantics." .
+
+ucm:ReviewerRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Reviewer Role" .
+
+ucm:AssessorRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Assessor Role" .
+
+ucm:RequesterRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Requester Role" .
+
+ucm:PerformerRole rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Role ;
+    rdfs:label "Performer Role" .
+
+#################################################################
+# Cross-domain semantic contexts
+#################################################################
+
+ucm:CareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SemanticContext ;
+    rdfs:label "Care Context" .
+
+ucm:ClinicalCareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareContext ;
+    rdfs:label "Clinical Care Context" .
+
+ucm:SocialCareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareContext ;
+    rdfs:label "Social Care Context" .
+
+ucm:HousingCareContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SocialCareContext ;
+    rdfs:label "Housing Care Context" .
+
+ucm:HousingEligibilityContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:HousingCareContext ;
+    rdfs:label "Housing Eligibility Context" .
+
+ucm:HousingOccupancyContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:HousingCareContext ;
+    rdfs:label "Housing Occupancy Context" .
+
+ucm:BehavioralHealthContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:ClinicalCareContext ;
+    rdfs:label "Behavioral Health Context" .
+
+ucm:PublicHealthContext rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareContext ;
+    rdfs:label "Public Health Context" .
+
+#################################################################
+# Cross-domain process, encounter, and interaction semantics
+#################################################################
+
+ucm:CareProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Process ;
+    rdfs:label "Care Process" .
+
+ucm:CareInteraction rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareProcess ;
+    rdfs:label "Care Interaction" ;
+    rdfs:comment "Bounded interaction involving participating entities within a semantic context." .
+
+ucm:Encounter rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareInteraction ;
+    rdfs:label "Encounter" ;
+    rdfs:comment "Cross-domain bounded contextual interaction process; not exclusively clinical." .
+
+ucm:ClinicalEncounter rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Encounter ;
+    rdfs:label "Clinical Encounter" .
+
+ucm:SocialCareEncounter rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Encounter ;
+    rdfs:label "Social Care Encounter" .
+
+ucm:HousingEncounter rdf:type owl:Class ;
+    rdfs:subClassOf ucm:SocialCareEncounter ;
+    rdfs:label "Housing Encounter" .
+
+ucm:AssessmentProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareProcess ;
+    rdfs:label "Assessment Process" .
+
+ucm:EligibilityDeterminationProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:AssessmentProcess ;
+    rdfs:label "Eligibility Determination Process" .
+
+ucm:CoordinationProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareProcess ;
+    rdfs:label "Coordination Process" .
+
+ucm:ReferralProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CoordinationProcess ;
+    rdfs:label "Referral Process" .
+
+ucm:CarePlanningProcess rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CoordinationProcess ;
+    rdfs:label "Care Planning Process" .
+
+#################################################################
+# Cross-domain statement semantics
+#################################################################
+
+ucm:CareStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Statement ;
+    rdfs:label "Care Statement" .
+
+ucm:AssessmentStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareStatement ;
+    rdfs:label "Assessment Statement" .
+
+ucm:EligibilityStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:AssessmentStatement ;
+    rdfs:label "Eligibility Statement" .
+
+ucm:NeedStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareStatement ;
+    rdfs:label "Need Statement" .
+
+ucm:RiskStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareStatement ;
+    rdfs:label "Risk Statement" .
+
+ucm:StatusStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareStatement ;
+    rdfs:label "Status Statement" .
+
+ucm:OutcomeStatement rdf:type owl:Class ;
+    rdfs:subClassOf ucm:CareStatement ;
+    rdfs:label "Outcome Statement" .
+
+#################################################################
+# Participation properties
+#################################################################
+
+ucm:hasCareParticipant rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasParticipant ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has care participant" .
+
+ucm:hasSubjectParticipation rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasCareParticipant ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has subject participation" .
+
+ucm:hasPerformerParticipation rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasCareParticipant ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has performer participation" .
+
+ucm:hasRequesterParticipation rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasCareParticipant ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has requester participation" .
+
+ucm:hasResponsibleParticipation rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasCareParticipant ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "has responsible participation" .
+
+ucm:participatesInProcess rdf:type owl:ObjectProperty ;
+    owl:inverseOf ucm:hasParticipant ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Process ;
+    rdfs:label "participates in process" .
+
+ucm:participantOrganization rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range ucm:Organization ;
+    rdfs:label "participant organization" .
+
+#################################################################
+# Statement, context, and definition relationships
+#################################################################
+
+ucm:hasCareStatement rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:CareStatement ;
+    rdfs:label "has care statement" .
+
+ucm:statementAboutParticipation rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:statementSubject ;
+    rdfs:domain ucm:CareStatement ;
+    rdfs:range ucm:Participation ;
+    rdfs:label "statement about participation" .
+
+ucm:statementAboutEntity rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:CareStatement ;
+    rdfs:range ucm:Entity ;
+    rdfs:label "statement about entity" ;
+    rdfs:comment "Use only when the assertion is explicitly about stable identity rather than contextual participation." .
+
+ucm:careStatementContext rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:statementContext ;
+    rdfs:domain ucm:CareStatement ;
+    rdfs:range ucm:CareContext ;
+    rdfs:label "care statement context" .
+
+ucm:usesDefinitionArtifact rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:DefinitionArtifact ;
+    rdfs:label "uses definition artifact" .
+
+ucm:usesRuleExpression rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:RuleExpression ;
+    rdfs:label "uses rule expression" .
+
+ucm:processContext rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range ucm:CareContext ;
+    rdfs:label "process context" .
+
+#################################################################
+# Temporal participation properties
+#################################################################
+
+ucm:participationStart rdf:type owl:DatatypeProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "participation start" .
+
+ucm:participationEnd rdf:type owl:DatatypeProperty ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "participation end" .
+
+ucm:processStart rdf:type owl:DatatypeProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "process start" .
+
+ucm:processEnd rdf:type owl:DatatypeProperty ;
+    rdfs:domain ucm:CareProcess ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "process end" .
+
+#################################################################
+# Design notes
+#################################################################
+
+# Encounter is cross-domain and is not exclusively clinical.
+# PatientRole, ClientRole, ResidentRole, and CaregiverRole are contextual roles rather than intrinsic identities.
+# Statements are generally about Participations, not abstract identities.
+# Domain models should import this Participation ontology and specialize contexts, roles, statements, and processes.
+# The Participation Model is the interoperability bridge between domain models.
