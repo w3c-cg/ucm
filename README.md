@@ -13,7 +13,7 @@ W3C Community Group Guidelines and Policies (this is "officially" a W3C Communit
 * https://www.w3.org/community/about/
 
 W3C Group Page
-[https://www.w3.org/community/blog/2026/06/25/proposed-group-unified-care-model-community-group/](https://www.w3.org/community/ucm/)
+[https://www.w3.org/community/ucm/](https://www.w3.org/community/ucm/)
 
 # Visualization: 
 
