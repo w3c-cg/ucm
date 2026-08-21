@@ -5,7 +5,7 @@
 ## All members: Please read the guidelines linked below to understand your membership rights and responsibilities. 
 
 W3C Community Group Guidelines and Policies (this is "officially" a W3C Community Group):
-* send all messages to the group to public-ucm@w3.org
+* send all messages to the group to public-ucm@w3.org [public listserv archives](https://lists.w3.org/Archives/Public/public-ucm/2026Aug/0010.html)
 * Code of conduct: https://www.w3.org/policies/code-of-conduct/
 * Patent policy: https://www.w3.org/policies/patent-policy/
 * https://www.w3.org/community/about/process/final/
