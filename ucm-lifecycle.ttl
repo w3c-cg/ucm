@@ -1,0 +1,49 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://mdixinc.com/ucm/views/operations> rdf:type owl:Ontology ;
+    rdfs:label "UCM Operational Semantics" ;
+    rdfs:comment "A simplified WebVOWL-friendly view of the UCM Coordination Semantics and Lifecycle Model designed for computable lifecycle semantics on shared operational care workflows." .
+
+# Core Classes 
+# Note: open design question would be whether to reconfigure the LifecycleState subclasses as enumerated values under SKOS vocabularies. 
+
+ucm:CoordinationRequest rdf:type owl:Class ;
+    rdfs:subClassOf ucm:Process ;
+    rdfs:label "Care Coordination Request" ; 
+    rdfs:comment "A process in which coordination is requested between participating entities." .
+
+ucm:LifecycleState rdf:type owl:Class ;
+    rdfs:label "Lifecycle State" ;
+    rdfs:comment "A state associated with a process during a portion of its lifecycle." .
+
+ucm:Pending rdf:type owl:Class ;
+    rdfs:subClassOf ucm:LifecycleState ;
+    rdfs:label "Pending" ; 
+    rdfs:comment "A pending care coordination request." .
+
+ucm:Accepted rdf:type owl:Class ;
+    rdfs:subClassOf ucm:LifecycleState .
+    rdfs:label "Accepted" ; 
+    rdfs:comment "A care coordination request that has been accepted for ongoing care." .
+
+ucm:Declined rdf:type owl:Class ;
+    rdfs:subClassOf ucm:LifecycleState ;
+    rdfs:label "Declined" ; 
+    rdfs:comment "This care request was denied." .
+
+# Object Properties 
+
+ucm:hasLifecycleState rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Process ;
+    rdfs:range ucm:LifecycleState ;
+    rdfs:label "has lifecycle state" ;
+    rdfs:comment "Relates a process to a lifecycle state." .
+
+ucm:acceptsRequest rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Entity ;
+    rdfs:range ucm:ParticipationContext ;
+    rdfs:label "accepts request" ;
+    rdfs:comment "A participating entity accepts a care coordination request." .
