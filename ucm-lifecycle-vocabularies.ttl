@@ -1,0 +1,40 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ucm:LifecycleState a skos:ConceptScheme ;
+    dcterms:title "UCM Lifecycle State"@en ;
+    dcterms:description "A state associated with a process during a portion of its lifecycle."@en ;
+    dcterms:created "2026-09-08"^^xsd:date ;
+    dcterms:publisher "MDIX"@en ;
+    skos:prefLabel "Lifecycle State"@en ;
+    skos:definition "The primary state of the care coordination lifecycle."@en ;
+    skos:hasTopConcept 
+        ucm:Pending, 
+        ucm:Accepted, 
+        ucm:Declined .
+
+ucm:Pending a skos:Concept ;
+    skos:inScheme ucm:LifecycleState ;
+    skos:topConceptOf ucm:LifecycleState ;
+    skos:prefLabel "Pending Care Coordination Lifecycle"@en ;
+    skos:altLabel "Pending"@en ;
+    skos:definition "A pending care coordination request." . 
+
+ucm:Accepted a skos:Concept ;
+    skos:inScheme ucm:LifecycleState ;
+    skos:topConceptOf ucm:LifecycleState ;
+    skos:prefLabel "Accepted Care Coordination Lifecycle"@en ;
+    skos:altLabel "Accepted"@en ;
+    skos:definition "A care coordination request that has been accepted for ongoing care." . 
+
+ucm:Declined a skos:Concept ;
+    skos:inScheme ucm:LifecycleState ;
+    skos:topConceptOf ucm:LifecycleState ;
+    skos:prefLabel "Declined Care Coordination Lifecycle"@en ;
+    skos:altLabel "Declined"@en ;
+    skos:definition "This care request was denied." . 
+
