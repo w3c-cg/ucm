@@ -1,5 +1,9 @@
-# Issues
+# Administrative Items
 
-* https://github.com/w3c-cg/ucm/issues/5 UCM temporal modeling
-* https://github.com/w3c-cg/ucm/issues/6 Definition of Person proposed restrictions
+# General Items
+
+# Issue Discussion
+
+* https://github.com/w3c-cg/ucm/issues/5 UCM temporal modeling [Roman Rivilis]
+* https://github.com/w3c-cg/ucm/issues/6 Definition of Person proposed restrictions [Eric Jahn]
 
