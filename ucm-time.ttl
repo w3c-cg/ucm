@@ -1,0 +1,78 @@
+@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# UCM Temporal Semantics
+
+<http://mdixinc.com/ucm/time> rdf:type owl:Ontology ;
+    rdfs:label "UCM Temporal Semantics" ;
+    rdfs:comment """
+        Reusable temporal semantics for UCM concepts.
+        UCM reuses OWL-Time for temporal entities and relations,
+        and PROV-O where provenance-related temporal semantics are applicable.
+    """ .
+
+ucm:hasTemporalContext rdf:type owl:ObjectProperty ;
+    rdfs:range time:TemporalEntity ;
+    rdfs:label "has temporal context" ;
+    rdfs:comment """
+        Relates a UCM semantic subject to a temporal entity that
+        qualifies when that subject occurs, obtains, applies,
+        participates, or is otherwise temporally situated.
+    """ .
+
+ucm:hasCareTrajectoryContext rdf:type owl:ObjectProperty ;
+    rdfs:label "has care trajectory context" ;
+    rdfs:comment """
+        Relates a UCM semantic subject to a temporal position or
+        extent defined relative to the internal progression of a
+        process, state trajectory, or coordinated activity rather
+        than directly relative to an external clock or calendar.
+    """ .
+# One thing to consider: separation of clock time and state-relative time along the trajectory or progression of someone's care. 
+# That grants discernment in scenarios like "the patient referral was accepted after the assessment but before discharge, but 
+# we may not have all of the exact timestamps across each event." 
+
+ucm:validDuring rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasTemporalContext ;
+    rdfs:range time:TemporalEntity ;
+    rdfs:label "valid during" ;
+    rdfs:comment """
+        Relates a semantic subject or statement to the temporal
+        extent during which its described condition, state,
+        relationship, participation, or other semantics apply.
+    """ .
+
+ucm:enactiveDuring rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasTemporalContext ;
+    rdfs:domain ucm:Participation ;
+    rdfs:range time:TemporalEntity ;
+    rdfs:label "enactive during" ;
+    rdfs:comment """
+        Relates a participation to the temporal extent during
+        which that participation is enactive.
+    """ .
+
+ucm:occursDuring rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf ucm:hasTemporalContext ;
+    rdfs:domain ucm:Process ;
+    rdfs:range time:TemporalEntity ;
+    rdfs:label "occurs during" ;
+    rdfs:comment """
+        Relates a process to the temporal extent during which
+        the process occurs.
+    """ .
+
+# PROV-O alignment
+
+ucm:Statement rdf:type owl:Class ; 
+    rdfs:subClassOf prov:Entity ;
+    rdfs:comment """
+        A UCM Statement is an information-bearing entity and may
+        therefore participate in PROV-O provenance relations.
+    """ .
+
+    

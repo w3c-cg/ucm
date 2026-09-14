@@ -20,10 +20,15 @@ ucm:CoordinativeActivity rdf:type owl:Class ;
     rdfs:label "Coordinative Care Activity" ;
     rdfs:comment "A situated activity whose process is shared by participating entities in its care coordination lifecycle." .
 
+ucm:Handshake rdf:type owl:Class ; 
+    rdfs:subClassOf ucm:CoordinativeActivity ; 
+    rdfs:label "Handshake" ; 
+    rdfs:comment "A coordinative process through which participating entities negotiate mutual participation in a shared activity." .
+
 ucm:ActivityFocus rdf:type owl:Class ;
     rdfs:label "Activity Focus" ;
     rdfs:comment "The matter, condition, or situation toward which a coordinated activity is orchestrated and which the activity seeks to jointly maintain, update, resolve, or bring about." . 
-# Examples for this may include: housing stability, food security, shelter connection, patient discharge. This is semantically separate from a motive or goal-directed outcome, since it's more specifically defining what is being worked on as a shared process. The state of the care coordination can be distinctly captured under LifecycleState or a local data dictionary. 
+# Examples for this may include: housing stability, food security, shelter connection, patient discharge. This is semantically separate from a motive or goal-directed outcome, since it's more specifically defining what is being worked on as a shared process. 
 
 # Object Properties 
 
@@ -39,6 +44,12 @@ ucm:hasActivityFocus rdf:type owl:ObjectProperty ;
     rdfs:label "has activity focus" ; 
     rdfs:comment "Situates a process within an activity focus." .
 # An example: patient discharge has the activity focus of safely discharging a patient. 
+
+ucm:negotiates rdf:type owl:ObjectProperty ;
+    rdfs:domain ucm:Handshake ;
+    rdfs:range ucm:Process ;
+    rdfs:label "negotiates" ;
+    rdfs:comment "Relates a handshake to the care coordination process whose participation relationship it negotiates." .
 
 ucm:acceptsRequest rdf:type owl:ObjectProperty ;
     rdfs:domain ucm:Entity ;
