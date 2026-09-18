@@ -4,5 +4,5 @@
 
 # Issue Discussion
 
-* Pull Request # TBD: existing ontological work on Person and Human
+* Issue # TBD: existing ontological work on Person and Human
 * 
