@@ -1,394 +1,535 @@
-@prefix ucm: <http://mdix.org/ucm#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <urn:w3c:cg:ucm#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ucm: <urn:w3c:cg:ucm> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mdix: <http://mdix.org/ucm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <urn:w3c:cg:ucm#> .
 
-<http://mdix.org/ucm>
-    rdf:type owl:Ontology ;
-    rdfs:label "Unified Care Model" ;
-    rdfs:comment "Complete UCM model including Core, Participation, and Domain semantic layers." .
-
-#################################################################
-# Core Model
-#################################################################
-
-ucm:Entity rdf:type owl:Class ;
-    rdfs:label "Entity" ;
-    rdfs:comment "A stable independently identifiable semantic thing." .
-
-ucm:Person rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Person" .
-
-ucm:Organization rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Organization" ;
-    rdfs:comment "Operational or governance-oriented social entity maintaining continuity independent of membership changes." .
-
-ucm:SocialGroupEntity rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Social Group Entity" ;
-    rdfs:comment "A collective grouping of participating entities." .
-
-ucm:Household rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SocialGroupEntity ;
-    rdfs:label "Household" .
-
-ucm:CareTeam rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SocialGroupEntity ;
-    rdfs:label "Care Team" .
-
-ucm:CommunityGroup rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SocialGroupEntity ;
-    rdfs:label "Community Group" .
-
-ucm:Device rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Device" .
-
-ucm:Location rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Location" .
-
-ucm:InformationArtifact rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Entity ;
-    rdfs:label "Information Artifact" ;
-    rdfs:comment "A logical information abstraction or computable information object." .
-
-ucm:Process rdf:type owl:Class ;
-    rdfs:label "Process" ;
-    rdfs:comment "A bounded interaction or activity occurring over time." .
-
-ucm:Statement rdf:type owl:Class ;
-    rdfs:label "Statement" ;
-    rdfs:comment "An informational assertion, finding, determination, or conclusion." .
-
-ucm:SemanticContext rdf:type owl:Class ;
-    rdfs:label "Semantic Context" ;
-    rdfs:comment "An interpretive environment, governance scope, or applicability boundary." .
-
-ucm:DefinitionArtifact rdf:type owl:Class ;
-    rdfs:label "Definition Artifact" ;
-    rdfs:comment "A ruleset, policy definition, constraint, or governance artifact." .
+<urn:w3c:cg:ucm#> rdf:type owl:Ontology ;
+                   owl:versionIRI <urn:w3c:cg:ucm#0.0.1> ;
+                   rdfs:comment "Complete UCM model including Core, Participation, and Domain semantic layers." ;
+                   rdfs:label "Unified Care Model" ;
+                   owl:versionInfo "v0.0.1" .
 
 #################################################################
-# Participation Model
+#    Object Properties
 #################################################################
 
-ucm:Participation rdf:type owl:Class ;
-    rdfs:label "Participation" ;
-    rdfs:comment "Contextual involvement of an Entity within a Process and Semantic Context." .
+###  http://mdix.org/ucm#affiliatedWith
+mdix:affiliatedWith rdf:type owl:ObjectProperty ;
+                    rdfs:domain mdix:Person ;
+                    rdfs:range mdix:Organization ;
+                    rdfs:label "affiliated with" .
 
-ucm:Role rdf:type owl:Class ;
-    rdfs:label "Role" ;
-    rdfs:comment "A contextual, anti-rigid classification assumed through participation." .
 
-ucm:SubjectRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Role ;
-    rdfs:label "Subject Role" .
+###  http://mdix.org/ucm#assumesRole
+mdix:assumesRole rdf:type owl:ObjectProperty ;
+                 rdfs:domain mdix:Participation ;
+                 rdfs:range mdix:Role ;
+                 rdfs:label "assumes role" .
 
-ucm:PatientRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SubjectRole ;
-    rdfs:label "Patient Role" .
 
-ucm:ClientRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SubjectRole ;
-    rdfs:label "Client Role" .
+###  http://mdix.org/ucm#definedByArtifact
+mdix:definedByArtifact rdf:type owl:ObjectProperty ;
+                       rdfs:domain mdix:SemanticContext ;
+                       rdfs:range mdix:DefinitionArtifact ;
+                       rdfs:label "defined by artifact" .
 
-ucm:ResidentRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SubjectRole ;
-    rdfs:label "Resident Role" .
 
-ucm:CaregiverRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Role ;
-    rdfs:label "Caregiver Role" .
+###  http://mdix.org/ucm#definedByCriteria
+mdix:definedByCriteria rdf:type owl:ObjectProperty ;
+                       rdfs:domain mdix:SocialGroupEntity ;
+                       rdfs:range mdix:MembershipCriteria ;
+                       rdfs:label "defined by criteria" .
 
-ucm:BeneficiaryRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SubjectRole ;
-    rdfs:label "Beneficiary Role" .
 
-ucm:ProviderRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Role ;
-    rdfs:label "Provider Role" .
+###  http://mdix.org/ucm#generatedByProcess
+mdix:generatedByProcess rdf:type owl:ObjectProperty ;
+                        rdfs:domain mdix:Statement ;
+                        rdfs:range mdix:Process ;
+                        rdfs:label "generated by process" .
 
-ucm:CoordinatorRole rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Role ;
-    rdfs:label "Coordinator Role" .
 
-ucm:Membership rdf:type owl:Class ;
-    rdfs:label "Membership" ;
-    rdfs:comment "Contextual membership relationship between an Entity and a SocialGroupEntity." .
+###  http://mdix.org/ucm#hasClient
+mdix:hasClient rdf:type owl:ObjectProperty ;
+               rdfs:domain mdix:SocialCareInteraction ;
+               rdfs:range mdix:Person ;
+               rdfs:comment "Convenience projection derived from participation semantics." ;
+               rdfs:label "has client" .
 
-ucm:MembershipCriteria rdf:type owl:Class ;
-    rdfs:label "Membership Criteria" ;
-    rdfs:comment "Rules or conditions defining membership within a SocialGroupEntity." .
 
-#################################################################
-# Domain Model Examples
-#################################################################
+###  http://mdix.org/ucm#hasMember
+mdix:hasMember rdf:type owl:ObjectProperty ;
+               rdfs:domain mdix:SocialGroupEntity ;
+               rdfs:range mdix:Entity ;
+               rdfs:label "has member" .
 
-ucm:ClinicalDomain rdf:type owl:Class ;
-    rdfs:label "Clinical Domain" .
 
-ucm:HousingDomain rdf:type owl:Class ;
-    rdfs:label "Housing Domain" .
+###  http://mdix.org/ucm#hasMembership
+mdix:hasMembership rdf:type owl:ObjectProperty ;
+                   rdfs:domain mdix:Entity ;
+                   rdfs:range mdix:Membership ;
+                   rdfs:label "has membership" .
 
-ucm:SocialCareDomain rdf:type owl:Class ;
-    rdfs:label "Social Care Domain" .
 
-ucm:BehavioralHealthDomain rdf:type owl:Class ;
-    rdfs:label "Behavioral Health Domain" .
+###  http://mdix.org/ucm#hasParticipant
+mdix:hasParticipant rdf:type owl:ObjectProperty ;
+                    rdfs:domain mdix:Process ;
+                    rdfs:range mdix:Participation ;
+                    rdfs:label "has participant" .
 
-ucm:PublicHealthDomain rdf:type owl:Class ;
-    rdfs:label "Public Health Domain" .
 
-#################################################################
-# Domain Contexts
-#################################################################
+###  http://mdix.org/ucm#hasPatient
+mdix:hasPatient rdf:type owl:ObjectProperty ;
+                rdfs:domain mdix:ClinicalEncounter ;
+                rdfs:range mdix:Person ;
+                rdfs:comment "Convenience projection derived from participation semantics." ;
+                rdfs:label "has patient" .
 
-ucm:ClinicalCareContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SemanticContext ;
-    rdfs:label "Clinical Care Context" .
 
-ucm:HousingContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SemanticContext ;
-    rdfs:label "Housing Context" .
+###  http://mdix.org/ucm#hasResident
+mdix:hasResident rdf:type owl:ObjectProperty ;
+                 rdfs:domain mdix:HousingAssessment ;
+                 rdfs:range mdix:Person ;
+                 rdfs:comment "Convenience projection derived from participation semantics." ;
+                 rdfs:label "has resident" .
 
-ucm:HousingEligibilityContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:HousingContext ;
-    rdfs:label "Housing Eligibility Context" .
 
-ucm:SocialCareContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SemanticContext ;
-    rdfs:label "Social Care Context" .
+###  http://mdix.org/ucm#locatedAt
+mdix:locatedAt rdf:type owl:ObjectProperty ;
+               rdfs:domain mdix:Entity ;
+               rdfs:range mdix:Location ;
+               rdfs:label "located at" .
 
-ucm:BehavioralHealthContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SemanticContext ;
-    rdfs:label "Behavioral Health Context" .
 
-ucm:PublicHealthContext rdf:type owl:Class ;
-    rdfs:subClassOf ucm:SemanticContext ;
-    rdfs:label "Public Health Context" .
+###  http://mdix.org/ucm#madeWithinContext
+mdix:madeWithinContext rdf:type owl:ObjectProperty ;
+                       rdfs:domain mdix:Statement ;
+                       rdfs:range mdix:SemanticContext ;
+                       rdfs:label "made within context" .
 
-#################################################################
-# Domain Processes
-#################################################################
 
-ucm:Encounter rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Process ;
-    rdfs:label "Encounter" ;
-    rdfs:comment "A bounded contextual interaction process." .
+###  http://mdix.org/ucm#memberOf
+mdix:memberOf rdf:type owl:ObjectProperty ;
+              rdfs:domain mdix:Entity ;
+              rdfs:range mdix:SocialGroupEntity ;
+              rdfs:label "member of" .
 
-ucm:ClinicalEncounter rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Encounter ;
-    rdfs:label "Clinical Encounter" .
 
-ucm:HousingAssessment rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Process ;
-    rdfs:label "Housing Assessment" .
+###  http://mdix.org/ucm#membershipIn
+mdix:membershipIn rdf:type owl:ObjectProperty ;
+                  rdfs:domain mdix:Membership ;
+                  rdfs:range mdix:SocialGroupEntity ;
+                  rdfs:label "membership in" .
 
-ucm:EligibilityDetermination rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Process ;
-    rdfs:label "Eligibility Determination" .
 
-ucm:SocialCareInteraction rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Process ;
-    rdfs:label "Social Care Interaction" .
+###  http://mdix.org/ucm#occursWithin
+mdix:occursWithin rdf:type owl:ObjectProperty ;
+                  rdfs:domain mdix:Participation ;
+                  rdfs:range mdix:Process ;
+                  rdfs:label "occurs within" .
 
-ucm:CareCoordinationInteraction rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Process ;
-    rdfs:label "Care Coordination Interaction" .
 
-#################################################################
-# Domain Statements
-#################################################################
+###  http://mdix.org/ucm#participatesThrough
+mdix:participatesThrough rdf:type owl:ObjectProperty ;
+                         rdfs:domain mdix:Entity ;
+                         rdfs:range mdix:Participation ;
+                         rdfs:label "participates through" .
 
-ucm:ClinicalStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Statement ;
-    rdfs:label "Clinical Statement" .
 
-ucm:DiagnosisStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:ClinicalStatement ;
-    rdfs:label "Diagnosis Statement" .
+###  http://mdix.org/ucm#participatingEntity
+mdix:participatingEntity rdf:type owl:ObjectProperty ;
+                         rdfs:domain mdix:Participation ;
+                         rdfs:range mdix:Entity ;
+                         rdfs:label "participating entity" .
 
-ucm:ObservationStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:ClinicalStatement ;
-    rdfs:label "Observation Statement" .
 
-ucm:HousingStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Statement ;
-    rdfs:label "Housing Statement" .
+###  http://mdix.org/ucm#participationContext
+mdix:participationContext rdf:type owl:ObjectProperty ;
+                          rdfs:domain mdix:Participation ;
+                          rdfs:range mdix:SemanticContext ;
+                          rdfs:label "participation context" .
 
-ucm:HousingEligibilityStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:HousingStatement ;
-    rdfs:label "Housing Eligibility Statement" .
 
-ucm:SocialCareStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Statement ;
-    rdfs:label "Social Care Statement" .
+###  http://mdix.org/ucm#qualifiesForMembership
+mdix:qualifiesForMembership rdf:type owl:ObjectProperty ;
+                            rdfs:domain mdix:Entity ;
+                            rdfs:range mdix:MembershipCriteria ;
+                            rdfs:label "qualifies for membership" .
 
-ucm:CareCoordinationStatement rdf:type owl:Class ;
-    rdfs:subClassOf ucm:Statement ;
-    rdfs:label "Care Coordination Statement" .
 
-#################################################################
-# Definition Artifact Examples
-#################################################################
+###  http://mdix.org/ucm#scopedBy
+mdix:scopedBy rdf:type owl:ObjectProperty ;
+              rdfs:domain mdix:Participation ;
+              rdfs:range mdix:SemanticContext ;
+              rdfs:label "scoped by" .
 
-ucm:EligibilityRuleset rdf:type owl:Class ;
-    rdfs:subClassOf ucm:DefinitionArtifact ;
-    rdfs:label "Eligibility Ruleset" .
 
-ucm:PolicyDefinition rdf:type owl:Class ;
-    rdfs:subClassOf ucm:DefinitionArtifact ;
-    rdfs:label "Policy Definition" .
+###  http://mdix.org/ucm#statementSubject
+mdix:statementSubject rdf:type owl:ObjectProperty ;
+                      rdfs:domain mdix:Statement ;
+                      rdfs:range mdix:Participation ;
+                      rdfs:comment "Relates a statement to the contextual participation it is about." ;
+                      rdfs:label "statement subject" .
 
-ucm:SemanticConstraint rdf:type owl:Class ;
-    rdfs:subClassOf ucm:DefinitionArtifact ;
-    rdfs:label "Semantic Constraint" .
-
-ucm:ProgramDefinition rdf:type owl:Class ;
-    rdfs:subClassOf ucm:DefinitionArtifact ;
-    rdfs:label "Program Definition" .
 
 #################################################################
-# Object Properties
+#    Data properties
 #################################################################
 
-ucm:participatesThrough rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Entity ;
-    rdfs:range ucm:Participation ;
-    rdfs:label "participates through" .
+###  http://mdix.org/ucm#statementDate
+mdix:statementDate rdf:type owl:DatatypeProperty ;
+                   rdfs:domain mdix:Statement ;
+                   rdfs:range xsd:dateTime ;
+                   rdfs:label "statement date" .
 
-ucm:participatingEntity rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range ucm:Entity ;
-    rdfs:label "participating entity" .
 
-ucm:assumesRole rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range ucm:Role ;
-    rdfs:label "assumes role" .
+###  http://mdix.org/ucm#validFrom
+mdix:validFrom rdf:type owl:DatatypeProperty ;
+               rdfs:domain mdix:Participation ;
+               rdfs:range xsd:dateTime ;
+               rdfs:label "valid from" .
 
-ucm:participationContext rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range ucm:SemanticContext ;
-    rdfs:label "participation context" .
 
-ucm:scopedBy rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range ucm:SemanticContext ;
-    rdfs:label "scoped by" .
+###  http://mdix.org/ucm#validTo
+mdix:validTo rdf:type owl:DatatypeProperty ;
+             rdfs:domain mdix:Participation ;
+             rdfs:range xsd:dateTime ;
+             rdfs:label "valid to" .
 
-ucm:occursWithin rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range ucm:Process ;
-    rdfs:label "occurs within" .
-
-ucm:hasParticipant rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Process ;
-    rdfs:range ucm:Participation ;
-    rdfs:label "has participant" .
-
-ucm:statementSubject rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Statement ;
-    rdfs:range ucm:Participation ;
-    rdfs:label "statement subject" ;
-    rdfs:comment "Relates a statement to the contextual participation it is about." .
-
-ucm:madeWithinContext rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Statement ;
-    rdfs:range ucm:SemanticContext ;
-    rdfs:label "made within context" .
-
-ucm:generatedByProcess rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Statement ;
-    rdfs:range ucm:Process ;
-    rdfs:label "generated by process" .
-
-ucm:definedByArtifact rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:SemanticContext ;
-    rdfs:range ucm:DefinitionArtifact ;
-    rdfs:label "defined by artifact" .
-
-ucm:memberOf rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Entity ;
-    rdfs:range ucm:SocialGroupEntity ;
-    rdfs:label "member of" .
-
-ucm:hasMember rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:SocialGroupEntity ;
-    rdfs:range ucm:Entity ;
-    rdfs:label "has member" .
-
-ucm:hasMembership rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Entity ;
-    rdfs:range ucm:Membership ;
-    rdfs:label "has membership" .
-
-ucm:membershipIn rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Membership ;
-    rdfs:range ucm:SocialGroupEntity ;
-    rdfs:label "membership in" .
-
-ucm:definedByCriteria rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:SocialGroupEntity ;
-    rdfs:range ucm:MembershipCriteria ;
-    rdfs:label "defined by criteria" .
-
-ucm:qualifiesForMembership rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Entity ;
-    rdfs:range ucm:MembershipCriteria ;
-    rdfs:label "qualifies for membership" .
-
-ucm:affiliatedWith rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Person ;
-    rdfs:range ucm:Organization ;
-    rdfs:label "affiliated with" .
-
-ucm:locatedAt rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:Entity ;
-    rdfs:range ucm:Location ;
-    rdfs:label "located at" .
 
 #################################################################
-# Convenience Projection Properties
+#    Classes
 #################################################################
 
-ucm:hasPatient rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:ClinicalEncounter ;
-    rdfs:range ucm:Person ;
-    rdfs:label "has patient" ;
-    rdfs:comment "Convenience projection derived from participation semantics." .
+###  http://mdix.org/ucm#BehavioralHealthContext
+mdix:BehavioralHealthContext rdf:type owl:Class ;
+                             rdfs:subClassOf mdix:SemanticContext ;
+                             rdfs:label "Behavioral Health Context" .
 
-ucm:hasClient rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:SocialCareInteraction ;
-    rdfs:range ucm:Person ;
-    rdfs:label "has client" ;
-    rdfs:comment "Convenience projection derived from participation semantics." .
 
-ucm:hasResident rdf:type owl:ObjectProperty ;
-    rdfs:domain ucm:HousingAssessment ;
-    rdfs:range ucm:Person ;
-    rdfs:label "has resident" ;
-    rdfs:comment "Convenience projection derived from participation semantics." .
+###  http://mdix.org/ucm#BehavioralHealthDomain
+mdix:BehavioralHealthDomain rdf:type owl:Class ;
+                            rdfs:label "Behavioral Health Domain" .
 
-#################################################################
-# Data Properties
-#################################################################
 
-ucm:validFrom rdf:type owl:DatatypeProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range xsd:dateTime ;
-    rdfs:label "valid from" .
+###  http://mdix.org/ucm#BeneficiaryRole
+mdix:BeneficiaryRole rdf:type owl:Class ;
+                     rdfs:subClassOf mdix:SubjectRole ;
+                     rdfs:label "Beneficiary Role" .
 
-ucm:validTo rdf:type owl:DatatypeProperty ;
-    rdfs:domain ucm:Participation ;
-    rdfs:range xsd:dateTime ;
-    rdfs:label "valid to" .
 
-ucm:statementDate rdf:type owl:DatatypeProperty ;
-    rdfs:domain ucm:Statement ;
-    rdfs:range xsd:dateTime ;
-    rdfs:label "statement date" .
+###  http://mdix.org/ucm#CareCoordinationInteraction
+mdix:CareCoordinationInteraction rdf:type owl:Class ;
+                                 rdfs:subClassOf mdix:Process ;
+                                 rdfs:label "Care Coordination Interaction" .
+
+
+###  http://mdix.org/ucm#CareCoordinationStatement
+mdix:CareCoordinationStatement rdf:type owl:Class ;
+                               rdfs:subClassOf mdix:Statement ;
+                               rdfs:label "Care Coordination Statement" .
+
+
+###  http://mdix.org/ucm#CareTeam
+mdix:CareTeam rdf:type owl:Class ;
+              rdfs:subClassOf mdix:SocialGroupEntity ;
+              rdfs:label "Care Team" .
+
+
+###  http://mdix.org/ucm#CaregiverRole
+mdix:CaregiverRole rdf:type owl:Class ;
+                   rdfs:subClassOf mdix:Role ;
+                   rdfs:label "Caregiver Role" .
+
+
+###  http://mdix.org/ucm#ClientRole
+mdix:ClientRole rdf:type owl:Class ;
+                rdfs:subClassOf mdix:SubjectRole ;
+                rdfs:label "Client Role" .
+
+
+###  http://mdix.org/ucm#ClinicalCareContext
+mdix:ClinicalCareContext rdf:type owl:Class ;
+                         rdfs:subClassOf mdix:SemanticContext ;
+                         rdfs:label "Clinical Care Context" .
+
+
+###  http://mdix.org/ucm#ClinicalDomain
+mdix:ClinicalDomain rdf:type owl:Class ;
+                    rdfs:label "Clinical Domain" .
+
+
+###  http://mdix.org/ucm#ClinicalEncounter
+mdix:ClinicalEncounter rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:Encounter ;
+                       rdfs:label "Clinical Encounter" .
+
+
+###  http://mdix.org/ucm#ClinicalStatement
+mdix:ClinicalStatement rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:Statement ;
+                       rdfs:label "Clinical Statement" .
+
+
+###  http://mdix.org/ucm#CommunityGroup
+mdix:CommunityGroup rdf:type owl:Class ;
+                    rdfs:subClassOf mdix:SocialGroupEntity ;
+                    rdfs:label "Community Group" .
+
+
+###  http://mdix.org/ucm#CoordinatorRole
+mdix:CoordinatorRole rdf:type owl:Class ;
+                     rdfs:subClassOf mdix:Role ;
+                     rdfs:label "Coordinator Role" .
+
+
+###  http://mdix.org/ucm#DefinitionArtifact
+mdix:DefinitionArtifact rdf:type owl:Class ;
+                        rdfs:comment "A ruleset, policy definition, constraint, or governance artifact." ;
+                        rdfs:label "Definition Artifact" .
+
+
+###  http://mdix.org/ucm#Device
+mdix:Device rdf:type owl:Class ;
+            rdfs:subClassOf mdix:Entity ;
+            rdfs:label "Device" .
+
+
+###  http://mdix.org/ucm#DiagnosisStatement
+mdix:DiagnosisStatement rdf:type owl:Class ;
+                        rdfs:subClassOf mdix:ClinicalStatement ;
+                        rdfs:label "Diagnosis Statement" .
+
+
+###  http://mdix.org/ucm#EligibilityDetermination
+mdix:EligibilityDetermination rdf:type owl:Class ;
+                              rdfs:subClassOf mdix:Process ;
+                              rdfs:label "Eligibility Determination" .
+
+
+###  http://mdix.org/ucm#EligibilityRuleset
+mdix:EligibilityRuleset rdf:type owl:Class ;
+                        rdfs:subClassOf mdix:DefinitionArtifact ;
+                        rdfs:label "Eligibility Ruleset" .
+
+
+###  http://mdix.org/ucm#Encounter
+mdix:Encounter rdf:type owl:Class ;
+               rdfs:subClassOf mdix:Process ;
+               rdfs:comment "A bounded contextual interaction process." ;
+               rdfs:label "Encounter" .
+
+
+###  http://mdix.org/ucm#Entity
+mdix:Entity rdf:type owl:Class ;
+            rdfs:comment "A stable independently identifiable semantic thing." ;
+            rdfs:label "Entity" .
+
+
+###  http://mdix.org/ucm#Household
+mdix:Household rdf:type owl:Class ;
+               rdfs:subClassOf mdix:SocialGroupEntity ;
+               rdfs:label "Household" .
+
+
+###  http://mdix.org/ucm#HousingAssessment
+mdix:HousingAssessment rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:Process ;
+                       rdfs:label "Housing Assessment" .
+
+
+###  http://mdix.org/ucm#HousingContext
+mdix:HousingContext rdf:type owl:Class ;
+                    rdfs:subClassOf mdix:SemanticContext ;
+                    rdfs:label "Housing Context" .
+
+
+###  http://mdix.org/ucm#HousingDomain
+mdix:HousingDomain rdf:type owl:Class ;
+                   rdfs:label "Housing Domain" .
+
+
+###  http://mdix.org/ucm#HousingEligibilityContext
+mdix:HousingEligibilityContext rdf:type owl:Class ;
+                               rdfs:subClassOf mdix:HousingContext ;
+                               rdfs:label "Housing Eligibility Context" .
+
+
+###  http://mdix.org/ucm#HousingEligibilityStatement
+mdix:HousingEligibilityStatement rdf:type owl:Class ;
+                                 rdfs:subClassOf mdix:HousingStatement ;
+                                 rdfs:label "Housing Eligibility Statement" .
+
+
+###  http://mdix.org/ucm#HousingStatement
+mdix:HousingStatement rdf:type owl:Class ;
+                      rdfs:subClassOf mdix:Statement ;
+                      rdfs:label "Housing Statement" .
+
+
+###  http://mdix.org/ucm#InformationArtifact
+mdix:InformationArtifact rdf:type owl:Class ;
+                         rdfs:subClassOf mdix:Entity ;
+                         rdfs:comment "A logical information abstraction or computable information object." ;
+                         rdfs:label "Information Artifact" .
+
+
+###  http://mdix.org/ucm#Location
+mdix:Location rdf:type owl:Class ;
+              rdfs:subClassOf mdix:Entity ;
+              rdfs:label "Location" .
+
+
+###  http://mdix.org/ucm#Membership
+mdix:Membership rdf:type owl:Class ;
+                rdfs:comment "Contextual membership relationship between an Entity and a SocialGroupEntity." ;
+                rdfs:label "Membership" .
+
+
+###  http://mdix.org/ucm#MembershipCriteria
+mdix:MembershipCriteria rdf:type owl:Class ;
+                        rdfs:comment "Rules or conditions defining membership within a SocialGroupEntity." ;
+                        rdfs:label "Membership Criteria" .
+
+
+###  http://mdix.org/ucm#ObservationStatement
+mdix:ObservationStatement rdf:type owl:Class ;
+                          rdfs:subClassOf mdix:ClinicalStatement ;
+                          rdfs:label "Observation Statement" .
+
+
+###  http://mdix.org/ucm#Organization
+mdix:Organization rdf:type owl:Class ;
+                  rdfs:subClassOf mdix:Entity ;
+                  rdfs:comment "Operational or governance-oriented social entity maintaining continuity independent of membership changes." ;
+                  rdfs:label "Organization" .
+
+
+###  http://mdix.org/ucm#Participation
+mdix:Participation rdf:type owl:Class ;
+                   rdfs:comment "Contextual involvement of an Entity within a Process and Semantic Context." ;
+                   rdfs:label "Participation" .
+
+
+###  http://mdix.org/ucm#PatientRole
+mdix:PatientRole rdf:type owl:Class ;
+                 rdfs:subClassOf mdix:SubjectRole ;
+                 rdfs:label "Patient Role" .
+
+
+###  http://mdix.org/ucm#Person
+mdix:Person rdf:type owl:Class ;
+            rdfs:subClassOf mdix:Entity ;
+            rdfs:label "Person" .
+
+
+###  http://mdix.org/ucm#PolicyDefinition
+mdix:PolicyDefinition rdf:type owl:Class ;
+                      rdfs:subClassOf mdix:DefinitionArtifact ;
+                      rdfs:label "Policy Definition" .
+
+
+###  http://mdix.org/ucm#Process
+mdix:Process rdf:type owl:Class ;
+             rdfs:comment "A bounded interaction or activity occurring over time." ;
+             rdfs:label "Process" .
+
+
+###  http://mdix.org/ucm#ProgramDefinition
+mdix:ProgramDefinition rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:DefinitionArtifact ;
+                       rdfs:label "Program Definition" .
+
+
+###  http://mdix.org/ucm#ProviderRole
+mdix:ProviderRole rdf:type owl:Class ;
+                  rdfs:subClassOf mdix:Role ;
+                  rdfs:label "Provider Role" .
+
+
+###  http://mdix.org/ucm#PublicHealthContext
+mdix:PublicHealthContext rdf:type owl:Class ;
+                         rdfs:subClassOf mdix:SemanticContext ;
+                         rdfs:label "Public Health Context" .
+
+
+###  http://mdix.org/ucm#PublicHealthDomain
+mdix:PublicHealthDomain rdf:type owl:Class ;
+                        rdfs:label "Public Health Domain" .
+
+
+###  http://mdix.org/ucm#ResidentRole
+mdix:ResidentRole rdf:type owl:Class ;
+                  rdfs:subClassOf mdix:SubjectRole ;
+                  rdfs:label "Resident Role" .
+
+
+###  http://mdix.org/ucm#Role
+mdix:Role rdf:type owl:Class ;
+          rdfs:comment "A contextual, anti-rigid classification assumed through participation." ;
+          rdfs:label "Role" .
+
+
+###  http://mdix.org/ucm#SemanticConstraint
+mdix:SemanticConstraint rdf:type owl:Class ;
+                        rdfs:subClassOf mdix:DefinitionArtifact ;
+                        rdfs:label "Semantic Constraint" .
+
+
+###  http://mdix.org/ucm#SemanticContext
+mdix:SemanticContext rdf:type owl:Class ;
+                     rdfs:comment "An interpretive environment, governance scope, or applicability boundary." ;
+                     rdfs:label "Semantic Context" .
+
+
+###  http://mdix.org/ucm#SocialCareContext
+mdix:SocialCareContext rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:SemanticContext ;
+                       rdfs:label "Social Care Context" .
+
+
+###  http://mdix.org/ucm#SocialCareDomain
+mdix:SocialCareDomain rdf:type owl:Class ;
+                      rdfs:label "Social Care Domain" .
+
+
+###  http://mdix.org/ucm#SocialCareInteraction
+mdix:SocialCareInteraction rdf:type owl:Class ;
+                           rdfs:subClassOf mdix:Process ;
+                           rdfs:label "Social Care Interaction" .
+
+
+###  http://mdix.org/ucm#SocialCareStatement
+mdix:SocialCareStatement rdf:type owl:Class ;
+                         rdfs:subClassOf mdix:Statement ;
+                         rdfs:label "Social Care Statement" .
+
+
+###  http://mdix.org/ucm#SocialGroupEntity
+mdix:SocialGroupEntity rdf:type owl:Class ;
+                       rdfs:subClassOf mdix:Entity ;
+                       rdfs:comment "A collective grouping of participating entities." ;
+                       rdfs:label "Social Group Entity" .
+
+
+###  http://mdix.org/ucm#Statement
+mdix:Statement rdf:type owl:Class ;
+               rdfs:comment "An informational assertion, finding, determination, or conclusion." ;
+               rdfs:label "Statement" .
+
+
+###  http://mdix.org/ucm#SubjectRole
+mdix:SubjectRole rdf:type owl:Class ;
+                 rdfs:subClassOf mdix:Role ;
+                 rdfs:label "Subject Role" .
+
+
+###  urn:w3c:cg:ucm##Person
+<urn:w3c:cg:ucm##Person> rdf:type owl:Class .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
