@@ -24,6 +24,14 @@ ucm:hasTemporalContext rdf:type owl:ObjectProperty ;
         participates, or is otherwise temporally situated.
     """ .
 
+ucm:CareTrajectoryContext rdf:type owl:Class ;
+    rdfs:label "Care Trajectory Context" ;
+    rdfs:comment """
+        A position or extent defined relative to the progression
+        of a care process, state trajectory, or coordinated activity,
+        which does not require anchoring to clock or calendar time.
+    """ .
+
 ucm:hasCareTrajectoryContext rdf:type owl:ObjectProperty ;
     rdfs:label "has care trajectory context" ;
     rdfs:comment """

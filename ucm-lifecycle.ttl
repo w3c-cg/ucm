@@ -30,6 +30,12 @@ ucm:ActivityFocus rdf:type owl:Class ;
     rdfs:comment "The matter, condition, or situation toward which a coordinated activity is orchestrated and which the activity seeks to jointly maintain, update, resolve, or bring about." . 
 # Examples for this may include: housing stability, food security, shelter connection, patient discharge. This is semantically separate from a motive or goal-directed outcome, since it's more specifically defining what is being worked on as a shared process. 
 
+ucm:MatchClaim rdf:type owl:Class ; 
+    rdfs:subClassOf ucm:Statement ; 
+    rdfs:label "Match Claim" ;
+    rdfs:comment "An assertion that two or more entity references co-refer to the same identifiable entity." . 
+# Examples for this may include scenarios where healthcare and human services organizations are establishing an identity resolution claim for a shared patient.
+
 # Object Properties 
 
 ucm:hasLifecycleState rdf:type owl:ObjectProperty ;
