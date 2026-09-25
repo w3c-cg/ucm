@@ -5,4 +5,6 @@
 * How can we get a baseline for the Architectual Specification (Ken Lord)
 
 # Issue Discussion
-* pull request [https://github.com/w3c-cg/ucm/pull/14](https://github.com/w3c-cg/ucm/pull/14) (Eric Jahn)
+* https://github.com/w3c-cg/ucm/issues/6 Person definition
+  * pull request [https://github.com/w3c-cg/ucm/pull/15](https://github.com/w3c-cg/ucm/pull/15) (Eric Jahn)
+* https://github.com/w3c-cg/ucm/issues/16 need for Entity class?
