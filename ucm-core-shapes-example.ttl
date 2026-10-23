@@ -1,0 +1,85 @@
+@prefix ucm:  <urn:w3c:cg:ucm#> .
+@prefix ex:   <http://example.org/ucm/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# Conformant baseline: must produce zero results, warnings included.
+# The test adds one defect at a time on top of this graph.
+
+# ---------- Entities ----------
+ex:person-a  a ucm:Person ; ucm:hasMembership ex:mem-a .
+ex:cm-1      a ucm:Person ; ucm:affiliatedWith ex:org-ecm .
+ex:org-ecm   a ucm:Organization .
+ex:org-fund  a ucm:Organization ; ucm:acceptsRequest ex:p-fund .
+ex:hh-001    a ucm:Household ; ucm:definedByCriteria ex:hh-criteria .
+ex:hh-criteria a ucm:MembershipCriteria .
+ex:mem-a     a ucm:Membership ; ucm:membershipIn ex:hh-001 .
+
+# ---------- Contexts and artifacts ----------
+ex:ctx-housing a ucm:HousingContext ; ucm:definedByArtifact ex:prog-1 .
+ex:ctx-elig    a ucm:HousingEligibilityContext ; ucm:definedByArtifact ex:rules-1 .
+ex:prog-1      a ucm:ProgramDefinition .
+ex:rules-1     a ucm:EligibilityRuleset .
+
+# ---------- Shared object ----------
+ex:focus-1 a ucm:ActivityFocus ; rdfs:label "Tenancy preservation" .
+
+# ---------- Housing assessment ----------
+ex:assess-1 a ucm:HousingAssessment ;
+    ucm:hasParticipant ex:p-res ;
+    ucm:hasResident ex:person-a ;
+    ucm:occursDuring ex:t-assess .
+ex:p-res a ucm:Participation ;
+    ucm:participatingEntity ex:person-a ;
+    ucm:occursWithin ex:assess-1 ;
+    ucm:assumesRole ex:role-res ;
+    ucm:participationContext ex:ctx-housing ;
+    ucm:enactiveDuring ex:t-assess .
+ex:role-res a ucm:ResidentRole .
+ex:t-assess a time:ProperInterval ;
+    time:hasBeginning [ a time:Instant ; time:inXSDDateTimeStamp "2026-09-02T09:00:00-07:00"^^xsd:dateTimeStamp ] ;
+    time:hasEnd       [ a time:Instant ; time:inXSDDateTimeStamp "2026-09-02T10:30:00-07:00"^^xsd:dateTimeStamp ] .
+
+# ---------- Coordination request and its handshake ----------
+ex:req-1 a ucm:CoordinationRequest ;
+    ucm:hasActivityFocus ex:focus-1 ;
+    ucm:hasLifecycleState ucm:Accepted .
+ex:p-cm a ucm:Participation ;
+    ucm:participatingEntity ex:cm-1 ;
+    ucm:occursWithin ex:req-1 ;
+    ucm:assumesRole ex:role-coord ;
+    ucm:validFrom "2026-08-28T09:00:00-07:00"^^xsd:dateTime ;
+    ucm:validTo   "2026-10-31T17:00:00-07:00"^^xsd:dateTime .
+ex:role-coord a ucm:CoordinatorRole .
+ex:p-fund a ucm:Participation ;
+    ucm:participatingEntity ex:org-fund ;
+    ucm:occursWithin ex:req-1 ;
+    ucm:assumesRole ex:role-prov .
+ex:role-prov a ucm:ProviderRole .
+ex:hs-1 a ucm:Handshake ;                     # inherits focus from req-1
+    ucm:negotiates ex:req-1 .
+
+# ---------- Clinical encounter, same person ----------
+ex:enc-1 a ucm:ClinicalEncounter ;
+    ucm:hasParticipant ex:p-pat ;
+    ucm:hasPatient ex:person-a .
+ex:p-pat a ucm:Participation ;
+    ucm:participatingEntity ex:person-a ;
+    ucm:occursWithin ex:enc-1 ;
+    ucm:assumesRole ex:role-pat ;
+    ucm:scopedBy ex:ctx-clin .
+ex:role-pat a ucm:PatientRole .
+ex:ctx-clin a ucm:ClinicalCareContext .
+
+# ---------- Statements ----------
+ex:stmt-1 a ucm:HousingEligibilityStatement ;
+    ucm:madeWithinContext ex:ctx-elig ;
+    ucm:statementSubject ex:p-res ;
+    ucm:generatedByProcess ex:assess-1 ;
+    ucm:statementDate "2026-09-02T10:45:00-07:00"^^xsd:dateTimeStamp ;
+    ucm:hasCareTrajectoryContext ex:traj-1 .
+ex:traj-1 a ucm:CareTrajectoryContext ; rdfs:label "After assessment, before referral acceptance" .
+ex:mc-1 a ucm:MatchClaim ;
+    ucm:madeWithinContext ex:ctx-housing ;
+    ucm:statementDate "2026-09-03T12:00:00-07:00"^^xsd:dateTime .
