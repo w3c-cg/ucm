@@ -11,5 +11,8 @@
 * [issue 30](https://github.com/w3c-cg/ucm/issues/30) - The lifecycle vocabulary has no Suspended state.
 * [issue 28](https://github.com/w3c-cg/ucm/issues/28) - ucm:ParticipationContext range isn’t declared.
 
+# Misc
+* mini-update: working on a demo to test the UCM spec in a software application (rr)
+
 
  
