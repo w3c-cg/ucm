@@ -1,4 +1,4 @@
-@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix ucm: <urn:w3c:cg:ucm#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
