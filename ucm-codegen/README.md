@@ -54,14 +54,25 @@ ucm-codegen build
 sources, examples, profile and FHIR mapping once (paths relative to the
 manifest), then runs every step: TTL → JSON-LD IR in `build/` → IR and lint
 → examples validated against the shapes → all targets and `report.html` in
-`generated/`. Outputs are written even when a check fails, so the report
-shows why; the exit code is 1 on violations, and on warnings with `--strict`.
+`generated/`. The exit code is 1 on violations, and on warnings with
+`--strict`.
+
+**A failed build writes only the report.** The report is always written,
+with a banner naming the failure, because a red build is when it is most
+useful. Everything else is gated on success: the generated artifacts, the
+IR in `build/`, the IR snapshot and `ucm-build.lock` stay exactly as the
+last good build left them, and nothing is pruned. Nothing built from a
+broken spec can be committed or published by accident, and the report's
+Changes pane compares against the last healthy spec. (The IR is exported to
+a staging directory in the cache and promoted to `build/` on success.)
+`--write-on-failure` writes everything anyway, for inspecting broken
+outputs; the exit code is still 1.
 
 The individual steps remain available:
 
 | Command    | Does |
 |------------|------|
-| `build`    | Everything above, from the manifest (`-m`); `--strict` fails on warnings; `--no-cache` recomputes every stage |
+| `build`    | Everything above, from the manifest (`-m`); `--strict` fails on warnings; `--no-cache` recomputes every stage; `--write-on-failure` lifts the gate |
 | `export`   | RDF sources → JSON-LD IR (`build/ucm-ontology.jsonld`, `ucm-shapes.jsonld`, `ucm-shapes-lint.jsonld`) |
 | `lint`     | SHACL-SHACL, ucm-shapes-lint (`-l`), and spec consistency checks |
 | `generate` | All targets, or one with `-f openapi\|context\|postgres\|fhir\|report`; `--strict` fails on lint warnings |
@@ -79,8 +90,9 @@ variants, the spec lint, OpenAPI validity, every example validated against
 its schema, the Alembic migration against the ORM, a database round trip of
 every example node, FHIR output validated with `fhir.resources`, the build
 command passing on the spec and failing (with a report) on a regressed copy
-of it, and content addressing: reproducible lockfiles, cache hits, the diff
-of a spec change, and stale-output pruning.
+of it, the failure gate (a failed build leaves every artifact, the IR and
+the lock byte-identical), and content addressing: reproducible lockfiles,
+cache hits, the diff of a spec change, and stale-output pruning.
 
 ## Content addressing
 
@@ -106,8 +118,9 @@ simply misses. `--no-cache` produces byte-identical outputs.
 
 **Lockfile** (`ucm-build.lock`, next to the manifest; commit it). Records
 source, IR, node and output digests, deterministically: building twice, with
-or without the cache, on any OS, writes the same bytes. Each build diffs
-against the previous lock: the CLI and the report's **Changes** pane list
+or without the cache, on any OS, writes the same bytes. Only passing builds
+write it, so it always describes the last good build. Each build diffs
+against it: the CLI and the report's **Changes** pane list
 added, removed and changed IR nodes down to the field
 (`range: ucm:ParticipationContext → ucm:Participation`) and which generated
 files moved. `build/ucm-ir.json` holds the IR snapshot that field-level
@@ -138,7 +151,8 @@ vanilla JS, no network), so it works from disk and as a CI artifact. Panes:
 runs on any `.ttl` change (and on toolchain changes): install, restore the
 stage cache, `ucm-codegen build --strict`, `pytest`, then uploads
 `generated/` and `build/` as the `ucm-reference` artifact, even when the
-build fails. Whatever is committed of `ucm-build.lock`, `generated/` and
+build fails: then it holds the failed build's report next to the last good
+artifacts. Whatever is committed of `ucm-build.lock`, `generated/` and
 `build/` must match the rebuild (`report.html` excepted), so a spec change
 cannot land without its regenerated artifacts. After moving into the UCM
 repository, update the paths in `ucm-build.yaml` and the workflow's `paths`

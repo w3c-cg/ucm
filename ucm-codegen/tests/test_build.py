@@ -171,3 +171,53 @@ def test_edited_stale_outputs_are_kept(tmp_path, regressed_sources):
     assert "kept" in result.output and "edited since the last build" in result.output
     assert migration.exists()
     assert len(migrations(tmp_path)) == 2
+
+
+# ---------- Gate: a failed build writes only the report ----------
+
+def snapshot(tmp_path: Path) -> dict:
+    """Every file a build may write, except the report, by relative path"""
+    files = {}
+    for root in ("out", "ir"):
+        for path in sorted((tmp_path / root).rglob("*")) if (tmp_path / root).exists() else []:
+            if path.is_file() and path.name != "report.html":
+                files[path.relative_to(tmp_path).as_posix()] = path.read_bytes()
+    lock = tmp_path / "ucm-build.lock"
+    if lock.exists():
+        files["ucm-build.lock"] = lock.read_bytes()
+    return files
+
+
+def test_failed_build_keeps_the_last_good_build(tmp_path, regressed_sources):
+    assert build(manifest_file(tmp_path, ONTOLOGY_TTL)).exit_code == 0
+    good = snapshot(tmp_path)
+    good_lock = BuildLock.read(tmp_path / "ucm-build.lock")
+
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict")
+    assert result.exit_code == 1
+    assert "wrote only the report" in result.output
+    assert snapshot(tmp_path) == good  # artifacts, IR, snapshot, lock: byte-identical, nothing pruned
+
+    report = (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
+    assert 'class="notice"' in report and "last good build" in report
+    assert good_lock.ir_root.removeprefix("sha256:")[:12] in report
+    assert ">Build failed<" in report  # the status chip, though the findings are only warnings
+    assert "acceptsRequest" in report  # Changes still compares against the last good build
+
+
+def test_failed_first_build_writes_only_the_report(tmp_path, regressed_sources):
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict")
+    assert result.exit_code == 1
+    assert "no previous good build" in result.output
+    assert snapshot(tmp_path) == {}
+    assert [p.name for p in (tmp_path / "out").iterdir()] == ["report.html"]
+    assert "No artifacts were written" in (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
+
+
+def test_write_on_failure_writes_everything(tmp_path, regressed_sources):
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict", "--write-on-failure")
+    assert result.exit_code == 1
+    assert (tmp_path / "ucm-build.lock").exists()
+    assert (tmp_path / "ir" / "ucm-ontology.jsonld").exists()
+    assert (tmp_path / "out" / "openapi.yaml").exists()
+    assert 'class="notice"' not in (tmp_path / "out" / "report.html").read_text(encoding="utf-8")

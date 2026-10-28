@@ -115,9 +115,17 @@ def write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
-def export_ir(manifest: BuildManifest, cache: Optional[Cache] = None) -> Dict[str, List[Path]]:
-    """Write the JSON-LD IR for every source group; returns the IR paths"""
+def export_ir(
+    manifest: BuildManifest, cache: Optional[Cache] = None, staging: Optional[Path] = None
+) -> Dict[str, List[Path]]:
+    """Write the JSON-LD IR for every source group; returns the IR paths.
+
+    With staging, the IR goes there instead of ir-dir; promote_ir() moves it
+    into ir-dir once the build has passed. The staging path must be stable:
+    canonicalization is cached per file location.
+    """
     groups = {"ontology": manifest.ontology, "shapes": manifest.shapes, "shapes-lint": manifest.shapes_lint}
+    directory = staging or manifest.ir_dir
     written: Dict[str, List[Path]] = {}
     for name, sources in groups.items():
         if not sources:
@@ -129,10 +137,21 @@ def export_ir(manifest: BuildManifest, cache: Optional[Cache] = None) -> Dict[st
             text = export_jsonld(sources)
             if cache:
                 cache.put_text("export", key, text, ".jsonld")
-        target = manifest.ir_dir / f"ucm-{name}.jsonld"
+        target = directory / f"ucm-{name}.jsonld"
         write_if_changed(target, text)
         written[name] = [target]
     return written
+
+
+def promote_ir(manifest: BuildManifest, staged: Dict[str, List[Path]]) -> List[Path]:
+    """Copy staged IR files into ir-dir; returns the ones that changed"""
+    changed = []
+    for paths in staged.values():
+        for path in paths:
+            target = manifest.ir_dir / path.name
+            if target != path and write_if_changed(target, path.read_text(encoding="utf-8")):
+                changed.append(target)
+    return changed
 
 
 @dataclass
@@ -228,12 +247,25 @@ def add_report(
     compilation: Compilation,
     diff: Optional[BuildDiff] = None,
     lock: Optional["BuildLock"] = None,
+    held: Optional["BuildLock"] = None,
+    failed: Optional[List[str]] = None,
 ) -> None:
-    files = sorted(set(outputs.files) | {REPORT})
+    """Render report.html into outputs.
+
+    held is the last good lock when a failed build kept the artifacts on disk:
+    the report then lists those artifacts (what is actually next to it), not
+    the outputs this build would have written.
+    """
+    if failed and held is not None:
+        artifacts = dict(held.outputs)
+    elif failed:
+        artifacts = {}
+    else:
+        artifacts = outputs.digests()
     report = ReportBuilder(
         compilation, outputs.spec, outputs.sql, outputs.adapter, outputs.validation,
-        outputs.example_warnings, files=files, diff=diff, lock=lock,
-        output_digests=outputs.digests(),
+        outputs.example_warnings, files=sorted(set(artifacts) | {REPORT}), diff=diff, lock=lock,
+        output_digests=artifacts, failed=failed, held=held,
     ).build()
     outputs.files[REPORT] = Generator().generate_report(report)
 

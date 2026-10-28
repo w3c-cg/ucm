@@ -91,7 +91,11 @@ class ReportBuilder:
         diff: Optional[BuildDiff] = None,
         lock: Optional[Any] = None,
         output_digests: Optional[Dict[str, str]] = None,
+        failed: Optional[List[str]] = None,
+        held: Optional[Any] = None,
     ):
+        self.failed = failed or []
+        self.held = held
         self.diff = diff
         self.lock = lock
         self.output_digests = output_digests or {}
@@ -228,7 +232,8 @@ class ReportBuilder:
                 "sources": [s.model_dump() for s in ir.sources],
             },
             "status": {
-                "state": "failed" if failed else ("warnings" if warned else "passed"),
+                # --strict can fail a build on warnings alone; the gate decides
+                "state": "failed" if failed or self.failed else ("warnings" if warned else "passed"),
                 "violations": counts[Severity.VIOLATION],
                 "warnings": counts[Severity.WARNING],
                 "infos": counts[Severity.INFO],
@@ -286,6 +291,11 @@ class ReportBuilder:
                 "nodes": len(self.lock.nodes) if self.lock else None,
             },
             "changes": self._changes(),
+            "gate": {
+                "failed": self.failed,
+                "held": bool(self.failed),
+                "last_good": short(self.held.ir_root) if self.held is not None else None,
+            },
         }
 
     def _changes(self) -> Dict[str, Any]:

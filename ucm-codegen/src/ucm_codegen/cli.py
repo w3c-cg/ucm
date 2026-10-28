@@ -23,7 +23,7 @@ from rich.table import Table
 
 from .build import (
     REPORT, TARGETS, BuildLock, BuildManifest, TargetOutputs, add_report, build_diff, build_failed,
-    build_targets, export_ir, make_lock, prune_outputs, read_json, write_if_changed,
+    build_targets, export_ir, make_lock, promote_ir, prune_outputs, read_json, write_if_changed,
 )
 from .content import Cache, changed_keys, short
 from .builder import SpecBuilder, SpecBuildError
@@ -280,20 +280,28 @@ def build(
     ),
     strict: bool = typer.Option(False, "--strict", help="Fail on warnings too (lint and example SHACL)"),
     no_cache: bool = typer.Option(False, "--no-cache", help="Recompute every stage (still writes the lockfile)"),
+    write_on_failure: bool = typer.Option(
+        False, "--write-on-failure", help="Write artifacts, IR and lockfile even when the build fails"
+    ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show informational lint findings"),
 ):
     """
     Export, lint, validate and generate everything from a build manifest
 
-    Steps: TTL → JSON-LD IR (ir-dir) → IR + lint → examples against the
-    shapes → OpenAPI, context, Postgres, FHIR and report.html (output-dir).
-    Outputs are written even when checks fail, so the report shows why;
-    the exit code is 1 on violations (and on warnings with --strict).
+    Steps: TTL → JSON-LD IR → IR + lint → examples against the shapes →
+    OpenAPI, context, Postgres, FHIR and report.html (output-dir).
+
+    The report is always written. Everything else is gated on success: a
+    failed build (violations, or warnings with --strict) leaves the
+    generated artifacts, the IR in ir-dir, the IR snapshot and the lockfile
+    exactly as the last good build left them, and prunes nothing, so the
+    report's Changes pane compares against the last good build.
+    --write-on-failure writes everything anyway; the exit code is still 1.
 
     Content addressing: stages are cached by input digest (cache-dir), and
-    ucm-build.lock records source, IR node and output digests. Each build is
-    diffed against the previous lock, and outputs the previous build wrote
-    but this one no longer produces are removed.
+    ucm-build.lock records source, IR node and output digests. Each passing
+    build is diffed against the previous lock, and outputs the previous
+    build wrote but this one no longer produces are removed.
 
     Example (CI):
         ucm-codegen build --strict
@@ -308,9 +316,10 @@ def build(
         _fail("Manifest names missing files: " + ", ".join(str(p) for p in missing))
     cache = None if no_cache else Cache(plan.cache_dir)
 
+    # The IR is exported to a stable staging directory and promoted to
+    # ir-dir only if the build passes (ir-dir is usually committed)
     with console.status("[bold green]Exporting the JSON-LD IR..."):
-        ir_files = export_ir(plan, cache)
-    console.print(f"✓ Exported IR to {plan.ir_dir}")
+        ir_files = export_ir(plan, cache, staging=plan.cache_dir / "staging")
 
     compilation = _compile(ir_files["ontology"], ir_files["shapes"], ir_files["shapes-lint"], cache)
     _print_findings(compilation.findings, verbose)
@@ -324,39 +333,52 @@ def build(
         else:
             console.print("✓ Examples conform to the UCM shapes")
 
-    # Content addressing: diff against the previous lock, then record this build
+    reasons = build_failed(compilation, outputs, strict)
+    gated = bool(reasons) and not write_on_failure
+
+    # Content addressing: diff against the last good lock
     ir_snapshot = plan.ir_dir / "ucm-ir.json"
     previous = BuildLock.read(plan.lockfile)
     previous_ir = read_json(ir_snapshot) if previous else None
     ir_json = compilation.ir.model_dump(mode="json")
     lock = make_lock(plan, compilation, outputs)
     diff = build_diff(previous, previous_ir, lock, ir_json)
-    add_report(outputs, compilation, diff, lock)
-
-    written = outputs.write(plan.output_dir)
-    removed, kept = prune_outputs(plan.output_dir, previous, lock)
-    write_if_changed(ir_snapshot, json.dumps(ir_json, indent=2, ensure_ascii=False) + "\n")
-    write_if_changed(plan.lockfile, lock.dumps())
+    add_report(outputs, compilation, diff, lock, held=previous if gated else None,
+               failed=reasons if gated else None)
 
     if cache is not None:
         hits, misses = len(cache.hits), len(cache.misses)
         console.print(f"✓ Cache: {hits} hits, {misses} misses ({plan.cache_dir})")
-    console.print(f"✓ Wrote {len(written)} changed files to {plan.output_dir}; "
-                  f"{len(outputs.files) - len(written)} unchanged")
-    for path in removed:
-        console.print(f"  [dim]removed stale output {path.relative_to(plan.output_dir)}[/dim]")
-    for path in kept:
-        console.print(f"  [yellow]⚠ kept {path.relative_to(plan.output_dir)}: no longer generated, "
-                      f"but edited since the last build[/yellow]")
 
-    console.print(f"✓ IR root {short(lock.ir_root)} ({len(lock.nodes)} nodes); lock {plan.relative(plan.lockfile)}")
+    if gated:
+        write_if_changed(plan.output_dir / REPORT, outputs.files[REPORT])
+        console.print("[yellow]⚠ Build failed: wrote only the report. Artifacts, IR and lockfile are "
+                      "unchanged" + (f" (last good IR root {short(previous.ir_root)})" if previous else
+                                     " (no previous good build)") + "[/yellow]")
+    else:
+        promote_ir(plan, ir_files)
+        written = outputs.write(plan.output_dir)
+        removed, kept = prune_outputs(plan.output_dir, previous, lock)
+        write_if_changed(ir_snapshot, json.dumps(ir_json, indent=2, ensure_ascii=False) + "\n")
+        write_if_changed(plan.lockfile, lock.dumps())
+        console.print(f"✓ Wrote {len(written)} changed files to {plan.output_dir}; "
+                      f"{len(outputs.files) - len(written)} unchanged")
+        for path in removed:
+            console.print(f"  [dim]removed stale output {path.relative_to(plan.output_dir)}[/dim]")
+        for path in kept:
+            console.print(f"  [yellow]⚠ kept {path.relative_to(plan.output_dir)}: no longer generated, "
+                          f"but edited since the last build[/yellow]")
+        console.print(f"✓ IR root {short(lock.ir_root)} ({len(lock.nodes)} nodes); "
+                      f"lock {plan.relative(plan.lockfile)}")
+
+    since = "the last good build" if gated else "the previous build"
     if diff.first_build:
         console.print("  First build: nothing to compare against")
     elif diff.unchanged:
-        console.print("  No changes since the previous build")
+        console.print(f"  No changes since {since}")
     else:
         added, deleted, changed = changed_keys(diff.nodes)
-        console.print(f"  Since the previous build: {added} added, {deleted} removed, {changed} changed nodes; "
+        console.print(f"  Since {since}: {added} added, {deleted} removed, {changed} changed nodes; "
                       f"{len(diff.outputs)} generated files differ")
         for change in diff.nodes[:12]:
             fields = ", ".join(f.field for f in change.fields)
@@ -365,7 +387,6 @@ def build(
             console.print(f"    … {len(diff.nodes) - 12} more in the report")
     console.print(f"  Report: {plan.output_dir / REPORT}")
 
-    reasons = build_failed(compilation, outputs, strict)
     console.print()
     if reasons:
         _fail("Build failed: " + "; ".join(reasons))
