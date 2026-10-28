@@ -12,6 +12,8 @@
     * conceptual diagrams
     * sequence diagrams
     * mock APIs   
-
+ * Reference compiler build (rr)
+   * demo and walkthrough if time allows
+ * adoption paths (rr)
 
  
