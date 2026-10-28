@@ -1,0 +1,1005 @@
+{
+  "@context": {
+    "ucm": "urn:w3c:cg:ucm#",
+    "ucmsh": "urn:w3c:cg:ucm:shapes#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "time": "http://www.w3.org/2006/time#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "http://purl.bioontology.org/ontology/SNOMEDCT#337915000",
+      "@type": "owl:Class",
+      "rdfs:label": "Homo sapiens",
+      "owl:equivalentClass": {
+        "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "http://purl.obolibrary.org/obo/NCBITaxon#9606",
+      "@type": "owl:Class",
+      "rdfs:label": "Homo sapiens",
+      "owl:equivalentClass": {
+        "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "https://www.commoncoreontologies.org/AgentOntology#ont00001262",
+      "@type": "owl:Class",
+      "rdfs:label": "Person",
+      "owl:equivalentClass": {
+        "@id": "ucm:Person"
+      },
+      "skos:altLabel": "Human"
+    },
+    {
+      "@id": "skos:altLabel",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "ucm:Accepted",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Accepted"
+      },
+      "skos:definition": "A care coordination request that has been accepted for ongoing care.",
+      "skos:inScheme": {
+        "@id": "ucm:LifecycleState"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Accepted Care Coordination Lifecycle"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:LifecycleState"
+      }
+    },
+    {
+      "@id": "ucm:ActivityFocus",
+      "@type": "owl:Class",
+      "rdfs:comment": "The matter, condition, or situation toward which a coordinated activity is orchestrated and which the activity seeks to jointly maintain, update, resolve, or bring about.",
+      "rdfs:label": "Activity Focus"
+    },
+    {
+      "@id": "ucm:BehavioralHealthContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Behavioral Health Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:BehavioralHealthDomain",
+      "@type": "owl:Class",
+      "rdfs:label": "Behavioral Health Domain"
+    },
+    {
+      "@id": "ucm:BeneficiaryRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Beneficiary Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:CareCommitment",
+      "@type": "owl:Class",
+      "rdfs:comment": "A continuing agreement among participants to coordinate care toward a joint purpose, according to terms or conditions that may evolve.",
+      "rdfs:label": "Care Commitment"
+    },
+    {
+      "@id": "ucm:CareCoordinationInteraction",
+      "@type": "owl:Class",
+      "rdfs:label": "Care Coordination Interaction",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:CareCoordinationStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Care Coordination Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:CareCoverageGap",
+      "@type": "owl:Class",
+      "rdfs:comment": "A condition in which a care coverage requirement is in force but is not satisfied by any applicable in-force care commitment during a specified interval.",
+      "rdfs:label": "Care Coverage Gap"
+    },
+    {
+      "@id": "ucm:CareCoverageRequirement",
+      "@type": "owl:Class",
+      "rdfs:comment": "A requirement that some participation in care coordination concerns an activity focus, in a given role, over a defined context or interval.",
+      "rdfs:label": "Care Coverage Requirement"
+    },
+    {
+      "@id": "ucm:CareTeam",
+      "@type": "owl:Class",
+      "rdfs:label": "Care Team",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:CareTrajectoryContext",
+      "@type": "owl:Class",
+      "rdfs:comment": "A position or extent defined relative to the progression of a care process, state trajectory, or coordinated activity, which does not require anchoring to clock or calendar time.",
+      "rdfs:label": "Care Trajectory Context"
+    },
+    {
+      "@id": "ucm:CaregiverRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Caregiver Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:ClientRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Client Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:ClinicalCareContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Clinical Care Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:ClinicalDomain",
+      "@type": "owl:Class",
+      "rdfs:label": "Clinical Domain"
+    },
+    {
+      "@id": "ucm:ClinicalEncounter",
+      "@type": "owl:Class",
+      "rdfs:label": "Clinical Encounter",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Encounter"
+      }
+    },
+    {
+      "@id": "ucm:ClinicalStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Clinical Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:CommunityGroup",
+      "@type": "owl:Class",
+      "rdfs:label": "Community Group",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:CoordinationRequest",
+      "@type": "owl:Class",
+      "rdfs:comment": "A process in which coordination is requested between participating entities.",
+      "rdfs:label": "Care Coordination Request",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:CoordinativeActivity",
+      "@type": "owl:Class",
+      "rdfs:comment": "A situated activity whose process is shared by participating entities in its care coordination lifecycle.",
+      "rdfs:label": "Coordinative Care Activity",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:CoordinatorRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Coordinator Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:Declined",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Declined"
+      },
+      "skos:definition": "This care request was denied.",
+      "skos:inScheme": {
+        "@id": "ucm:LifecycleState"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Declined Care Coordination Lifecycle"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:LifecycleState"
+      }
+    },
+    {
+      "@id": "ucm:DefinitionArtifact",
+      "@type": "owl:Class",
+      "rdfs:comment": "A ruleset, policy definition, constraint, or governance artifact.",
+      "rdfs:label": "Definition Artifact"
+    },
+    {
+      "@id": "ucm:Device",
+      "@type": "owl:Class",
+      "rdfs:label": "Device",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:DiagnosisStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Diagnosis Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:ClinicalStatement"
+      }
+    },
+    {
+      "@id": "ucm:EligibilityDetermination",
+      "@type": "owl:Class",
+      "rdfs:label": "Eligibility Determination",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:EligibilityRuleset",
+      "@type": "owl:Class",
+      "rdfs:label": "Eligibility Ruleset",
+      "rdfs:subClassOf": {
+        "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:Encounter",
+      "@type": "owl:Class",
+      "rdfs:comment": "A bounded contextual interaction process.",
+      "rdfs:label": "Encounter",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:Entity",
+      "@type": "owl:Class",
+      "rdfs:comment": "A stable independently identifiable semantic thing.",
+      "rdfs:label": "Entity"
+    },
+    {
+      "@id": "ucm:Handshake",
+      "@type": "owl:Class",
+      "rdfs:comment": "A coordinative process through which participating entities negotiate mutual participation in a shared activity.",
+      "rdfs:label": "Handshake",
+      "rdfs:subClassOf": {
+        "@id": "ucm:CoordinativeActivity"
+      }
+    },
+    {
+      "@id": "ucm:Household",
+      "@type": "owl:Class",
+      "rdfs:label": "Household",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:HousingAssessment",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Assessment",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:HousingContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:HousingDomain",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Domain"
+    },
+    {
+      "@id": "ucm:HousingEligibilityContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Eligibility Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:HousingContext"
+      }
+    },
+    {
+      "@id": "ucm:HousingEligibilityStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Eligibility Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:HousingStatement"
+      }
+    },
+    {
+      "@id": "ucm:HousingStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Housing Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:InformationArtifact",
+      "@type": "owl:Class",
+      "rdfs:comment": "A logical information abstraction or computable information object.",
+      "rdfs:label": "Information Artifact",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:LifecycleState",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-09-08"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "A state associated with a process during a portion of its lifecycle."
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Lifecycle State"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The primary state of the care coordination lifecycle."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:Accepted"
+        },
+        {
+          "@id": "ucm:Declined"
+        },
+        {
+          "@id": "ucm:Pending"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Lifecycle State"
+      }
+    },
+    {
+      "@id": "ucm:Location",
+      "@type": "owl:Class",
+      "rdfs:label": "Location",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:MatchClaim",
+      "@type": "owl:Class",
+      "rdfs:comment": "An assertion that two or more entity references co-refer to the same identifiable entity.",
+      "rdfs:label": "Match Claim",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:Membership",
+      "@type": "owl:Class",
+      "rdfs:comment": "Contextual membership relationship between an Entity and a SocialGroupEntity.",
+      "rdfs:label": "Membership"
+    },
+    {
+      "@id": "ucm:MembershipCriteria",
+      "@type": "owl:Class",
+      "rdfs:comment": "Rules or conditions defining membership within a SocialGroupEntity.",
+      "rdfs:label": "Membership Criteria"
+    },
+    {
+      "@id": "ucm:ObservationStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Observation Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:ClinicalStatement"
+      }
+    },
+    {
+      "@id": "ucm:Organization",
+      "@type": "owl:Class",
+      "rdfs:comment": "Operational or governance-oriented social entity maintaining continuity independent of membership changes.",
+      "rdfs:label": "Organization",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:Participation",
+      "@type": "owl:Class",
+      "rdfs:comment": "Contextual involvement of an Entity within a Process and Semantic Context.",
+      "rdfs:label": "Participation"
+    },
+    {
+      "@id": "ucm:PatientRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Patient Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:Pending",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Pending"
+      },
+      "skos:definition": "A pending care coordination request.",
+      "skos:inScheme": {
+        "@id": "ucm:LifecycleState"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Pending Care Coordination Lifecycle"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:LifecycleState"
+      }
+    },
+    {
+      "@id": "ucm:Person",
+      "@type": "owl:Class",
+      "rdfs:comment": "A homo sapiens (NCBI) with the social context of a Person.  Looking for an object property of cco:PersonRole to have a \"similar to\" skos: relationship.",
+      "rdfs:label": "Person",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:PolicyDefinition",
+      "@type": "owl:Class",
+      "rdfs:label": "Policy Definition",
+      "rdfs:subClassOf": {
+        "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:Process",
+      "@type": "owl:Class",
+      "rdfs:comment": "A bounded interaction or activity occurring over time.",
+      "rdfs:label": "Process"
+    },
+    {
+      "@id": "ucm:ProgramDefinition",
+      "@type": "owl:Class",
+      "rdfs:label": "Program Definition",
+      "rdfs:subClassOf": {
+        "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:ProviderRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Provider Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:PublicHealthContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Public Health Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:PublicHealthDomain",
+      "@type": "owl:Class",
+      "rdfs:label": "Public Health Domain"
+    },
+    {
+      "@id": "ucm:ResidentRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Resident Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:Role",
+      "@type": "owl:Class",
+      "rdfs:comment": "A contextual, anti-rigid classification assumed through participation.",
+      "rdfs:label": "Role"
+    },
+    {
+      "@id": "ucm:SemanticConstraint",
+      "@type": "owl:Class",
+      "rdfs:label": "Semantic Constraint",
+      "rdfs:subClassOf": {
+        "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:SemanticContext",
+      "@type": "owl:Class",
+      "rdfs:comment": "An interpretive environment, governance scope, or applicability boundary.",
+      "rdfs:label": "Semantic Context"
+    },
+    {
+      "@id": "ucm:SocialCareContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Social Care Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:SocialCareDomain",
+      "@type": "owl:Class",
+      "rdfs:label": "Social Care Domain"
+    },
+    {
+      "@id": "ucm:SocialCareInteraction",
+      "@type": "owl:Class",
+      "rdfs:label": "Social Care Interaction",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:SocialCareStatement",
+      "@type": "owl:Class",
+      "rdfs:label": "Social Care Statement",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:SocialGroupEntity",
+      "@type": "owl:Class",
+      "rdfs:comment": "A collective grouping of participating entities.",
+      "rdfs:label": "Social Group Entity",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:Statement",
+      "@type": "owl:Class",
+      "rdfs:comment": "An informational assertion, finding, determination, or conclusion.",
+      "rdfs:label": "Statement"
+    },
+    {
+      "@id": "ucm:SubjectRole",
+      "@type": "owl:Class",
+      "rdfs:label": "Subject Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:acceptsRequest",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "A participating entity accepts a care coordination request.",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "accepts request",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:affiliatedWith",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Person"
+      },
+      "rdfs:label": "affiliated with",
+      "rdfs:range": {
+        "@id": "ucm:Organization"
+      }
+    },
+    {
+      "@id": "ucm:assumesRole",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "assumes role",
+      "rdfs:range": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:definedByArtifact",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:SemanticContext"
+      },
+      "rdfs:label": "defined by artifact",
+      "rdfs:range": {
+        "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:definedByCriteria",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:SocialGroupEntity"
+      },
+      "rdfs:label": "defined by criteria",
+      "rdfs:range": {
+        "@id": "ucm:MembershipCriteria"
+      }
+    },
+    {
+      "@id": "ucm:enactiveDuring",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a participation to the temporal extent during which that participation is enactive.",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "enactive during",
+      "rdfs:range": {
+        "@id": "time:TemporalEntity"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:hasTemporalContext"
+      }
+    },
+    {
+      "@id": "ucm:generatedByProcess",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Statement"
+      },
+      "rdfs:label": "generated by process",
+      "rdfs:range": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:hasActivityFocus",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Situates a process within an activity focus.",
+      "rdfs:domain": {
+        "@id": "ucm:Process"
+      },
+      "rdfs:label": "has activity focus",
+      "rdfs:range": {
+        "@id": "ucm:ActivityFocus"
+      }
+    },
+    {
+      "@id": "ucm:hasCareTrajectoryContext",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a UCM semantic subject to a temporal position or extent defined relative to the internal progression of a process, state trajectory, or coordinated activity rather than directly relative to an external clock or calendar.",
+      "rdfs:label": "has care trajectory context"
+    },
+    {
+      "@id": "ucm:hasClient",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Convenience projection derived from participation semantics.",
+      "rdfs:domain": {
+        "@id": "ucm:SocialCareInteraction"
+      },
+      "rdfs:label": "has client",
+      "rdfs:range": {
+        "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "ucm:hasLifecycleState",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a process to a lifecycle state.",
+      "rdfs:domain": {
+        "@id": "ucm:Process"
+      },
+      "rdfs:label": "has lifecycle state",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasMember",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:SocialGroupEntity"
+      },
+      "rdfs:label": "has member",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:hasMembership",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "has membership",
+      "rdfs:range": {
+        "@id": "ucm:Membership"
+      }
+    },
+    {
+      "@id": "ucm:hasParticipant",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Process"
+      },
+      "rdfs:label": "has participant",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:hasPatient",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Convenience projection derived from participation semantics.",
+      "rdfs:domain": {
+        "@id": "ucm:ClinicalEncounter"
+      },
+      "rdfs:label": "has patient",
+      "rdfs:range": {
+        "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "ucm:hasResident",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Convenience projection derived from participation semantics.",
+      "rdfs:domain": {
+        "@id": "ucm:HousingAssessment"
+      },
+      "rdfs:label": "has resident",
+      "rdfs:range": {
+        "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "ucm:hasTemporalContext",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a UCM semantic subject to a temporal entity that qualifies when that subject occurs, obtains, applies, participates, or is otherwise temporally situated.",
+      "rdfs:label": "has temporal context",
+      "rdfs:range": {
+        "@id": "time:TemporalEntity"
+      }
+    },
+    {
+      "@id": "ucm:locatedAt",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "located at",
+      "rdfs:range": {
+        "@id": "ucm:Location"
+      }
+    },
+    {
+      "@id": "ucm:madeWithinContext",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Statement"
+      },
+      "rdfs:label": "made within context",
+      "rdfs:range": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:memberOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "member of",
+      "rdfs:range": {
+        "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:membershipIn",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Membership"
+      },
+      "rdfs:label": "membership in",
+      "rdfs:range": {
+        "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:negotiates",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a handshake to the care coordination process whose participation relationship it negotiates.",
+      "rdfs:domain": {
+        "@id": "ucm:Handshake"
+      },
+      "rdfs:label": "negotiates",
+      "rdfs:range": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:occursDuring",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a process to the temporal extent during which the process occurs.",
+      "rdfs:domain": {
+        "@id": "ucm:Process"
+      },
+      "rdfs:label": "occurs during",
+      "rdfs:range": {
+        "@id": "time:TemporalEntity"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:hasTemporalContext"
+      }
+    },
+    {
+      "@id": "ucm:occursWithin",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "occurs within",
+      "rdfs:range": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:participatesThrough",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "participates through",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:participatingEntity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "participating entity",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:participationContext",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "participation context",
+      "rdfs:range": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:qualifiesForMembership",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "qualifies for membership",
+      "rdfs:range": {
+        "@id": "ucm:MembershipCriteria"
+      }
+    },
+    {
+      "@id": "ucm:scopedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "scoped by",
+      "rdfs:range": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:statementDate",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Statement"
+      },
+      "rdfs:label": "statement date",
+      "rdfs:range": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "ucm:statementSubject",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a statement to the contextual participation it is about.",
+      "rdfs:domain": {
+        "@id": "ucm:Statement"
+      },
+      "rdfs:label": "statement subject",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:validDuring",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a semantic subject or statement to the temporal extent during which its described condition, state, relationship, participation, or other semantics apply.",
+      "rdfs:label": "valid during",
+      "rdfs:range": {
+        "@id": "time:TemporalEntity"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:hasTemporalContext"
+      }
+    },
+    {
+      "@id": "ucm:validFrom",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "valid from",
+      "rdfs:range": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "ucm:validTo",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "valid to",
+      "rdfs:range": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "urn:w3c:cg:ucm#",
+      "@type": "owl:Ontology",
+      "rdfs:comment": "Complete UCM model including Core, Participation, and Domain semantic layers.",
+      "rdfs:label": "Unified Care Model",
+      "owl:versionIRI": {
+        "@id": "ucm:0.0.1"
+      },
+      "owl:versionInfo": "v0.0.1"
+    }
+  ]
+}

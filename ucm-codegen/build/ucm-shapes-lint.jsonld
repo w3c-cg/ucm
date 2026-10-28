@@ -1,0 +1,100 @@
+{
+  "@context": {
+    "ucm": "urn:w3c:cg:ucm#",
+    "ucmsh": "urn:w3c:cg:ucm:shapes#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "time": "http://www.w3.org/2006/time#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "ucmsh:LintClosureRationale",
+      "@type": "sh:NodeShape",
+      "sh:sparql": {
+        "@id": "_:c14n0"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "sh:closed"
+      }
+    },
+    {
+      "@id": "ucmsh:LintDefinitionalSeverity",
+      "@type": "sh:NodeShape",
+      "sh:sparql": {
+        "@id": "_:c14n1"
+      },
+      "sh:targetClass": [
+        {
+          "@id": "sh:NodeShape"
+        },
+        {
+          "@id": "sh:PropertyShape"
+        }
+      ],
+      "sh:targetObjectsOf": {
+        "@id": "sh:property"
+      }
+    },
+    {
+      "@id": "ucmsh:LintRecommendedSeverity",
+      "@type": "sh:NodeShape",
+      "sh:sparql": {
+        "@id": "_:c14n3"
+      },
+      "sh:targetClass": [
+        {
+          "@id": "sh:NodeShape"
+        },
+        {
+          "@id": "sh:PropertyShape"
+        }
+      ],
+      "sh:targetObjectsOf": {
+        "@id": "sh:property"
+      }
+    },
+    {
+      "@id": "ucmsh:LintTierDeclared",
+      "@type": "sh:NodeShape",
+      "sh:sparql": {
+        "@id": "_:c14n2"
+      },
+      "sh:targetClass": [
+        {
+          "@id": "sh:NodeShape"
+        },
+        {
+          "@id": "sh:PropertyShape"
+        }
+      ],
+      "sh:targetObjectsOf": {
+        "@id": "sh:property"
+      }
+    },
+    {
+      "@id": "_:c14n0",
+      "sh:message": "Shape is closed without a ucmsh:closureRationale. Spec shapes stay open unless closure is definitional and the reason is written down.",
+      "sh:select": "\n            PREFIX sh:    <http://www.w3.org/ns/shacl#>\n            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>\n            SELECT $this WHERE {\n                $this sh:closed true .\n                FILTER NOT EXISTS { $this ucmsh:closureRationale ?r }\n            }"
+    },
+    {
+      "@id": "_:c14n1",
+      "sh:message": "Definitional-tier shape is downgraded below sh:Violation.",
+      "sh:select": "\n            PREFIX sh:    <http://www.w3.org/ns/shacl#>\n            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>\n            SELECT $this WHERE {\n                $this ucmsh:tier ucmsh:Definitional ; sh:severity ?s .\n                FILTER (?s != sh:Violation)\n            }"
+    },
+    {
+      "@id": "_:c14n2",
+      "sh:message": "Constraint-bearing shape has no ucmsh:tier.",
+      "sh:select": "\n            PREFIX sh:    <http://www.w3.org/ns/shacl#>\n            PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>\n            SELECT $this WHERE {\n                FILTER EXISTS { $this sh:path|sh:sparql|sh:nodeKind|sh:closed ?x }\n                FILTER NOT EXISTS { ?list rdf:first $this }\n                FILTER NOT EXISTS { $this ucmsh:tier ?t }\n            }"
+    },
+    {
+      "@id": "_:c14n3",
+      "sh:message": "Recommended-tier shape would report sh:Violation (severity missing or wrong).",
+      "sh:select": "\n            PREFIX sh:    <http://www.w3.org/ns/shacl#>\n            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>\n            SELECT $this WHERE {\n                $this ucmsh:tier ucmsh:Recommended .\n                FILTER NOT EXISTS { $this sh:severity ?s . FILTER (?s IN (sh:Warning, sh:Info)) }\n            }"
+    }
+  ]
+}

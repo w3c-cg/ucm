@@ -1,0 +1,19 @@
+# Build manifest for `ucm-codegen build`. Paths are relative to this file.
+# When the toolchain moves into the UCM repository, edit the paths here;
+# the CI workflow only runs `ucm-codegen build --strict`.
+
+ontology:
+  - ../unified-care-model.ttl
+  - ../ucm-lifecycle-vocabularies.ttl
+shapes:
+  - ../ucm-core-shapes.ttl
+shapes-lint:
+  - ../ucm-shapes-lint.ttl
+examples:
+  - ../ucm-core-shapes-example.ttl
+
+profile: profiles/ucm-api-profile.yaml
+fhir-mapping: profiles/ucm-fhir-mapping.yaml
+
+ir-dir: build          # JSON-LD IR (the boundary every target compiles from)
+output-dir: generated  # OpenAPI, context, postgres/, fhir/, report.html

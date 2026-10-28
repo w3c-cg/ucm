@@ -1,0 +1,121 @@
+# UCM → FHIR R4 mapping overlay for ucm-codegen.
+#
+# The ontology says nothing about FHIR; this file does. ucm-codegen validates
+# every class, property, role and concept named here against the IR, then
+# compiles it into a bidirectional adapter (generated/fhir/ucm_fhir_adapter.py).
+#
+# Field specs (keys are FHIR element paths, dotted for nesting):
+#   property       forward path from the node: a term, or a list of hops
+#   inverse        collect nodes whose <inverse> property points at this node
+#   class          keep collected nodes of this class (subclasses included)
+#   roles          keep participations whose assumed role is one of these
+#   exclude-roles  drop participations whose assumed role is one of these
+#   each           build one backbone element per item from nested field specs
+#   transform      direct | reference | code | class-coding | role-coding
+#   map / default  concept term → FHIR code, for transform: code
+#   single / list  cardinality of the FHIR element (default: single, each: list)
+# Collected nodes are tagged with the node-iri extension so the reverse
+# direction can rebuild them (single-hop paths only; chains are one-way).
+
+fhir-version: 4.0.1
+code-system: urn:w3c:cg:ucm
+node-iri-extension: urn:w3c:cg:ucm:fhir#node-iri
+
+resources:
+  Person:
+    resource: Patient
+    # A UCM Person is role-neutral; FHIR splits people by role. The first
+    # entry matching a role the person assumes in any participation wins.
+    # (CaregiverRole → RelatedPerson needs RelatedPerson.patient, which UCM
+    # does not state directly, so it is not mapped yet.)
+    by-role:
+      ProviderRole: Practitioner
+      CoordinatorRole: Practitioner
+
+  Organization:
+    resource: Organization
+
+  Location:
+    resource: Location
+
+  Device:
+    resource: Device
+
+  Household:
+    resource: Group
+    constants:
+      type: person
+      actual: true
+    fields:
+      member:
+        inverse: membershipIn
+        class: Membership
+        each:
+          entity: {inverse: hasMembership, transform: reference}
+
+  CareTeam:
+    resource: CareTeam
+    fields:
+      participant:
+        property: hasMember
+        each:
+          member: {transform: reference}
+
+  ClinicalEncounter:
+    resource: Encounter
+    constants:
+      status: unknown
+      class:
+        system: http://terminology.hl7.org/CodeSystem/v3-NullFlavor
+        code: UNK
+    fields:
+      subject: {property: hasPatient, transform: reference}
+      participant:
+        inverse: occursWithin
+        class: Participation
+        exclude-roles: [SubjectRole]   # the patient is Encounter.subject, not a participant
+        each:
+          individual: {property: participatingEntity, transform: reference}
+          type: {property: assumesRole, transform: role-coding, list: true}
+          period.start: {property: validFrom}
+          period.end: {property: validTo}
+
+  CoordinationRequest:
+    resource: Task
+    constants:
+      intent: order
+    fields:
+      status:
+        property: hasLifecycleState
+        transform: code
+        map: {Pending: requested, Accepted: accepted, Declined: rejected}
+        default: draft
+      description: {property: [hasActivityFocus, "rdfs:label"]}
+      for:
+        {inverse: occursWithin, class: Participation, roles: [SubjectRole],
+         property: participatingEntity, transform: reference}
+      requester:
+        {inverse: occursWithin, class: Participation, roles: [CoordinatorRole],
+         property: participatingEntity, transform: reference}
+      owner:
+        {inverse: occursWithin, class: Participation, roles: [ProviderRole],
+         property: participatingEntity, transform: reference}
+
+  DiagnosisStatement:
+    resource: Condition
+    fields:
+      code: {transform: class-coding}
+      subject: {property: [statementSubject, participatingEntity], transform: reference}
+      recordedDate: {property: statementDate}
+
+  ObservationStatement: &observation
+    resource: Observation
+    constants:
+      status: final
+    fields:
+      code: {transform: class-coding}
+      subject: {property: [statementSubject, participatingEntity], transform: reference}
+      effectiveDateTime: {property: statementDate}
+
+  HousingStatement: *observation
+  SocialCareStatement: *observation

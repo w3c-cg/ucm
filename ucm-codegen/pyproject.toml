@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ucm-codegen"
+version = "0.1.0"
+description = "JSON-LD to OpenAPI reference compiler for the Unified Care Model (UCM) ontology"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "rdflib>=7.0",
+    "pyshacl>=0.26",
+    "PyLD>=2.0.4",
+    "jinja2>=3.1",
+    "typer>=0.12",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+# Runtime dependencies of the generated Postgres target
+postgres = [
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.1",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "jsonschema>=4.18",
+    "openapi-spec-validator>=0.7",
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "fhir.resources>=7.0",
+    "black>=23.0",
+    "mypy>=1.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+ucm-codegen = "ucm_codegen.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ucm_codegen = ["templates/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# rdflib's own N-Quads parser uses its deprecated Dataset.default_context
+filterwarnings = ["ignore:Dataset.default_context is deprecated:DeprecationWarning"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

@@ -1,0 +1,201 @@
+{
+  "lock-version": 1,
+  "toolchain": {
+    "version": "0.1.0",
+    "digest": "sha256:b1ac64741f50dd3cc49b666e7537b54c1da14eb9a9de37401efe24636b899fc2"
+  },
+  "sources": {
+    "ontology": [
+      {
+        "path": "../unified-care-model.ttl",
+        "content": "sha256:0ef8e3c33053fd2ba165004465eddf69f439912fa790a93c96ddf6459ccbbc34"
+      },
+      {
+        "path": "../ucm-lifecycle-vocabularies.ttl",
+        "content": "sha256:c186ca65119bacb81b876717f501410a26a8436f6cacde4ff0252c20cd61a1a6"
+      }
+    ],
+    "shapes": [
+      {
+        "path": "../ucm-core-shapes.ttl",
+        "content": "sha256:e3dca16e1c79b2d50f7cd9cd5415252c2296a34574ba93540892d84afd716a07"
+      }
+    ],
+    "shapes-lint": [
+      {
+        "path": "../ucm-shapes-lint.ttl",
+        "content": "sha256:c74b9a74b06295f61f98a9c0d01b0ba7d1a57615e5aee51d617cb8d06a80ee01"
+      }
+    ],
+    "examples": [
+      {
+        "path": "../ucm-core-shapes-example.ttl",
+        "content": "sha256:62a01ad422bcf9ab17c36e213385b913fc120d7eaff4c9b678e97fe2906e29f8"
+      }
+    ],
+    "profile": [
+      {
+        "path": "profiles/ucm-api-profile.yaml",
+        "content": "sha256:2efffb2e92ffb0f0db43b3feb9f149377211428301d43626db09c09f78cfb838"
+      }
+    ],
+    "fhir-mapping": [
+      {
+        "path": "profiles/ucm-fhir-mapping.yaml",
+        "content": "sha256:88dfb7943f69edc1065b0f769dac4ed1bef5a2c819bbd52b9d3f83baf02f3630"
+      }
+    ]
+  },
+  "ir": [
+    {
+      "file": "ucm-ontology.jsonld",
+      "canonical": "sha256:a52cb9dc17258526e20324870e82a29721b59c985258265728c5e2e5374ef9f0",
+      "content": "sha256:ba951d2bfdf5071bf7e2cab1609a5a4a4699a4cda59f76958670eebb4ab10eea",
+      "triples": 385
+    },
+    {
+      "file": "ucm-shapes.jsonld",
+      "canonical": "sha256:b663999eae7187a018ece3d0458cfabde048ce979a89b1294b0824964a1510d7",
+      "content": "sha256:92663c31391c14ce0c832d7612afa1fe276edf135dd37cdd851beae2c28b8b59",
+      "triples": 292
+    },
+    {
+      "file": "ucm-shapes-lint.jsonld",
+      "canonical": "sha256:1de79121e66c75ac7f8f9c0cba42d519b10ba5d4c129a2a763f30e2a8daaa05a",
+      "content": "sha256:1f08e9deabb3456367d11ae4ff58fdf9a84b421dab6cf877e166d158d2774c39",
+      "triples": 26
+    }
+  ],
+  "ir-root": "sha256:0c55326b22efe08e3f3314a438f736c7b20571e5ff6f3b736e4be8ef566cafeb",
+  "nodes": {
+    "ontology": "sha256:382e9e2f2d6f9b8b4bec637c22dc715c00806754d6812a76bf3c3301ccf8b7da",
+    "class:ucm:ActivityFocus": "sha256:1d1fcd2a7db74c3b63db254386f70f8a54d0452ca391df253dc2d3f6ba6d616d",
+    "class:ucm:BehavioralHealthContext": "sha256:538f05c95aa7c0322ad798579db691c6952f42db7c432c94550562383fef1128",
+    "class:ucm:BehavioralHealthDomain": "sha256:21bc2a49135bb86ebc6a4dcc847719160dee2912650c25bbc8fbbd8774d36985",
+    "class:ucm:BeneficiaryRole": "sha256:1f0b9d77691c15cc1ff0ae94460086e5fe38d1886feae277b42b0b52b0cbcd15",
+    "class:ucm:CareCommitment": "sha256:fdc0590b0d84a30e2be2038a246016de8d2a77b52d1a56b137abb00684f02168",
+    "class:ucm:CareCoordinationInteraction": "sha256:9cd866329658f35f18465fc33ace19f6429a274bb0d6a926aac45b919fd2e432",
+    "class:ucm:CareCoordinationStatement": "sha256:d8e7dd0d01130aff36df7df005b1837f4422c5f947e73bf5267ca6152bc9081c",
+    "class:ucm:CareCoverageGap": "sha256:8e4dda348d32d9e339349eee5e0a33060056946f444b2b6a85dd0b440465f7b8",
+    "class:ucm:CareCoverageRequirement": "sha256:ff444a40acca13f52aff517a90bc879ec117a98eb626b9faa682ff2974fde136",
+    "class:ucm:CareTeam": "sha256:dcc884a31303fca0c3d99885abb3ce90bf4ec5816d15b036f22b6bd6e856c095",
+    "class:ucm:CareTrajectoryContext": "sha256:ab2f186b564c5cba7ff738dcd7e478788bcb938a9feb1759395c68c3dfe018c7",
+    "class:ucm:CaregiverRole": "sha256:0d02216cf1deed7c13cf617dd61fb55dd433b61d4d4dce80cad1a0e2faa70036",
+    "class:ucm:ClientRole": "sha256:36eea4f55adf4b251edb9984e80ee15f48af066532ac9fe8b14baade34e5ef00",
+    "class:ucm:ClinicalCareContext": "sha256:9ef05c3faf12a11d6b48b50c15eb65d1a41d1292e52552a6e7ea20f5e997805f",
+    "class:ucm:ClinicalDomain": "sha256:8e26dfe90f1781760b28409d4a78dd2a6e2975951b3ba1498c30734416c2a6d1",
+    "class:ucm:ClinicalEncounter": "sha256:f76e121468488e56cdb77e2e4b5a161f23c8353fb9bfbe6406db72f5c733519a",
+    "class:ucm:ClinicalStatement": "sha256:584f0e64b815d48be4ff8afc22a419f3ebd4f98e83269f205e9ff0a22f21fd92",
+    "class:ucm:CommunityGroup": "sha256:b3de725e5b720ace846e744f77932f658ffce47400d8b93067881eee23d7634a",
+    "class:ucm:CoordinationRequest": "sha256:a63cae751bf46e4ea6f65bf445cc58f2262021a31e9565f67e1478e5ac7d95ec",
+    "class:ucm:CoordinativeActivity": "sha256:72b401373e5c350ba4129558cc6e33cb1d49eb392147eea91cfb0ba4667499bd",
+    "class:ucm:CoordinatorRole": "sha256:8067fd3990e824ec34daa7cf29360d6b8ef2570f76e560582ac2a96045c41162",
+    "class:ucm:DefinitionArtifact": "sha256:45df3248a58ae38eeebd66ff9f6ce9969d635c84d49af01762331ea59b6b6f88",
+    "class:ucm:Device": "sha256:2efff8422990eaceff360d837e27cd0da5409d119e366b5aa6333dd7960b8710",
+    "class:ucm:DiagnosisStatement": "sha256:3fade2998849c8225d35d33fa31b71c59028a1fd2c3ee8f70283ba400a9a7d4f",
+    "class:ucm:EligibilityDetermination": "sha256:eb6599c35a502b26f975c9b9eb31ac553618bcbb57cbd99f988c3b64b67c79ba",
+    "class:ucm:EligibilityRuleset": "sha256:d2379beebb8d5bf3f8a39190e7204c5283f24b4410a77a91e3f4a240e731b7de",
+    "class:ucm:Encounter": "sha256:7bacd755fbd6c45e745810df182802da787515580d461da698c658ff5db99939",
+    "class:ucm:Entity": "sha256:2f2d3b33cc968906e6f7c32f4ea9d6b6d041d4ef7b91356ada44c0e09bca52f7",
+    "class:ucm:Handshake": "sha256:6ecd134be188779ea961eb4662da9139fd39488662c25cc096fc4b1577756296",
+    "class:ucm:Household": "sha256:26442a13be180c2f75cde1b11ec4adf088cac87af04b8c11ad868c4f1cd9c407",
+    "class:ucm:HousingAssessment": "sha256:bcb6012630120ec6062f2bee36dd44f103848b783b6576825de2169f8490b428",
+    "class:ucm:HousingContext": "sha256:8b91f213def643a2e46553de9ee93a4f9997575904ff750ca5fc7a0f5925560e",
+    "class:ucm:HousingDomain": "sha256:366faf9ff7c818c778d104510ac9a7e8b27fd6beebc0e61d35680311382dd2c3",
+    "class:ucm:HousingEligibilityContext": "sha256:91085e2b67f5d1df95a93418e36d9a16d7018ca9111fc4a25b8ca351bb62d67c",
+    "class:ucm:HousingEligibilityStatement": "sha256:049d13ecdebc6d03af12122a763021c775e5279a694d1f3676761af9bfd478f1",
+    "class:ucm:HousingStatement": "sha256:01be2142a204ed491edc742c777f3ecc49ea7a24cf8a8c07551d61ebb5e62b8f",
+    "class:ucm:InformationArtifact": "sha256:ca6f3e4b7c53a762b6fe10422ef010870aaf4cda2fda583c23c23cac868b69f5",
+    "class:ucm:Location": "sha256:96588d56edffde8d24d88539fb7e6f5fcab10aaf74314baeb2f38d6c710ce126",
+    "class:ucm:MatchClaim": "sha256:9e4dad0af23ff0227c98a3bf8612e2dac83ebf53d081dfbfde2a402b775f7ba3",
+    "class:ucm:Membership": "sha256:6126db041eb8477d69a88b3bc7b2e5d576776d0757526a675b14411f222267bb",
+    "class:ucm:MembershipCriteria": "sha256:cf9eb4a9bb50c33ca26fcd47b947b8f182bd2122162b62467979452fd415b996",
+    "class:ucm:ObservationStatement": "sha256:063ea7d94d1ec6fb77b380113e56bb7663508daef3289cefaa0a3d346f1ca2eb",
+    "class:ucm:Organization": "sha256:5e45ea12cc87721ec84adcc11d4797e2fc47dd854c7e9ee86b769271a0710e71",
+    "class:ucm:Participation": "sha256:ecb624924ef5a194d7cc7f671f042a45b75ea4da97c4984b80931982252da9c4",
+    "class:ucm:PatientRole": "sha256:13e6d641c02e16f854795ea3e2a3a1ca7b5a906cacaa993cde45beee43d2fe5c",
+    "class:ucm:Person": "sha256:f1cca8dff9b8329da5ae0a29cf5840b06a5c397e626f1a793f20a713fafe110c",
+    "class:ucm:PolicyDefinition": "sha256:6531b873796e8f91b5e11eacea9a91fdc14a43d5992ecd01233ef8ff625e04a7",
+    "class:ucm:Process": "sha256:d5c47766b63f5aa76d53a0c2b5e33ffeb07c371957c7be13cb38a441cad5092c",
+    "class:ucm:ProgramDefinition": "sha256:fc0ee1473cf91cfadfdebb600bd2983d87c829e1e07210bb1f5ba4896c7339d0",
+    "class:ucm:ProviderRole": "sha256:8269c962e2ae1bc4a15624e7b0df53974d8b81243ee07bc6d765ffbd5dd1e3c8",
+    "class:ucm:PublicHealthContext": "sha256:183642230c98cbf10df0fc361816899b8433e747a89388baf5657677b5632756",
+    "class:ucm:PublicHealthDomain": "sha256:3512474b6d58d73345d3e9615887ee3ce8283fa4fe2bfdc3b0e0670d5d16793e",
+    "class:ucm:ResidentRole": "sha256:df9282ef4b4e59d0b6e38254b524ae9695bcd35e2138618f62be6c10a0f900d7",
+    "class:ucm:Role": "sha256:9a8ee1f7b48f27ae8122112eec610dc34e5d1268687a41b6d884312a9ad65437",
+    "class:ucm:SemanticConstraint": "sha256:1eba0d4898aacc22be317dd74beada392cb854bdf3e618b6a84d9d79b4432fc4",
+    "class:ucm:SemanticContext": "sha256:92633f63c241243a5b36e681cf95e7b8001f9d1d807e11408251bb86c68329bb",
+    "class:ucm:SocialCareContext": "sha256:f39f54a4a29586bd93a07a295075603c1a20c1d4b78e1b41d591e2cf5210499f",
+    "class:ucm:SocialCareDomain": "sha256:f9f3dcd59b5ddd49a141b33553a299471ac8501d99ba9720b6d4cf2cd2d4fcc5",
+    "class:ucm:SocialCareInteraction": "sha256:4b49d41ef376698d4c16c72ff648ce9f7fe950ed2b46668016f41911701d23f6",
+    "class:ucm:SocialCareStatement": "sha256:9647d92cc89c146f821ad18d879255b936e0b331cef17121f55a006754fb0a22",
+    "class:ucm:SocialGroupEntity": "sha256:b9e08f79ad5e33145db9795d4c67d1f96800ff8a73a1ee08a7f1d7b02066ad2e",
+    "class:ucm:Statement": "sha256:ab5ff6b6b5d7fbd8ec597ece1fd22f07764d7788d4c81b6abd6f05094fb73657",
+    "class:ucm:SubjectRole": "sha256:0c81ac5f01d83065985a1b9948852d9c0c187f70a37f15a89c15a1c15077dfdb",
+    "property:ucm:acceptsRequest": "sha256:cfcd49a72bd2059d4083da02daa1c7765d20b21af22305e45c3b20092216b4aa",
+    "property:ucm:affiliatedWith": "sha256:dbf6251e0df34f6780cb042be1cc4acf562dedf3c83fc3fd452e30e10d38a79b",
+    "property:ucm:assumesRole": "sha256:2c110bad0d4ff36f63b84223828509a01d09f7425286b1d50fe5a678d8d98ffd",
+    "property:ucm:definedByArtifact": "sha256:038345cc7e65f9486f3d8ed279a26999173ac0d4707b091d40b647ac6d7af0ff",
+    "property:ucm:definedByCriteria": "sha256:0470fe7c960d50b47ee7f6e8de45fd96df06baff2ebc7456d734f27310ab9178",
+    "property:ucm:enactiveDuring": "sha256:314de0a83d32f124ebc5dc839a2c7bdfa0152372dab737da8081310f4a159844",
+    "property:ucm:generatedByProcess": "sha256:5b74e6a2b9d07b4a741e67563dbd7ca3a1ecb93c58834608b978e21e187e6f68",
+    "property:ucm:hasActivityFocus": "sha256:f8f93f083089b4728d6a51582a802db82314d5086f25878feb20c07ba8c7a639",
+    "property:ucm:hasCareTrajectoryContext": "sha256:592e20a2b52aea9673732994a5056d505240e871d17eefa33ace5f337138c65c",
+    "property:ucm:hasClient": "sha256:d0d4116d2a9344950ba13de4434180c1a872a67c24ce05b11a06baf4e7a158bc",
+    "property:ucm:hasLifecycleState": "sha256:720c761ee184554dea511071c55d56a338f9247a7ef0b54e5bef314e92548eed",
+    "property:ucm:hasMember": "sha256:e20f99388ce83768f6932a4343d1c666ff9a0cd71f4bccc51ea004b38a7f60ca",
+    "property:ucm:hasMembership": "sha256:46ec45120013e972a6b1089526f31b67c613d01d8d7bf7299fe20f407d66fabe",
+    "property:ucm:hasParticipant": "sha256:215c356c06a00157b8a2a9b100817398f3e54e8732559bf201e51d92a3043dde",
+    "property:ucm:hasPatient": "sha256:b4845ce4830ed28e2506991393b236c6ed9059cc1c599ed4850390673fd42ce0",
+    "property:ucm:hasResident": "sha256:0b595fd3a0ed6394e8caeb8a0574eb4c6056826f8b080e1bbd89da112bb1939b",
+    "property:ucm:hasTemporalContext": "sha256:43951102a2c12173104d1af07c09dbabd337e8c549853d1db6078d0070a696b9",
+    "property:ucm:locatedAt": "sha256:0fca57ff1573c9e6def53786120189bdc24e1efc8423f192b2499383be0b0fe0",
+    "property:ucm:madeWithinContext": "sha256:385591126f7868ec439bd39be6c215efc707b4ec7240536519769d0b80afaa38",
+    "property:ucm:memberOf": "sha256:ae4e1765bdffe2c3d40b2c307a433a42efc03640c8ea7eeb68cd9c9850fe42f1",
+    "property:ucm:membershipIn": "sha256:b338c59572b9762965c0c9db01c3b4600177832f38601690fbf05e4a3425a79e",
+    "property:ucm:negotiates": "sha256:7a7b2fbf51d0770487f99ae9dce20446b810df0dbe5d57e704ee725281c72b25",
+    "property:ucm:occursDuring": "sha256:28defb072f06a0d353f268eb03c353ac8c46b1dba803898c7fdfebb725735b9b",
+    "property:ucm:occursWithin": "sha256:18bd5c8309ec8ebf0aee3442f3f62d6ce682c9d3a5b6bcb07275bdd140e95493",
+    "property:ucm:participatesThrough": "sha256:10b0b63cc5b30d69e22c55be0de024d40086a09e672013cf9acf7ce1c821b05a",
+    "property:ucm:participatingEntity": "sha256:3f27b4cd8a7f3aa73c347d5bfae90ce2ac4c57227a770249c5139583158bab5d",
+    "property:ucm:participationContext": "sha256:8ace6fe45c614b646089c845e2eb3aa5a601885dfa1d4ceb50a56dba0d304de4",
+    "property:ucm:qualifiesForMembership": "sha256:cf9416c8921ca6ce8d9b1c435e89e8174eb2761bb9d163dbbfd775af48fa4127",
+    "property:ucm:scopedBy": "sha256:74cd9292249c36589c80c73a99f42b29bb9cc491287f33e89e8c17a14ea72792",
+    "property:ucm:statementDate": "sha256:54fdc156e4fda818476d3bd9d7a2267587b9a95206d1acb3f77cb395b002be89",
+    "property:ucm:statementSubject": "sha256:7fbca2abf416e185abe0e848568bb56faba01f938131d1cf99def529306c7727",
+    "property:ucm:validDuring": "sha256:b7c561c2a582234531052ab2cac1fc2d1a666fc1eb7d5db64452366997c28d42",
+    "property:ucm:validFrom": "sha256:1bbc2c0910d8060bc36dca6d72d5d2ec74e7c1e688df38889f4af3eaf98e4f37",
+    "property:ucm:validTo": "sha256:88a22dd569c548d5e4805292b0c3d0b79e85ee93396e35f00ffdd41adcc5c903",
+    "scheme:ucm:LifecycleState": "sha256:4a1e1c5320b597d0287a4de1fca57aec4b9dd2a09aa05bfea3338ca6a994ae7a",
+    "shape:ucmsh:AcceptsRequestShape": "sha256:092fff6d64a23a3de8f75de74b93821df176c579e24dc910e1864abe85195205",
+    "shape:ucmsh:ActivityFocusTypeShape": "sha256:33313b57d7ac4c2e52ee47fbc32a5e0cf56a3880df5c2bb3c1b7ea2db8aa7237",
+    "shape:ucmsh:AffiliationShape": "sha256:3ade451423a3ef6d51d907a043a665a94e00e8bbc80bbc81855de72ebb34eabf",
+    "shape:ucmsh:CareTrajectoryShape": "sha256:9548921818694984733e41217a1a00dda589909d3b75260786d799a32d58071b",
+    "shape:ucmsh:ContextArtifactShape": "sha256:4948e27d52c4e4ad73b3e800eaaf55a9861dc0841aae30a234fd7b8d13a89f9c",
+    "shape:ucmsh:CoordinativeActivityShape": "sha256:56b79b93f52f28358cf8069ad70225ea07b483a9d873ae665cc5fdf99d8304d6",
+    "shape:ucmsh:DualTemporalEncodingShape": "sha256:92c6c01bdd6b97dad836ff42d81e32b5ec6bc96ca2ccc5f660ea62a550f457b3",
+    "shape:ucmsh:HandshakeAcyclicShape": "sha256:103a000793acb92f35614df7cafd8e38a9811baed2553a3dcf14661d32f26307",
+    "shape:ucmsh:HandshakeShape": "sha256:ed15bf1a3f2e060ee84d83eaa9970bb44f80153da5e1371330d50348ee046c9c",
+    "shape:ucmsh:LifecycleState-anchored": "sha256:2a343f7e9314e7d54e57f77c29f5e690bab003a7415baf580cdfb5a5fb03b778",
+    "shape:ucmsh:LifecycleStateShape": "sha256:ff350bc067e530dde68cd9dd45472a10f96dd79ff6d075b54abd42eb4bd2f57d",
+    "shape:ucmsh:MembershipShape": "sha256:0e0711aa93d2abfd0e790536553503d52e6db35dc9b2ac807899cedd71d2ec2c",
+    "shape:ucmsh:ParticipationEntityConsistencyShape": "sha256:48b731bb0c9c282e1151da40294839c13a18c58f3af3a0d5a88477715a147261",
+    "shape:ucmsh:ParticipationProcessConsistencyShape": "sha256:c01aded8020c291096c54dbccba61969c851eef4f4ac6ee0f3ffce4b2c652fe8",
+    "shape:ucmsh:ParticipationShape": "sha256:8edf5a22d27eed537532e2f1fb583305c69274785e589690f047af55cf8c9e9f",
+    "shape:ucmsh:ParticipationValidityShape": "sha256:29bd7d62f96a1d764b3ba0a819e0bdaa64b5b72badf09eaa59ada6604da89f29",
+    "shape:ucmsh:ProjectionBackingShape": "sha256:46ec1cb71255d3216e04a4a953ad57aab4effc624b19eb42d85cd003eb6c9c13",
+    "shape:ucmsh:StatementShape": "sha256:84953902108663c83d0dc3af136b19753e268613fcf0c416e01126608f55c8bb",
+    "shape:ucmsh:TemporalEntityShape": "sha256:6fd0d4107ccc4ca6abdb2237ba0bbe3a9a9c949e52c3c87e2c8f522ce1220441",
+    "shape:ucmsh:TemporalOrderShape": "sha256:7f57b8d0819ac3d90a4b3fa5d13f7d6eeebd76f220e21cea9ba45d3a1217177f"
+  },
+  "outputs": {
+    "context.jsonld": "sha256:308debf0457b9009eaf23a8fba04baaad43a3f033697a4f90df0fe15085cb7a0",
+    "fhir/ucm_fhir_adapter.py": "sha256:578648827f63d5e4377d83b295a270df19c0ed98af62f9a5af3e3a48499422b4",
+    "openapi.yaml": "sha256:57d63bb972352e07a2726b1feea81b87dd8f0ba7240417838202e2193378e3e8",
+    "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
+    "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
+    "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
+    "postgres/migrations/versions/ucm_17366433f527_ucm_0_0_1.py": "sha256:7b75c15732724c27d2ed6519d538ed4c381780e0efe39b26def68e822af1966c",
+    "postgres/ucm_models.py": "sha256:9918dcb4747018451d3143b7e357b6b854de4e14d98e9142bba63e6646761fa1"
+  }
+}

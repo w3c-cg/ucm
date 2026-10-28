@@ -1,0 +1,19 @@
+# Optional API profile for ucm-codegen.
+#
+# Everything here is something the ontology cannot say about an HTTP API.
+# Without a profile, title/version/description come from the ontology header
+# and every root class is exposed as a resource.
+
+title: Unified Care Model API
+context-url: ./context.jsonld
+
+servers:
+  - url: http://localhost:8000/ucm/v1
+    description: UCM reference server
+
+# Root class terms not exposed as resources (schemas are still generated)
+exclude: []
+
+# Property term -> concept scheme term. hasLifecycleState -> LifecycleState
+# is found by convention; list bindings here when the names differ.
+scheme-bindings: {}

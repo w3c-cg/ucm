@@ -1,0 +1,924 @@
+{
+  "@context": {
+    "ucm": "urn:w3c:cg:ucm#",
+    "ucmsh": "urn:w3c:cg:ucm:shapes#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "time": "http://www.w3.org/2006/time#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "ucmsh:AcceptsRequestShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:c14n0"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:acceptsRequest"
+      }
+    },
+    {
+      "@id": "ucmsh:ActivityFocusTypeShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:c14n16"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasActivityFocus"
+      }
+    },
+    {
+      "@id": "ucmsh:AffiliationShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:c14n11"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:affiliatedWith"
+      }
+    },
+    {
+      "@id": "ucmsh:CareTrajectoryShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:c14n6"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasCareTrajectoryContext"
+      }
+    },
+    {
+      "@id": "ucmsh:ContextArtifactShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:c14n14"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:definedByArtifact"
+      }
+    },
+    {
+      "@id": "ucmsh:CoordinativeActivityShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n18"
+      },
+      "sh:targetClass": [
+        {
+          "@id": "ucm:CoordinationRequest"
+        },
+        {
+          "@id": "ucm:CoordinativeActivity"
+        }
+      ],
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Definitional",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Failing data is not a well-formed instance of the concept. Reported as sh:Violation."
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:DualTemporalEncodingShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n8"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Participation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Handshake-negotiates",
+      "@type": "sh:PropertyShape",
+      "sh:message": "A handshake negotiates participation in at least one process.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:path": {
+        "@id": "ucm:negotiates"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:HandshakeAcyclicShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n10"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Handshake"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:HandshakeShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucmsh:Handshake-negotiates"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Handshake"
+      }
+    },
+    {
+      "@id": "ucmsh:LifecycleState-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n3"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasLifecycleState"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:LifecycleState-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A process holds at most one lifecycle state, identified by IRI. (Relax to temporalized state assertions once those exist.)",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasLifecycleState"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:LifecycleStateShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucmsh:LifecycleState-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasLifecycleState"
+      }
+    },
+    {
+      "@id": "ucmsh:Membership-group",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A membership is in exactly one social group.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:path": {
+        "@id": "ucm:membershipIn"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:Membership-groupType",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:SocialGroupEntity"
+      },
+      "sh:message": "Membership target is not typed as ucm:SocialGroupEntity.",
+      "sh:path": {
+        "@id": "ucm:membershipIn"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Membership-member",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A membership belongs to exactly one member entity (via hasMembership).",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:path": {
+        "@id": "_:c14n9"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:MembershipShape",
+      "@type": "sh:NodeShape",
+      "sh:property": [
+        {
+          "@id": "ucmsh:Membership-group"
+        },
+        {
+          "@id": "ucmsh:Membership-groupType"
+        },
+        {
+          "@id": "ucmsh:Membership-member"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "ucm:Membership"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-context",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:SemanticContext"
+      },
+      "sh:message": "Participation context is not typed as ucm:SemanticContext.",
+      "sh:path": {
+        "@id": "_:c14n17"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-entity",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A participation has exactly one participating entity, which must be a node, not a literal.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:path": {
+        "@id": "ucm:participatingEntity"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-entityType",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:Entity"
+      },
+      "sh:message": "Participating entity is not typed as ucm:Entity or a subclass. Assert a UCM type, or validate with OWL RL inference if it is typed in a mapped ontology.",
+      "sh:path": {
+        "@id": "ucm:participatingEntity"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-process",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A participation occurs within exactly one process.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:path": {
+        "@id": "ucm:occursWithin"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-processType",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:Process"
+      },
+      "sh:message": "The process a participation occurs within is not typed as ucm:Process.",
+      "sh:path": {
+        "@id": "ucm:occursWithin"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-role",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:Role"
+      },
+      "sh:message": "Assumed role is not typed as ucm:Role.",
+      "sh:path": {
+        "@id": "ucm:assumesRole"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-validFrom",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "validFrom is single-valued and must be xsd:dateTime or xsd:dateTimeStamp.",
+      "sh:or": {
+        "@list": [
+          {
+            "@id": "_:c14n22"
+          },
+          {
+            "@id": "_:c14n27"
+          }
+        ]
+      },
+      "sh:path": {
+        "@id": "ucm:validFrom"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:Participation-validTo",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "validTo is single-valued and must be xsd:dateTime or xsd:dateTimeStamp.",
+      "sh:or": {
+        "@list": [
+          {
+            "@id": "_:c14n23"
+          },
+          {
+            "@id": "_:c14n29"
+          }
+        ]
+      },
+      "sh:path": {
+        "@id": "ucm:validTo"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:ParticipationEntityConsistencyShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n1"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Participation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:ParticipationProcessConsistencyShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n2"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Participation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:ParticipationShape",
+      "@type": "sh:NodeShape",
+      "sh:property": [
+        {
+          "@id": "ucmsh:Participation-context"
+        },
+        {
+          "@id": "ucmsh:Participation-entity"
+        },
+        {
+          "@id": "ucmsh:Participation-entityType"
+        },
+        {
+          "@id": "ucmsh:Participation-process"
+        },
+        {
+          "@id": "ucmsh:Participation-processType"
+        },
+        {
+          "@id": "ucmsh:Participation-role"
+        },
+        {
+          "@id": "ucmsh:Participation-validFrom"
+        },
+        {
+          "@id": "ucmsh:Participation-validTo"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucmsh:ParticipationValidityShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n20"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Participation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:ProjectionBackingShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n5"
+      },
+      "sh:targetSubjectsOf": [
+        {
+          "@id": "ucm:hasClient"
+        },
+        {
+          "@id": "ucm:hasPatient"
+        },
+        {
+          "@id": "ucm:hasResident"
+        }
+      ],
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Recommended",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Failing data is conformant but omits encouraged practice. Reported as sh:Warning."
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Statement-context",
+      "@type": "sh:PropertyShape",
+      "sh:message": "Statement declares no semantic context; its interpretation depends on one.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:path": {
+        "@id": "ucm:madeWithinContext"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Statement-date",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A statement is made once: statementDate is single-valued and must be xsd:dateTime or xsd:dateTimeStamp.",
+      "sh:or": {
+        "@list": [
+          {
+            "@id": "_:c14n21"
+          },
+          {
+            "@id": "_:c14n25"
+          }
+        ]
+      },
+      "sh:path": {
+        "@id": "ucm:statementDate"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:Statement-processType",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:Process"
+      },
+      "sh:message": "Generating process is not typed as ucm:Process.",
+      "sh:path": {
+        "@id": "ucm:generatedByProcess"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:Statement-subjectType",
+      "@type": "sh:PropertyShape",
+      "sh:class": {
+        "@id": "ucm:Participation"
+      },
+      "sh:message": "Statement subject is not typed as ucm:Participation.",
+      "sh:path": {
+        "@id": "ucm:statementSubject"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "ucmsh:StatementShape",
+      "@type": "sh:NodeShape",
+      "sh:property": [
+        {
+          "@id": "ucmsh:Statement-context"
+        },
+        {
+          "@id": "ucmsh:Statement-date"
+        },
+        {
+          "@id": "ucmsh:Statement-processType"
+        },
+        {
+          "@id": "ucmsh:Statement-subjectType"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucmsh:TemporalEntityShape",
+      "@type": "sh:NodeShape",
+      "sh:message": "Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant.",
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:targetObjectsOf": [
+        {
+          "@id": "ucm:enactiveDuring"
+        },
+        {
+          "@id": "ucm:hasTemporalContext"
+        },
+        {
+          "@id": "ucm:occursDuring"
+        },
+        {
+          "@id": "ucm:validDuring"
+        }
+      ],
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "ucmsh:TemporalOrderShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n15"
+      },
+      "sh:targetObjectsOf": [
+        {
+          "@id": "ucm:enactiveDuring"
+        },
+        {
+          "@id": "ucm:hasTemporalContext"
+        },
+        {
+          "@id": "ucm:occursDuring"
+        },
+        {
+          "@id": "ucm:validDuring"
+        }
+      ],
+      "ucmsh:tier": {
+        "@id": "ucmsh:Definitional"
+      }
+    },
+    {
+      "@id": "urn:w3c:cg:ucm:shapes",
+      "@type": "owl:Ontology",
+      "rdfs:comment": "Validation shapes for the Unified Care Model core.\n\nCONVENTION\n  Open by default. No shape uses sh:closed: adopters' own predicates and\n  types (FHIR, HMIS, local data dictionaries, provenance) never produce results.\n\n  Two tiers, tagged with ucmsh:tier and enforced by ucm-shapes-lint.ttl:\n    ucmsh:Definitional  sh:Violation. The data is not a well-formed instance\n                        of the UCM concept: identity-forming edges missing or\n                        duplicated, literals where entities are required,\n                        intervals that end before they begin, cycles with no\n                        base case.\n    ucmsh:Recommended   sh:Warning. Good practice the spec encourages but a\n                        conformant adopter may not yet follow.\n\n  sh:severity is set on every property shape individually. SHACL does not\n  carry a node shape's severity down to its nested property shapes; an\n  untagged property shape reports sh:Violation.\n\n  Type constraints that mirror an rdfs:range (sh:class) are Recommended only.\n  Under RDFS/OWL inference they are vacuous; without inference they reject\n  data typed in a partner ontology. Structural kind (sh:nodeKind) is\n  Definitional, because it is decidable from the data alone.\n\n  Date and time values accept xsd:dateTime or xsd:dateTimeStamp. sh:datatype\n  xsd:dateTime alone rejects xsd:dateTimeStamp, the form OWL-Time recommends.\n  Ordering checks use SPARQL with explicit casts; sh:lessThanOrEquals crashes\n  pySHACL on misordered xsd:dateTimeStamp values.",
+      "rdfs:label": "UCM Core Shapes (draft)"
+    },
+    {
+      "@id": "_:c14n0",
+      "sh:class": {
+        "@id": "ucm:Participation"
+      },
+      "sh:message": "acceptsRequest target is not typed as ucm:Participation.",
+      "sh:path": {
+        "@id": "ucm:acceptsRequest"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n1",
+      "sh:message": "An entity participates through this participation via participatesThrough, but the participation names a different participating entity.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:participatesThrough $this .\n                $this ucm:participatingEntity ?actual .\n                FILTER (?claimant != ?actual)\n            }"
+    },
+    {
+      "@id": "_:c14n10",
+      "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
+    },
+    {
+      "@id": "_:c14n11",
+      "sh:class": {
+        "@id": "ucm:Organization"
+      },
+      "sh:message": "Affiliation target is not typed as ucm:Organization.",
+      "sh:path": {
+        "@id": "ucm:affiliatedWith"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n14",
+      "sh:class": {
+        "@id": "ucm:DefinitionArtifact"
+      },
+      "sh:message": "definedByArtifact target is not typed as ucm:DefinitionArtifact.",
+      "sh:path": {
+        "@id": "ucm:definedByArtifact"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n15",
+      "sh:message": "Interval ends before it begins.",
+      "sh:select": "\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?b ;\n                      time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?e .\n                FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))\n            }"
+    },
+    {
+      "@id": "_:c14n16",
+      "sh:class": {
+        "@id": "ucm:ActivityFocus"
+      },
+      "sh:message": "Activity focus is not typed as ucm:ActivityFocus.",
+      "sh:path": {
+        "@id": "ucm:hasActivityFocus"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n17",
+      "sh:alternativePath": {
+        "@list": [
+          {
+            "@id": "ucm:participationContext"
+          },
+          {
+            "@id": "ucm:scopedBy"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n18",
+      "sh:message": "Coordination process declares no activity focus, directly or through a process it negotiates.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }\n            }"
+    },
+    {
+      "@id": "_:c14n2",
+      "sh:message": "A process lists this participation via hasParticipant, but the participation occurs within a different process.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:hasParticipant $this .\n                $this ucm:occursWithin ?actual .\n                FILTER (?claimant != ?actual)\n            }"
+    },
+    {
+      "@id": "_:c14n20",
+      "sh:message": "Participation validTo precedes validFrom.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:validFrom ?f ; ucm:validTo ?t .\n                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))\n            }"
+    },
+    {
+      "@id": "_:c14n21",
+      "sh:datatype": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "_:c14n22",
+      "sh:datatype": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "_:c14n23",
+      "sh:datatype": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "_:c14n25",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n27",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n29",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n3",
+      "sh:message": "Lifecycle state is neither in ucm:LifecycleState nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <urn:w3c:cg:ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasLifecycleState ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:LifecycleState }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:LifecycleState\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n5",
+      "sh:message": "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role.",
+      "sh:select": "\n            PREFIX ucm:  <urn:w3c:cg:ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n6",
+      "sh:class": {
+        "@id": "ucm:CareTrajectoryContext"
+      },
+      "sh:message": "Care trajectory context is not typed as ucm:CareTrajectoryContext.",
+      "sh:path": {
+        "@id": "ucm:hasCareTrajectoryContext"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucmsh:tier": {
+        "@id": "ucmsh:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n8",
+      "sh:message": "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring.",
+      "sh:select": "\n            PREFIX ucm: <urn:w3c:cg:ucm#>\n            SELECT $this WHERE {\n                $this ucm:enactiveDuring ?iv .\n                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }\n            }"
+    },
+    {
+      "@id": "_:c14n9",
+      "sh:inversePath": {
+        "@id": "ucm:hasMembership"
+      }
+    }
+  ]
+}

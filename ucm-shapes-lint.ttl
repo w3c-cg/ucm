@@ -1,0 +1,70 @@
+@prefix ucmsh: <urn:w3c:cg:ucm:shapes#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+
+# Shapes over the shapes graph. Validate ucm-core-shapes.ttl AS DATA against
+# this file to enforce the open-by-default convention mechanically.
+
+# L1. Closure needs a written reason. Any sh:closed true without
+#     ucmsh:closureRationale fails review.
+ucmsh:LintClosureRationale a sh:NodeShape ;
+    sh:targetSubjectsOf sh:closed ;
+    sh:sparql [
+        sh:message "Shape is closed without a ucmsh:closureRationale. Spec shapes stay open unless closure is definitional and the reason is written down." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>
+            SELECT $this WHERE {
+                $this sh:closed true .
+                FILTER NOT EXISTS { $this ucmsh:closureRationale ?r }
+            }""" ;
+    ] .
+
+# L2. Every constraint-bearing shape declares a tier. Members of sh:or /
+#     sh:and lists are exempt: their results take the enclosing shape's severity.
+ucmsh:LintTierDeclared a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Constraint-bearing shape has no ucmsh:tier." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>
+            SELECT $this WHERE {
+                FILTER EXISTS { $this sh:path|sh:sparql|sh:nodeKind|sh:closed ?x }
+                FILTER NOT EXISTS { ?list rdf:first $this }
+                FILTER NOT EXISTS { $this ucmsh:tier ?t }
+            }""" ;
+    ] .
+
+# L3. Recommended shapes must not report Violation. sh:severity defaults to
+#     sh:Violation and is not inherited from an enclosing node shape, so an
+#     omitted severity on a Recommended shape is a lint failure.
+ucmsh:LintRecommendedSeverity a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Recommended-tier shape would report sh:Violation (severity missing or wrong)." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>
+            SELECT $this WHERE {
+                $this ucmsh:tier ucmsh:Recommended .
+                FILTER NOT EXISTS { $this sh:severity ?s . FILTER (?s IN (sh:Warning, sh:Info)) }
+            }""" ;
+    ] .
+
+# L4. Definitional shapes must report Violation.
+ucmsh:LintDefinitionalSeverity a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Definitional-tier shape is downgraded below sh:Violation." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX ucmsh: <urn:w3c:cg:ucm:shapes#>
+            SELECT $this WHERE {
+                $this ucmsh:tier ucmsh:Definitional ; sh:severity ?s .
+                FILTER (?s != sh:Violation)
+            }""" ;
+    ] .

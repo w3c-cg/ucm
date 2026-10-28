@@ -212,7 +212,7 @@ ucm:negotiates rdf:type owl:ObjectProperty ;
 ###  https://w3.org/ns/ucm#acceptsRequest
 ucm:acceptsRequest rdf:type owl:ObjectProperty ;
                     rdfs:domain ucm:Entity ;
-                    rdfs:range ucm:ParticipationContext ;
+                    rdfs:range ucm:Participation ;
                     rdfs:label "accepts request" ;
                     rdfs:comment "A participating entity accepts a care coordination request." .
 

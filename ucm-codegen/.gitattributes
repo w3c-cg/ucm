@@ -1,0 +1,6 @@
+# The build writes artifacts with LF and records their digests in the
+# lockfile. Keep them LF on every checkout (including core.autocrlf=true on
+# Windows) so a rebuild compares equal and never rewrites them.
+build/** text eol=lf
+generated/** text eol=lf
+ucm-build.lock text eol=lf

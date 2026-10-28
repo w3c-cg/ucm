@@ -1,0 +1,86 @@
+# Lint, validate and rebuild the UCM reference artifacts whenever the spec
+# (any .ttl) or the toolchain changes.
+#
+# Paths assume the spec files at the repository root and the toolchain in
+# ucm-codegen/. After moving into the UCM repository, update the source paths
+# in ucm-codegen/ucm-build.yaml and the `paths` filters below.
+
+name: ucm-codegen
+
+on:
+  push:
+    paths:
+      - "**/*.ttl"
+      - "ucm-codegen/**"
+      - ".github/workflows/ucm-codegen.yml"
+  pull_request:
+    paths:
+      - "**/*.ttl"
+      - "ucm-codegen/**"
+      - ".github/workflows/ucm-codegen.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ucm-codegen-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ucm-codegen
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: ucm-codegen/pyproject.toml
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      # Stage cache (export, URDNA2015, PySHACL, example validation). Entries
+      # are keyed by content digests, so restoring an older cache is always
+      # safe: changed inputs simply miss.
+      - uses: actions/cache@v4
+        with:
+          path: ucm-codegen/build/.cache
+          key: ucm-stage-cache-${{ hashFiles('**/*.ttl', 'ucm-codegen/src/**', 'ucm-codegen/profiles/**') }}
+          restore-keys: ucm-stage-cache-
+
+      # Export → lint (SHACL-SHACL, ucm-shapes-lint, consistency) → validate the
+      # example → OpenAPI, context, Postgres, FHIR and report.html. Writes the
+      # outputs even on failure, so the uploaded report shows why.
+      - name: Build
+        run: ucm-codegen build --strict
+
+      - name: Tests
+        run: pytest
+
+      # Only bites for what is committed: if ucm-build.lock (and generated/,
+      # build/) are in git, a spec change must ship with its regenerated
+      # artifacts. report.html is a view of the build, not an artifact.
+      - name: Committed lockfile and artifacts are current
+        run: git diff --exit-code -- ucm-build.lock generated build ':(exclude)generated/report.html'
+
+      - name: Upload reference artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucm-reference
+          path: |
+            ucm-codegen/generated
+            ucm-codegen/build
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### UCM reference build" >> "$GITHUB_STEP_SUMMARY"
+          echo "Download the **ucm-reference** artifact and open \`generated/report.html\`." >> "$GITHUB_STEP_SUMMARY"

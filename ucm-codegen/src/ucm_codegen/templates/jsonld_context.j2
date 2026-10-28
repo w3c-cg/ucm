@@ -1,0 +1,7 @@
+{
+  "@context": {
+{% for key, value in spec.context.items() %}
+    {{ key | tojson }}: {{ value | tojson }}{{ "," if not loop.last else "" }}
+{% endfor %}
+  }
+}
