@@ -342,15 +342,20 @@ def build_failed(compilation: Compilation, outputs: Optional[TargetOutputs], str
     findings = compilation.findings
     violations = sum(f.severity == Severity.VIOLATION for f in findings)
     warnings = sum(f.severity == Severity.WARNING for f in findings)
+    drift = sum(f.code == "namespace-drift" for f in findings)
     if violations:
         reasons.append(f"{violations} lint violations")
     if strict and warnings:
-        reasons.append(f"{warnings} lint warnings (--strict)")
+        reasons.append(
+            f"{warnings} lint warnings (--strict)"
+            + (f", {drift} of them namespace drift between spec files" if drift else "")
+        )
     if outputs and outputs.validation:
         v = len(outputs.validation.by_severity(Severity.VIOLATION))
         w = len(outputs.validation.by_severity(Severity.WARNING))
+        cause = " (likely caused by the namespace drift)" if drift else ""
         if v:
-            reasons.append(f"{v} SHACL violations in the examples")
+            reasons.append(f"{v} SHACL violations in the examples{cause}")
         if strict and w:
-            reasons.append(f"{w} SHACL warnings in the examples (--strict)")
+            reasons.append(f"{w} SHACL warnings in the examples (--strict){cause}")
     return reasons

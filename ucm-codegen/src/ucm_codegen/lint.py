@@ -20,21 +20,42 @@ from .utils import local_name
 _SPARQL_PREFIX = re.compile(r"PREFIX\s+([A-Za-z][\w-]*)?:\s*<([^>]*)>", re.IGNORECASE)
 _SEVERITY_ORDER = {Severity.VIOLATION: 0, Severity.WARNING: 1, Severity.INFO: 2}
 
+# Vocabularies the spec builds on. Their terms are never drift, even when a
+# local name happens to match a UCM term.
+STANDARD_NAMESPACES = (
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "http://www.w3.org/2000/01/rdf-schema#",
+    "http://www.w3.org/2002/07/owl#",
+    "http://www.w3.org/2001/XMLSchema#",
+    "http://www.w3.org/2004/02/skos/core#",
+    "http://www.w3.org/ns/shacl#",
+    "http://www.w3.org/2006/time#",
+    "http://www.w3.org/ns/prov#",
+    "http://purl.org/dc/terms/",
+    "http://purl.org/vocab/vann/",
+    "http://xmlns.com/foaf/0.1/",
+    "http://www.w3.org/ns/dcat#",
+    "http://schema.org/",
+    "https://schema.org/",
+)
+
 
 def _shape_name(ir: OntologyIR, iri: str | None) -> str:
     return ir.curie(iri) if iri else "(blank shape)"
 
 
-def _sparql_references(ir: OntologyIR, select: str) -> Set[str]:
-    """Namespace IRIs named in a SPARQL constraint, by prefixed or full form"""
+def _namespace(iri: str) -> str:
+    return iri[: len(iri) - len(local_name(iri))]
+
+
+def _sparql_references(select: str) -> Set[str]:
+    """IRIs named in a SPARQL constraint, by prefixed or full form, in any namespace"""
     found: Set[str] = set()
     for prefix, namespace in _SPARQL_PREFIX.findall(select):
-        if namespace != ir.namespace:
-            continue
         pattern = rf"(?<![\w:]){re.escape(prefix)}:([A-Za-z_][\w-]*)"
         found.update(namespace + name for name in re.findall(pattern, select))
     body = _SPARQL_PREFIX.sub("", select)
-    found.update(re.findall(rf"<({re.escape(ir.namespace)}[^>]+)>", body))
+    found.update(re.findall(r"<([a-z][\w+.-]*:[^>\s]+)>", body))
     return found
 
 
@@ -61,7 +82,7 @@ def _references(ir: OntologyIR) -> Dict[str, Set[str]]:
             for iri in constraint.classes:
                 refs[iri].add(f"sh:class in {name}")
         for query in shape.sparql:
-            for iri in _sparql_references(ir, query.select):
+            for iri in _sparql_references(query.select):
                 refs[iri].add(f"SPARQL in {name}")
     return refs
 
@@ -75,30 +96,53 @@ def lint(ir: OntologyIR) -> List[LintFinding]:
     for iri in declared:
         by_local[local_name(iri)].add(iri)
 
-    # 1. References to namespace IRIs nothing declares
+    # 1. References nothing declares. A reference whose local name is declared
+    #    under another namespace is drift; drift is grouped per pair of
+    #    namespaces, so a whole file left on an old namespace is one finding.
     references = _references(ir)
+    drift: Dict[tuple, List[tuple]] = defaultdict(list)
     for iri, uses in sorted(references.items()):
-        if not iri.startswith(ir.namespace) or iri in declared:
+        if iri in declared or iri.startswith(STANDARD_NAMESPACES):
             continue
         elsewhere = sorted(by_local[local_name(iri)] - {iri})
         if elsewhere:
-            findings.append(LintFinding(
-                code="namespace-drift",
-                severity=Severity.WARNING,
-                subject=ir.curie(iri),
-                message=(
-                    f"Referenced ({'; '.join(sorted(uses))}) but only declared as "
-                    f"<{elsewhere[0]}>. The files disagree on the namespace; data written "
-                    f"against <{iri}> will not resolve to the declared term."
-                ),
-            ))
-        else:
+            drift[(_namespace(iri), _namespace(elsewhere[0]))].append((iri, elsewhere[0], uses))
+        elif iri.startswith(ir.namespace):
             findings.append(LintFinding(
                 code="undeclared-term",
                 severity=Severity.WARNING,
                 subject=ir.curie(iri),
                 message=f"Referenced ({'; '.join(sorted(uses))}) but never declared.",
             ))
+
+    for (referenced_ns, declared_ns), items in sorted(drift.items()):
+        if len(items) == 1:
+            ((iri, target, uses),) = items
+            findings.append(LintFinding(
+                code="namespace-drift",
+                severity=Severity.WARNING,
+                subject=ir.curie(iri),
+                message=(
+                    f"Referenced ({'; '.join(sorted(uses))}) but only declared as "
+                    f"<{target}>. The files disagree on the namespace; data written "
+                    f"against <{iri}> will not resolve to the declared term."
+                ),
+            ))
+            continue
+        names = [local_name(iri) for iri, _, _ in items]
+        shown = ", ".join(names[:6]) + (f" and {len(names) - 6} more" if len(names) > 6 else "")
+        uses = sum(len(u) for _, _, u in items)
+        findings.append(LintFinding(
+            code="namespace-drift",
+            severity=Severity.WARNING,
+            subject=referenced_ns,
+            message=(
+                f"{len(items)} terms ({shown}) are referenced {uses} times under <{referenced_ns}> "
+                f"but declared only under <{declared_ns}>. The files disagree on the namespace: "
+                f"shapes and data written against <{referenced_ns}> will not match the ontology, "
+                f"so type checks on them fail. Align the @prefix (and SPARQL PREFIX) lines."
+            ),
+        ))
 
     # 2. Concept schemes outside the ontology namespace
     for scheme in ir.schemes.values():
