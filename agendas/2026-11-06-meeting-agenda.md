@@ -4,6 +4,8 @@
   * we can assign issues and pull request
 
 # Issue Discussion
+* adoption paths (rr) [from prior week]
+
 
 
  
