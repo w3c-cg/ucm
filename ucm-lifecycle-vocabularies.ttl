@@ -235,8 +235,8 @@ ucm:ClosedNotConnected a skos:Concept ;
     skos:inScheme ucm:ClosureReason ;
     skos:topConceptOf ucm:ClosureReason ;
     skos:prefLabel "Not connected"@en ;
+    skos:scopeNote """This concept may be selected directly when a more specific closure reason is not available. Queries and reporting that aggregate closure reasons under this concept may use reflexive-transitive traversal of skos:broader (SPARQL property path skos:broader*). This includes the concept itself and all narrower closure reasons at any depth. """@en ;
     skos:definition "The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known."@en .
-    skos:scopeNote """This concept may be selected directly when a more specific closure reason is not available. Queries and reporting that aggregate closure reasons under this concept may use reflexive-transitive traversal of skos:broader (SPARQL property path skos:broader*). This includes the concept itself and all narrower closure reasons at any depth. """@en .
 
 ucm:ClosedNoLongerNeeded a skos:Concept ;
     skos:inScheme ucm:ClosureReason ;
