@@ -1,9 +1,16 @@
-@prefix ucm: <http://mdixinc.com/ucm#> .
+@prefix ucm: <https://www.w3.org/ns/ucm#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# UCM controlled vocabularies (SKOS). The OWL ontology says what things are,
+# the SHACL shapes say what valid data looks like, and these schemes say which
+# values a state, outcome or reason may take.
+
+
+#################################################################
+#    Lifecycle state
+#################################################################
 
 ###  https://www.w3.org/ns/ucm#LifecycleState
 ucm:LifecycleState a skos:ConceptScheme ;
@@ -14,8 +21,8 @@ ucm:LifecycleState a skos:ConceptScheme ;
     skos:prefLabel "Lifecycle State"@en ;
     skos:definition "The primary state of the care coordination lifecycle."@en ;
     skos:hasTopConcept 
-        ucm:Pending, 
-        ucm:Accepted, 
+        ucm:Pending , 
+        ucm:Accepted , 
         ucm:Declined .
 
 ucm:Pending a skos:Concept ;
@@ -23,81 +30,308 @@ ucm:Pending a skos:Concept ;
     skos:topConceptOf ucm:LifecycleState ;
     skos:prefLabel "Pending Care Coordination Lifecycle"@en ;
     skos:altLabel "Pending"@en ;
-    skos:definition "A pending care coordination request." . 
+    skos:definition "A pending care coordination request."@en .
 
 ucm:Accepted a skos:Concept ;
     skos:inScheme ucm:LifecycleState ;
     skos:topConceptOf ucm:LifecycleState ;
     skos:prefLabel "Accepted Care Coordination Lifecycle"@en ;
     skos:altLabel "Accepted"@en ;
-    skos:definition "A care coordination request that has been accepted for ongoing care." . 
+    skos:definition "A care coordination request that has been accepted for ongoing care."@en .
 
 ucm:Declined a skos:Concept ;
     skos:inScheme ucm:LifecycleState ;
     skos:topConceptOf ucm:LifecycleState ;
     skos:prefLabel "Declined Care Coordination Lifecycle"@en ;
     skos:altLabel "Declined"@en ;
-    skos:definition "This care request was denied." . 
+    skos:definition "This care request was denied."@en .
+
+#################################################################
+#    Referral disposition
+#################################################################
 
 ###  https://www.w3.org/ns/ucm#ReferralDisposition
 ucm:ReferralDisposition a skos:ConceptScheme ;
     dcterms:title "UCM Referral Disposition"@en ;
-    dcterms:description "A state associated with a care coordination request during the process of its fulfillment of negotiated activity."@en ;
-    dcterms:created "2026-09-08"^^xsd:date ;
+    dcterms:description "What has the receiving party decided about a care coordination request?"@en ;
+    dcterms:created "2026-11-07"^^xsd:date ;
     dcterms:publisher "MDIX"@en ;
     skos:prefLabel "Referral Disposition"@en ;
-    skos:definition "The primary state of the referral lifecycle."@en ;
+    skos:definition "The receiving party's decision on a care coordination request."@en ;
+    skos:editorialNote "Overlaps ucm:LifecycleState, whose concepts are defined in terms of care coordination requests. The three shared states are mapped with skos:exactMatch so either validates; the group should decide which scheme a request carries."@en ;
     skos:hasTopConcept 
-        ucm:Pending, 
-        ucm:Accepted, 
-        ucm:Declined,
-        ucm:Withdrawn,
-        ucm:Expired, 
-        ucm:Completed .
+        ucm:ReferralPending , 
+        ucm:ReferralAccepted , 
+        ucm:ReferralDeclined ,
+        ucm:ReferralWithdrawn , 
+        ucm:ReferralExpired .
 
-###  https://www.w3.org/ns/ucm#ServicesTransferred
-ucm:ServicesTransferred a skos:ConceptScheme ;
-    dcterms:title "UCM Services Transferred"@en ;
-    dcterms:description "A state associated with the transfer of care during the process of a handshake."@en ;
-    dcterms:created "2026-09-08"^^xsd:date ;
+ucm:ReferralPending a skos:Concept ;
+    skos:inScheme ucm:ReferralDisposition ;
+    skos:topConceptOf ucm:ReferralDisposition ;
+    skos:prefLabel "Pending"@en ;
+    skos:definition "The request has been sent and the receiving party has not yet decided."@en ;
+    skos:exactMatch ucm:Pending .
+
+ucm:ReferralAccepted a skos:Concept ;
+    skos:inScheme ucm:ReferralDisposition ;
+    skos:topConceptOf ucm:ReferralDisposition ;
+    skos:prefLabel "Accepted"@en ;
+    skos:definition "The receiving party agreed to take part in the requested coordination."@en ;
+    skos:exactMatch ucm:Accepted .
+
+ucm:ReferralDeclined a skos:Concept ;
+    skos:inScheme ucm:ReferralDisposition ;
+    skos:topConceptOf ucm:ReferralDisposition ;
+    skos:prefLabel "Declined"@en ;
+    skos:definition "The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept."@en ;
+    skos:exactMatch ucm:Declined .
+
+ucm:ReferralWithdrawn a skos:Concept ;
+    skos:inScheme ucm:ReferralDisposition ;
+    skos:topConceptOf ucm:ReferralDisposition ;
+    skos:prefLabel "Withdrawn"@en ;
+    skos:definition "The requesting party withdrew the request before the receiving party decided."@en .
+
+ucm:ReferralExpired a skos:Concept ;
+    skos:inScheme ucm:ReferralDisposition ;
+    skos:topConceptOf ucm:ReferralDisposition ;
+    skos:prefLabel "Expired"@en ;
+    skos:definition "The receiving party made no decision within the time allowed for a response."@en .
+
+#################################################################
+#    Handoff status
+#################################################################
+
+###  https://www.w3.org/ns/ucm#HandoffStatus
+ucm:HandoffStatus a skos:ConceptScheme ;
+    dcterms:title "UCM Handoff Status"@en ;
+    dcterms:description "Where does responsibility for the agreed services stand between the sending and receiving parties?"@en ;
+    dcterms:created "2026-11-07"^^xsd:date ;
     dcterms:publisher "MDIX"@en ;
-    skos:prefLabel "Services Transferred"@en ;
-    skos:definition "The primary state of care coordination handoff through jointly agreed upon services."@en ;
+    skos:prefLabel "Handoff Status"@en ;
+    skos:definition "The state of a care coordination handoff: whether responsibility for jointly agreed services has moved to the receiving party."@en ;
+    skos:editorialNote "This axis tracks responsibility rather than the referral decision. "@en ;
     skos:hasTopConcept 
-        ucm:Pending, 
-        ucm:Accepted, 
-        ucm:Declined,
-        ucm:Withdrawn,
-        ucm:Expired,
-        ucm:Completed . 
+        ucm:HandoffOffered , 
+        ucm:HandoffAcknowledged , 
+        ucm:HandoffAssumed ,
+        ucm:HandoffShared , 
+        ucm:HandoffReturned , 
+        ucm:HandoffDropped .
+
+ucm:HandoffOffered a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Offered"@en ;
+    skos:definition "The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it."@en .
+
+ucm:HandoffAcknowledged a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Acknowledged"@en ;
+    skos:altLabel "Received"@en ;
+    skos:definition "The receiving party has acknowledged the handoff but has not yet assumed responsibility."@en .
+
+ucm:HandoffAssumed a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Assumed"@en ;
+    skos:definition "The receiving party has assumed responsibility for the agreed services, and the sending party has released it."@en .
+
+ucm:HandoffShared a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Shared"@en ;
+    skos:definition "The sending and receiving parties hold responsibility for the agreed services jointly."@en .
+
+ucm:HandoffReturned a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Returned"@en ;
+    skos:definition "The receiving party handed responsibility back to the sending party."@en .
+
+ucm:HandoffDropped a skos:Concept ;
+    skos:inScheme ucm:HandoffStatus ;
+    skos:topConceptOf ucm:HandoffStatus ;
+    skos:prefLabel "Dropped"@en ;
+    skos:definition "The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services."@en .
+
+#################################################################
+#    Handshake fulfillment
+#################################################################
 
 ###  https://www.w3.org/ns/ucm#HandshakeFulfillment
 ucm:HandshakeFulfillment a skos:ConceptScheme ;
     dcterms:title "UCM Handshake Fulfillment"@en ;
-    dcterms:description "A state associated with the degree of intended services rendered during the process of a handshake."@en ;
-    dcterms:created "2026-09-08"^^xsd:date ;
+    dcterms:description "How much of the service negotiated in a handshake has been delivered?"@en ;
+    dcterms:created "2026-11-07"^^xsd:date ;
     dcterms:publisher "MDIX"@en ;
     skos:prefLabel "Handshake Fulfillment"@en ;
-    skos:definition "The primary state of the fulfilled services following the negotiated participation of a handshake."@en ;
+    skos:definition "The degree to which the services negotiated in a handshake have been rendered."@en ;
     skos:hasTopConcept 
-        ucm:Received, 
-        ucm:PartiallyExecuted, 
-        ucm:Delayed,
-        ucm:ProviderDeclined,
-        ucm:PendingConfirmation, 
-        ucm:Completed .
+        ucm:FulfillmentNotStarted , 
+        ucm:FulfillmentPartial ,
+        ucm:FulfillmentReported , 
+        ucm:FulfillmentConfirmed .
+
+ucm:FulfillmentNotStarted a skos:Concept ;
+    skos:inScheme ucm:HandshakeFulfillment ;
+    skos:topConceptOf ucm:HandshakeFulfillment ;
+    skos:prefLabel "Not started"@en ;
+    skos:definition "None of the negotiated services has been delivered yet."@en .
+
+ucm:FulfillmentPartial a skos:Concept ;
+    skos:inScheme ucm:HandshakeFulfillment ;
+    skos:topConceptOf ucm:HandshakeFulfillment ;
+    skos:prefLabel "Partially delivered"@en ;
+    skos:altLabel "Partially executed"@en ;
+    skos:definition "Some, but not all, of the negotiated services have been delivered."@en .
+
+ucm:FulfillmentReported a skos:Concept ;
+    skos:inScheme ucm:HandshakeFulfillment ;
+    skos:topConceptOf ucm:HandshakeFulfillment ;
+    skos:prefLabel "Reported delivered"@en ;
+    skos:altLabel "Pending confirmation"@en ;
+    skos:definition "The delivering party reports the negotiated services delivered; the requesting party has not confirmed it."@en .
+
+ucm:FulfillmentConfirmed a skos:Concept ;
+    skos:inScheme ucm:HandshakeFulfillment ;
+    skos:topConceptOf ucm:HandshakeFulfillment ;
+    skos:prefLabel "Confirmed delivered"@en ;
+    skos:altLabel "Completed"@en ;
+    skos:definition "The requesting party has confirmed that the negotiated services were delivered."@en .
+
+#################################################################
+#    Closure reason
+#################################################################
+
+# Two levels, so rates computed from this one scheme agree:
+#   closed-loop rate          episodes with any ClosureReason recorded
+#   successful-connection rate  under ClosedConnected, out of ClosedConnected
+#                               plus ClosedNotConnected (ClosedNoLongerNeeded
+#                               is excluded from both)
 
 ###  https://www.w3.org/ns/ucm#ClosureReason
-ucm:ClosureReason a skos:ConceptScheme ; 
+ucm:ClosureReason a skos:ConceptScheme ;
     dcterms:title "UCM Closure Reason"@en ;
-    dcterms:description "A state associated with the degree of intended services rendered during the process of a handshake."@en ;
-    dcterms:created "2026-09-08"^^xsd:date ;
+    dcterms:description "Why did the care coordination episode end?"@en ;
+    dcterms:created "2026-11-07"^^xsd:date ;
     dcterms:publisher "MDIX"@en ;
     skos:prefLabel "Closure Reason"@en ;
-    skos:definition "The primary state of the fulfilled services following the negotiated participation of a handshake."@en ;
+    skos:definition "The reason a care coordination episode was closed, grouped by whether the person was connected to the requested services."@en ;
     skos:hasTopConcept 
-        ucm:OutOfArea, 
-        ucm:ProgramCapacity, 
-        ucm:MissingVerification,
-        ucm:Ineligible,
-        ucm:Other, 
+        ucm:ClosedConnected , 
+        ucm:ClosedNotConnected , 
+        ucm:ClosedNoLongerNeeded .
+
+ucm:ClosedConnected a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:topConceptOf ucm:ClosureReason ;
+    skos:prefLabel "Connected"@en ;
+    skos:definition "The person was connected to the requested services."@en .
+
+ucm:ClosedNotConnected a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:topConceptOf ucm:ClosureReason ;
+    skos:prefLabel "Not connected"@en ;
+    skos:definition "The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known."@en .
+    skos:scopeNote """This concept may be selected directly when a more specific closure reason is not available. Queries and reporting that aggregate closure reasons under this concept may use reflexive-transitive traversal of skos:broader (SPARQL property path skos:broader*). This includes the concept itself and all narrower closure reasons at any depth. """@en .
+
+ucm:ClosedNoLongerNeeded a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:topConceptOf ucm:ClosureReason ;
+    skos:prefLabel "No longer needed"@en ;
+    skos:definition "The need was resolved, or stopped applying, without the requested services."@en .
+
+ucm:OutOfArea a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Out of area"@en ;
+    skos:definition "The person is outside the receiving party's service area."@en .
+
+ucm:ProgramCapacity a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Program at capacity"@en ;
+    skos:definition "The receiving program had no capacity for the person."@en .
+
+ucm:MissingVerification a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Missing verification"@en ;
+    skos:definition "Documentation or verification the receiving party requires was not provided."@en .
+
+ucm:Ineligible a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Ineligible"@en ;
+    skos:definition "The person does not meet the receiving program's eligibility criteria."@en .
+
+ucm:ClientDeclined a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Declined by the person"@en ;
+    skos:definition "The person chose not to receive the requested services."@en .
+
+ucm:ClientUnreachable a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Person unreachable"@en ;
+    skos:definition "The receiving party could not reach the person."@en .
+
+ucm:OtherClosureReason a skos:Concept ;
+    skos:inScheme ucm:ClosureReason ;
+    skos:broader ucm:ClosedNotConnected ;
+    skos:prefLabel "Other reason"@en ;
+    skos:definition "Not connected for a reason not listed here."@en .
+
+#################################################################
+#    Commitment status 
+#################################################################
+
+###  https://www.w3.org/ns/ucm#CommitmentStatus
+ucm:CommitmentStatus a skos:ConceptScheme ;
+    dcterms:title "UCM Commitment Status"@en ;
+    dcterms:description "Is a care commitment binding on its participants?"@en ;
+    dcterms:created "2026-11-07"^^xsd:date ;
+    dcterms:publisher "MDIX"@en ;
+    skos:prefLabel "Commitment Status"@en ;
+    skos:definition "The standing of a ucm:CareCommitment over time."@en ;
+    skos:editorialNote "Durability axis for a service handoff: a handoff held when the receiving party's commitment was in force before the sending party's was released, with no ucm:CareCoverageGap between them."@en ;
+    skos:hasTopConcept 
+        ucm:CommitmentProposed , 
+        ucm:CommitmentInForce , 
+        ucm:CommitmentSuspended ,
+        ucm:CommitmentReleased , 
+        ucm:CommitmentLapsed .
+
+ucm:CommitmentProposed a skos:Concept ;
+    skos:inScheme ucm:CommitmentStatus ;
+    skos:topConceptOf ucm:CommitmentStatus ;
+    skos:prefLabel "Proposed"@en ;
+    skos:definition "The commitment has been offered but not yet agreed."@en .
+
+ucm:CommitmentInForce a skos:Concept ;
+    skos:inScheme ucm:CommitmentStatus ;
+    skos:topConceptOf ucm:CommitmentStatus ;
+    skos:prefLabel "In force"@en ;
+    skos:definition "The commitment is agreed and binding on its participants."@en .
+
+ucm:CommitmentSuspended a skos:Concept ;
+    skos:inScheme ucm:CommitmentStatus ;
+    skos:topConceptOf ucm:CommitmentStatus ;
+    skos:prefLabel "Suspended"@en ;
+    skos:definition "The commitment is agreed but temporarily not binding."@en .
+
+ucm:CommitmentReleased a skos:Concept ;
+    skos:inScheme ucm:CommitmentStatus ;
+    skos:topConceptOf ucm:CommitmentStatus ;
+    skos:prefLabel "Released"@en ;
+    skos:definition "The commitment ended deliberately: completed, handed over or ended by agreement."@en .
+
+ucm:CommitmentLapsed a skos:Concept ;
+    skos:inScheme ucm:CommitmentStatus ;
+    skos:topConceptOf ucm:CommitmentStatus ;
+    skos:prefLabel "Lapsed"@en ;
+    skos:definition "The commitment ended without being released, for example by expiry or abandonment."@en .
