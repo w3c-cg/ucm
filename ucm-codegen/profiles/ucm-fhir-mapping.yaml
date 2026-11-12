@@ -11,8 +11,11 @@
 #   roles          keep participations whose assumed role is one of these
 #   exclude-roles  drop participations whose assumed role is one of these
 #   each           build one backbone element per item from nested field specs
-#   transform      direct | reference | code | class-coding | role-coding
+#   transform      direct | reference | code | concept-coding | class-coding | role-coding
 #   map / default  concept term → FHIR code, for transform: code
+#                  (concept-coding writes the UCM concept itself as a
+#                  CodeableConcept in the code-system; an adopter's own
+#                  concept keeps its IRI in the node-iri extension)
 #   single / list  cardinality of the FHIR element (default: single, each: list)
 # Collected nodes are tagged with the node-iri extension so the reverse
 # direction can rebuild them (single-hop paths only; chains are one-way).
@@ -90,6 +93,10 @@ resources:
         transform: code
         map: {Pending: requested, Accepted: accepted, Declined: rejected}
         default: draft
+      # Proposed: the receiving party's decision and the closure reason as
+      # UCM codes. Task.status keeps the coarse FHIR state.
+      businessStatus: {property: hasReferralDisposition, transform: concept-coding}
+      statusReason: {property: hasClosureReason, transform: concept-coding}
       description: {property: [hasActivityFocus, "rdfs:label"]}
       for:
         {inverse: occursWithin, class: Participation, roles: [SubjectRole],

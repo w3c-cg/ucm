@@ -30,9 +30,9 @@ from sqlalchemy.types import TypeDecorator
 
 ONTOLOGY_IRI = 'https://www.w3.org/ns/ucm#'
 ONTOLOGY_VERSION = 'v0.0.1'
-REVISION = 'ucm_8237b6809c56'
-SOURCES = ['sha256:9392249aff4c637a7313ccb4a23fb258c111ce2639d9fba1aafa2be62d67a158',
- 'sha256:a37a698093c82c9fe7743b13c7b87d583ba9e6fe1f8f26834bb5d233aea65d50']
+REVISION = 'ucm_0ab5001ebc4f'
+SOURCES = ['sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca',
+ 'sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c']
 
 JSONType = sa.JSON().with_variant(postgresql.JSONB(), "postgresql")
 SurrogateKey = sa.BigInteger().with_variant(sa.Integer(), "sqlite")
@@ -125,6 +125,9 @@ class CareCommitment(Base):
 
     iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
     type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    has_commitment_status: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:hasCommitmentStatus: Relates a care commitment to whether it is binding on its participants.'
+    )
     extra: Mapped[Dict[str, Any]] = mapped_column(
         JSONType, nullable=False, default=dict, server_default=sa.text("'{}'"),
         comment="Predicates outside UCM, as compacted JSON-LD",
@@ -424,8 +427,23 @@ class Process(Base):
 
     iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
     type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    has_closure_reason: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:hasClosureReason: Relates a closed care coordination request to the reason it was closed.'
+    )
+    has_handoff_status: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasHandoffStatus: Relates a handshake to where responsibility for its agreed services stands '
+ 'between the sending and receiving parties.')
+    )
+    has_handshake_fulfillment: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasHandshakeFulfillment: Relates a handshake to how much of its negotiated service has been '
+ 'delivered.')
+    )
     has_lifecycle_state: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment='ucm:hasLifecycleState: Relates a process to a lifecycle state.'
+    )
+    has_referral_disposition: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=("ucm:hasReferralDisposition: Relates a care coordination request to the receiving party's "
+ 'decision on it.')
     )
     extra: Mapped[Dict[str, Any]] = mapped_column(
         JSONType, nullable=False, default=dict, server_default=sa.text("'{}'"),
@@ -1036,21 +1054,175 @@ concept = sa.Table(
     sa.Column("scheme_iri", sa.Text(), nullable=False, index=True),
     sa.Column("term", sa.Text(), nullable=False),
     sa.Column("label", sa.Text(), nullable=True),
+    sa.Column("broader_iri", sa.Text(), nullable=True, index=True, comment="skos:broader within the scheme"),
     comment="SKOS concepts from the UCM concept schemes",
 )
 
-CONCEPTS: List[Dict[str, str]] = [{'iri': 'https://www.w3.org/ns/ucm#Accepted',
+CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#ClientDeclined',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ClientDeclined',
+  'label': 'Declined by the person',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#ClientUnreachable',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ClientUnreachable',
+  'label': 'Person unreachable',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#ClosedConnected',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ClosedConnected',
+  'label': 'Connected',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClosedNoLongerNeeded',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ClosedNoLongerNeeded',
+  'label': 'No longer needed',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ClosedNotConnected',
+  'label': 'Not connected',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Ineligible',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'Ineligible',
+  'label': 'Ineligible',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#MissingVerification',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'MissingVerification',
+  'label': 'Missing verification',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#OtherClosureReason',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'OtherClosureReason',
+  'label': 'Other reason',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#OutOfArea',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'OutOfArea',
+  'label': 'Out of area',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#ProgramCapacity',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
+  'term': 'ProgramCapacity',
+  'label': 'Program at capacity',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ClosedNotConnected'},
+ {'iri': 'https://www.w3.org/ns/ucm#CommitmentInForce',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#CommitmentStatus',
+  'term': 'CommitmentInForce',
+  'label': 'In force',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CommitmentLapsed',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#CommitmentStatus',
+  'term': 'CommitmentLapsed',
+  'label': 'Lapsed',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CommitmentProposed',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#CommitmentStatus',
+  'term': 'CommitmentProposed',
+  'label': 'Proposed',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CommitmentReleased',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#CommitmentStatus',
+  'term': 'CommitmentReleased',
+  'label': 'Released',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CommitmentSuspended',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#CommitmentStatus',
+  'term': 'CommitmentSuspended',
+  'label': 'Suspended',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffAcknowledged',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffAcknowledged',
+  'label': 'Acknowledged',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffAssumed',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffAssumed',
+  'label': 'Assumed',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffDropped',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffDropped',
+  'label': 'Dropped',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffOffered',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffOffered',
+  'label': 'Offered',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffReturned',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffReturned',
+  'label': 'Returned',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HandoffShared',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
+  'term': 'HandoffShared',
+  'label': 'Shared',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FulfillmentConfirmed',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandshakeFulfillment',
+  'term': 'FulfillmentConfirmed',
+  'label': 'Confirmed delivered',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FulfillmentNotStarted',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandshakeFulfillment',
+  'term': 'FulfillmentNotStarted',
+  'label': 'Not started',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FulfillmentPartial',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandshakeFulfillment',
+  'term': 'FulfillmentPartial',
+  'label': 'Partially delivered',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FulfillmentReported',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#HandshakeFulfillment',
+  'term': 'FulfillmentReported',
+  'label': 'Reported delivered',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Accepted',
   'scheme_iri': 'https://www.w3.org/ns/ucm#LifecycleState',
   'term': 'Accepted',
-  'label': 'Accepted Care Coordination Lifecycle'},
+  'label': 'Accepted Care Coordination Lifecycle',
+  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#Declined',
   'scheme_iri': 'https://www.w3.org/ns/ucm#LifecycleState',
   'term': 'Declined',
-  'label': 'Declined Care Coordination Lifecycle'},
+  'label': 'Declined Care Coordination Lifecycle',
+  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#Pending',
   'scheme_iri': 'https://www.w3.org/ns/ucm#LifecycleState',
   'term': 'Pending',
-  'label': 'Pending Care Coordination Lifecycle'}]
+  'label': 'Pending Care Coordination Lifecycle',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReferralAccepted',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
+  'term': 'ReferralAccepted',
+  'label': 'Accepted',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReferralDeclined',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
+  'term': 'ReferralDeclined',
+  'label': 'Declined',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReferralExpired',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
+  'term': 'ReferralExpired',
+  'label': 'Expired',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReferralPending',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
+  'term': 'ReferralPending',
+  'label': 'Pending',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReferralWithdrawn',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
+  'term': 'ReferralWithdrawn',
+  'label': 'Withdrawn',
+  'broader_iri': None}]
 
 
 # ============================================================================
@@ -1127,12 +1299,17 @@ CLASSES: Dict[str, Type[Base]] = {
 
 # property term -> (table, attribute, conversion)
 COLUMNS: Dict[str, Tuple[str, str, str]] = {
+    'hasCommitmentStatus': ('care_commitment', 'has_commitment_status', 'reference'),
     'membershipIn': ('membership', 'membership_in', 'reference'),
     'occursWithin': ('participation', 'occurs_within', 'reference'),
     'participatingEntity': ('participation', 'participating_entity', 'reference'),
     'validFrom': ('participation', 'valid_from', 'datetime'),
     'validTo': ('participation', 'valid_to', 'datetime'),
+    'hasClosureReason': ('process', 'has_closure_reason', 'reference'),
+    'hasHandoffStatus': ('process', 'has_handoff_status', 'reference'),
+    'hasHandshakeFulfillment': ('process', 'has_handshake_fulfillment', 'reference'),
     'hasLifecycleState': ('process', 'has_lifecycle_state', 'reference'),
+    'hasReferralDisposition': ('process', 'has_referral_disposition', 'reference'),
     'statementDate': ('statement', 'statement_date', 'datetime'),
 }
 

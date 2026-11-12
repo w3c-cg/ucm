@@ -8,15 +8,15 @@
   "sources": [
     {
       "file": "ucm-ontology.jsonld",
-      "digest": "sha256:9392249aff4c637a7313ccb4a23fb258c111ce2639d9fba1aafa2be62d67a158",
-      "triples": 385,
-      "content": "sha256:b3df1a4f5d69bfd601bbf9f2f1958876e1ae79a15644424103a4904270b29c0d"
+      "digest": "sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca",
+      "triples": 629,
+      "content": "sha256:cccf23d1df2f2a4b489bd3c0e7bda7d37a9b827fd26f4704c9cf4c2652087ff7"
     },
     {
       "file": "ucm-shapes.jsonld",
-      "digest": "sha256:a37a698093c82c9fe7743b13c7b87d583ba9e6fe1f8f26834bb5d233aea65d50",
-      "triples": 293,
-      "content": "sha256:cbee96f2bdcb34359ed6606460355f53c5f20144d94039ebb1f240a21ffe24a0"
+      "digest": "sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c",
+      "triples": 392,
+      "content": "sha256:f6c750f9ed9b1f22f829c2f26a397a2d36e7b9aac05c0c86ac5388065e0025bf"
     }
   ],
   "classes": {
@@ -720,6 +720,46 @@
       "range": "https://www.w3.org/ns/ucm#Person",
       "superproperties": []
     },
+    "https://www.w3.org/ns/ucm#hasClosureReason": {
+      "iri": "https://www.w3.org/ns/ucm#hasClosureReason",
+      "term": "hasClosureReason",
+      "label": "has closure reason",
+      "comment": "Relates a closed care coordination request to the reason it was closed.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#CoordinationRequest",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
+    "https://www.w3.org/ns/ucm#hasCommitmentStatus": {
+      "iri": "https://www.w3.org/ns/ucm#hasCommitmentStatus",
+      "term": "hasCommitmentStatus",
+      "label": "has commitment status",
+      "comment": "Relates a care commitment to whether it is binding on its participants.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#CareCommitment",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
+    "https://www.w3.org/ns/ucm#hasHandoffStatus": {
+      "iri": "https://www.w3.org/ns/ucm#hasHandoffStatus",
+      "term": "hasHandoffStatus",
+      "label": "has handoff status",
+      "comment": "Relates a handshake to where responsibility for its agreed services stands between the sending and receiving parties.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#Handshake",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
+    "https://www.w3.org/ns/ucm#hasHandshakeFulfillment": {
+      "iri": "https://www.w3.org/ns/ucm#hasHandshakeFulfillment",
+      "term": "hasHandshakeFulfillment",
+      "label": "has handshake fulfillment",
+      "comment": "Relates a handshake to how much of its negotiated service has been delivered.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#Handshake",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
     "https://www.w3.org/ns/ucm#hasLifecycleState": {
       "iri": "https://www.w3.org/ns/ucm#hasLifecycleState",
       "term": "hasLifecycleState",
@@ -768,6 +808,16 @@
       "kind": "object",
       "domain": "https://www.w3.org/ns/ucm#ClinicalEncounter",
       "range": "https://www.w3.org/ns/ucm#Person",
+      "superproperties": []
+    },
+    "https://www.w3.org/ns/ucm#hasReferralDisposition": {
+      "iri": "https://www.w3.org/ns/ucm#hasReferralDisposition",
+      "term": "hasReferralDisposition",
+      "label": "has referral disposition",
+      "comment": "Relates a care coordination request to the receiving party's decision on it.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#CoordinationRequest",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "superproperties": []
     },
     "https://www.w3.org/ns/ucm#hasResident": {
@@ -966,6 +1016,285 @@
     }
   },
   "schemes": {
+    "https://www.w3.org/ns/ucm#ClosureReason": {
+      "iri": "https://www.w3.org/ns/ucm#ClosureReason",
+      "term": "ClosureReason",
+      "label": "Closure Reason",
+      "description": "Why did the care coordination episode end?",
+      "concepts": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClientDeclined",
+          "term": "ClientDeclined",
+          "label": "Declined by the person",
+          "alt_labels": [],
+          "definition": "The person chose not to receive the requested services.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClientUnreachable",
+          "term": "ClientUnreachable",
+          "label": "Person unreachable",
+          "alt_labels": [],
+          "definition": "The receiving party could not reach the person.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosedConnected",
+          "term": "ClosedConnected",
+          "label": "Connected",
+          "alt_labels": [],
+          "definition": "The person was connected to the requested services.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosedNoLongerNeeded",
+          "term": "ClosedNoLongerNeeded",
+          "label": "No longer needed",
+          "alt_labels": [],
+          "definition": "The need was resolved, or stopped applying, without the requested services.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosedNotConnected",
+          "term": "ClosedNotConnected",
+          "label": "Not connected",
+          "alt_labels": [],
+          "definition": "The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#Ineligible",
+          "term": "Ineligible",
+          "label": "Ineligible",
+          "alt_labels": [],
+          "definition": "The person does not meet the receiving program's eligibility criteria.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#MissingVerification",
+          "term": "MissingVerification",
+          "label": "Missing verification",
+          "alt_labels": [],
+          "definition": "Documentation or verification the receiving party requires was not provided.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#OtherClosureReason",
+          "term": "OtherClosureReason",
+          "label": "Other reason",
+          "alt_labels": [],
+          "definition": "Not connected for a reason not listed here.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#OutOfArea",
+          "term": "OutOfArea",
+          "label": "Out of area",
+          "alt_labels": [],
+          "definition": "The person is outside the receiving party's service area.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ProgramCapacity",
+          "term": "ProgramCapacity",
+          "label": "Program at capacity",
+          "alt_labels": [],
+          "definition": "The receiving program had no capacity for the person.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ClosedNotConnected"
+          ],
+          "mappings": {}
+        }
+      ]
+    },
+    "https://www.w3.org/ns/ucm#CommitmentStatus": {
+      "iri": "https://www.w3.org/ns/ucm#CommitmentStatus",
+      "term": "CommitmentStatus",
+      "label": "Commitment Status",
+      "description": "Is a care commitment binding on its participants?",
+      "concepts": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentInForce",
+          "term": "CommitmentInForce",
+          "label": "In force",
+          "alt_labels": [],
+          "definition": "The commitment is agreed and binding on its participants.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentLapsed",
+          "term": "CommitmentLapsed",
+          "label": "Lapsed",
+          "alt_labels": [],
+          "definition": "The commitment ended without being released, for example by expiry or abandonment.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentProposed",
+          "term": "CommitmentProposed",
+          "label": "Proposed",
+          "alt_labels": [],
+          "definition": "The commitment has been offered but not yet agreed.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentReleased",
+          "term": "CommitmentReleased",
+          "label": "Released",
+          "alt_labels": [],
+          "definition": "The commitment ended deliberately: completed, handed over or ended by agreement.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentSuspended",
+          "term": "CommitmentSuspended",
+          "label": "Suspended",
+          "alt_labels": [],
+          "definition": "The commitment is agreed but temporarily not binding.",
+          "broader": [],
+          "mappings": {}
+        }
+      ]
+    },
+    "https://www.w3.org/ns/ucm#HandoffStatus": {
+      "iri": "https://www.w3.org/ns/ucm#HandoffStatus",
+      "term": "HandoffStatus",
+      "label": "Handoff Status",
+      "description": "Where does responsibility for the agreed services stand between the sending and receiving parties?",
+      "concepts": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffAcknowledged",
+          "term": "HandoffAcknowledged",
+          "label": "Acknowledged",
+          "alt_labels": [
+            "Received"
+          ],
+          "definition": "The receiving party has acknowledged the handoff but has not yet assumed responsibility.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffAssumed",
+          "term": "HandoffAssumed",
+          "label": "Assumed",
+          "alt_labels": [],
+          "definition": "The receiving party has assumed responsibility for the agreed services, and the sending party has released it.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffDropped",
+          "term": "HandoffDropped",
+          "label": "Dropped",
+          "alt_labels": [],
+          "definition": "The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffOffered",
+          "term": "HandoffOffered",
+          "label": "Offered",
+          "alt_labels": [],
+          "definition": "The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffReturned",
+          "term": "HandoffReturned",
+          "label": "Returned",
+          "alt_labels": [],
+          "definition": "The receiving party handed responsibility back to the sending party.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffShared",
+          "term": "HandoffShared",
+          "label": "Shared",
+          "alt_labels": [],
+          "definition": "The sending and receiving parties hold responsibility for the agreed services jointly.",
+          "broader": [],
+          "mappings": {}
+        }
+      ]
+    },
+    "https://www.w3.org/ns/ucm#HandshakeFulfillment": {
+      "iri": "https://www.w3.org/ns/ucm#HandshakeFulfillment",
+      "term": "HandshakeFulfillment",
+      "label": "Handshake Fulfillment",
+      "description": "How much of the service negotiated in a handshake has been delivered?",
+      "concepts": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#FulfillmentConfirmed",
+          "term": "FulfillmentConfirmed",
+          "label": "Confirmed delivered",
+          "alt_labels": [
+            "Completed"
+          ],
+          "definition": "The requesting party has confirmed that the negotiated services were delivered.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#FulfillmentNotStarted",
+          "term": "FulfillmentNotStarted",
+          "label": "Not started",
+          "alt_labels": [],
+          "definition": "None of the negotiated services has been delivered yet.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#FulfillmentPartial",
+          "term": "FulfillmentPartial",
+          "label": "Partially delivered",
+          "alt_labels": [
+            "Partially executed"
+          ],
+          "definition": "Some, but not all, of the negotiated services have been delivered.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#FulfillmentReported",
+          "term": "FulfillmentReported",
+          "label": "Reported delivered",
+          "alt_labels": [
+            "Pending confirmation"
+          ],
+          "definition": "The delivering party reports the negotiated services delivered; the requesting party has not confirmed it.",
+          "broader": [],
+          "mappings": {}
+        }
+      ]
+    },
     "https://www.w3.org/ns/ucm#LifecycleState": {
       "iri": "https://www.w3.org/ns/ucm#LifecycleState",
       "term": "LifecycleState",
@@ -979,7 +1308,9 @@
           "alt_labels": [
             "Accepted"
           ],
-          "definition": "A care coordination request that has been accepted for ongoing care."
+          "definition": "A care coordination request that has been accepted for ongoing care.",
+          "broader": [],
+          "mappings": {}
         },
         {
           "iri": "https://www.w3.org/ns/ucm#Declined",
@@ -988,7 +1319,9 @@
           "alt_labels": [
             "Declined"
           ],
-          "definition": "This care request was denied."
+          "definition": "This care request was denied.",
+          "broader": [],
+          "mappings": {}
         },
         {
           "iri": "https://www.w3.org/ns/ucm#Pending",
@@ -997,7 +1330,74 @@
           "alt_labels": [
             "Pending"
           ],
-          "definition": "A pending care coordination request."
+          "definition": "A pending care coordination request.",
+          "broader": [],
+          "mappings": {}
+        }
+      ]
+    },
+    "https://www.w3.org/ns/ucm#ReferralDisposition": {
+      "iri": "https://www.w3.org/ns/ucm#ReferralDisposition",
+      "term": "ReferralDisposition",
+      "label": "Referral Disposition",
+      "description": "What has the receiving party decided about a care coordination request?",
+      "concepts": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralAccepted",
+          "term": "ReferralAccepted",
+          "label": "Accepted",
+          "alt_labels": [],
+          "definition": "The receiving party agreed to take part in the requested coordination.",
+          "broader": [],
+          "mappings": {
+            "exactMatch": [
+              "https://www.w3.org/ns/ucm#Accepted"
+            ]
+          }
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralDeclined",
+          "term": "ReferralDeclined",
+          "label": "Declined",
+          "alt_labels": [],
+          "definition": "The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept.",
+          "broader": [],
+          "mappings": {
+            "exactMatch": [
+              "https://www.w3.org/ns/ucm#Declined"
+            ]
+          }
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralExpired",
+          "term": "ReferralExpired",
+          "label": "Expired",
+          "alt_labels": [],
+          "definition": "The receiving party made no decision within the time allowed for a response.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralPending",
+          "term": "ReferralPending",
+          "label": "Pending",
+          "alt_labels": [],
+          "definition": "The request has been sent and the receiving party has not yet decided.",
+          "broader": [],
+          "mappings": {
+            "exactMatch": [
+              "https://www.w3.org/ns/ucm#Pending"
+            ]
+          }
+        },
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralWithdrawn",
+          "term": "ReferralWithdrawn",
+          "label": "Withdrawn",
+          "alt_labels": [],
+          "definition": "The requesting party withdrew the request before the receiving party decided.",
+          "broader": [],
+          "mappings": {}
         }
       ]
     }
@@ -1132,6 +1532,132 @@
       "sparql": []
     },
     {
+      "iri": "https://www.w3.org/ns/ucm#ClosedWhilePendingShape",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasClosureReason"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosedWhilePendingShape",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Closure reason recorded on a request that is still pending a decision.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .\n                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#ClosureReason-anchored",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasClosureReason"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosureReason-anchored",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasClosureReason ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ClosureReason }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ClosureReason\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#ClosureReasonShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasClosureReason"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ClosureReason-single",
+          "severity": "Violation",
+          "tier": "Definitional",
+          "message": "A coordination request holds at most one closure reason, identified by IRI.",
+          "paths": [
+            "https://www.w3.org/ns/ucm#hasClosureReason"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": 1,
+          "node_kind": "IRI",
+          "datatypes": [],
+          "classes": []
+        }
+      ],
+      "sparql": []
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#CommitmentStatus-anchored",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasCommitmentStatus"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentStatus-anchored",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasCommitmentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:CommitmentStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:CommitmentStatus\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#CommitmentStatusShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasCommitmentStatus"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#CommitmentStatus-single",
+          "severity": "Violation",
+          "tier": "Definitional",
+          "message": "A care commitment holds at most one commitment status, identified by IRI.",
+          "paths": [
+            "https://www.w3.org/ns/ucm#hasCommitmentStatus"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": 1,
+          "node_kind": "IRI",
+          "datatypes": [],
+          "classes": []
+        }
+      ],
+      "sparql": []
+    },
+    {
       "iri": "https://www.w3.org/ns/ucm#ContextArtifactShape",
       "severity": "Violation",
       "tier": null,
@@ -1209,6 +1735,80 @@
       ]
     },
     {
+      "iri": "https://www.w3.org/ns/ucm#FulfillmentAfterDeclineShape",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasHandshakeFulfillment"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#FulfillmentAfterDeclineShape",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#HandoffStatus-anchored",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasHandoffStatus"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffStatus-anchored",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandoffStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandoffStatus\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#HandoffStatusShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasHandoffStatus"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandoffStatus-single",
+          "severity": "Violation",
+          "tier": "Definitional",
+          "message": "A handshake holds at most one handoff status, identified by IRI.",
+          "paths": [
+            "https://www.w3.org/ns/ucm#hasHandoffStatus"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": 1,
+          "node_kind": "IRI",
+          "datatypes": [],
+          "classes": []
+        }
+      ],
+      "sparql": []
+    },
+    {
       "iri": "https://www.w3.org/ns/ucm#HandshakeAcyclicShape",
       "severity": "Violation",
       "tier": "Definitional",
@@ -1229,6 +1829,58 @@
           "select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
         }
       ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#HandshakeFulfillment-anchored",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasHandshakeFulfillment"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandshakeFulfillment-anchored",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandshakeFulfillment\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#HandshakeFulfillmentShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasHandshakeFulfillment"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#HandshakeFulfillment-single",
+          "severity": "Violation",
+          "tier": "Definitional",
+          "message": "A handshake holds at most one fulfillment state, identified by IRI.",
+          "paths": [
+            "https://www.w3.org/ns/ucm#hasHandshakeFulfillment"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": 1,
+          "node_kind": "IRI",
+          "datatypes": [],
+          "classes": []
+        }
+      ],
+      "sparql": []
     },
     {
       "iri": "https://www.w3.org/ns/ucm#HandshakeShape",
@@ -1613,6 +2265,58 @@
           "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
         }
       ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#ReferralDisposition-anchored",
+      "severity": "Warning",
+      "tier": "Recommended",
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasReferralDisposition"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [],
+      "sparql": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralDisposition-anchored",
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ReferralDisposition\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "iri": "https://www.w3.org/ns/ucm#ReferralDispositionShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://www.w3.org/ns/ucm#hasReferralDisposition"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": "https://www.w3.org/ns/ucm#ReferralDisposition-single",
+          "severity": "Violation",
+          "tier": "Definitional",
+          "message": "A coordination request holds at most one referral disposition, identified by IRI.",
+          "paths": [
+            "https://www.w3.org/ns/ucm#hasReferralDisposition"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": 1,
+          "node_kind": "IRI",
+          "datatypes": [],
+          "classes": []
+        }
+      ],
+      "sparql": []
     },
     {
       "iri": "https://www.w3.org/ns/ucm#StatementShape",

@@ -249,8 +249,8 @@ def add_report(
     lock: Optional["BuildLock"] = None,
     held: Optional["BuildLock"] = None,
     failed: Optional[List[str]] = None,
-) -> None:
-    """Render report.html into outputs.
+) -> Dict[str, Any]:
+    """Render report.html into outputs; returns the report data.
 
     held is the last good lock when a failed build kept the artifacts on disk:
     the report then lists those artifacts (what is actually next to it), not
@@ -268,6 +268,7 @@ def add_report(
         output_digests=artifacts, failed=failed, held=held,
     ).build()
     outputs.files[REPORT] = Generator().generate_report(report)
+    return report
 
 
 # ============= Lockfile =============

@@ -200,6 +200,9 @@ components:
       description: {{ scheme.description | yaml_str }}
       x-semantic-uri: {{ scheme.iri | yaml_str }}
       x-ucm-open-vocabulary: true
+      {% if scheme.properties %}
+      x-ucm-properties: {{ scheme.properties | yaml_flow }}
+      {% endif %}
       x-ucm-concepts:
 {{ scheme.concepts | yaml | indent(8, true) }}
       anyOf:

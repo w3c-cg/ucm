@@ -331,7 +331,7 @@ h3 { font-size: 12px; }
       <div class="status-lamp">
         <span class="pill state passed">Build passed</span>
         <span class="facts">
-          <span>0 violations</span><span>0 warnings</span><span>15 info</span>
+          <span>0 violations</span><span>0 warnings</span><span>14 info</span>
 <span>Example conforms</span>        </span>
       </div>
       <div class="spacer"></div>
@@ -347,14 +347,14 @@ h3 { font-size: 12px; }
       <h2>Build</h2>
       <a href="#overview" data-pane="overview"><span class="label">Overview</span></a>
       <a href="#lint" data-pane="lint"><span class="label">Lint</span>
-<span class="badge">15</span></a>
+<span class="badge">14</span></a>
       <a href="#validation" data-pane="validation"><span class="label">Validation</span>
 </a>
       <a href="#changes" data-pane="changes"><span class="label">Changes</span>
 </a>
       <h2>Ontology</h2>
       <a href="#classes" data-pane="classes"><span class="label">Classes</span><span class="badge">63</span></a>
-      <a href="#vocabularies" data-pane="vocabularies"><span class="label">Vocabularies</span><span class="badge">1</span></a>
+      <a href="#vocabularies" data-pane="vocabularies"><span class="label">Vocabularies</span><span class="badge">6</span></a>
       <h2>Targets</h2>
       <a href="#openapi" data-pane="openapi"><span class="label">OpenAPI</span><span class="badge">19</span></a>
       <a href="#postgres" data-pane="postgres"><span class="label">Postgres</span><span class="badge">19</span></a>
@@ -373,7 +373,7 @@ h3 { font-size: 12px; }
 <p>Complete UCM model including Core, Participation, and Domain semantic layers.</p>            <div class="lozenges">
               <span class="pill green">0 lint violations</span>
               <span class="pill green">0 lint warnings</span>
-              <span class="pill graphite">15 informational</span>
+              <span class="pill graphite">14 informational</span>
               <span class="pill green">Example conforms</span>
             </div>
           </div>
@@ -384,19 +384,67 @@ h3 { font-size: 12px; }
           <div class="cols">
             <table class="info">
               <tr><th>Classes</th><td>63</td></tr>
-              <tr><th>Properties</th><td>34</td></tr>
-              <tr><th>Concept schemes</th><td>1</td></tr>
-              <tr><th>Node shapes</th><td>20</td></tr>
-              <tr><th>Constraints</th><td>31</td></tr>
+              <tr><th>Properties</th><td>39</td></tr>
+              <tr><th>Concept schemes</th><td>6</td></tr>
+              <tr><th>Concepts</th><td>33</td></tr>
+              <tr><th>Node shapes</th><td>32</td></tr>
             </table>
             <table class="info">
+              <tr><th>Constraints</th><td>43</td></tr>
               <tr><th>API resources</th><td>19</td></tr>
               <tr><th>API operations</th><td>95</td></tr>
               <tr><th>Tables</th><td>19</td></tr>
               <tr><th>Association tables</th><td>27</td></tr>
+            </table>
+            <table class="info">
               <tr><th>FHIR-mapped classes</th><td>12</td></tr>
             </table>
           </div>
+        </div>
+
+        <h3>Vocabularies</h3>
+        <div class="scroll">
+          <table class="list">
+            <thead><tr><th>Concept scheme</th><th class="num">Concepts</th><th class="num">Levels</th><th>Values of</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>ClosureReason</b></a></td>
+                <td class="num">10</td>
+                <td class="num">2</td>
+                <td><span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span></td>
+              </tr>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>CommitmentStatus</b></a></td>
+                <td class="num">5</td>
+                <td class="num">1</td>
+                <td><span class="mono">hasCommitmentStatus</span> <span class="muted">on ucm:CareCommitment</span></td>
+              </tr>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>HandoffStatus</b></a></td>
+                <td class="num">6</td>
+                <td class="num">1</td>
+                <td><span class="mono">hasHandoffStatus</span> <span class="muted">on ucm:Handshake</span></td>
+              </tr>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>HandshakeFulfillment</b></a></td>
+                <td class="num">4</td>
+                <td class="num">1</td>
+                <td><span class="mono">hasHandshakeFulfillment</span> <span class="muted">on ucm:Handshake</span></td>
+              </tr>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>LifecycleState</b></a></td>
+                <td class="num">3</td>
+                <td class="num">1</td>
+                <td><span class="mono">hasLifecycleState</span> <span class="muted">on ucm:Process</span></td>
+              </tr>
+              <tr>
+                <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>ReferralDisposition</b></a></td>
+                <td class="num">5</td>
+                <td class="num">1</td>
+                <td><span class="mono">hasReferralDisposition</span> <span class="muted">on ucm:CoordinationRequest</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <h3>Sources</h3>
@@ -404,8 +452,8 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>JSON-LD IR</th><th class="num">Triples</th><th>Graph (URDNA2015)</th><th>File bytes</th></tr></thead>
             <tbody>
-              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">385</td><td class="mono" title="sha256:9392249aff4c637a7313ccb4a23fb258c111ce2639d9fba1aafa2be62d67a158">9392249aff4c637a</td><td class="mono" title="sha256:b3df1a4f5d69bfd601bbf9f2f1958876e1ae79a15644424103a4904270b29c0d">b3df1a4f5d69bfd6</td></tr>
-              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">293</td><td class="mono" title="sha256:a37a698093c82c9fe7743b13c7b87d583ba9e6fe1f8f26834bb5d233aea65d50">a37a698093c82c9f</td><td class="mono" title="sha256:cbee96f2bdcb34359ed6606460355f53c5f20144d94039ebb1f240a21ffe24a0">cbee96f2bdcb3435</td></tr>
+              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">629</td><td class="mono" title="sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca">030067647e3395ea</td><td class="mono" title="sha256:cccf23d1df2f2a4b489bd3c0e7bda7d37a9b827fd26f4704c9cf4c2652087ff7">cccf23d1df2f2a4b</td></tr>
+              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">392</td><td class="mono" title="sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c">74c1824251435960</td><td class="mono" title="sha256:f6c750f9ed9b1f22f829c2f26a397a2d36e7b9aac05c0c86ac5388065e0025bf">f6c750f9ed9b1f22</td></tr>
             </tbody>
           </table>
         </div>
@@ -414,7 +462,7 @@ h3 { font-size: 12px; }
         <div class="scroll">
           <table class="list">
             <tbody>
-<tr><td class="nowrap">IR root (119 nodes)</td><td class="mono break">sha256:f227ad1022f7923376ade1250a211558bb33367dc40e4e5833b37accc5396877</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:e54884a806f8eaa6840bb8662976822cb53440658ba00eabc5de3773ae38ec36</td></tr>
+<tr><td class="nowrap">IR root (141 nodes)</td><td class="mono break">sha256:6a575a95eb3ddf76865bb66975522f0868fa5ed017d962028eb5985ec9c7bd6d</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:86041137924314c88470bbcf04d98e0c2e63fd3640f4dce98c34c21b0d60bf8e</td></tr>
             </tbody>
           </table>
         </div>
@@ -423,7 +471,7 @@ h3 { font-size: 12px; }
       <!-- ===================== Changes ===================== -->
       <section class="pane" id="changes">
         <h1>Changes</h1>
-        <p class="lede">No changes since the previous build (IR root <span class="mono">f227ad1022f7</span>). Every node and output has the same content digest.</p>
+        <p class="lede">No changes since the previous build (IR root <span class="mono">6a575a95eb3d</span>). Every node and output has the same content digest.</p>
       </section>
 
       <!-- ===================== Lint ===================== -->
@@ -431,10 +479,10 @@ h3 { font-size: 12px; }
         <h1>Lint</h1>
         <p class="lede">SHACL-SHACL and ucm-shapes-lint over the shapes graph, plus consistency checks across the ontology, vocabularies and shapes.</p>
         <div class="segmented" role="group" aria-label="Filter by severity">
-          <button type="button" class="is-selected" data-severity="all">All 15</button>
+          <button type="button" class="is-selected" data-severity="all">All 14</button>
           <button type="button" data-severity="Violation">Violations 0</button>
           <button type="button" data-severity="Warning">Warnings 0</button>
-          <button type="button" data-severity="Info">Info 15</button>
+          <button type="button" data-severity="Info">Info 14</button>
         </div>
         <div class="scroll">
           <table class="list">
@@ -447,7 +495,6 @@ h3 { font-size: 12px; }
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasTemporalContext</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:validDuring</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">orphan-class</td><td class="mono break">ucm:BehavioralHealthDomain</td><td class="wide">No subclasses, properties or shapes refer to this class.</td></tr>
-              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">orphan-class</td><td class="mono break">ucm:CareCommitment</td><td class="wide">No subclasses, properties or shapes refer to this class.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">orphan-class</td><td class="mono break">ucm:CareCoverageGap</td><td class="wide">No subclasses, properties or shapes refer to this class.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">orphan-class</td><td class="mono break">ucm:CareCoverageRequirement</td><td class="wide">No subclasses, properties or shapes refer to this class.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">orphan-class</td><td class="mono break">ucm:ClinicalDomain</td><td class="wide">No subclasses, properties or shapes refer to this class.</td></tr>
@@ -577,16 +624,34 @@ h3 { font-size: 12px; }
 <span>Extends <b>UcmNode</b></span><span>Table <b class="mono">behavioral_health_domain</b></span>              </div>
             </div>
           </details>
-          <details class="class" data-search="carecommitment care commitment ">
+          <details class="class" data-search="carecommitment care commitment hascommitmentstatus">
             <summary style="padding-left: 24px">
               <span class="term">CareCommitment</span>
               <span class="mono muted">ucm:CareCommitment</span>
               <span class="tags">
-<span class="pill blue">/care-commitments</span><span class="pill graphite">care_commitment</span>              </span>
+<span class="pill blue">/care-commitments</span><span class="pill graphite">care_commitment</span><span class="badge">1</span>              </span>
             </summary>
             <div class="class-body">
 <p>A continuing agreement among participants to coordinate care toward a joint purpose, according to terms or conditions that may evolve.</p>              <div class="meta">
-<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">care_commitment</b></span>              </div>
+<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">care_commitment</b></span><span>Examples <b>1</b></span>              </div>
+              <div class="scroll">
+                <table class="list">
+                  <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td class="nowrap"><b>hasCommitmentStatus</b><br><span class="mono muted">ucm:hasCommitmentStatus</span></td>
+                      <td class="mono nowrap">0..1</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">CommitmentStatus</td>
+                      <td class="mono">care_commitment.has_commitment_status<br><span class="muted">text</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <ul class="constraints">
+                <li><span class="pill Violation">Definitional</span><span>A care commitment holds at most one commitment status, identified by IRI.</span></li>
+              </ul>
             </div>
           </details>
           <details class="class" data-search="carecoveragegap care coverage gap ">
@@ -1140,18 +1205,43 @@ h3 { font-size: 12px; }
 <span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span>              </div>
             </div>
           </details>
-          <details class="class" data-search="coordinationrequest care coordination request ">
+          <details class="class" data-search="coordinationrequest care coordination request hasclosurereason hasreferraldisposition">
             <summary style="padding-left: 42px">
               <span class="term">CoordinationRequest</span>
               <span class="mono muted">ucm:CoordinationRequest</span>
               <span class="tags">
-<span class="pill green">Task</span>              </span>
+<span class="pill green">Task</span><span class="badge">2</span>              </span>
             </summary>
             <div class="class-body">
 <p>A process in which coordination is requested between participating entities.</p>              <div class="meta">
 <span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span><span>FHIR <b>Task</b></span><span>Examples <b>1</b></span>              </div>
+              <div class="scroll">
+                <table class="list">
+                  <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td class="nowrap"><b>hasClosureReason</b><br><span class="mono muted">ucm:hasClosureReason</span></td>
+                      <td class="mono nowrap">0..1</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">ClosureReason</td>
+                      <td class="mono">process.has_closure_reason<br><span class="muted">text</span></td>
+                      <td class="mono">Task.statusReason</td>
+                    </tr>
+                    <tr>
+                      <td class="nowrap"><b>hasReferralDisposition</b><br><span class="mono muted">ucm:hasReferralDisposition</span></td>
+                      <td class="mono nowrap">0..1</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">ReferralDisposition</td>
+                      <td class="mono">process.has_referral_disposition<br><span class="muted">text</span></td>
+                      <td class="mono">Task.businessStatus</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <ul class="constraints">
                 <li><span class="pill Warning">Recommended</span><span>Coordination process declares no activity focus, directly or through a process it negotiates.</span></li>
+                <li><span class="pill Violation">Definitional</span><span>A coordination request holds at most one closure reason, identified by IRI.</span></li>
+                <li><span class="pill Violation">Definitional</span><span>A coordination request holds at most one referral disposition, identified by IRI.</span></li>
               </ul>
             </div>
           </details>
@@ -1170,12 +1260,12 @@ h3 { font-size: 12px; }
               </ul>
             </div>
           </details>
-          <details class="class" data-search="handshake handshake negotiates">
+          <details class="class" data-search="handshake handshake hashandoffstatus hashandshakefulfillment negotiates">
             <summary style="padding-left: 60px">
               <span class="term">Handshake</span>
               <span class="mono muted">ucm:Handshake</span>
               <span class="tags">
-<span class="badge">1</span>              </span>
+<span class="badge">3</span>              </span>
             </summary>
             <div class="class-body">
 <p>A coordinative process through which participating entities negotiate mutual participation in a shared activity.</p>              <div class="meta">
@@ -1184,6 +1274,22 @@ h3 { font-size: 12px; }
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
                   <tbody>
+                    <tr>
+                      <td class="nowrap"><b>hasHandoffStatus</b><br><span class="mono muted">ucm:hasHandoffStatus</span></td>
+                      <td class="mono nowrap">0..1</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">HandoffStatus</td>
+                      <td class="mono">process.has_handoff_status<br><span class="muted">text</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
+                    </tr>
+                    <tr>
+                      <td class="nowrap"><b>hasHandshakeFulfillment</b><br><span class="mono muted">ucm:hasHandshakeFulfillment</span></td>
+                      <td class="mono nowrap">0..1</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">HandshakeFulfillment</td>
+                      <td class="mono">process.has_handshake_fulfillment<br><span class="muted">text</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
+                    </tr>
                     <tr>
                       <td class="nowrap"><b>negotiates</b><br><span class="mono muted">ucm:negotiates</span></td>
                       <td class="mono nowrap">1..*</td>
@@ -1197,6 +1303,8 @@ h3 { font-size: 12px; }
               </div>
               <ul class="constraints">
                 <li><span class="pill Violation">Definitional</span><span>Handshake negotiates itself, directly or through a chain: the negotiation has no base case.</span></li>
+                <li><span class="pill Violation">Definitional</span><span>A handshake holds at most one handoff status, identified by IRI.</span></li>
+                <li><span class="pill Violation">Definitional</span><span>A handshake holds at most one fulfillment state, identified by IRI.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A handshake negotiates participation in at least one process.</span></li>
               </ul>
             </div>
@@ -1700,16 +1808,279 @@ h3 { font-size: 12px; }
       <!-- ===================== Vocabularies ===================== -->
       <section class="pane" id="vocabularies">
         <h1>Vocabularies</h1>
-        <p class="lede">SKOS concept schemes. They are open: the API accepts any concept IRI, and the database stores concepts without foreign keys.</p>
+        <p class="lede">SKOS concept schemes. They are open: the API accepts any concept IRI, and the database stores concepts without foreign keys. Narrower concepts are indented under their skos:broader parent; roll-ups count a concept under every ancestor.</p>
         <div class="group">
-          <h3>LifecycleState <span class="mono muted">https://www.w3.org/ns/ucm#LifecycleState</span></h3>
+          <h3>ClosureReason <span class="mono muted">https://www.w3.org/ns/ucm#ClosureReason</span></h3>
+<p>Why did the care coordination episode end?</p>          <p>
+Values of <span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span>            <span class="pill graphite">10 concepts</span>
+<span class="pill graphite">2 levels</span>          </p>
           <div class="scroll">
             <table class="list">
               <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
               <tbody>
-                <tr><td><b>Accepted</b></td><td>Accepted Care Coordination Lifecycle</td><td>A care coordination request that has been accepted for ongoing care.</td><td class="mono">https://www.w3.org/ns/ucm#Accepted</td></tr>
-                <tr><td><b>Declined</b></td><td>Declined Care Coordination Lifecycle</td><td>This care request was denied.</td><td class="mono">https://www.w3.org/ns/ucm#Declined</td></tr>
-                <tr><td><b>Pending</b></td><td>Pending Care Coordination Lifecycle</td><td>A pending care coordination request.</td><td class="mono">https://www.w3.org/ns/ucm#Pending</td></tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ClosedConnected</b></td>
+                  <td>Connected</td>
+                  <td>The person was connected to the requested services.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ClosedConnected</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ClosedNoLongerNeeded</b></td>
+                  <td>No longer needed</td>
+                  <td>The need was resolved, or stopped applying, without the requested services.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ClosedNoLongerNeeded</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ClosedNotConnected</b></td>
+                  <td>Not connected</td>
+                  <td>The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ClosedNotConnected</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ClientDeclined</b></td>
+                  <td>Declined by the person</td>
+                  <td>The person chose not to receive the requested services.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ClientDeclined</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ClientUnreachable</b></td>
+                  <td>Person unreachable</td>
+                  <td>The receiving party could not reach the person.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ClientUnreachable</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>Ineligible</b></td>
+                  <td>Ineligible</td>
+                  <td>The person does not meet the receiving program&#39;s eligibility criteria.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#Ineligible</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>MissingVerification</b></td>
+                  <td>Missing verification</td>
+                  <td>Documentation or verification the receiving party requires was not provided.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#MissingVerification</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>OtherClosureReason</b></td>
+                  <td>Other reason</td>
+                  <td>Not connected for a reason not listed here.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#OtherClosureReason</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>OutOfArea</b></td>
+                  <td>Out of area</td>
+                  <td>The person is outside the receiving party&#39;s service area.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#OutOfArea</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ProgramCapacity</b></td>
+                  <td>Program at capacity</td>
+                  <td>The receiving program had no capacity for the person.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#ProgramCapacity</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
+          <h3>CommitmentStatus <span class="mono muted">https://www.w3.org/ns/ucm#CommitmentStatus</span></h3>
+<p>Is a care commitment binding on its participants?</p>          <p>
+Values of <span class="mono">hasCommitmentStatus</span> <span class="muted">on ucm:CareCommitment</span>            <span class="pill graphite">5 concepts</span>
+          </p>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>CommitmentInForce</b></td>
+                  <td>In force</td>
+                  <td>The commitment is agreed and binding on its participants.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#CommitmentInForce</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>CommitmentLapsed</b></td>
+                  <td>Lapsed</td>
+                  <td>The commitment ended without being released, for example by expiry or abandonment.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#CommitmentLapsed</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>CommitmentProposed</b></td>
+                  <td>Proposed</td>
+                  <td>The commitment has been offered but not yet agreed.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#CommitmentProposed</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>CommitmentReleased</b></td>
+                  <td>Released</td>
+                  <td>The commitment ended deliberately: completed, handed over or ended by agreement.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#CommitmentReleased</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>CommitmentSuspended</b></td>
+                  <td>Suspended</td>
+                  <td>The commitment is agreed but temporarily not binding.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#CommitmentSuspended</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
+          <h3>HandoffStatus <span class="mono muted">https://www.w3.org/ns/ucm#HandoffStatus</span></h3>
+<p>Where does responsibility for the agreed services stand between the sending and receiving parties?</p>          <p>
+Values of <span class="mono">hasHandoffStatus</span> <span class="muted">on ucm:Handshake</span>            <span class="pill graphite">6 concepts</span>
+          </p>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffAcknowledged</b></td>
+                  <td>Acknowledged</td>
+                  <td>The receiving party has acknowledged the handoff but has not yet assumed responsibility.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffAcknowledged</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffAssumed</b></td>
+                  <td>Assumed</td>
+                  <td>The receiving party has assumed responsibility for the agreed services, and the sending party has released it.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffAssumed</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffDropped</b></td>
+                  <td>Dropped</td>
+                  <td>The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffDropped</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffOffered</b></td>
+                  <td>Offered</td>
+                  <td>The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffOffered</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffReturned</b></td>
+                  <td>Returned</td>
+                  <td>The receiving party handed responsibility back to the sending party.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffReturned</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>HandoffShared</b></td>
+                  <td>Shared</td>
+                  <td>The sending and receiving parties hold responsibility for the agreed services jointly.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#HandoffShared</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
+          <h3>HandshakeFulfillment <span class="mono muted">https://www.w3.org/ns/ucm#HandshakeFulfillment</span></h3>
+<p>How much of the service negotiated in a handshake has been delivered?</p>          <p>
+Values of <span class="mono">hasHandshakeFulfillment</span> <span class="muted">on ucm:Handshake</span>            <span class="pill graphite">4 concepts</span>
+          </p>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>FulfillmentConfirmed</b></td>
+                  <td>Confirmed delivered</td>
+                  <td>The requesting party has confirmed that the negotiated services were delivered.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#FulfillmentConfirmed</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>FulfillmentNotStarted</b></td>
+                  <td>Not started</td>
+                  <td>None of the negotiated services has been delivered yet.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#FulfillmentNotStarted</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>FulfillmentPartial</b></td>
+                  <td>Partially delivered</td>
+                  <td>Some, but not all, of the negotiated services have been delivered.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#FulfillmentPartial</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>FulfillmentReported</b></td>
+                  <td>Reported delivered</td>
+                  <td>The delivering party reports the negotiated services delivered; the requesting party has not confirmed it.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#FulfillmentReported</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
+          <h3>LifecycleState <span class="mono muted">https://www.w3.org/ns/ucm#LifecycleState</span></h3>
+<p>A state associated with a process during a portion of its lifecycle.</p>          <p>
+Values of <span class="mono">hasLifecycleState</span> <span class="muted">on ucm:Process</span>            <span class="pill graphite">3 concepts</span>
+          </p>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>Accepted</b></td>
+                  <td>Accepted Care Coordination Lifecycle</td>
+                  <td>A care coordination request that has been accepted for ongoing care.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#Accepted</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>Declined</b></td>
+                  <td>Declined Care Coordination Lifecycle</td>
+                  <td>This care request was denied.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#Declined</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>Pending</b></td>
+                  <td>Pending Care Coordination Lifecycle</td>
+                  <td>A pending care coordination request.</td>
+                  <td class="mono break">https://www.w3.org/ns/ucm#Pending</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
+          <h3>ReferralDisposition <span class="mono muted">https://www.w3.org/ns/ucm#ReferralDisposition</span></h3>
+<p>What has the receiving party decided about a care coordination request?</p>          <p>
+Values of <span class="mono">hasReferralDisposition</span> <span class="muted">on ucm:CoordinationRequest</span>            <span class="pill graphite">5 concepts</span>
+          </p>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>Mappings</th><th>IRI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ReferralAccepted</b></td>
+                  <td>Accepted</td>
+                  <td>The receiving party agreed to take part in the requested coordination.</td>
+<td class="nowrap"><span class="muted">exactMatch</span> <span class="mono">ucm:Accepted</span></td>                  <td class="mono break">https://www.w3.org/ns/ucm#ReferralAccepted</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ReferralDeclined</b></td>
+                  <td>Declined</td>
+                  <td>The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept.</td>
+<td class="nowrap"><span class="muted">exactMatch</span> <span class="mono">ucm:Declined</span></td>                  <td class="mono break">https://www.w3.org/ns/ucm#ReferralDeclined</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ReferralExpired</b></td>
+                  <td>Expired</td>
+                  <td>The receiving party made no decision within the time allowed for a response.</td>
+<td class="nowrap"></td>                  <td class="mono break">https://www.w3.org/ns/ucm#ReferralExpired</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ReferralPending</b></td>
+                  <td>Pending</td>
+                  <td>The request has been sent and the receiving party has not yet decided.</td>
+<td class="nowrap"><span class="muted">exactMatch</span> <span class="mono">ucm:Pending</span></td>                  <td class="mono break">https://www.w3.org/ns/ucm#ReferralPending</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ReferralWithdrawn</b></td>
+                  <td>Withdrawn</td>
+                  <td>The requesting party withdrew the request before the receiving party decided.</td>
+<td class="nowrap"></td>                  <td class="mono break">https://www.w3.org/ns/ucm#ReferralWithdrawn</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1865,7 +2236,7 @@ h3 { font-size: 12px; }
       <!-- ===================== Postgres ===================== -->
       <section class="pane" id="postgres">
         <h1>Postgres</h1>
-        <p class="lede">Revision <span class="mono">ucm_8237b6809c56</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
+        <p class="lede">Revision <span class="mono">ucm_0ab5001ebc4f</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
         <div class="scroll">
           <table class="list">
             <thead><tr><th>Table</th><th>Columns</th><th>Checks</th><th class="num">Classes</th></tr></thead>
@@ -1884,7 +2255,7 @@ h3 { font-size: 12px; }
               </tr>
               <tr>
                 <td class="mono"><b>care_commitment</b></td>
-                <td class="mono">iri, type, extra</td>
+                <td class="mono">iri, type, has_commitment_status, extra</td>
                 <td class="mono">type</td>
                 <td class="num">1</td>
               </tr>
@@ -1950,7 +2321,7 @@ h3 { font-size: 12px; }
               </tr>
               <tr>
                 <td class="mono"><b>process</b></td>
-                <td class="mono">iri, type, has_lifecycle_state, extra</td>
+                <td class="mono">iri, type, has_closure_reason, has_handoff_status, has_handshake_fulfillment, has_lifecycle_state, has_referral_disposition, extra</td>
                 <td class="mono">type</td>
                 <td class="num">10</td>
               </tr>
@@ -2080,7 +2451,7 @@ h3 { font-size: 12px; }
             <table class="list">
               <thead><tr><th>FHIR element</th><th>From</th></tr></thead>
               <tbody>
-<tr><td class="mono nowrap">Task.status</td><td>hasLifecycleState · code · Pending→requested, Accepted→accepted, Declined→rejected</td></tr><tr><td class="mono nowrap">Task.description</td><td>hasActivityFocus/rdfs:label</td></tr><tr><td class="mono nowrap">Task.for</td><td>Participation nodes whose occursWithin points here · role SubjectRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Task.requester</td><td>Participation nodes whose occursWithin points here · role CoordinatorRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Task.owner</td><td>Participation nodes whose occursWithin points here · role ProviderRole · participatingEntity · reference</td></tr>              </tbody>
+<tr><td class="mono nowrap">Task.status</td><td>hasLifecycleState · code · Pending→requested, Accepted→accepted, Declined→rejected</td></tr><tr><td class="mono nowrap">Task.businessStatus</td><td>hasReferralDisposition · concept-coding</td></tr><tr><td class="mono nowrap">Task.statusReason</td><td>hasClosureReason · concept-coding</td></tr><tr><td class="mono nowrap">Task.description</td><td>hasActivityFocus/rdfs:label</td></tr><tr><td class="mono nowrap">Task.for</td><td>Participation nodes whose occursWithin points here · role SubjectRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Task.requester</td><td>Participation nodes whose occursWithin points here · role CoordinatorRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Task.owner</td><td>Participation nodes whose occursWithin points here · role ProviderRole · participatingEntity · reference</td></tr>              </tbody>
             </table>
           </div>
         </div>
@@ -2134,7 +2505,7 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:6d1bddeb223cbaf8c87b429e4fb4e5d74e85e61f3bd6a9ff6e2ae3a8b4d7e8d5">6d1bddeb223cbaf8</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:f2c65ca0394e566cd7fbe9c0b47f600272b29cfd5b960c77ac227b0bbed4f736">f2c65ca0394e566c</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:7853c7d370604077dc1d33f31f1019c4de2da87ed429fd53b1d80e4704cd0fd7">7853c7d370604077</td></tr><tr><td class="mono"><a href="postgres/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="postgres/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="postgres/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="postgres/migrations/versions/ucm_8237b6809c56_ucm_0_0_1.py">postgres/migrations/versions/ucm_8237b6809c56_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:9af9f7c409bff12c69b6b4432d0014699c29751760643820763d38124f754f3c">9af9f7c409bff12c</td></tr><tr><td class="mono"><a href="postgres/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:6c2c992481d48c49b0822a9593a41f40b06933994bed82f142c3195ee3ea612e">6c2c992481d48c49</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
+<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c">d02c45157e2fc69b</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:dcb8445cbfe036fd9de24143e57920a30ff48871532b6f47717b7089e1335071">dcb8445cbfe036fd</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:4277942145b36ca7c59ccf9a804aa75f5b3bef200eebdc6bf194b26037242597">4277942145b36ca7</td></tr><tr><td class="mono"><a href="postgres/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="postgres/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="postgres/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="postgres/migrations/versions/ucm_0ab5001ebc4f_ucm_0_0_1.py">postgres/migrations/versions/ucm_0ab5001ebc4f_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:dba0635ae856e7d88b19f0d866a6f54d41d3b587452da77fda0c23b489acd54e">dba0635ae856e7d8</td></tr><tr><td class="mono"><a href="postgres/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:c978d054e039e0fb741bf69f9ebd002a42044e3a7e1c3a391668f4c9fb5b87fc">c978d054e039e0fb</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
           </table>
         </div>
       </section>
@@ -2142,7 +2513,7 @@ h3 { font-size: 12px; }
   </div>
 
   <div class="statusbar">
-    <span>63 classes · 34 properties · 19 resources</span>
+    <span>63 classes · 39 properties · 33 concepts · 19 resources</span>
     <span class="mono">https://www.w3.org/ns/ucm#</span>
     <span>Generated by ucm-codegen</span>
   </div>

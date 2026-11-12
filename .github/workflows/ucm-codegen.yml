@@ -12,11 +12,13 @@ on:
     paths:
       - "**/*.ttl"
       - "ucm-codegen/**"
+      - "test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   pull_request:
     paths:
       - "**/*.ttl"
       - "ucm-codegen/**"
+      - "test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   workflow_dispatch:
 
@@ -55,13 +57,21 @@ jobs:
           restore-keys: ucm-stage-cache-
 
       # Export → lint (SHACL-SHACL, ucm-shapes-lint, consistency) → validate the
-      # example → OpenAPI, context, Postgres, FHIR and report.html. Writes the
-      # outputs even on failure, so the uploaded report shows why.
+      # example → OpenAPI, context, Postgres, FHIR and report.html. A failed
+      # build writes only the report, so the uploaded report shows why. The
+      # same summary (status, vocabularies, findings, changes) goes on the run
+      # page, so reading the result does not need the download.
       - name: Build
-        run: ucm-codegen build --strict
+        run: ucm-codegen build --strict --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Tests
         run: pytest
+
+      # The group's shapes suite: baseline, seeded defects, lint, SHACL-SHACL.
+      # Exits non-zero on any failure.
+      - name: Shapes suite
+        working-directory: .
+        run: python test_core_shapes.py .
 
       # Only bites for what is committed: if ucm-build.lock (and generated/,
       # build/) are in git, a spec change must ship with its regenerated
@@ -82,5 +92,4 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "### UCM reference build" >> "$GITHUB_STEP_SUMMARY"
-          echo "Download the **ucm-reference** artifact and open \`generated/report.html\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "Full report: download the **ucm-reference** artifact and open \`generated/report.html\`." >> "$GITHUB_STEP_SUMMARY"

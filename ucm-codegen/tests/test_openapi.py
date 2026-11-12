@@ -120,3 +120,23 @@ def test_no_hmis_terminology(openapi_text):
     sources += list((PROJECT / "profiles").glob("*.yaml"))
     offenders = [p.name for p in sources if pattern.search(p.read_text(encoding="utf-8"))]
     assert offenders == []
+
+
+def test_new_axes_reference_their_schemes(openapi_doc):
+    for cls, prop, scheme in [
+        ("CoordinationRequest", "hasReferralDisposition", "ReferralDisposition"),
+        ("CoordinationRequest", "hasClosureReason", "ClosureReason"),
+        ("Handshake", "hasHandoffStatus", "HandoffStatus"),
+        ("Handshake", "hasHandshakeFulfillment", "HandshakeFulfillment"),
+        ("CareCommitment", "hasCommitmentStatus", "CommitmentStatus"),
+    ]:
+        assert schema(openapi_doc, cls)["properties"][prop]["$ref"] == f"#/components/schemas/{scheme}", prop
+        assert schema(openapi_doc, scheme)["x-ucm-properties"] == [prop]
+
+
+def test_concept_hierarchy_and_mappings_are_published(openapi_doc):
+    closure = schema(openapi_doc, "ClosureReason")["x-ucm-concepts"]
+    assert closure["OutOfArea"]["broader"] == ["ClosedNotConnected"]
+    assert "broader" not in closure["ClosedNotConnected"]
+    disposition = schema(openapi_doc, "ReferralDisposition")["x-ucm-concepts"]
+    assert disposition["ReferralPending"]["exactMatch"] == ["ucm:Pending"]

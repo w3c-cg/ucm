@@ -75,14 +75,17 @@ def upgrade() -> None:
         sa.Column("scheme_iri", sa.Text(), nullable=False),
         sa.Column("term", sa.Text(), nullable=False),
         sa.Column("label", sa.Text(), nullable=True),
+        sa.Column("broader_iri", sa.Text(), nullable=True, comment="skos:broader within the scheme"),
         sa.PrimaryKeyConstraint("iri", name=op.f("pk_concept")),
         comment="SKOS concepts from the UCM concept schemes",
     )
     op.create_index(op.f("ix_concept_scheme_iri"), "concept", ["scheme_iri"])
+    op.create_index(op.f("ix_concept_broader_iri"), "concept", ["broader_iri"])
     op.bulk_insert(concept, CONCEPTS)
 
 
 def downgrade() -> None:
+    op.drop_index(op.f("ix_concept_broader_iri"), table_name="concept")
     op.drop_index(op.f("ix_concept_scheme_iri"), table_name="concept")
     op.drop_table("concept")
     {% for assoc in schema.associations | reverse %}

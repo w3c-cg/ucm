@@ -15,11 +15,11 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:9392249aff4c637a7313ccb4a23fb258c111ce2639d9fba1aafa2be62d67a158"
-        triples: 385
+        digest: "sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca"
+        triples: 629
       - file: "ucm-shapes.jsonld"
-        digest: "sha256:a37a698093c82c9fe7743b13c7b87d583ba9e6fe1f8f26834bb5d233aea65d50"
-        triples: 293
+        digest: "sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c"
+        triples: 392
 
 servers:
   - url: "http://localhost:8000/ucm/v1"
@@ -2132,10 +2132,165 @@ components:
       type: object
 
     # ===== Concept schemes (open vocabularies) =====
+    "ClosureReason":
+      description: "Closure Reason. Why did the care coordination episode end? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ClosureReason"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasClosureReason"]
+      x-ucm-concepts:
+        ClientDeclined:
+          iri: https://www.w3.org/ns/ucm#ClientDeclined
+          label: Declined by the person
+          definition: The person chose not to receive the requested services.
+          broader:
+          - ClosedNotConnected
+        ClientUnreachable:
+          iri: https://www.w3.org/ns/ucm#ClientUnreachable
+          label: Person unreachable
+          definition: The receiving party could not reach the person.
+          broader:
+          - ClosedNotConnected
+        ClosedConnected:
+          iri: https://www.w3.org/ns/ucm#ClosedConnected
+          label: Connected
+          definition: The person was connected to the requested services.
+        ClosedNoLongerNeeded:
+          iri: https://www.w3.org/ns/ucm#ClosedNoLongerNeeded
+          label: No longer needed
+          definition: The need was resolved, or stopped applying, without the requested services.
+        ClosedNotConnected:
+          iri: https://www.w3.org/ns/ucm#ClosedNotConnected
+          label: Not connected
+          definition: The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known.
+        Ineligible:
+          iri: https://www.w3.org/ns/ucm#Ineligible
+          label: Ineligible
+          definition: The person does not meet the receiving program's eligibility criteria.
+          broader:
+          - ClosedNotConnected
+        MissingVerification:
+          iri: https://www.w3.org/ns/ucm#MissingVerification
+          label: Missing verification
+          definition: Documentation or verification the receiving party requires was not provided.
+          broader:
+          - ClosedNotConnected
+        OtherClosureReason:
+          iri: https://www.w3.org/ns/ucm#OtherClosureReason
+          label: Other reason
+          definition: Not connected for a reason not listed here.
+          broader:
+          - ClosedNotConnected
+        OutOfArea:
+          iri: https://www.w3.org/ns/ucm#OutOfArea
+          label: Out of area
+          definition: The person is outside the receiving party's service area.
+          broader:
+          - ClosedNotConnected
+        ProgramCapacity:
+          iri: https://www.w3.org/ns/ucm#ProgramCapacity
+          label: Program at capacity
+          definition: The receiving program had no capacity for the person.
+          broader:
+          - ClosedNotConnected
+      anyOf:
+        - type: string
+          enum: ["ClientDeclined", "ClientUnreachable", "ClosedConnected", "ClosedNoLongerNeeded", "ClosedNotConnected", "Ineligible", "MissingVerification", "OtherClosureReason", "OutOfArea", "ProgramCapacity"]
+        - $ref: '#/components/schemas/IRI'
+    "CommitmentStatus":
+      description: "Commitment Status. Is a care commitment binding on its participants? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#CommitmentStatus"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasCommitmentStatus"]
+      x-ucm-concepts:
+        CommitmentInForce:
+          iri: https://www.w3.org/ns/ucm#CommitmentInForce
+          label: In force
+          definition: The commitment is agreed and binding on its participants.
+        CommitmentLapsed:
+          iri: https://www.w3.org/ns/ucm#CommitmentLapsed
+          label: Lapsed
+          definition: The commitment ended without being released, for example by expiry or abandonment.
+        CommitmentProposed:
+          iri: https://www.w3.org/ns/ucm#CommitmentProposed
+          label: Proposed
+          definition: The commitment has been offered but not yet agreed.
+        CommitmentReleased:
+          iri: https://www.w3.org/ns/ucm#CommitmentReleased
+          label: Released
+          definition: 'The commitment ended deliberately: completed, handed over or ended by agreement.'
+        CommitmentSuspended:
+          iri: https://www.w3.org/ns/ucm#CommitmentSuspended
+          label: Suspended
+          definition: The commitment is agreed but temporarily not binding.
+      anyOf:
+        - type: string
+          enum: ["CommitmentInForce", "CommitmentLapsed", "CommitmentProposed", "CommitmentReleased", "CommitmentSuspended"]
+        - $ref: '#/components/schemas/IRI'
+    "HandoffStatus":
+      description: "Handoff Status. Where does responsibility for the agreed services stand between the sending and receiving parties? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#HandoffStatus"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasHandoffStatus"]
+      x-ucm-concepts:
+        HandoffAcknowledged:
+          iri: https://www.w3.org/ns/ucm#HandoffAcknowledged
+          label: Acknowledged
+          definition: The receiving party has acknowledged the handoff but has not yet assumed responsibility.
+        HandoffAssumed:
+          iri: https://www.w3.org/ns/ucm#HandoffAssumed
+          label: Assumed
+          definition: The receiving party has assumed responsibility for the agreed services, and the sending party has released it.
+        HandoffDropped:
+          iri: https://www.w3.org/ns/ucm#HandoffDropped
+          label: Dropped
+          definition: The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services.
+        HandoffOffered:
+          iri: https://www.w3.org/ns/ucm#HandoffOffered
+          label: Offered
+          definition: The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it.
+        HandoffReturned:
+          iri: https://www.w3.org/ns/ucm#HandoffReturned
+          label: Returned
+          definition: The receiving party handed responsibility back to the sending party.
+        HandoffShared:
+          iri: https://www.w3.org/ns/ucm#HandoffShared
+          label: Shared
+          definition: The sending and receiving parties hold responsibility for the agreed services jointly.
+      anyOf:
+        - type: string
+          enum: ["HandoffAcknowledged", "HandoffAssumed", "HandoffDropped", "HandoffOffered", "HandoffReturned", "HandoffShared"]
+        - $ref: '#/components/schemas/IRI'
+    "HandshakeFulfillment":
+      description: "Handshake Fulfillment. How much of the service negotiated in a handshake has been delivered? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#HandshakeFulfillment"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasHandshakeFulfillment"]
+      x-ucm-concepts:
+        FulfillmentConfirmed:
+          iri: https://www.w3.org/ns/ucm#FulfillmentConfirmed
+          label: Confirmed delivered
+          definition: The requesting party has confirmed that the negotiated services were delivered.
+        FulfillmentNotStarted:
+          iri: https://www.w3.org/ns/ucm#FulfillmentNotStarted
+          label: Not started
+          definition: None of the negotiated services has been delivered yet.
+        FulfillmentPartial:
+          iri: https://www.w3.org/ns/ucm#FulfillmentPartial
+          label: Partially delivered
+          definition: Some, but not all, of the negotiated services have been delivered.
+        FulfillmentReported:
+          iri: https://www.w3.org/ns/ucm#FulfillmentReported
+          label: Reported delivered
+          definition: The delivering party reports the negotiated services delivered; the requesting party has not confirmed it.
+      anyOf:
+        - type: string
+          enum: ["FulfillmentConfirmed", "FulfillmentNotStarted", "FulfillmentPartial", "FulfillmentReported"]
+        - $ref: '#/components/schemas/IRI'
     "LifecycleState":
       description: "Lifecycle State. A state associated with a process during a portion of its lifecycle. Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#LifecycleState"
       x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasLifecycleState"]
       x-ucm-concepts:
         Accepted:
           iri: https://www.w3.org/ns/ucm#Accepted
@@ -2152,6 +2307,42 @@ components:
       anyOf:
         - type: string
           enum: ["Accepted", "Declined", "Pending"]
+        - $ref: '#/components/schemas/IRI'
+    "ReferralDisposition":
+      description: "Referral Disposition. What has the receiving party decided about a care coordination request? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ReferralDisposition"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasReferralDisposition"]
+      x-ucm-concepts:
+        ReferralAccepted:
+          iri: https://www.w3.org/ns/ucm#ReferralAccepted
+          label: Accepted
+          definition: The receiving party agreed to take part in the requested coordination.
+          exactMatch:
+          - ucm:Accepted
+        ReferralDeclined:
+          iri: https://www.w3.org/ns/ucm#ReferralDeclined
+          label: Declined
+          definition: The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept.
+          exactMatch:
+          - ucm:Declined
+        ReferralExpired:
+          iri: https://www.w3.org/ns/ucm#ReferralExpired
+          label: Expired
+          definition: The receiving party made no decision within the time allowed for a response.
+        ReferralPending:
+          iri: https://www.w3.org/ns/ucm#ReferralPending
+          label: Pending
+          definition: The request has been sent and the receiving party has not yet decided.
+          exactMatch:
+          - ucm:Pending
+        ReferralWithdrawn:
+          iri: https://www.w3.org/ns/ucm#ReferralWithdrawn
+          label: Withdrawn
+          definition: The requesting party withdrew the request before the receiving party decided.
+      anyOf:
+        - type: string
+          enum: ["ReferralAccepted", "ReferralDeclined", "ReferralExpired", "ReferralPending", "ReferralWithdrawn"]
         - $ref: '#/components/schemas/IRI'
 
     # ===== Ontology classes =====
@@ -2290,7 +2481,21 @@ components:
           enum:
           - CareCommitment
           description: "Class of the node: this class or one of its subclasses."
+        "hasCommitmentStatus":
+          $ref: '#/components/schemas/CommitmentStatus'
+          description: "Relates a care commitment to whether it is binding on its participants."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasCommitmentStatus
+          x-ucm-concept-scheme: CommitmentStatus
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A care commitment holds at most one commitment status, identified by IRI.
       required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/commit-1
+          '@type': CareCommitment
+          hasCommitmentStatus: CommitmentInForce
 
     "CareCoordinationInteraction":
       type: object
@@ -2527,6 +2732,26 @@ components:
           enum:
           - CoordinationRequest
           description: "Class of the node: this class or one of its subclasses."
+        "hasClosureReason":
+          $ref: '#/components/schemas/ClosureReason'
+          description: "Relates a closed care coordination request to the reason it was closed."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasClosureReason
+          x-ucm-concept-scheme: ClosureReason
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A coordination request holds at most one closure reason, identified by IRI.
+        "hasReferralDisposition":
+          $ref: '#/components/schemas/ReferralDisposition'
+          description: "Relates a care coordination request to the receiving party's decision on it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasReferralDisposition
+          x-ucm-concept-scheme: ReferralDisposition
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A coordination request holds at most one referral disposition, identified by IRI.
       required: ["@type"]
       x-ucm-constraints:
       - severity: Warning
@@ -2537,7 +2762,9 @@ components:
           '@type': CoordinationRequest
           hasActivityFocus:
           - http://example.org/ucm/focus-1
+          hasClosureReason: ClosedConnected
           hasLifecycleState: Accepted
+          hasReferralDisposition: ReferralAccepted
 
     "CoordinativeActivity":
       type: object
@@ -2780,6 +3007,26 @@ components:
           enum:
           - Handshake
           description: "Class of the node: this class or one of its subclasses."
+        "hasHandoffStatus":
+          $ref: '#/components/schemas/HandoffStatus'
+          description: "Relates a handshake to where responsibility for its agreed services stands between the sending and receiving parties."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasHandoffStatus
+          x-ucm-concept-scheme: HandoffStatus
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A handshake holds at most one handoff status, identified by IRI.
+        "hasHandshakeFulfillment":
+          $ref: '#/components/schemas/HandshakeFulfillment'
+          description: "Relates a handshake to how much of its negotiated service has been delivered."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasHandshakeFulfillment
+          x-ucm-concept-scheme: HandshakeFulfillment
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A handshake holds at most one fulfillment state, identified by IRI.
         "negotiates":
           type: array
           items:
@@ -2801,6 +3048,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hs-1
           '@type': Handshake
+          hasHandoffStatus: HandoffAssumed
+          hasHandshakeFulfillment: FulfillmentConfirmed
           negotiates:
           - http://example.org/ucm/req-1
 

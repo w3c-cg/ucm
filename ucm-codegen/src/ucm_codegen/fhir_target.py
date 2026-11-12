@@ -43,7 +43,7 @@ Substance SupplyDelivery SupplyRequest Task TerminologyCapabilities TestReport T
 ValueSet VerificationResult VisionPrescription
 """.split())
 
-Transform = Literal["direct", "reference", "code", "class-coding", "role-coding"]
+Transform = Literal["direct", "reference", "code", "concept-coding", "class-coding", "role-coding"]
 
 
 class FhirMappingError(ValueError):
@@ -181,6 +181,12 @@ class FhirCompiler:
             "transform": field.transform,
             "single": field.single or (not field.each and not field.many),
         }
+        if field.transform == "concept-coding":
+            last = self.properties.get(field.path[-1]) if field.path else None
+            if self.api.scheme_for(last) is None:
+                self.errors.append(f"{where}: transform concept-coding needs a property bound to a concept scheme")
+            if field.map or field.default is not None:
+                self.errors.append(f"{where}: transform concept-coding carries UCM codes as is; map and default do not apply")
         if field.transform == "code":
             last = self.properties.get(field.path[-1]) if field.path else None
             scheme = self.api.scheme_for(last)

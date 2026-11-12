@@ -64,7 +64,7 @@ def test_every_example_validates_against_its_schema(spec, validators):
             errors = [e.message for e in validators(schema.name).iter_errors(example)]
             assert errors == [], f"{schema.name} {example['@id']}: {errors}"
             checked += 1
-    assert checked == 28
+    assert checked == 29
 
 
 def test_schemas_reject_definitional_defects(spec, validators):

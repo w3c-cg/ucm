@@ -72,7 +72,7 @@ The individual steps remain available:
 
 | Command    | Does |
 |------------|------|
-| `build`    | Everything above, from the manifest (`-m`); `--strict` fails on warnings; `--no-cache` recomputes every stage; `--write-on-failure` lifts the gate |
+| `build`    | Everything above, from the manifest (`-m`); `--strict` fails on warnings; `--no-cache` recomputes every stage; `--write-on-failure` lifts the gate; `--summary FILE` appends a Markdown summary of the report (CI: `$GITHUB_STEP_SUMMARY`) |
 | `export`   | RDF sources → JSON-LD IR (`build/ucm-ontology.jsonld`, `ucm-shapes.jsonld`, `ucm-shapes-lint.jsonld`) |
 | `lint`     | SHACL-SHACL, ucm-shapes-lint (`-l`), and spec consistency checks |
 | `generate` | All targets, or one with `-f openapi\|context\|postgres\|fhir\|report`; `--strict` fails on lint warnings |
@@ -98,7 +98,9 @@ cache hits, the diff of a spec change, and stale-output pruning.
 
 Everything the build reads or writes is named by a sha256 of its content
 (`content.py`), with line endings normalized so Windows checkouts and Linux
-CI agree:
+CI agree. RDF sources are also parsed with CRLF read as LF, so multi-line
+literals (SPARQL constraints, scope notes) compile to the same IR on a
+Windows clone with `core.autocrlf` as on the runner:
 
 | Digest | Over | Used for |
 |---|---|---|
@@ -137,19 +139,23 @@ Edited files are kept and reported.
 `generated/report.html` is one self-contained file (inline CSS and a little
 vanilla JS, no network), so it works from disk and as a CI artifact. Panes:
 
-- **Overview**: build status, counts, source digests, IR root and toolchain digests
+- **Overview**: build status, counts, each concept scheme with its concept count, depth and the
+  properties that take values from it (a scheme no property uses is flagged), source digests,
+  IR root and toolchain digests
 - **Lint** and **Validation**: findings and SHACL results by severity and tier
 - **Changes**: the diff against the previous build, by content digest
 - **Classes**: the class tree; each property with its cardinality, range,
   OpenAPI type, Postgres column or association table, and FHIR element
-- **Vocabularies**, **OpenAPI**, **Postgres**, **FHIR**: each target's view
+- **Vocabularies**: each scheme's concepts in `skos:broader` order, with their SKOS mappings
+- **OpenAPI**, **Postgres**, **FHIR**: each target's view
 - **Artifacts**: links to the generated files, with their digests
 
 ## CI
 
 [`.github/workflows/ucm-codegen.yml`](../.github/workflows/ucm-codegen.yml)
 runs on any `.ttl` change (and on toolchain changes): install, restore the
-stage cache, `ucm-codegen build --strict`, `pytest`, then uploads
+stage cache, `ucm-codegen build --strict --summary "$GITHUB_STEP_SUMMARY"`,
+`pytest`, the group's shapes suite (`test_core_shapes.py`), then uploads
 `generated/` and `build/` as the `ucm-reference` artifact, even when the
 build fails: then it holds the failed build's report next to the last good
 artifacts. Whatever is committed of `ucm-build.lock`, `generated/` and
@@ -157,6 +163,11 @@ artifacts. Whatever is committed of `ucm-build.lock`, `generated/` and
 cannot land without its regenerated artifacts. After moving into the UCM
 repository, update the paths in `ucm-build.yaml` and the workflow's `paths`
 filters.
+
+The run page shows the build summary (status, counts, vocabularies, lint
+findings, changes); the full `report.html` is in the artifact. CI never
+commits: the `generated/report.html` in git is whatever the last person to
+rebuild committed, and the artifact check above deliberately skips it.
 
 ## Target: OpenAPI
 
@@ -169,7 +180,7 @@ filters.
 | Property with `rdfs:domain` | Defined once, on the domain's schema |
 | Property without domain | On the `UcmNode` base schema every class extends |
 | Object property | `NodeRef`: IRI string or embedded node object |
-| Range `skos:Concept`, `hasX` with scheme `X` | Open vocabulary: concept terms or any IRI (shapes avoid `sh:in` on purpose) |
+| Range `skos:Concept`, `hasX` with scheme `X` | Open vocabulary: concept terms or any IRI (shapes avoid `sh:in` on purpose); `x-ucm-concepts` lists each concept with its `broader` parent and SKOS mappings, `x-ucm-properties` the properties that use the scheme |
 | Datatype property | JSON Schema type/format from `sh:datatype` / `sh:or`, else `rdfs:range` |
 | `sh:maxCount 1`, Definitional | Single value; otherwise array and `@container: @set` in the context |
 | `sh:minCount ≥ 1`, Definitional | `required` / `minItems` |
@@ -195,7 +206,7 @@ whose id derives from the ontology digests).
 | Definitional `sh:minCount 1` | `NOT NULL` on the root class, `CHECK` on a subclass |
 | `xsd:dateTime` / `dateTimeStamp` | `timestamptz`, normalized to UTC |
 | Predicates outside UCM | `extra` JSONB, verbatim (open by default) |
-| Concept schemes | `concept` table, seeded by the migration (no FK: vocabularies are open) |
+| Concept schemes | `concept` table, seeded by the migration (no FK: vocabularies are open); `broader_iri` holds the parent within the scheme, so a recursive CTE rolls narrower concepts up |
 
 `load(session, nodes)` and `dump(session, iri)` in `ucm_models.py` convert
 between rows and JSON-LD nodes compacted with the generated context.
@@ -224,13 +235,20 @@ provider or coordinator role), Organization, Location, Device, Household →
 Group (through Membership), CareTeam, ClinicalEncounter → Encounter
 (participations as `participant`, subject roles excluded), CoordinationRequest →
 Task (lifecycle Pending/Accepted/Declined → requested/accepted/rejected;
-requester/owner/for by role), DiagnosisStatement → Condition, Observation-,
+referral disposition → `businessStatus` and closure reason → `statusReason`
+as UCM codes; requester/owner/for by role), DiagnosisStatement → Condition, Observation-,
 Housing- and SocialCareStatement → Observation.
 
 Identity survives the round trip: each resource carries its IRI as an
 `urn:ietf:rfc:3986` identifier and its UCM class as `meta.tag`; folded
 nodes (participations, memberships) carry theirs in the `node-iri`
 extension. Multi-hop paths are one-way.
+
+Transforms: `direct`, `reference`, `code` (a concept mapped onto a FHIR code
+with `map`/`default`), `concept-coding` (the UCM concept itself as a
+CodeableConcept in the `code-system`; an adopter's own concept travels as
+text plus its IRI in the `node-iri` extension and comes back unchanged),
+`class-coding` and `role-coding`.
 
 ## Lint codes
 
@@ -241,6 +259,8 @@ extension. Multi-hop paths are one-way.
 | `namespace-drift` | Warning | A namespace IRI is referenced but only declared under another namespace |
 | `undeclared-term` | Warning | A namespace IRI is referenced but never declared |
 | `range-mismatch` | Warning | `sh:class` disagrees with `rdfs:range` |
+| `concept-hierarchy` | Warning | A scheme's `skos:broader` links are not a tree: two parents, a parent in another scheme, or a cycle (roll-ups would double count) |
+| `no-concept-schemes` | Warning | Properties take `skos:Concept` values but no scheme was compiled: usually the vocabulary file is missing from `ucm-build.yaml` |
 | `datatype-coercion` | Info | `sh:or` datatypes a single context term cannot coerce |
 | `foreign-scheme` | Info | Concept scheme outside the ontology namespace |
 | `shape-without-range` | Info | Shape constrains a class the property's range does not declare |

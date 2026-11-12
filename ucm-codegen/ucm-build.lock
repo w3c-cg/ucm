@@ -2,19 +2,23 @@
   "lock-version": 1,
   "toolchain": {
     "version": "0.1.0",
-    "digest": "sha256:e54884a806f8eaa6840bb8662976822cb53440658ba00eabc5de3773ae38ec36"
+    "digest": "sha256:86041137924314c88470bbcf04d98e0c2e63fd3640f4dce98c34c21b0d60bf8e"
   },
   "sources": {
     "ontology": [
       {
         "path": "../unified-care-model.ttl",
-        "content": "sha256:95cc74a5068a7fdea004b6c49d17705c472f1ac490704afe28023e8b474e34fe"
+        "content": "sha256:481a912a8d18cc8c3d8561e7ff9ef762dfd5a6ba197f3dd22640d7054b08760c"
+      },
+      {
+        "path": "../ucm-lifecycle-vocabularies.ttl",
+        "content": "sha256:c72e3efaaf2eb814e2751068743b88c1f260ddac76c790f137066cfa5b80f73a"
       }
     ],
     "shapes": [
       {
         "path": "../ucm-core-shapes.ttl",
-        "content": "sha256:93fbf663c1393d70c6aab96b347f870685305a80c26a60fd18424c6e4915e4a4"
+        "content": "sha256:b443c89c2db043daf5d639429068177dd8c400b8c8108f699a251e15c7b00902"
       }
     ],
     "shapes-lint": [
@@ -26,7 +30,7 @@
     "examples": [
       {
         "path": "../ucm-core-shapes-example.ttl",
-        "content": "sha256:e239981fc98984ff6074f743998b21eb68f75c8e36dabe6fa01fa327bc8f559d"
+        "content": "sha256:c046d5e99f07ce25b63ffd9f6281012a157b473b91c6e2fbd25e00d14541cd26"
       }
     ],
     "profile": [
@@ -38,22 +42,22 @@
     "fhir-mapping": [
       {
         "path": "profiles/ucm-fhir-mapping.yaml",
-        "content": "sha256:0a6a6d54885e0d368e1437fd2ef5be87d49c1093037273332e7c3f067d2b4ab6"
+        "content": "sha256:22c15fd3c068a4b911259538e6382ce15d6218f4d1f49f90afff60b1ecdd62c3"
       }
     ]
   },
   "ir": [
     {
       "file": "ucm-ontology.jsonld",
-      "canonical": "sha256:9392249aff4c637a7313ccb4a23fb258c111ce2639d9fba1aafa2be62d67a158",
-      "content": "sha256:b3df1a4f5d69bfd601bbf9f2f1958876e1ae79a15644424103a4904270b29c0d",
-      "triples": 385
+      "canonical": "sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca",
+      "content": "sha256:cccf23d1df2f2a4b489bd3c0e7bda7d37a9b827fd26f4704c9cf4c2652087ff7",
+      "triples": 629
     },
     {
       "file": "ucm-shapes.jsonld",
-      "canonical": "sha256:a37a698093c82c9fe7743b13c7b87d583ba9e6fe1f8f26834bb5d233aea65d50",
-      "content": "sha256:cbee96f2bdcb34359ed6606460355f53c5f20144d94039ebb1f240a21ffe24a0",
-      "triples": 293
+      "canonical": "sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c",
+      "content": "sha256:f6c750f9ed9b1f22f829c2f26a397a2d36e7b9aac05c0c86ac5388065e0025bf",
+      "triples": 392
     },
     {
       "file": "ucm-shapes-lint.jsonld",
@@ -62,7 +66,7 @@
       "triples": 26
     }
   ],
-  "ir-root": "sha256:f227ad1022f7923376ade1250a211558bb33367dc40e4e5833b37accc5396877",
+  "ir-root": "sha256:6a575a95eb3ddf76865bb66975522f0868fa5ed017d962028eb5985ec9c7bd6d",
   "nodes": {
     "ontology": "sha256:c374dc114e39fdec7e529c714ca6226be20c5cae6d19ecc76785e7e9c38ba25c",
     "class:ucm:ActivityFocus": "sha256:d62f729f1285f3a633f372968cfe6418976b630121e66df9c17522793b5cfb0d",
@@ -138,11 +142,16 @@
     "property:ucm:hasActivityFocus": "sha256:57e9db8169fb4eca62dd8e64a8828a72cb3e4e44b34cd62a051b8d1e371d2b20",
     "property:ucm:hasCareTrajectoryContext": "sha256:928f7c3a5725d5560c62665391be6c01e465d612004c8a466f6bad0d3e611853",
     "property:ucm:hasClient": "sha256:ae19c9f9d2746a9a44ecc4871607667e4c31a1c38b121f19017fe7aa2eeb002e",
+    "property:ucm:hasClosureReason": "sha256:e74e43fa7d5518f1a06b148eb57aaa594bf8d37be5db440d4ce46dd5be45c630",
+    "property:ucm:hasCommitmentStatus": "sha256:98c97de3f0a438000f08d87dc3a00537a92bd860b3348016da5d20a7f2fb849f",
+    "property:ucm:hasHandoffStatus": "sha256:deb02fb87e3b1c812223f5bab1c02ac310a3c2b353f870c5cfd8438e0142d394",
+    "property:ucm:hasHandshakeFulfillment": "sha256:f1c1a80a8425b1fc545ac12ac3b4507f8f8c8858b3a7616d3fbd916172a7f22d",
     "property:ucm:hasLifecycleState": "sha256:117d3e7b81387aa313e9c316e4267f3126a901c46a0edc7affa8ed6473b89f25",
     "property:ucm:hasMember": "sha256:cd6c8c26d8324c614f1a7d667f33663677415d8497c43c90fa2e8b54a56d5b9a",
     "property:ucm:hasMembership": "sha256:1b20b098c45a85a7894bdccffa77e649afc1f9f4eecb0827d4806305fc2d2a40",
     "property:ucm:hasParticipant": "sha256:049fee5f9037871860da591e06c0976a9357b84f685ffa1c706fdb512f8105f6",
     "property:ucm:hasPatient": "sha256:36fafa6c5228a9f7aab253ebbfd7261d7963b3d330e485fe89f42b88174010e4",
+    "property:ucm:hasReferralDisposition": "sha256:2f5fafc2f77a3774ccd7102c64b50cc3aaa83a9c6644245a50b8a895289f645b",
     "property:ucm:hasResident": "sha256:40947f01c6bb509e9eafbcef2c369d677c86a55e380798234a5f0e678645ce3d",
     "property:ucm:hasTemporalContext": "sha256:ec3a65ef27014f0032c3f814e6a2e6d84f672cdddcfe32457fcdce84dd00cbda",
     "property:ucm:locatedAt": "sha256:9c521bde9c71b0fc99951fb55e4cbe05f18e2a57aca565137157c8beb4c5f708",
@@ -162,15 +171,30 @@
     "property:ucm:validDuring": "sha256:01fe38acb1ab0fc47570cdfe144a027264b08511ea76dd8bef9ded68f6fc83b7",
     "property:ucm:validFrom": "sha256:b05497c30c986c4b754ab85468ca9ac8cc615a4a2a7b5dae6c0d30028895aa6f",
     "property:ucm:validTo": "sha256:c618778712d7fe210de10856fdd59b46804bcdfbb1cc9beb49f5695c559c592a",
-    "scheme:ucm:LifecycleState": "sha256:c988146b7becffa0d05fe09335f12c084bcac366a5d565d6ae8964b6d2925c39",
+    "scheme:ucm:ClosureReason": "sha256:717b4ef0f8ff41c2db34bd92292d9ec2d0decb958cfcba5452bdb0b204e5ddc8",
+    "scheme:ucm:CommitmentStatus": "sha256:b156ce1f4dbd465a766856d530224268b0e3c9c0afb337c75a5213f7a00062cb",
+    "scheme:ucm:HandoffStatus": "sha256:f04867943192b9f68bb7950973192c2076e60501f289a830a5d4e0fee7607205",
+    "scheme:ucm:HandshakeFulfillment": "sha256:90dc33991a34141ac32daea3524b8d13b8034613929ba7b73ae19192108bcdd0",
+    "scheme:ucm:LifecycleState": "sha256:32c4ae8a202d5e541a91a15441be65a87f9c3d662637090428d9b61a6ca92a2d",
+    "scheme:ucm:ReferralDisposition": "sha256:bc0c7292f38e2300f76b257c5141236c47898d8eea2091c45a75d3bbe8fb93f7",
     "shape:ucm:AcceptsRequestShape": "sha256:f3098be4ae6181e4392d880ac7b9ff0beeca876ba61b814465523a0dd76d9a94",
     "shape:ucm:ActivityFocusTypeShape": "sha256:462fecd873ece2838379f29df84e722004e46ba28d9cc64f138768f87365e559",
     "shape:ucm:AffiliationShape": "sha256:b2059f2e4645a813a451cebb4dac6b6103b42d157c84b2bf52453fec64ef393f",
     "shape:ucm:CareTrajectoryShape": "sha256:c6822f671df2ac189aba97da8cb861cad57d35894355ec86b3d6f2c7b39d4a25",
+    "shape:ucm:ClosedWhilePendingShape": "sha256:8d0aba643c42937835eb84976eef338c7897f1922a899942ab2882ae8d1fcf56",
+    "shape:ucm:ClosureReason-anchored": "sha256:b711154901a899fc3d2b57fb0dfeddb6735326ddc21f4b293e477d6cea5974cc",
+    "shape:ucm:ClosureReasonShape": "sha256:7e6933d198325e472d6e477699a650783c6094676bc89c3b4ac59b341e3e8db6",
+    "shape:ucm:CommitmentStatus-anchored": "sha256:dee4137ddcfdaf13ef9836bd47761d5d758b4ca6d42b6f251c9acd2fff7a6880",
+    "shape:ucm:CommitmentStatusShape": "sha256:ba1a8847e0280762151cd1ffc5c1b52a8477d7703adc460dd000c9bc045be8d9",
     "shape:ucm:ContextArtifactShape": "sha256:fa1c82513817bf0f4be51126dd3125403e3fb27489c7cef12388f5248cefa916",
     "shape:ucm:CoordinativeActivityShape": "sha256:9f29658311f5143c8497c946e8ffc2be20163e8d6ec1ebd733323708c5b4ddf9",
     "shape:ucm:DualTemporalEncodingShape": "sha256:f8db32badd8a29486423f9b2217385202d00892dc74f77de38b342237018f0bc",
+    "shape:ucm:FulfillmentAfterDeclineShape": "sha256:e8a5d64793bbb006b4ac98d99e83da39487727c9ae705ce6be36eed5d3b01ba7",
+    "shape:ucm:HandoffStatus-anchored": "sha256:5adac918642d2c1f4a1f4fc4b8a7c0bb10ca6dcb6bf6a70379dad5c1f41b253f",
+    "shape:ucm:HandoffStatusShape": "sha256:57501c72bb4608764be8262cb80d3bf6533fab24cc99295e0fa5b582b9c624c0",
     "shape:ucm:HandshakeAcyclicShape": "sha256:3d4f62ac8ef23d32e25ecdc95ca64534eb952238894dd559c6e55673b4a56a51",
+    "shape:ucm:HandshakeFulfillment-anchored": "sha256:d1b548e1d6f912812ffc4058dfb4acc9ed6e009477ac3297e52c30b79cdbbebf",
+    "shape:ucm:HandshakeFulfillmentShape": "sha256:837c6009e894f7b7af7716f6e606eac479b6c6296fe1e75868b29b23a786af75",
     "shape:ucm:HandshakeShape": "sha256:5597058efce2479eb9a24a897b13cfbd2d968e8464fc1883c70aabd052bf63f9",
     "shape:ucm:LifecycleState-anchored": "sha256:a09ad79fa1594bca720dc6e30701b1b20bc94a2a502b5080f080c92172d26022",
     "shape:ucm:LifecycleStateShape": "sha256:1793992f0a468ddfcc040e1b0dec2066f439458826e858ef015e621b6088bfa3",
@@ -180,18 +204,20 @@
     "shape:ucm:ParticipationShape": "sha256:a4d6faa6c3d20786e902f677b3bf60de4fe60b24785079bbe44bb4f0a6da5cd1",
     "shape:ucm:ParticipationValidityShape": "sha256:5242193ec93f787403a15cd3d0ab1949b47d442599823f111b46b6529253212d",
     "shape:ucm:ProjectionBackingShape": "sha256:86750eb6518a67851b5bd1d07303511a648bae748ae0fdfc04806f8f05836133",
+    "shape:ucm:ReferralDisposition-anchored": "sha256:8526c068b8df34c26223d68009755fe597879ef639755f14543bc490b7c6d5f4",
+    "shape:ucm:ReferralDispositionShape": "sha256:219c6fdbd3100fc51ce0bea95a619275580121f930d2ad99dd788a8f4fe1c189",
     "shape:ucm:StatementShape": "sha256:3a0cd0d5f5aa17d6cf4f2563b6e65fb8c7f28cb0c0bde4a2b9209e287518c086",
     "shape:ucm:TemporalEntityShape": "sha256:788256111d4fc5ec13644afb499c22413ba987830436e905b1a7c864f8ebd6b4",
     "shape:ucm:TemporalOrderShape": "sha256:877c69a4056327210445a9b21062f4c10ae435df4e7445730f0c4f4bcf2ee088"
   },
   "outputs": {
-    "context.jsonld": "sha256:6d1bddeb223cbaf8c87b429e4fb4e5d74e85e61f3bd6a9ff6e2ae3a8b4d7e8d5",
-    "fhir/ucm_fhir_adapter.py": "sha256:f2c65ca0394e566cd7fbe9c0b47f600272b29cfd5b960c77ac227b0bbed4f736",
-    "openapi.yaml": "sha256:7853c7d370604077dc1d33f31f1019c4de2da87ed429fd53b1d80e4704cd0fd7",
+    "context.jsonld": "sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c",
+    "fhir/ucm_fhir_adapter.py": "sha256:dcb8445cbfe036fd9de24143e57920a30ff48871532b6f47717b7089e1335071",
+    "openapi.yaml": "sha256:4277942145b36ca7c59ccf9a804aa75f5b3bef200eebdc6bf194b26037242597",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
-    "postgres/migrations/versions/ucm_8237b6809c56_ucm_0_0_1.py": "sha256:9af9f7c409bff12c69b6b4432d0014699c29751760643820763d38124f754f3c",
-    "postgres/ucm_models.py": "sha256:6c2c992481d48c49b0822a9593a41f40b06933994bed82f142c3195ee3ea612e"
+    "postgres/migrations/versions/ucm_0ab5001ebc4f_ucm_0_0_1.py": "sha256:dba0635ae856e7d88b19f0d866a6f54d41d3b587452da77fda0c23b489acd54e",
+    "postgres/ucm_models.py": "sha256:c978d054e039e0fb741bf69f9ebd002a42044e3a7e1c3a391668f4c9fb5b87fc"
   }
 }

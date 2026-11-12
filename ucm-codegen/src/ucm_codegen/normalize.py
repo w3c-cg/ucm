@@ -35,6 +35,14 @@ STANDARD_PREFIXES = {
 }
 
 
+# SKOS mapping properties carried on each concept, in the order SKOS lists them
+SKOS_MAPPINGS = ("exactMatch", "closeMatch", "broadMatch", "narrowMatch", "relatedMatch")
+
+
+def _sorted_iris(nodes) -> List[str]:
+    return sorted({str(n) for n in nodes if isinstance(n, URIRef)})
+
+
 class NormalizationError(ValueError):
     """The graphs cannot be turned into a valid IR"""
 
@@ -175,6 +183,14 @@ class Normalizer:
                     label=self._text(self.ont, c, SKOS.prefLabel, RDFS.label) or local_name(str(c)),
                     alt_labels=sorted(str(a) for a in self.ont.objects(c, SKOS.altLabel)),
                     definition=self._text(self.ont, c, SKOS.definition, RDFS.comment),
+                    broader=_sorted_iris(
+                        set(self.ont.objects(c, SKOS.broader)) | set(self.ont.subjects(SKOS.narrower, c))
+                    ),
+                    mappings={
+                        name: targets
+                        for name in SKOS_MAPPINGS
+                        if (targets := _sorted_iris(self.ont.objects(c, SKOS[name])))
+                    },
                 )
                 for c in members if isinstance(c, URIRef)
             ]

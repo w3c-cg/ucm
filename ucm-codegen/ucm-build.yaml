@@ -4,6 +4,7 @@
 
 ontology:
   - ../unified-care-model.ttl
+  - ../ucm-lifecycle-vocabularies.ttl
 shapes:
   - ../ucm-core-shapes.ttl
 shapes-lint:

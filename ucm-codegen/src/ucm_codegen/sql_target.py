@@ -118,6 +118,7 @@ class SqlConcept(BaseModel):
     scheme_iri: str
     term: str
     label: str
+    broader_iri: Optional[str] = None  # parent within the scheme; roll-ups walk it recursively
 
 
 class SqlSchema(BaseModel):
@@ -263,7 +264,11 @@ class SqlBuilder:
             tables=tables,
             associations=associations,
             concepts=[
-                SqlConcept(iri=c.iri, scheme_iri=s.iri, term=c.term, label=c.label)
+                SqlConcept(
+                    iri=c.iri, scheme_iri=s.iri, term=c.term, label=c.label,
+                    # one parent: the concept-hierarchy lint flags anything else
+                    broader_iri=next((b for b in c.broader if b in {m.iri for m in s.concepts}), None),
+                )
                 for s in sorted(ir.schemes.values(), key=lambda s: s.term)
                 for c in s.concepts
             ],

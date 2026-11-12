@@ -58,7 +58,10 @@
         "@language": "en",
         "@value": "Accepted"
       },
-      "skos:definition": "A care coordination request that has been accepted for ongoing care.",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A care coordination request that has been accepted for ongoing care."
+      },
       "skos:inScheme": {
         "@id": "ucm:LifecycleState"
       },
@@ -154,11 +157,47 @@
       }
     },
     {
+      "@id": "ucm:ClientDeclined",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person chose not to receive the requested services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Declined by the person"
+      }
+    },
+    {
       "@id": "ucm:ClientRole",
       "@type": "owl:Class",
       "rdfs:label": "Client Role",
       "rdfs:subClassOf": {
         "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:ClientUnreachable",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party could not reach the person."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Person unreachable"
       }
     },
     {
@@ -188,6 +227,242 @@
       "rdfs:label": "Clinical Statement",
       "rdfs:subClassOf": {
         "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:ClosedConnected",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person was connected to the requested services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Connected"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ClosureReason"
+      }
+    },
+    {
+      "@id": "ucm:ClosedNoLongerNeeded",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The need was resolved, or stopped applying, without the requested services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "No longer needed"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ClosureReason"
+      }
+    },
+    {
+      "@id": "ucm:ClosedNotConnected",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Not connected"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "This concept may be selected directly when a more specific closure reason is not available. Queries and reporting that aggregate closure reasons under this concept may use reflexive-transitive traversal of skos:broader (SPARQL property path skos:broader*). This includes the concept itself and all narrower closure reasons at any depth. "
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ClosureReason"
+      }
+    },
+    {
+      "@id": "ucm:ClosureReason",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-07"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Why did the care coordination episode end?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Closure Reason"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The reason a care coordination episode was closed, grouped by whether the person was connected to the requested services."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:ClosedConnected"
+        },
+        {
+          "@id": "ucm:ClosedNoLongerNeeded"
+        },
+        {
+          "@id": "ucm:ClosedNotConnected"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Closure Reason"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentInForce",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The commitment is agreed and binding on its participants."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:CommitmentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "In force"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:CommitmentStatus"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentLapsed",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The commitment ended without being released, for example by expiry or abandonment."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:CommitmentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Lapsed"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:CommitmentStatus"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentProposed",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The commitment has been offered but not yet agreed."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:CommitmentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Proposed"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:CommitmentStatus"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentReleased",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The commitment ended deliberately: completed, handed over or ended by agreement."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:CommitmentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Released"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:CommitmentStatus"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentStatus",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-07"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Is a care commitment binding on its participants?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Commitment Status"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The standing of a ucm:CareCommitment over time."
+      },
+      "skos:editorialNote": {
+        "@language": "en",
+        "@value": "Durability axis for a service handoff: a handoff held when the receiving party's commitment was in force before the sending party's was released, with no ucm:CareCoverageGap between them."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:CommitmentInForce"
+        },
+        {
+          "@id": "ucm:CommitmentLapsed"
+        },
+        {
+          "@id": "ucm:CommitmentProposed"
+        },
+        {
+          "@id": "ucm:CommitmentReleased"
+        },
+        {
+          "@id": "ucm:CommitmentSuspended"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Commitment Status"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentSuspended",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The commitment is agreed but temporarily not binding."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:CommitmentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Suspended"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:CommitmentStatus"
       }
     },
     {
@@ -231,7 +506,10 @@
         "@language": "en",
         "@value": "Declined"
       },
-      "skos:definition": "This care request was denied.",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "This care request was denied."
+      },
       "skos:inScheme": {
         "@id": "ucm:LifecycleState"
       },
@@ -297,12 +575,302 @@
       "rdfs:label": "Entity"
     },
     {
+      "@id": "ucm:FulfillmentConfirmed",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Completed"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The requesting party has confirmed that the negotiated services were delivered."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandshakeFulfillment"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Confirmed delivered"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandshakeFulfillment"
+      }
+    },
+    {
+      "@id": "ucm:FulfillmentNotStarted",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "None of the negotiated services has been delivered yet."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandshakeFulfillment"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Not started"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandshakeFulfillment"
+      }
+    },
+    {
+      "@id": "ucm:FulfillmentPartial",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Partially executed"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Some, but not all, of the negotiated services have been delivered."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandshakeFulfillment"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Partially delivered"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandshakeFulfillment"
+      }
+    },
+    {
+      "@id": "ucm:FulfillmentReported",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Pending confirmation"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The delivering party reports the negotiated services delivered; the requesting party has not confirmed it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandshakeFulfillment"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Reported delivered"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandshakeFulfillment"
+      }
+    },
+    {
+      "@id": "ucm:HandoffAcknowledged",
+      "@type": "skos:Concept",
+      "skos:altLabel": {
+        "@language": "en",
+        "@value": "Received"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party has acknowledged the handoff but has not yet assumed responsibility."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Acknowledged"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffAssumed",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party has assumed responsibility for the agreed services, and the sending party has released it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Assumed"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffDropped",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Dropped"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffOffered",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Offered"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffReturned",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party handed responsibility back to the sending party."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Returned"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffShared",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The sending and receiving parties hold responsibility for the agreed services jointly."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:HandoffStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Shared"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:HandoffStatus"
+      }
+    },
+    {
+      "@id": "ucm:HandoffStatus",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-07"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Where does responsibility for the agreed services stand between the sending and receiving parties?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Handoff Status"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state of a care coordination handoff: whether responsibility for jointly agreed services has moved to the receiving party."
+      },
+      "skos:editorialNote": {
+        "@language": "en",
+        "@value": "This axis tracks responsibility rather than the referral decision. "
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:HandoffAcknowledged"
+        },
+        {
+          "@id": "ucm:HandoffAssumed"
+        },
+        {
+          "@id": "ucm:HandoffDropped"
+        },
+        {
+          "@id": "ucm:HandoffOffered"
+        },
+        {
+          "@id": "ucm:HandoffReturned"
+        },
+        {
+          "@id": "ucm:HandoffShared"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Handoff Status"
+      }
+    },
+    {
       "@id": "ucm:Handshake",
       "@type": "owl:Class",
       "rdfs:comment": "A coordinative process through which participating entities negotiate mutual participation in a shared activity.",
       "rdfs:label": "Handshake",
       "rdfs:subClassOf": {
         "@id": "ucm:CoordinativeActivity"
+      }
+    },
+    {
+      "@id": "ucm:HandshakeFulfillment",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-07"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How much of the service negotiated in a handshake has been delivered?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Handshake Fulfillment"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The degree to which the services negotiated in a handshake have been rendered."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:FulfillmentConfirmed"
+        },
+        {
+          "@id": "ucm:FulfillmentNotStarted"
+        },
+        {
+          "@id": "ucm:FulfillmentPartial"
+        },
+        {
+          "@id": "ucm:FulfillmentReported"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Handshake Fulfillment"
       }
     },
     {
@@ -356,6 +924,24 @@
       "rdfs:label": "Housing Statement",
       "rdfs:subClassOf": {
         "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:Ineligible",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person does not meet the receiving program's eligibility criteria."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Ineligible"
       }
     },
     {
@@ -436,6 +1022,24 @@
       "rdfs:label": "Membership Criteria"
     },
     {
+      "@id": "ucm:MissingVerification",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Documentation or verification the receiving party requires was not provided."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Missing verification"
+      }
+    },
+    {
       "@id": "ucm:ObservationStatement",
       "@type": "owl:Class",
       "rdfs:label": "Observation Statement",
@@ -450,6 +1054,42 @@
       "rdfs:label": "Organization",
       "rdfs:subClassOf": {
         "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:OtherClosureReason",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Not connected for a reason not listed here."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Other reason"
+      }
+    },
+    {
+      "@id": "ucm:OutOfArea",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person is outside the receiving party's service area."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Out of area"
       }
     },
     {
@@ -473,7 +1113,10 @@
         "@language": "en",
         "@value": "Pending"
       },
-      "skos:definition": "A pending care coordination request.",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A pending care coordination request."
+      },
       "skos:inScheme": {
         "@id": "ucm:LifecycleState"
       },
@@ -509,6 +1152,24 @@
       "rdfs:label": "Process"
     },
     {
+      "@id": "ucm:ProgramCapacity",
+      "@type": "skos:Concept",
+      "skos:broader": {
+        "@id": "ucm:ClosedNotConnected"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving program had no capacity for the person."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ClosureReason"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Program at capacity"
+      }
+    },
+    {
       "@id": "ucm:ProgramDefinition",
       "@type": "owl:Class",
       "rdfs:label": "Program Definition",
@@ -536,6 +1197,154 @@
       "@id": "ucm:PublicHealthDomain",
       "@type": "owl:Class",
       "rdfs:label": "Public Health Domain"
+    },
+    {
+      "@id": "ucm:ReferralAccepted",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party agreed to take part in the requested coordination."
+      },
+      "skos:exactMatch": {
+        "@id": "ucm:Accepted"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ReferralDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Accepted"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ReferralDisposition"
+      }
+    },
+    {
+      "@id": "ucm:ReferralDeclined",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept."
+      },
+      "skos:exactMatch": {
+        "@id": "ucm:Declined"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ReferralDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Declined"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ReferralDisposition"
+      }
+    },
+    {
+      "@id": "ucm:ReferralDisposition",
+      "@type": "skos:ConceptScheme",
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-07"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What has the receiving party decided about a care coordination request?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Referral Disposition"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party's decision on a care coordination request."
+      },
+      "skos:editorialNote": {
+        "@language": "en",
+        "@value": "Overlaps ucm:LifecycleState, whose concepts are defined in terms of care coordination requests. The three shared states are mapped with skos:exactMatch so either validates; the group should decide which scheme a request carries."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:ReferralAccepted"
+        },
+        {
+          "@id": "ucm:ReferralDeclined"
+        },
+        {
+          "@id": "ucm:ReferralExpired"
+        },
+        {
+          "@id": "ucm:ReferralPending"
+        },
+        {
+          "@id": "ucm:ReferralWithdrawn"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Referral Disposition"
+      }
+    },
+    {
+      "@id": "ucm:ReferralExpired",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The receiving party made no decision within the time allowed for a response."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ReferralDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Expired"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ReferralDisposition"
+      }
+    },
+    {
+      "@id": "ucm:ReferralPending",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The request has been sent and the receiving party has not yet decided."
+      },
+      "skos:exactMatch": {
+        "@id": "ucm:Pending"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ReferralDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Pending"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ReferralDisposition"
+      }
+    },
+    {
+      "@id": "ucm:ReferralWithdrawn",
+      "@type": "skos:Concept",
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The requesting party withdrew the request before the receiving party decided."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ReferralDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Withdrawn"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ReferralDisposition"
+      }
     },
     {
       "@id": "ucm:ResidentRole",
@@ -730,6 +1539,54 @@
       }
     },
     {
+      "@id": "ucm:hasClosureReason",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a closed care coordination request to the reason it was closed.",
+      "rdfs:domain": {
+        "@id": "ucm:CoordinationRequest"
+      },
+      "rdfs:label": "has closure reason",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasCommitmentStatus",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a care commitment to whether it is binding on its participants.",
+      "rdfs:domain": {
+        "@id": "ucm:CareCommitment"
+      },
+      "rdfs:label": "has commitment status",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasHandoffStatus",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a handshake to where responsibility for its agreed services stands between the sending and receiving parties.",
+      "rdfs:domain": {
+        "@id": "ucm:Handshake"
+      },
+      "rdfs:label": "has handoff status",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasHandshakeFulfillment",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a handshake to how much of its negotiated service has been delivered.",
+      "rdfs:domain": {
+        "@id": "ucm:Handshake"
+      },
+      "rdfs:label": "has handshake fulfillment",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
       "@id": "ucm:hasLifecycleState",
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a process to a lifecycle state.",
@@ -784,6 +1641,18 @@
       "rdfs:label": "has patient",
       "rdfs:range": {
         "@id": "ucm:Person"
+      }
+    },
+    {
+      "@id": "ucm:hasReferralDisposition",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a care coordination request to the receiving party's decision on it.",
+      "rdfs:domain": {
+        "@id": "ucm:CoordinationRequest"
+      },
+      "rdfs:label": "has referral disposition",
+      "rdfs:range": {
+        "@id": "skos:Concept"
       }
     },
     {

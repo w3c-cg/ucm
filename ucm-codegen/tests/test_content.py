@@ -50,14 +50,16 @@ def test_blank_node_shapes_are_named_by_content(compilation):
 
 
 def test_diff_pins_down_the_regressed_spec(compilation, regressed_compilation):
-    """The two spec defects show up as exactly three node changes"""
+    """The two spec defects show up as one changed property and every scheme moving namespace"""
     old = regressed_compilation.ir.model_dump(mode="json")
     new = compilation.ir.model_dump(mode="json")
     changes = diff_nodes(node_digests(old), node_digests(new), node_contents(old), node_contents(new))
+    schemes = sorted(s.term for s in compilation.ir.schemes.values())
+    assert "LifecycleState" in schemes
     assert [(c.kind, c.key) for c in changes] == [  # sorted by node key
         ("changed", "property:ucm:acceptsRequest"),
-        ("removed", "scheme:http://mdixinc.com/ucm#LifecycleState"),
-        ("added", "scheme:ucm:LifecycleState"),
+        *[("removed", f"scheme:http://mdixinc.com/ucm#{s}") for s in schemes],
+        *[("added", f"scheme:ucm:{s}") for s in schemes],
     ]
     (accepts,) = [c for c in changes if c.kind == "changed"]
     (field,) = accepts.fields

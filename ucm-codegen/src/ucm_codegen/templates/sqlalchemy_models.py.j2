@@ -147,10 +147,11 @@ concept = sa.Table(
     sa.Column("scheme_iri", sa.Text(), nullable=False, index=True),
     sa.Column("term", sa.Text(), nullable=False),
     sa.Column("label", sa.Text(), nullable=True),
+    sa.Column("broader_iri", sa.Text(), nullable=True, index=True, comment="skos:broader within the scheme"),
     comment="SKOS concepts from the UCM concept schemes",
 )
 
-CONCEPTS: List[Dict[str, str]] = {{ schema.concepts | map(attribute="__dict__") | list | pyrepr }}
+CONCEPTS: List[Dict[str, Optional[str]]] ={{ schema.concepts | map(attribute="__dict__") | list | pyrepr }}
 
 
 # ============================================================================

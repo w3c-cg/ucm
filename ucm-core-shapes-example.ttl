@@ -44,7 +44,9 @@ ex:t-assess a time:ProperInterval ;
 # ---------- Coordination request and its handshake ----------
 ex:req-1 a ucm:CoordinationRequest ;
     ucm:hasActivityFocus ex:focus-1 ;
-    ucm:hasLifecycleState ucm:Accepted .
+    ucm:hasLifecycleState ucm:Accepted ;
+    ucm:hasReferralDisposition ucm:ReferralAccepted ;
+    ucm:hasClosureReason ucm:ClosedConnected .
 ex:p-cm a ucm:Participation ;
     ucm:participatingEntity ex:cm-1 ;
     ucm:occursWithin ex:req-1 ;
@@ -58,7 +60,11 @@ ex:p-fund a ucm:Participation ;
     ucm:assumesRole ex:role-prov .
 ex:role-prov a ucm:ProviderRole .
 ex:hs-1 a ucm:Handshake ;                     # inherits focus from req-1
-    ucm:negotiates ex:req-1 .
+    ucm:negotiates ex:req-1 ;
+    ucm:hasHandoffStatus ucm:HandoffAssumed ;
+    ucm:hasHandshakeFulfillment ucm:FulfillmentConfirmed .
+ex:commit-1 a ucm:CareCommitment ;
+    ucm:hasCommitmentStatus ucm:CommitmentInForce .
 
 # ---------- Clinical encounter, same person ----------
 ex:enc-1 a ucm:ClinicalEncounter ;

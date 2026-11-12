@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import re
 from collections import defaultdict
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set
 
 from .models import LintFinding, OntologyIR, Severity
 from .utils import local_name
@@ -250,4 +250,66 @@ def lint(ir: OntologyIR) -> List[LintFinding]:
             message="No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.",
         ))
 
+    # 7. Concept hierarchies that are not trees
+    findings.extend(_hierarchy_findings(ir))
+
+    # 8. Concept-valued properties but no vocabulary at all: almost always a
+    #    vocabulary file missing from the build manifest
+    concept_valued = sorted(
+        p.term for p in ir.properties.values() if p.range == "http://www.w3.org/2004/02/skos/core#Concept"
+    )
+    if concept_valued and not ir.schemes:
+        findings.append(LintFinding(
+            code="no-concept-schemes",
+            severity=Severity.WARNING,
+            subject=ir.curie(ir.iri),
+            message=(
+                f"{len(concept_valued)} properties take skos:Concept values ({', '.join(concept_valued[:5])}"
+                f"{' and more' if len(concept_valued) > 5 else ''}) but no concept scheme was compiled. "
+                f"Is the vocabulary file (ucm-lifecycle-vocabularies.ttl) listed under ontology in ucm-build.yaml?"
+            ),
+        ))
+
     return sorted(findings, key=lambda f: (_SEVERITY_ORDER[f.severity], f.code, f.subject))
+
+
+def _hierarchy_findings(ir: OntologyIR) -> List[LintFinding]:
+    """Each scheme's skos:broader links form a tree inside the scheme.
+
+    Roll-up metrics count a concept under every ancestor (skos:broader*), so a
+    concept with two parents is counted twice, a parent in another scheme
+    mixes two axes, and a cycle has no top to roll up to.
+    """
+    findings: List[LintFinding] = []
+
+    def finding(subject: str, message: str) -> None:
+        findings.append(LintFinding(
+            code="concept-hierarchy", severity=Severity.WARNING, subject=ir.curie(subject), message=message,
+        ))
+
+    for scheme in sorted(ir.schemes.values(), key=lambda s: s.iri):
+        members = {c.iri for c in scheme.concepts}
+        parent: Dict[str, str] = {}
+        for concept in scheme.concepts:
+            outside = [b for b in concept.broader if b not in members]
+            inside = [b for b in concept.broader if b in members]
+            for b in outside:
+                finding(concept.iri, f"skos:broader {ir.curie(b)} is not in {ir.curie(scheme.iri)}; "
+                                     f"a hierarchy stays within one scheme (map across schemes instead).")
+            if len(inside) > 1:
+                finding(concept.iri, f"Has {len(inside)} broader concepts in {ir.curie(scheme.iri)} "
+                                     f"({', '.join(ir.curie(b) for b in inside)}); roll-ups would count it twice.")
+            if inside:
+                parent[concept.iri] = inside[0]
+        reported: Set[str] = set()
+        for start in sorted(parent):
+            seen: List[str] = []
+            node: Optional[str] = start
+            while node in parent and node not in seen:
+                seen.append(node)
+                node = parent[node]
+            if node in seen and node not in reported:
+                cycle = seen[seen.index(node):]
+                reported.update(cycle)
+                finding(node, "skos:broader cycle: " + " → ".join(ir.curie(c) for c in cycle + [node]) + ".")
+    return findings

@@ -7,13 +7,39 @@ import pytest
 from rdflib import Graph
 from rdflib.compare import isomorphic
 
-from ucm_codegen.parser import IRBoundaryError, export_jsonld, ingest
+from ucm_codegen.parser import IRBoundaryError, export_jsonld, ingest, load_rdf, parse_rdf
 
 from .conftest import ONTOLOGY_TTL, SHAPES_TTL
 
 
 def test_export_is_deterministic():
     assert export_jsonld(ONTOLOGY_TTL) == export_jsonld(ONTOLOGY_TTL)
+
+
+@pytest.mark.parametrize("sources", [ONTOLOGY_TTL, SHAPES_TTL], ids=["ontology", "shapes"])
+def test_export_ignores_checkout_line_endings(tmp_path: Path, sources):
+    """A Windows checkout (CRLF) and a Linux runner (LF) export the same IR, multi-line literals included"""
+    exports = {}
+    for ending in ("\n", "\r\n"):
+        folder = tmp_path / repr(ending).strip("'").replace("\\", "")
+        folder.mkdir()
+        copies = []
+        for source in sources:
+            text = source.read_bytes().decode("utf-8").replace("\r\n", "\n")
+            copy = folder / source.name
+            copy.write_bytes(text.replace("\n", ending).encode("utf-8"))
+            copies.append(copy)
+        exports[ending] = export_jsonld(copies)
+        assert "\\r" not in exports[ending]
+    assert exports["\n"] == exports["\r\n"]
+
+
+def test_data_graphs_ignore_line_endings(tmp_path: Path):
+    lf, crlf = tmp_path / "lf.ttl", tmp_path / "crlf.ttl"
+    text = '@prefix ex: <http://example.org/> .\nex:a ex:note """line one\nline two""" .\n'
+    lf.write_bytes(text.encode("utf-8"))
+    crlf.write_bytes(text.replace("\n", "\r\n").encode("utf-8"))
+    assert isomorphic(load_rdf([lf]), load_rdf([crlf]))
 
 
 @pytest.mark.parametrize("sources", [ONTOLOGY_TTL, SHAPES_TTL], ids=["ontology", "shapes"])
@@ -24,7 +50,7 @@ def test_round_trip_preserves_the_graph(tmp_path: Path, sources):
 
     original = Graph()
     for source in sources:
-        original.parse(str(source))
+        parse_rdf(original, source)
     ingested, digests = ingest([exported])
 
     assert len(ingested) == len(original)

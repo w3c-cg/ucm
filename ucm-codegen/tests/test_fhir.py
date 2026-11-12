@@ -164,3 +164,48 @@ def test_round_trip_recovers_mapped_facts(adapter, bundle):
         (ex + "stmt-1", "statementDate", "2026-09-02T10:45:00-07:00"),
         (ex + "cm-1", "@type", "Person"),
     } <= back
+
+
+# ---------- Coded states (concept-coding) ----------
+
+UCM_CODES = "https://www.w3.org/ns/ucm#"
+
+
+def test_task_carries_disposition_and_closure_reason(bundle):
+    task = resources(bundle)["req-1"]
+    assert task["businessStatus"] == {"coding": [{"system": UCM_CODES, "code": "ReferralAccepted"}]}
+    assert task["statusReason"] == {"coding": [{"system": UCM_CODES, "code": "ClosedConnected"}]}
+
+
+def test_coded_states_round_trip(adapter, bundle):
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    ex = "http://example.org/ucm/"
+    assert {
+        (ex + "req-1", "hasReferralDisposition", "ReferralAccepted"),
+        (ex + "req-1", "hasClosureReason", "ClosedConnected"),
+    } <= back
+
+
+def test_adopter_concepts_keep_their_iri(adapter):
+    """A concept outside UCM goes out as text plus its IRI and comes back unchanged"""
+    local = "http://example.org/hmis#NoBedsAvailable"
+    node = {"@id": "http://example.org/ucm/req-9", "@type": "CoordinationRequest", "hasClosureReason": local}
+    bundle, warnings = adapter.to_fhir_bundle([node])
+    assert warnings == []
+    reason = bundle["entry"][0]["resource"]["statusReason"]
+    assert reason["text"] == local
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    assert ("http://example.org/ucm/req-9", "hasClosureReason", local) in back
+
+
+@pytest.mark.parametrize("field, message", [
+    ({"property": "hasActivityFocus", "transform": "concept-coding"},
+     "transform concept-coding needs a property bound to a concept scheme"),
+    ({"property": "hasClosureReason", "transform": "concept-coding", "map": {"OutOfArea": "x"}},
+     "map and default do not apply"),
+], ids=["unbound", "map"])
+def test_concept_coding_is_checked(compilation, field, message):
+    with pytest.raises(FhirMappingError) as error:
+        FhirCompiler(compilation.ir, mapping_with({"CoordinationRequest": {"resource": "Task", "fields": {
+            "statusReason": field}}})).compile()
+    assert any(message in e for e in error.value.errors), error.value.errors

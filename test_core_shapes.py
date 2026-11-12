@@ -9,8 +9,8 @@
   7. Meta-validation: both shapes files are valid SHACL (SHACL-for-SHACL).
 
 Usage: python3 test_core_shapes.py <dir>
-<dir> must hold unified-care-model.ttl (in the https://www.w3.org/ns/ucm#
-namespace), ucm-core-shapes.ttl,
+<dir> must hold unified-care-model.ttl and ucm-lifecycle-vocabularies.ttl
+(in the https://www.w3.org/ns/ucm# namespace), ucm-core-shapes.ttl,
 ucm-core-shapes-example.ttl and ucm-shapes-lint.ttl.
 """
 import sys
@@ -40,7 +40,7 @@ def shapes_graph(mutate=None):
 
 def data_graph(extra=""):
     g = Graph()
-    for f in ["unified-care-model.ttl", "ucm-core-shapes-example.ttl"]:
+    for f in ["unified-care-model.ttl", "ucm-lifecycle-vocabularies.ttl", "ucm-core-shapes-example.ttl"]:
         g.parse(f"{D}/{f}", format="turtle")
     if extra:
         g.parse(data=PFX + extra, format="turtle")
@@ -139,9 +139,9 @@ CASES = [
   "ex:hs-a a ucm:Handshake ; ucm:negotiates ex:hs-b . ex:hs-b a ucm:Handshake ; ucm:negotiates ex:hs-a .",
   {(V, "HandshakeAcyclicShape", "hs-a"), (V, "HandshakeAcyclicShape", "hs-b"),
    (W, "CoordinativeActivityShape", "hs-a"), (W, "CoordinativeActivityShape", "hs-b")}),
- ("D12 two lifecycle states",
+ ("D12 two lifecycle states",  # req-1 is closed, so Pending also contradicts its closure reason
   "ex:req-1 ucm:hasLifecycleState ucm:Pending .",
-  {(V, "LifecycleState-single", "req-1")}),
+  {(V, "LifecycleState-single", "req-1"), (W, "ClosedWhilePendingShape", "req-1")}),
  ("D13 lifecycle state as a literal",
   'ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; ucm:hasLifecycleState "pending" .',
   {(V, "LifecycleState-single", "req-x"), (W, "LifecycleState-anchored", "req-x")}),
@@ -172,6 +172,39 @@ CASES = [
  ("D21 statement date as free text",
   'ex:stmt-y a ucm:SocialCareStatement ; ucm:madeWithinContext ex:ctx-housing ; ucm:statementDate "last Tuesday" .',
   {(V, "Statement-date", "stmt-y")}),
+ ("D22 two closure reasons",
+  "ex:req-1 ucm:hasClosureReason ucm:OutOfArea .",
+  {(V, "ClosureReason-single", "req-1")}),
+ ("D23 referral disposition as a literal",
+  'ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; ucm:hasReferralDisposition "accepted" .',
+  {(V, "ReferralDisposition-single", "req-x"), (W, "ReferralDisposition-anchored", "req-x")}),
+ ("D24 concept from another scheme",
+  "ex:hs-x a ucm:Handshake ; ucm:negotiates ex:req-1 ; ucm:hasHandshakeFulfillment ucm:HandoffAssumed .",
+  {(W, "HandshakeFulfillment-anchored", "hs-x")}),
+ ("D25 local commitment status, unmapped",
+  "ex:commit-x a ucm:CareCommitment ; ucm:hasCommitmentStatus ex:Paused . "
+  "ex:Paused a skos:Concept ; skos:inScheme ex:LocalStatuses .",
+  {(W, "CommitmentStatus-anchored", "commit-x")}),
+ ("D26 two handoff statuses",
+  "ex:hs-1 ucm:hasHandoffStatus ucm:HandoffShared .",
+  {(V, "HandoffStatus-single", "hs-1")}),
+ ("D27 closure reason on a pending request",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; "
+  "ucm:hasReferralDisposition ucm:ReferralPending ; ucm:hasClosureReason ucm:ClientUnreachable .",
+  {(W, "ClosedWhilePendingShape", "req-x")}),
+ ("D28 closure reason while the lifecycle state is pending",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; "
+  "ucm:hasLifecycleState ucm:Pending ; ucm:hasClosureReason ucm:ClosedNoLongerNeeded .",
+  {(W, "ClosedWhilePendingShape", "req-x")}),
+ ("D29 delivery reported on a declined request",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; ucm:hasReferralDisposition ucm:ReferralDeclined . "
+  "ex:hs-x a ucm:Handshake ; ucm:negotiates ex:req-x ; ucm:hasHandshakeFulfillment ucm:FulfillmentPartial .",
+  {(W, "FulfillmentAfterDeclineShape", "hs-x")}),
+ ("D30 delivery reported on a request whose adopter state matches Withdrawn",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; ucm:hasReferralDisposition hmis:Cancelled . "
+  "hmis:Cancelled a skos:Concept ; skos:inScheme hmis:ReferralStatus ; skos:exactMatch ucm:ReferralWithdrawn . "
+  "ex:hs-x a ucm:Handshake ; ucm:negotiates ex:req-x ; ucm:hasHandshakeFulfillment ucm:FulfillmentConfirmed .",
+  {(W, "FulfillmentAfterDeclineShape", "hs-x")}),
  # ---- controls: must stay silent ----
  ("N01 handshake chain grounded in a focused process",
   "ex:hs-c a ucm:Handshake ; ucm:negotiates ex:hs-1 .",
@@ -188,6 +221,19 @@ CASES = [
  ("N04 dateTimeStamp validity, correctly ordered",
   'ex:p-x a ucm:Participation ; ucm:participatingEntity ex:cm-1 ; ucm:occursWithin ex:req-1 ; '
   'ucm:validFrom "2026-09-01T00:00:00Z"^^xsd:dateTimeStamp ; ucm:validTo "2026-10-01T00:00:00Z"^^xsd:dateTimeStamp .',
+  set()),
+ ("N05 adopter closure reason mapped with skos:broadMatch",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; ucm:hasClosureReason hmis:NoBedsAvailable . "
+  "hmis:NoBedsAvailable a skos:Concept ; skos:inScheme hmis:ExitReasons ; skos:broadMatch ucm:ProgramCapacity .",
+  set()),
+ ("N06 declined request closed with a reason, nothing delivered",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; "
+  "ucm:hasReferralDisposition ucm:ReferralDeclined ; ucm:hasClosureReason ucm:ProgramCapacity . "
+  "ex:hs-x a ucm:Handshake ; ucm:negotiates ex:req-x ; ucm:hasHandshakeFulfillment ucm:FulfillmentNotStarted .",
+  set()),
+ ("N07 closure reason selected at the top level",
+  "ex:req-x a ucm:CoordinationRequest ; ucm:hasActivityFocus ex:focus-1 ; "
+  "ucm:hasReferralDisposition ucm:ReferralAccepted ; ucm:hasClosureReason ucm:ClosedNotConnected .",
   set()),
 ]
 hdr(f"3. SEEDED DEFECTS AND CONTROLS  ({len(CASES)} cases)")
@@ -249,3 +295,4 @@ for label, sg in [("ucm-core-shapes.ttl", shapes_graph()), ("ucm-shapes-lint.ttl
         print(f"   {label}: FAILED  {str(e).splitlines()[0]}")
 
 hdr(f"SUMMARY  {'ALL PASS' if failures == 0 else f'{failures} FAILURE(S)'}")
+sys.exit(1 if failures else 0)

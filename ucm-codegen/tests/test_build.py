@@ -77,12 +77,12 @@ def test_report_flags_a_regressed_spec(regressed_compilation):
     html = outputs.files["report.html"]
     assert "Passed with warnings" in html
     assert "namespace-drift" in html
-    assert "&lt;http://mdixinc.com/ucm#LifecycleState&gt;" in html  # escaped, not markup
+    assert "&lt;http://mdixinc.com/ucm#&gt;" in html  # escaped, not markup
     assert build_failed(regressed_compilation, outputs, strict=False) == []
     assert build_failed(regressed_compilation, outputs, strict=True) == [
         # namespace-drift, undeclared-term, range-mismatch
         "3 lint warnings (--strict), 1 of them namespace drift between spec files",
-        "1 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
+        "6 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
     ]
 
 
@@ -95,10 +95,61 @@ def test_build_command(tmp_path):
 
 
 def test_build_command_fails_strict_but_still_reports(tmp_path, regressed_sources):
-    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, regressed_sources)), "--strict"])
+    summary = tmp_path / "summary.md"
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, regressed_sources)), "--strict",
+                                      "--summary", str(summary)])
     assert result.exit_code == 1
     assert "Build failed" in result.output
     assert (tmp_path / "out" / "report.html").exists()
+    text = summary.read_text(encoding="utf-8")
+    assert text.startswith("### UCM reference build: failed")
+    assert "| Warning | namespace-drift |" in text
+
+
+def test_report_summarizes_the_vocabularies(compilation):
+    html = outputs_for(compilation).files["report.html"]
+    overview = html[html.index('id="overview"'):html.index('id="changes"')]
+    for scheme in ["ClosureReason", "CommitmentStatus", "HandoffStatus", "HandshakeFulfillment",
+                   "LifecycleState", "ReferralDisposition"]:
+        assert f"<b>{scheme}</b>" in overview
+    assert '<span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span>' in overview
+    assert "No property uses this scheme" not in html
+    assert "<tr><th>Concepts</th><td>33</td></tr>" in html
+    vocabularies = html[html.index('id="vocabularies"'):html.index('id="openapi"')]
+    assert vocabularies.index("<b>ClosedNotConnected</b>") < vocabularies.index("<b>OutOfArea</b>")  # parent first
+    assert "2 levels" in vocabularies
+
+
+def test_summary_for_ci(tmp_path):
+    summary = tmp_path / "summary.md"
+    summary.write_text("earlier step\n", encoding="utf-8")
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, ONTOLOGY_TTL)), "--strict",
+                                      "--summary", str(summary)])
+    assert result.exit_code == 0, result.output
+    text = summary.read_text(encoding="utf-8")
+    assert text.startswith("earlier step\n### UCM reference build: passed")  # appended, like $GITHUB_STEP_SUMMARY
+    assert "| Concepts | 33 |" in text
+    assert "| ClosureReason | 10 | 2 | `hasClosureReason` on ucm:CoordinationRequest |" in text
+    assert "#### Lint findings" not in text
+
+
+def test_report_explains_a_missing_vocabulary(tmp_path):
+    """The vocabulary left out of the manifest: the build fails on the FHIR mapping, and the report says why"""
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, ONTOLOGY_TTL[:1]))])
+    assert result.exit_code == 1
+    output = " ".join(result.output.split())  # undo console wrapping
+    assert "transform code needs a property bound to a concept scheme" in output  # Task.status cannot bind
+    assert "No concept schemes were compiled. Is the vocabulary file listed under ontology" in output
+
+
+def test_lint_names_a_missing_vocabulary(tmp_path):
+    from ucm_codegen.pipeline import compile_ir
+    from .conftest import export_ir
+    ontology, shapes, shapes_lint = export_ir(tmp_path, ONTOLOGY_TTL[:1])
+    findings = compile_ir([ontology], [shapes], [shapes_lint]).findings
+    (finding,) = [f for f in findings if f.code == "no-concept-schemes"]
+    assert finding.message.startswith("6 properties take skos:Concept values (hasClosureReason, ")
+    assert "listed under ontology in ucm-build.yaml" in finding.message
 
 
 # ---------- Lockfile, diff and stale outputs ----------
@@ -138,19 +189,20 @@ def test_lock_records_what_is_on_disk(tmp_path):
         path = tmp_path / "out" / relative
         assert digest_file(path) == digest, relative
         assert b"\r\n" not in path.read_bytes(), relative  # LF everywhere
-    assert [s["path"].endswith(".ttl") for s in lock.sources["ontology"]] == [True]
+    assert [s["path"].endswith(".ttl") for s in lock.sources["ontology"]] == [True, True]
     assert {e["file"] for e in lock.ir} == {"ucm-ontology.jsonld", "ucm-shapes.jsonld", "ucm-shapes-lint.jsonld"}
     snapshot = json.loads((tmp_path / "ir" / "ucm-ir.json").read_text(encoding="utf-8"))
     assert snapshot["iri"] == "https://www.w3.org/ns/ucm#"
 
 
-def test_spec_change_is_diffed_and_stale_outputs_pruned(tmp_path, regressed_sources):
+def test_spec_change_is_diffed_and_stale_outputs_pruned(tmp_path, compilation, regressed_sources):
     assert build(manifest_file(tmp_path, ONTOLOGY_TTL)).exit_code == 0
     (before,) = migrations(tmp_path)
 
     result = build(manifest_file(tmp_path, regressed_sources))
     assert result.exit_code == 0, result.output
-    assert "Since the previous build: 1 added, 1 removed, 1 changed nodes" in result.output
+    schemes = len(compilation.ir.schemes)  # every scheme drifts with the vocabulary
+    assert f"Since the previous build: {schemes} added, {schemes} removed, 1 changed nodes" in result.output
     assert "changed  property:ucm:acceptsRequest" in result.output
     assert "removed stale output" in result.output  # Rich wraps the path; the files are checked below
 

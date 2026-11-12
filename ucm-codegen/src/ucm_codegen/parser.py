@@ -20,6 +20,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from pyld import jsonld
 from rdflib import Dataset, Graph
+from rdflib.util import guess_format
 
 from .content import Cache, digest_bytes, digest_text
 from .models import SourceDigest
@@ -116,13 +117,24 @@ def ingest(paths: Sequence[Path], cache: Optional[Cache] = None) -> Tuple[Graph,
     return graph, sources
 
 
+def parse_rdf(graph: Graph, path: Path) -> Graph:
+    """Parse an RDF file into graph with CRLF line endings read as LF.
+
+    Multi-line literals (SPARQL constraints, scope notes) otherwise keep the
+    line endings of the checkout, so a Windows clone with core.autocrlf would
+    compile different IR, and different artifacts, from a Linux CI runner.
+    """
+    text = path.read_bytes().decode("utf-8").replace("\r\n", "\n")
+    return graph.parse(data=text, format=guess_format(str(path)) or "turtle", publicID=path.resolve().as_uri())
+
+
 def load_rdf(paths: Sequence[Path]) -> Graph:
     """Load data graphs (not IR): JSON-LD through PyLD, anything else through rdflib"""
     jsonld_paths = [p for p in paths if p.suffix.lower() in JSONLD_SUFFIXES]
     graph, _ = ingest(jsonld_paths) if jsonld_paths else (Graph(), [])
     for path in paths:
         if path.suffix.lower() not in JSONLD_SUFFIXES:
-            graph.parse(str(path))
+            parse_rdf(graph, path)
     return graph
 
 
@@ -134,7 +146,7 @@ def export_jsonld(sources: Sequence[Path], context: Dict[str, str] | None = None
     """
     graph = Graph()
     for source in sources:
-        graph.parse(str(source))
+        parse_rdf(graph, Path(source))
 
     canonical = jsonld.normalize(
         jsonld.from_rdf(graph.serialize(format="nt"), {"format": "application/n-quads"}),

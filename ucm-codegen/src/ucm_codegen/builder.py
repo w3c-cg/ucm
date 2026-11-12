@@ -347,7 +347,15 @@ class SpecBuilder:
             properties=properties,
         )
 
+    def scheme_properties(self, scheme: ConceptScheme) -> List[str]:
+        """Terms of the properties whose values come from this scheme"""
+        return sorted(
+            p.term for p in self.ir.properties.values()
+            if (bound := self.scheme_for(p)) is not None and bound.iri == scheme.iri
+        )
+
     def scheme_schema(self, scheme: ConceptScheme) -> ConceptSchemeSchema:
+        terms = {c.iri: c.term for c in scheme.concepts}
         return ConceptSchemeSchema(
             name=scheme.term,
             iri=scheme.iri,
@@ -361,9 +369,13 @@ class SpecBuilder:
                     "iri": c.iri,
                     "label": c.label,
                     **({"definition": c.definition} if c.definition else {}),
+                    # in-scheme parents by term; anything else by compact IRI
+                    **({"broader": [terms.get(b) or self.ir.curie(b) for b in c.broader]} if c.broader else {}),
+                    **{name: [self.ir.curie(t) for t in targets] for name, targets in c.mappings.items()},
                 }
                 for c in scheme.concepts
             },
+            properties=self.scheme_properties(scheme),
         )
 
     def support_schemas(self) -> Dict[str, Dict[str, Any]]:

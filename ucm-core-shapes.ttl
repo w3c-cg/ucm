@@ -252,6 +252,192 @@ ucmsh:LifecycleState-anchored a sh:NodeShape ;
     ] .
 
 #################################################################
+#  Referral, handoff, fulfillment, closure and commitment
+#  Same pattern as the lifecycle state: one value, identified by IRI
+#  (Definitional), drawn from the scheme of the same name or SKOS-mapped
+#  into it (Recommended). One single/anchored pair per property.
+#################################################################
+
+ucmsh:ReferralDispositionShape a sh:NodeShape ;
+    sh:targetSubjectsOf ucm:hasReferralDisposition ;
+    sh:property ucmsh:ReferralDisposition-single .
+
+ucmsh:ReferralDisposition-single a sh:PropertyShape ;
+    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
+    sh:path ucm:hasReferralDisposition ;
+    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    sh:message "A coordination request holds at most one referral disposition, identified by IRI." .
+
+ucmsh:ReferralDisposition-anchored a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasReferralDisposition ;
+    sh:sparql [
+        sh:message "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasReferralDisposition ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:ReferralDisposition
+                }
+            }""" ;
+    ] .
+
+ucmsh:HandoffStatusShape a sh:NodeShape ;
+    sh:targetSubjectsOf ucm:hasHandoffStatus ;
+    sh:property ucmsh:HandoffStatus-single .
+
+ucmsh:HandoffStatus-single a sh:PropertyShape ;
+    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
+    sh:path ucm:hasHandoffStatus ;
+    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    sh:message "A handshake holds at most one handoff status, identified by IRI." .
+
+ucmsh:HandoffStatus-anchored a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasHandoffStatus ;
+    sh:sparql [
+        sh:message "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasHandoffStatus ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:HandoffStatus
+                }
+            }""" ;
+    ] .
+
+ucmsh:HandshakeFulfillmentShape a sh:NodeShape ;
+    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
+    sh:property ucmsh:HandshakeFulfillment-single .
+
+ucmsh:HandshakeFulfillment-single a sh:PropertyShape ;
+    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
+    sh:path ucm:hasHandshakeFulfillment ;
+    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    sh:message "A handshake holds at most one fulfillment state, identified by IRI." .
+
+ucmsh:HandshakeFulfillment-anchored a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
+    sh:sparql [
+        sh:message "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasHandshakeFulfillment ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:HandshakeFulfillment
+                }
+            }""" ;
+    ] .
+
+ucmsh:ClosureReasonShape a sh:NodeShape ;
+    sh:targetSubjectsOf ucm:hasClosureReason ;
+    sh:property ucmsh:ClosureReason-single .
+
+ucmsh:ClosureReason-single a sh:PropertyShape ;
+    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
+    sh:path ucm:hasClosureReason ;
+    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    sh:message "A coordination request holds at most one closure reason, identified by IRI." .
+
+ucmsh:ClosureReason-anchored a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasClosureReason ;
+    sh:sparql [
+        sh:message "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasClosureReason ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:ClosureReason }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:ClosureReason
+                }
+            }""" ;
+    ] .
+
+ucmsh:CommitmentStatusShape a sh:NodeShape ;
+    sh:targetSubjectsOf ucm:hasCommitmentStatus ;
+    sh:property ucmsh:CommitmentStatus-single .
+
+ucmsh:CommitmentStatus-single a sh:PropertyShape ;
+    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
+    sh:path ucm:hasCommitmentStatus ;
+    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    sh:message "A care commitment holds at most one commitment status, identified by IRI." .
+
+ucmsh:CommitmentStatus-anchored a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasCommitmentStatus ;
+    sh:sparql [
+        sh:message "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasCommitmentStatus ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:CommitmentStatus }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:CommitmentStatus
+                }
+            }""" ;
+    ] .
+
+#################################################################
+#  Across schemes: states that contradict each other
+#  Exact matches are followed in both directions, so ucm:Pending,
+#  ucm:ReferralPending and an adopter concept exactly matched to either
+#  are the same state here.
+#################################################################
+
+ucmsh:ClosedWhilePendingShape a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasClosureReason ;
+    sh:sparql [
+        sh:message "Closure reason recorded on a request that is still pending a decision." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .
+                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .
+            }""" ;
+    ] .
+
+ucmsh:FulfillmentAfterDeclineShape a sh:NodeShape ;
+    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
+    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
+    sh:sparql [
+        sh:message "Handshake reports services delivered for a request that was declined, withdrawn or expired." ;
+        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasHandshakeFulfillment ?value .
+                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }
+                $this ucm:negotiates+ ?request .
+                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .
+                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .
+                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))
+            }""" ;
+    ] .
+
+#################################################################
 #  Shared object
 #################################################################
 

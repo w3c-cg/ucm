@@ -208,6 +208,60 @@ class ReportBuilder:
             visit(root, 1)
         return ordered
 
+    def vocabularies(self) -> List[Dict[str, Any]]:
+        """Each scheme with its concepts in hierarchy order and the properties that use it"""
+        properties = {p.term: p for p in self.ir.properties.values()}
+        out = []
+        for scheme in self.spec.concept_schemes:
+            concepts = scheme.concepts
+            children: Dict[Optional[str], List[str]] = {}
+            for term, concept in concepts.items():
+                parents = [b for b in concept.get("broader", []) if b in concepts]
+                children.setdefault(parents[0] if parents else None, []).append(term)
+            rows: List[Dict[str, Any]] = []
+            seen: set = set()
+
+            def visit(term: str, depth: int) -> None:
+                if term in seen:
+                    return  # a cycle; the concept-hierarchy lint reports it
+                seen.add(term)
+                concept = concepts[term]
+                rows.append({
+                    "term": term,
+                    "depth": depth,
+                    "label": concept["label"],
+                    "definition": concept.get("definition", ""),
+                    "iri": concept["iri"],
+                    "mappings": [
+                        (name, concept[name]) for name in
+                        ("exactMatch", "closeMatch", "broadMatch", "narrowMatch", "relatedMatch") if name in concept
+                    ],
+                })
+                for child in sorted(children.get(term, [])):
+                    visit(child, depth + 1)
+
+            for root in sorted(children.get(None, [])):
+                visit(root, 0)
+            for term in sorted(set(concepts) - seen):  # only reachable through a cycle
+                visit(term, 0)
+            out.append({
+                "name": scheme.name,
+                "iri": scheme.iri,
+                "description": self.ir.schemes[scheme.iri].description,  # the scheme's own, not the API boilerplate
+                "concepts": len(concepts),
+                "levels": 1 + max((r["depth"] for r in rows), default=0) if rows else 0,
+                "has_mappings": any(r["mappings"] for r in rows),
+                "rows": rows,
+                "used_by": [
+                    {
+                        "term": term,
+                        "domain": self.ir.curie(properties[term].domain) if properties[term].domain else None,
+                    }
+                    for term in scheme.properties
+                ],
+            })
+        return out
+
     # ---------- report ----------
 
     def build(self) -> Dict[str, Any]:
@@ -246,6 +300,7 @@ class ReportBuilder:
                 ("Classes", len(ir.classes)),
                 ("Properties", len(ir.properties)),
                 ("Concept schemes", len(ir.schemes)),
+                ("Concepts", sum(len(s.concepts) for s in ir.schemes.values())),
                 ("Node shapes", len(ir.shapes)),
                 ("Constraints", sum(len(s.properties) + len(s.sparql) for s in ir.shapes)),
                 ("API resources", len(self.spec.resources)),
@@ -258,10 +313,7 @@ class ReportBuilder:
             "validation": [r.model_dump(mode="json") for r in (self.validation.results if self.validation else [])],
             "example_warnings": self.example_warnings,
             "classes": self.class_tree(),
-            "schemes": [
-                {"name": s.name, "iri": s.iri, "description": s.description, "concepts": s.concepts}
-                for s in self.spec.concept_schemes
-            ],
+            "schemes": self.vocabularies(),
             "resources": [
                 {
                     "name": r.name,
@@ -351,3 +403,84 @@ def _describe(field: Dict[str, Any]) -> str:
     if "each" in field:
         parts.append(f"{len(field['each'])} sub-elements")
     return " · ".join(parts) or "this node"
+
+
+# ============= Markdown summary =============
+
+def _cell(text: Any) -> str:
+    return str(text if text is not None else "").replace("|", r"\|").replace("\n", " ")
+
+
+def markdown_summary(report: Dict[str, Any], limit: int = 20) -> str:
+    """The report's headline as GitHub-flavored Markdown, for a CI job summary.
+
+    A CI runner's report.html is a download; this puts the result, the
+    vocabularies and the findings on the run page itself.
+    """
+    status = report["status"]
+    lines = [f"### UCM reference build: {status['state']}", ""]
+    for reason in report["gate"]["failed"] or []:
+        lines.append(f"- **Failed:** {_cell(reason)}")
+    lines += [
+        f"{status['violations']} lint violations · {status['warnings']} lint warnings · "
+        f"{status['infos']} informational"
+        + (f" · example {'conforms' if status['conforms'] else 'has results'}" if status["validated"] else ""),
+        "",
+        "| Compiled | |",
+        "|---|--:|",
+        *[f"| {label} | {value} |" for label, value in report["counts"]],
+        "",
+    ]
+
+    lines += ["#### Vocabularies", ""]
+    if report["schemes"]:
+        lines += ["| Concept scheme | Concepts | Levels | Values of |", "|---|--:|--:|---|"]
+        for scheme in report["schemes"]:
+            used = ", ".join(
+                f"`{u['term']}`" + (f" on {u['domain']}" if u["domain"] else "") for u in scheme["used_by"]
+            ) or "**no property uses this scheme**"
+            lines.append(f"| {scheme['name']} | {scheme['concepts']} | {scheme['levels']} | {used} |")
+    else:
+        lines.append("No concept schemes. Is the vocabulary file listed under `ontology` in ucm-build.yaml?")
+    lines.append("")
+
+    serious = [f for f in report["findings"] if f["severity"] != "Info"]
+    if serious:
+        lines += ["#### Lint findings", "", "| Severity | Code | Subject | Message |", "|---|---|---|---|"]
+        lines += [
+            f"| {f['severity']} | {f['code']} | `{_cell(f['subject'])}` | {_cell(f['message'])} |"
+            for f in serious[:limit]
+        ]
+        if len(serious) > limit:
+            lines.append(f"\n… {len(serious) - limit} more in the report")
+        lines.append("")
+
+    if report["validation"]:
+        lines += ["#### Example validation", "", "| Severity | Focus | Shape | Message |", "|---|---|---|---|"]
+        lines += [
+            f"| {_cell(r.get('severity'))} | `{_cell(r.get('focus_node'))}` | {_cell(r.get('source_shape'))} "
+            f"| {_cell(r.get('message'))} |"
+            for r in report["validation"][:limit]
+        ]
+        lines.append("")
+
+    changes = report["changes"]
+    if changes["state"] == "changed":
+        lines += [
+            "#### Changes since the previous build",
+            "",
+            f"{changes['added']} added, {changes['removed']} removed, {changes['changed']} changed IR nodes; "
+            f"{len(changes['outputs'])} generated files differ.",
+            "",
+        ]
+        lines += [
+            f"- {n['kind']} {n['type']} `{n['name']}`"
+            + (f" ({', '.join(f['field'] for f in n['fields'])})" if n["fields"] else "")
+            for n in changes["nodes"][:limit]
+        ]
+        if len(changes["nodes"]) > limit:
+            lines.append(f"- … {len(changes['nodes']) - limit} more in the report")
+        lines.append("")
+    elif changes["state"] == "unchanged":
+        lines += ["No changes since the previous build.", ""]
+    return "\n".join(lines) + "\n"

@@ -60,7 +60,7 @@ def engine(project, models, tmp_path):
     return engine
 
 
-def test_layout(schema):
+def test_layout(compilation, schema):
     tables = {t.name: t for t in schema.tables}
     assert len(tables) == 19
     process = tables["process"]
@@ -73,23 +73,26 @@ def test_layout(schema):
     associations = {a.name: a for a in schema.associations}
     assert associations["participation__assumes_role"].owner_table == "participation"
     assert associations["node__has_temporal_context"].owner_table is None  # no rdfs:domain
-    assert [c.term for c in schema.concepts] == ["Accepted", "Declined", "Pending"]
+    concepts = {c.term for s in compilation.ir.schemes.values() for c in s.concepts}
+    assert {c.term for c in schema.concepts} == concepts  # one row per concept, every scheme
+    assert {"Accepted", "Declined", "Pending"} <= concepts
 
 
 def test_revision_is_deterministic(compilation, schema):
     assert SqlBuilder(compilation.ir).build().revision == schema.revision
 
 
-def test_migration_matches_models(engine, models):
+def test_migration_matches_models(compilation, engine, models):
+    concepts = sum(len(s.concepts) for s in compilation.ir.schemes.values())
     with engine.connect() as connection:
         assert compare_metadata(MigrationContext.configure(connection), models.Base.metadata) == []
-        assert connection.execute(sa.text("select count(*) from concept")).scalar() == 3
+        assert connection.execute(sa.text("select count(*) from concept")).scalar() == concepts
 
 
 def test_examples_round_trip(engine, models, spec):
     nodes = example_nodes(spec)
     with Session(engine) as session:
-        assert models.load(session, nodes) == 28
+        assert models.load(session, nodes) == 29
         session.commit()
 
     def same(a, b):
@@ -135,3 +138,32 @@ def test_postgres_ddl(project, monkeypatch):
     assert "CONSTRAINT ck_process_type CHECK (type IN ('Process'," in sql
     assert "REFERENCES participation (iri) ON DELETE CASCADE" in sql
     assert "INSERT INTO concept" in sql
+
+
+def test_concepts_record_their_parent(schema):
+    parents = {c.term: c.broader_iri for c in schema.concepts}
+    assert parents["OutOfArea"] == "https://www.w3.org/ns/ucm#ClosedNotConnected"
+    assert parents["ClosedNotConnected"] is None and parents["Accepted"] is None
+
+
+def test_closure_rates_roll_up_in_sql(engine, compilation):
+    """Successful-connection rate from one scheme: ClosedConnected / (ClosedConnected + under ClosedNotConnected)"""
+    ucm = "https://www.w3.org/ns/ucm#"
+    closed = ["ClosedConnected", "ClosedConnected", "OutOfArea", "ClientUnreachable", "ClosedNotConnected",
+              "ClosedNoLongerNeeded"]  # one request each; the last is excluded from the rate
+    with engine.begin() as connection:
+        connection.execute(sa.text("create table closure (request text, reason text)"))
+        connection.execute(sa.text("insert into closure values (:r, :c)"),
+                           [{"r": f"req-{i}", "c": ucm + c} for i, c in enumerate(closed)])
+        rows = connection.execute(sa.text("""
+            with recursive under(iri, top) as (
+                select iri, iri from concept where broader_iri is null and scheme_iri = :scheme
+                union all
+                select c.iri, u.top from concept c join under u on c.broader_iri = u.iri
+            )
+            select u.top, count(*) from closure x join under u on x.reason = u.iri group by u.top
+        """), {"scheme": ucm + "ClosureReason"}).all()
+    counts = {top.rsplit("#", 1)[1]: n for top, n in rows}
+    assert counts == {"ClosedConnected": 2, "ClosedNotConnected": 3, "ClosedNoLongerNeeded": 1}
+    rate = counts["ClosedConnected"] / (counts["ClosedConnected"] + counts["ClosedNotConnected"])
+    assert rate == 0.4

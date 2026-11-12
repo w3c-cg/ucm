@@ -16,7 +16,7 @@
       "@id": "ucm:AcceptsRequestShape",
       "@type": "sh:NodeShape",
       "sh:property": {
-        "@id": "_:c14n10"
+        "@id": "_:c14n13"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:acceptsRequest"
@@ -36,7 +36,7 @@
       "@id": "ucm:AffiliationShape",
       "@type": "sh:NodeShape",
       "sh:property": {
-        "@id": "_:c14n13"
+        "@id": "_:c14n17"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:affiliatedWith"
@@ -53,10 +53,120 @@
       }
     },
     {
+      "@id": "ucm:ClosedWhilePendingShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n22"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasClosureReason"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ClosureReason-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n20"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasClosureReason"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ClosureReason-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A coordination request holds at most one closure reason, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasClosureReason"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ClosureReasonShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucm:ClosureReason-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasClosureReason"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentStatus-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n16"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasCommitmentStatus"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentStatus-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A care commitment holds at most one commitment status, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasCommitmentStatus"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:CommitmentStatusShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucm:CommitmentStatus-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasCommitmentStatus"
+      }
+    },
+    {
       "@id": "ucm:ContextArtifactShape",
       "@type": "sh:NodeShape",
       "sh:property": {
-        "@id": "_:c14n16"
+        "@id": "_:c14n21"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:definedByArtifact"
@@ -69,7 +179,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n17"
+        "@id": "_:c14n23"
       },
       "sh:targetClass": [
         {
@@ -102,13 +212,76 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n8"
+        "@id": "_:c14n10"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:FulfillmentAfterDeclineShape",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n2"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasHandshakeFulfillment"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:HandoffStatus-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n25"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasHandoffStatus"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:HandoffStatus-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A handshake holds at most one handoff status, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasHandoffStatus"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:HandoffStatusShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucm:HandoffStatus-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasHandoffStatus"
       }
     },
     {
@@ -139,13 +312,60 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n2"
+        "@id": "_:c14n3"
       },
       "sh:targetClass": {
         "@id": "ucm:Handshake"
       },
       "ucm:tier": {
         "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:HandshakeFulfillment-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n11"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasHandshakeFulfillment"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:HandshakeFulfillment-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A handshake holds at most one fulfillment state, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasHandshakeFulfillment"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:HandshakeFulfillmentShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucm:HandshakeFulfillment-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasHandshakeFulfillment"
       }
     },
     {
@@ -165,7 +385,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n20"
+        "@id": "_:c14n27"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasLifecycleState"
@@ -260,7 +480,7 @@
         "@value": "1"
       },
       "sh:path": {
-        "@id": "_:c14n19"
+        "@id": "_:c14n26"
       },
       "sh:severity": {
         "@id": "sh:Violation"
@@ -295,7 +515,7 @@
       },
       "sh:message": "Participation context is not typed as ucm:SemanticContext.",
       "sh:path": {
-        "@id": "_:c14n12"
+        "@id": "_:c14n15"
       },
       "sh:severity": {
         "@id": "sh:Warning"
@@ -416,10 +636,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n23"
+            "@id": "_:c14n30"
           },
           {
-            "@id": "_:c14n27"
+            "@id": "_:c14n32"
           }
         ]
       },
@@ -444,10 +664,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n22"
+            "@id": "_:c14n29"
           },
           {
-            "@id": "_:c14n25"
+            "@id": "_:c14n34"
           }
         ]
       },
@@ -468,7 +688,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n18"
+        "@id": "_:c14n24"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -484,7 +704,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n6"
+        "@id": "_:c14n8"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -533,7 +753,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n7"
+        "@id": "_:c14n9"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -549,7 +769,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n3"
+        "@id": "_:c14n5"
       },
       "sh:targetSubjectsOf": [
         {
@@ -576,6 +796,53 @@
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ReferralDisposition-anchored",
+      "@type": "sh:NodeShape",
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n4"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasReferralDisposition"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ReferralDisposition-single",
+      "@type": "sh:PropertyShape",
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A coordination request holds at most one referral disposition, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasReferralDisposition"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ReferralDispositionShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "ucm:ReferralDisposition-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasReferralDisposition"
       }
     },
     {
@@ -607,10 +874,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n21"
+            "@id": "_:c14n28"
           },
           {
-            "@id": "_:c14n29"
+            "@id": "_:c14n36"
           }
         ]
       },
@@ -714,7 +981,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n11"
+        "@id": "_:c14n14"
       },
       "sh:targetObjectsOf": [
         {
@@ -777,6 +1044,16 @@
     },
     {
       "@id": "_:c14n10",
+      "sh:message": "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring.",
+      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                $this ucm:enactiveDuring ?iv .\n                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }\n            }"
+    },
+    {
+      "@id": "_:c14n11",
+      "sh:message": "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandshakeFulfillment\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n13",
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -792,12 +1069,12 @@
       }
     },
     {
-      "@id": "_:c14n11",
+      "@id": "_:c14n14",
       "sh:message": "Interval ends before it begins.",
       "sh:select": "\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?b ;\n                      time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?e .\n                FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))\n            }"
     },
     {
-      "@id": "_:c14n12",
+      "@id": "_:c14n15",
       "sh:alternativePath": {
         "@list": [
           {
@@ -810,7 +1087,12 @@
       }
     },
     {
-      "@id": "_:c14n13",
+      "@id": "_:c14n16",
+      "sh:message": "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasCommitmentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:CommitmentStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:CommitmentStatus\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n17",
       "sh:class": {
         "@id": "ucm:Organization"
       },
@@ -826,7 +1108,17 @@
       }
     },
     {
-      "@id": "_:c14n16",
+      "@id": "_:c14n2",
+      "sh:message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
+    },
+    {
+      "@id": "_:c14n20",
+      "sh:message": "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasClosureReason ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ClosureReason }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ClosureReason\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n21",
       "sh:class": {
         "@id": "ucm:DefinitionArtifact"
       },
@@ -842,86 +1134,96 @@
       }
     },
     {
-      "@id": "_:c14n17",
+      "@id": "_:c14n22",
+      "sh:message": "Closure reason recorded on a request that is still pending a decision.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .\n                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .\n            }"
+    },
+    {
+      "@id": "_:c14n23",
       "sh:message": "Coordination process declares no activity focus, directly or through a process it negotiates.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }\n            }"
     },
     {
-      "@id": "_:c14n18",
+      "@id": "_:c14n24",
       "sh:message": "An entity participates through this participation via participatesThrough, but the participation names a different participating entity.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:participatesThrough $this .\n                $this ucm:participatingEntity ?actual .\n                FILTER (?claimant != ?actual)\n            }"
     },
     {
-      "@id": "_:c14n19",
+      "@id": "_:c14n25",
+      "sh:message": "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandoffStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandoffStatus\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n26",
       "sh:inversePath": {
         "@id": "ucm:hasMembership"
       }
     },
     {
-      "@id": "_:c14n2",
-      "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
-      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
-    },
-    {
-      "@id": "_:c14n20",
+      "@id": "_:c14n27",
       "sh:message": "Lifecycle state is neither in ucm:LifecycleState nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasLifecycleState ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:LifecycleState }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:LifecycleState\n                }\n            }"
     },
     {
-      "@id": "_:c14n21",
+      "@id": "_:c14n28",
       "sh:datatype": {
         "@id": "xsd:dateTime"
-      }
-    },
-    {
-      "@id": "_:c14n22",
-      "sh:datatype": {
-        "@id": "xsd:dateTime"
-      }
-    },
-    {
-      "@id": "_:c14n23",
-      "sh:datatype": {
-        "@id": "xsd:dateTime"
-      }
-    },
-    {
-      "@id": "_:c14n25",
-      "sh:datatype": {
-        "@id": "xsd:dateTimeStamp"
-      }
-    },
-    {
-      "@id": "_:c14n27",
-      "sh:datatype": {
-        "@id": "xsd:dateTimeStamp"
       }
     },
     {
       "@id": "_:c14n29",
       "sh:datatype": {
-        "@id": "xsd:dateTimeStamp"
+        "@id": "xsd:dateTime"
       }
     },
     {
       "@id": "_:c14n3",
+      "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
+      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
+    },
+    {
+      "@id": "_:c14n30",
+      "sh:datatype": {
+        "@id": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "_:c14n32",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n34",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n36",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n4",
+      "sh:message": "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ReferralDisposition\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n5",
       "sh:message": "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
     },
     {
-      "@id": "_:c14n6",
+      "@id": "_:c14n8",
       "sh:message": "A process lists this participation via hasParticipant, but the participation occurs within a different process.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:hasParticipant $this .\n                $this ucm:occursWithin ?actual .\n                FILTER (?claimant != ?actual)\n            }"
     },
     {
-      "@id": "_:c14n7",
+      "@id": "_:c14n9",
       "sh:message": "Participation validTo precedes validFrom.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:validFrom ?f ; ucm:validTo ?t .\n                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))\n            }"
-    },
-    {
-      "@id": "_:c14n8",
-      "sh:message": "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring.",
-      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                $this ucm:enactiveDuring ?iv .\n                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }\n            }"
     }
   ]
 }

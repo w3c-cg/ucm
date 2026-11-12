@@ -33,6 +33,7 @@ from .models import ApiProfile, LintFinding, Severity, ValidationReport
 from .normalize import NormalizationError
 from .parser import IRBoundaryError, export_jsonld, load_rdf
 from .pipeline import Compilation, compile_ir
+from .report import markdown_summary
 from .shacl import validate_data
 from .utils import load_yaml_safe
 
@@ -89,7 +90,8 @@ def _compile(
     constraint_count = sum(len(s.properties) + len(s.sparql) for s in ir.shapes)
     console.print(
         f"✓ Parsed {len(ir.classes)} classes, {len(ir.properties)} properties, "
-        f"{len(ir.schemes)} concept schemes, {len(ir.shapes)} node shapes "
+        f"{len(ir.schemes)} concept schemes ({sum(len(s.concepts) for s in ir.schemes.values())} concepts), "
+        f"{len(ir.shapes)} node shapes "
         f"({constraint_count} constraints)"
     )
     if not shapes_lint:
@@ -254,6 +256,9 @@ def _render(
         console.print("[bold red]✗ FHIR mapping does not match the ontology:[/bold red]")
         for error in e.errors:
             console.print(f"  • {error}")
+        if not compilation.ir.schemes:
+            console.print("[yellow]  No concept schemes were compiled. Is the vocabulary file listed "
+                          "under ontology in the build manifest?[/yellow]")
         raise typer.Exit(1)
     except GenerationError as e:
         _fail(str(e))
@@ -284,6 +289,10 @@ def build(
         False, "--write-on-failure", help="Write artifacts, IR and lockfile even when the build fails"
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show informational lint findings"),
+    summary: Optional[Path] = typer.Option(
+        None, "--summary",
+        help="Append a Markdown summary of the report to this file (in CI: \"$GITHUB_STEP_SUMMARY\")",
+    ),
 ):
     """
     Export, lint, validate and generate everything from a build manifest
@@ -343,8 +352,11 @@ def build(
     ir_json = compilation.ir.model_dump(mode="json")
     lock = make_lock(plan, compilation, outputs)
     diff = build_diff(previous, previous_ir, lock, ir_json)
-    add_report(outputs, compilation, diff, lock, held=previous if gated else None,
-               failed=reasons if gated else None)
+    report = add_report(outputs, compilation, diff, lock, held=previous if gated else None,
+                        failed=reasons if gated else None)
+    if summary is not None:
+        with summary.open("a", encoding="utf-8", newline="\n") as f:
+            f.write(markdown_summary(report))
 
     if cache is not None:
         hits, misses = len(cache.hits), len(cache.misses)

@@ -28,11 +28,13 @@ def test_shipped_spec_is_consistent(compilation):
 
 
 def test_lifecycle_namespace_drift(regressed_compilation):
-    """Shapes and data say ucm:LifecycleState; the vocabulary declares another namespace"""
+    """Shapes use the ucm: schemes and concepts; the vocabulary declares them in another namespace"""
     (drift,) = by_code(regressed_compilation, "namespace-drift")
-    assert drift.subject == "ucm:LifecycleState"
-    assert "http://mdixinc.com/ucm#LifecycleState" in drift.message
-    assert "ucm:LifecycleState-anchored" in drift.message
+    assert drift.subject == "https://www.w3.org/ns/ucm#"
+    assert "declared only under <http://mdixinc.com/ucm#>" in drift.message
+    # every scheme the shapes anchor to, plus the concepts the cross-scheme checks name
+    assert drift.message.startswith("11 terms (ClosureReason, CommitmentStatus, ")
+    assert "LifecycleState" in drift.message
 
 
 def test_accepts_request_range(regressed_compilation):
@@ -72,7 +74,8 @@ def test_informational_findings(compilation):
     coercions = {f.subject for f in by_code(compilation, "datatype-coercion")}
     assert coercions == {"ucm:statementDate", "ucm:validFrom", "ucm:validTo"}
     orphans = {f.subject for f in by_code(compilation, "orphan-class")}
-    assert {"ucm:CareCommitment", "ucm:HousingDomain"} <= orphans
+    assert {"ucm:CareCoverageGap", "ucm:CareCoverageRequirement", "ucm:HousingDomain"} <= orphans
+    assert "ucm:CareCommitment" not in orphans  # hasCommitmentStatus connects it
     assert {f.subject for f in by_code(compilation, "shape-without-range")} == {"ucm:hasCareTrajectoryContext"}
 
 
@@ -87,12 +90,13 @@ def split_compilation(tmp_path_factory):
     from .conftest import ONTOLOGY_TTL, UCM_NAMESPACE, export_ir
 
     tmp = tmp_path_factory.mktemp("split")
-    moved = tmp / ONTOLOGY_TTL[0].name
-    moved.write_text(
-        ONTOLOGY_TTL[0].read_text(encoding="utf-8").replace(UCM_NAMESPACE, MOVED_NAMESPACE),
-        encoding="utf-8",
-    )
-    ontology, shapes, shapes_lint = export_ir(tmp, [moved])
+    moved = [tmp / source.name for source in ONTOLOGY_TTL]
+    for source, target in zip(ONTOLOGY_TTL, moved):
+        target.write_text(
+            source.read_text(encoding="utf-8").replace(UCM_NAMESPACE, MOVED_NAMESPACE),
+            encoding="utf-8",
+        )
+    ontology, shapes, shapes_lint = export_ir(tmp, moved)
     return compile_ir([ontology], [shapes], [shapes_lint])
 
 
@@ -100,7 +104,7 @@ def test_namespace_split_is_one_clear_finding(split_compilation):
     (drift,) = by_code(split_compilation, "namespace-drift")
     assert drift.subject == "https://www.w3.org/ns/ucm#"
     assert f"declared only under <{MOVED_NAMESPACE}>" in drift.message
-    assert drift.message.startswith("48 terms (ActivityFocus, ")  # every UCM term the shapes use
+    assert drift.message.startswith("63 terms (ActivityFocus, ")  # every UCM term the shapes use
     assert "Align the @prefix" in drift.message
     assert not by_code(split_compilation, "undeclared-term")  # no per-term flood
 
@@ -113,3 +117,57 @@ def test_standard_vocabularies_are_never_drift(split_compilation, compilation):
 def test_strict_failure_names_the_drift(split_compilation):
     reasons = build_failed(split_compilation, None, strict=True)
     assert reasons == ["1 lint warnings (--strict), 1 of them namespace drift between spec files"]
+
+
+# ---------- Concept hierarchies ----------
+
+UCM = "https://www.w3.org/ns/ucm#"
+
+
+def with_broader(compilation, edits):
+    """A copy of the IR with skos:broader replaced on some concepts: {term: [parent IRIs]}"""
+    ir = compilation.ir.model_copy(deep=True)
+    for scheme in ir.schemes.values():
+        for concept in scheme.concepts:
+            if concept.term in edits:
+                concept.broader = edits[concept.term]
+    return ir
+
+
+def hierarchy(ir):
+    from ucm_codegen.lint import lint
+    return [f for f in lint(ir) if f.code == "concept-hierarchy"]
+
+
+def test_shipped_hierarchies_are_trees(compilation):
+    assert not by_code(compilation, "concept-hierarchy")
+
+
+def test_two_parents_are_flagged(compilation):
+    ir = with_broader(compilation, {"OutOfArea": [UCM + "ClosedNotConnected", UCM + "ClosedNoLongerNeeded"]})
+    (finding,) = hierarchy(ir)
+    assert (finding.subject, finding.severity) == ("ucm:OutOfArea", Severity.WARNING)
+    assert "roll-ups would count it twice" in finding.message
+
+
+def test_parent_in_another_scheme_is_flagged(compilation):
+    (finding,) = hierarchy(with_broader(compilation, {"ReferralDeclined": [UCM + "ClosedNotConnected"]}))
+    assert finding.subject == "ucm:ReferralDeclined"
+    assert "is not in ucm:ReferralDisposition" in finding.message
+
+
+def test_cycles_are_flagged_once(compilation):
+    ir = with_broader(compilation, {
+        "ClosedNotConnected": [UCM + "OutOfArea"],  # OutOfArea is already narrower than it
+    })
+    (finding,) = hierarchy(ir)
+    assert finding.message.startswith("skos:broader cycle: ")
+    assert "ucm:ClosedNotConnected" in finding.message and "ucm:OutOfArea" in finding.message
+
+
+def test_a_hierarchy_defect_fails_a_strict_build(compilation):
+    from ucm_codegen.pipeline import Compilation
+    ir = with_broader(compilation, {"OutOfArea": [UCM + "ClosedNotConnected", UCM + "Ineligible"]})
+    from ucm_codegen.lint import lint
+    broken = Compilation(**{**compilation.__dict__, "ir": ir, "findings": lint(ir)})
+    assert any("lint warnings (--strict)" in r for r in build_failed(broken, None, strict=True))

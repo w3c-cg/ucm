@@ -25,14 +25,20 @@ def test_baseline_conforms(compilation, example_graph):
 
 
 def test_namespace_drift_breaks_the_baseline(regressed_compilation, example_graph):
-    """With the vocabulary in another namespace, the baseline gets one warning"""
+    """With the vocabulary in another namespace, every concept value in the baseline loses its anchor"""
     report = run(regressed_compilation, example_graph)
-    (result,) = report.results
-    assert result.severity == Severity.WARNING
-    assert result.tier == Tier.RECOMMENDED
-    assert result.focus_node == str(EX["req-1"])
-    assert result.value == str(UCM.Accepted)
-    assert result.source_shape == "https://www.w3.org/ns/ucm#LifecycleState-anchored"
+    assert all(r.severity == Severity.WARNING and r.tier == Tier.RECOMMENDED for r in report.results)
+    assert {(r.focus_node, r.value, r.source_shape) for r in report.results} == {
+        (str(EX[node]), str(UCM[concept]), f"https://www.w3.org/ns/ucm#{scheme}-anchored")
+        for node, concept, scheme in [
+            ("req-1", "Accepted", "LifecycleState"),
+            ("req-1", "ReferralAccepted", "ReferralDisposition"),
+            ("req-1", "ClosedConnected", "ClosureReason"),
+            ("hs-1", "HandoffAssumed", "HandoffStatus"),
+            ("hs-1", "FulfillmentConfirmed", "HandshakeFulfillment"),
+            ("commit-1", "CommitmentInForce", "CommitmentStatus"),
+        ]
+    }
 
 
 def drop_entity(g: Graph) -> None:

@@ -70,6 +70,14 @@ class Concept(BaseModel):
     label: str
     alt_labels: List[str] = Field(default_factory=list)
     definition: Optional[str] = None
+    broader: List[str] = Field(
+        default_factory=list,
+        description="skos:broader concept IRIs (and inverse skos:narrower); roll-ups follow these",
+    )
+    mappings: Dict[str, List[str]] = Field(
+        default_factory=dict,
+        description="SKOS mapping property (exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch) → concept IRIs",
+    )
 
 
 class ConceptScheme(BaseModel):
@@ -389,6 +397,7 @@ class ConceptSchemeSchema(BaseModel):
     description: Optional[str] = None
     terms: List[str]
     concepts: Dict[str, Dict[str, Any]]
+    properties: List[str] = Field(default_factory=list, description="Properties whose values come from the scheme")
 
 
 class APIOperation(BaseModel):
