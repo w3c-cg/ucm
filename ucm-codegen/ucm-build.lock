@@ -8,7 +8,7 @@
     "ontology": [
       {
         "path": "../unified-care-model.ttl",
-        "content": "sha256:481a912a8d18cc8c3d8561e7ff9ef762dfd5a6ba197f3dd22640d7054b08760c"
+        "content": "sha256:d7186bf9085c2b2f98f9f7b8b1a3c0b2c8e692cc5a187417c251e00b2cf0e440"
       },
       {
         "path": "../ucm-lifecycle-vocabularies.ttl",
