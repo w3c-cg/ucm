@@ -1,0 +1,45 @@
+# Check the workbench pages (docs/) whenever their entries, templates or
+# builder change: entries meet the listing criteria, their links resolve, and
+# the committed pages match a rebuild. Publishing is a Pages setting (branch
+# main, folder /docs), so this workflow never deploys.
+
+name: workbench
+
+on:
+  push:
+    paths:
+      - "docs/**"
+      - ".github/workflows/workbench.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - ".github/workflows/workbench.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workbench-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: docs/requirements.txt
+
+      - name: Install
+        run: pip install -r docs/requirements.txt
+
+      - name: Entries meet the listing criteria and pages are current
+        run: python docs/build.py --check --check-links
+
+      - name: Tests
+        run: pytest docs/tests

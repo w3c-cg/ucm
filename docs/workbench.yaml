@@ -1,0 +1,16 @@
+# Site settings and the profiles an implementation may target.
+# The chairs own this file; entries go in implementations/entries.yaml.
+
+title: UCM Implementations
+draft: true  # shows the Draft label; remove when the group and chairs adopt the page
+repository: https://github.com/w3c-cg/ucm
+group: https://www.w3.org/community/ucm/
+mailing_list: https://lists.w3.org/Archives/Public/public-ucm/
+
+profiles:
+  - id: ucm-core
+    title: UCM Core
+    description: >-
+      The core ontology, lifecycle vocabularies and Definitional shapes
+      (unified-care-model.ttl, ucm-lifecycle-vocabularies.ttl,
+      ucm-core-shapes.ttl).

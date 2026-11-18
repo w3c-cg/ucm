@@ -1,0 +1,102 @@
+{% extends "base.html.j2" %}
+{% block title %}UCM Implementations{% endblock %}
+{% block description %}Implementations of the Unified Care Model reported by their authors: what has been built, the profile it targets, and its reported test results.{% endblock %}
+{% block content %}
+    <div class="intro">
+      <h1>Implementations</h1>
+      <p class="lede">Examples of Unified Care Model implementations, so adopters and implementers can see what has been built, which profile it targets, and what test results its authors report.</p>
+    </div>
+
+    <aside class="notice" aria-label="Disclaimer">
+      <p>Information on this page is submitted by providers and others. W3C does not endorse specific products. The UCM Community Group does not endorse specific products. <a href="disclaimer.html">Full disclaimer</a></p>
+    </aside>
+
+    <section class="section" aria-labelledby="listed">
+      <div class="section-head">
+        <h2 id="listed">Reported implementations</h2>
+        <span class="count" data-count aria-live="polite">{{ entries|length }} {{ "entry" if entries|length == 1 else "entries" }}</span>
+      </div>
+
+{% if entries %}
+      <div class="filters" data-filters hidden>
+        <label class="search">
+          <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="visually-hidden">Filter by name or license</span>
+          <input type="search" placeholder="Filter by name or license" autocomplete="off" data-search>
+        </label>
+{% if site.profiles|length > 1 %}
+        <div class="segmented" role="group" aria-label="Profile">
+          <button type="button" data-profile="" aria-pressed="true">All profiles</button>
+{% for profile in site.profiles %}
+          <button type="button" data-profile="{{ profile.id }}" aria-pressed="false">{{ profile.title }}</button>
+{% endfor %}
+        </div>
+{% endif %}
+      </div>
+
+      <div class="table" data-table>
+        <table class="list">
+          <caption class="visually-hidden">Implementations, listed alphabetically by name</caption>
+          <thead>
+            <tr>
+              <th scope="col">Implementation</th>
+              <th scope="col">Profile</th>
+              <th scope="col">Reported results</th>
+              <th scope="col">License</th>
+              <th scope="col">Reported on</th>
+            </tr>
+          </thead>
+          <tbody>
+{% for entry in entries %}
+            <tr data-entry="{{ (entry.name ~ ' ' ~ entry.license)|lower }}" data-entry-profile="{{ entry.profile }}">
+              <td data-label="Implementation"><a class="entry-name" href="{{ entry.url }}" rel="nofollow external">{{ entry.name }}</a></td>
+              <td data-label="Profile"><span class="pill">{{ profiles[entry.profile].title }}</span></td>
+              <td data-label="Reported results"><a href="{{ entry.test_run }}" rel="nofollow external" aria-label="Test run for {{ entry.name }}">Test run</a> <span class="host">{{ entry.host }}</span></td>
+              <td data-label="License"><code>{{ entry.license }}</code></td>
+              <td data-label="Reported on"><time datetime="{{ entry.reported.isoformat() }}">{{ entry.reported.isoformat() }}</time></td>
+            </tr>
+{% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="empty" data-no-match hidden>No implementations match the filter.</p>
+      <p class="fine">Listed alphabetically by name. The order is not a ranking.</p>
+{% else %}
+      <div class="empty-state">
+        <strong>No implementations reported yet</strong>
+        <p>Entries are added by pull request. See <a href="#submit">Submitting an implementation</a>.</p>
+      </div>
+{% endif %}
+    </section>
+
+    <section class="section" id="submit" aria-labelledby="submit-heading">
+      <h2 id="submit-heading">Submitting an implementation</h2>
+      <p>Open a pull request that adds one entry to <a href="{{ site.repository }}/blob/main/docs/implementations/entries.yaml"><code>docs/implementations/entries.yaml</code></a>. An entry is listed when it meets these criteria:</p>
+      <dl class="criteria">
+        <div><dt>Public project</dt><dd>A public https URL for the project or its repository.</dd></div>
+        <div><dt>Public test run</dt><dd>A public https URL of a run of the group's test fixtures against the implementation.</dd></div>
+        <div><dt>Profile</dt><dd>One of the profiles listed below.</dd></div>
+        <div><dt>License</dt><dd>An SPDX license identifier or expression.</dd></div>
+        <div><dt>Reported on</dt><dd>The date the results were reported.</dd></div>
+      </dl>
+      <p>Continuous integration checks each entry against these criteria and checks that its links resolve. The chairs own this page and review every submission; a reviewer does not review a submission they are involved in.</p>
+      <p>Entries carry no rankings or quality ratings, no language implying certification, standardization or endorsement, and no commercial support, pricing or contact links. Test runs must use synthetic data only.</p>
+    </section>
+
+    <section class="section" aria-labelledby="profiles-heading">
+      <h2 id="profiles-heading">Profiles</h2>
+      <ul class="profiles">
+{% for profile in site.profiles %}
+        <li>
+          <div class="profile-head"><strong>{{ profile.title }}</strong> <code>{{ profile.id }}</code> <span class="count">{{ counts[profile.id] }} {{ "entry" if counts[profile.id] == 1 else "entries" }}</span></div>
+          <p>{{ profile.description }}</p>
+        </li>
+{% endfor %}
+      </ul>
+    </section>
+{% endblock %}
+{% block scripts %}
+{% if entries %}
+<script src="{{ root }}assets/implementations.js" defer></script>
+{% endif %}
+{% endblock %}

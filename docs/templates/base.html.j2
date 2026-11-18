@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %}</title>
+<meta name="description" content="{% block description %}{% endblock %}">
+<link rel="stylesheet" href="{{ root }}assets/workbench.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="glass">
+<div class="window">
+  <header class="chrome">
+    <div class="titlebar">
+      <span class="name">{{ site.title }}</span>
+      {% if site.draft %}
+      <span class="pill draft" title="Proposed page, under discussion by the group and its chairs">Draft</span>
+      {% endif %}
+    </div>
+    <nav class="tabs" aria-label="Workbench">
+      <a href="index.html"{% if page == "implementations" %} aria-current="page"{% endif %}>Implementations</a>
+      <a href="disclaimer.html"{% if page == "disclaimer" %} aria-current="page"{% endif %}>Disclaimer</a>
+      <a href="{{ site.repository }}">Specification</a>
+      <a href="{{ site.group }}">Community Group</a>
+    </nav>
+  </header>
+
+  <main id="content" class="content">
+{% block content %}{% endblock %}
+  </main>
+
+  <footer class="statusbar">
+    <span>Maintained by the chairs of the W3C Unified Care Model Community Group</span>
+    <span>The Unified Care Model is not a W3C Standard and is not on the W3C Standards Track</span>
+    <span><a href="{{ site.mailing_list }}">public-ucm archives</a></span>
+  </footer>
+</div>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

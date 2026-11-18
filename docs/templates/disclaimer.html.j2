@@ -1,0 +1,36 @@
+{% extends "base.html.j2" %}
+{% block title %}Disclaimer: UCM Implementations{% endblock %}
+{% block description %}What a listing on the UCM implementations page does and does not mean.{% endblock %}
+{% block content %}
+    <article class="prose">
+      <div class="intro">
+        <h1>Disclaimer</h1>
+        <p class="lede">Information on this page is submitted by providers and others. W3C does not endorse specific products. The UCM Community Group does not endorse specific products.</p>
+      </div>
+
+      <h2>What a listing means</h2>
+      <p>An implementation is listed because, when it was submitted, its entry met the listing criteria: a public project URL, a public run of the group's test fixtures, a profile the group defines, a license and a reported-on date. Nothing more is implied.</p>
+
+      <h2>What a listing does not mean</h2>
+      <ul>
+        <li>Neither W3C nor the UCM Community Group has reviewed an implementation's quality, security, privacy, accessibility or fitness for any use, including care delivery.</li>
+        <li>No listing is a certification, a statement of conformance or an endorsement. Neither W3C nor the Community Group runs a certification program for the Unified Care Model.</li>
+        <li>Entries are listed alphabetically by name. The order is not a ranking, and the page carries no ratings.</li>
+      </ul>
+
+      <h2>Reported results</h2>
+      <p>Test results are reported by the people who submit them, as of the reported-on date. The specification and the implementations both change, so a result may not describe the current version of either. Follow the test run link to see exactly what was run.</p>
+
+      <h2>No commercial information</h2>
+      <p>The Community Group is not a commercial venture. Listings carry no pricing, support or sales contact information, and the group does not arrange engagements with the people or organizations behind an implementation.</p>
+
+      <h2>Synthetic data only</h2>
+      <p>Test runs and examples linked from this page must use synthetic data. They must never contain real personal or health information. Report any that do to the chairs, and the entry will be removed.</p>
+
+      <h2>Corrections and removal</h2>
+      <p>To correct or remove an entry, open an issue or pull request in the <a href="{{ site.repository }}">group's repository</a>, or write to the group's public mailing list. The chairs may remove an entry that no longer meets the listing criteria, for example when one of its links no longer resolves.</p>
+
+      <h2>About the specification</h2>
+      <p>The Unified Care Model is developed by the <a href="{{ site.group }}">W3C Unified Care Model Community Group</a>. It is not a W3C Standard and is not on the W3C Standards Track.</p>
+    </article>
+{% endblock %}

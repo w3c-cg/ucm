@@ -1,0 +1,24 @@
+# Sample entries for previewing the page and for tests. Not real
+# implementations: every URL is on example.org. Not published.
+
+entries:
+  - name: Sample Referral Router
+    url: https://example.org/referral-router
+    profile: ucm-core
+    test_run: https://example.org/referral-router/runs/118
+    license: Apache-2.0
+    reported: 2026-10-21
+
+  - name: sample care ledger
+    url: https://example.org/care-ledger
+    profile: ucm-core
+    test_run: https://ci.example.org/care-ledger/7
+    license: MIT OR Apache-2.0
+    reported: 2026-09-30
+
+  - name: Discharge Handoff Kit (sample)
+    url: https://example.org/discharge-kit
+    profile: sample-discharge
+    test_run: https://example.org/discharge-kit/actions/runs/3
+    license: AGPL-3.0-only
+    reported: 2026-10-02
