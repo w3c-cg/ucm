@@ -42,6 +42,14 @@
       "@type": "owl:Ontology",
       "rdfs:comment": "Complete UCM model including Core, Participation, and Domain semantic layers.",
       "rdfs:label": "Unified Care Model",
+      "owl:imports": [
+        {
+          "@id": "ucm:lifecycle"
+        },
+        {
+          "@id": "ucm:shapes"
+        }
+      ],
       "owl:versionIRI": {
         "@id": "ucm:0.0.1"
       },
@@ -1675,6 +1683,16 @@
       "rdfs:range": {
         "@id": "time:TemporalEntity"
       }
+    },
+    {
+      "@id": "ucm:lifecycle",
+      "@type": "owl:Ontology",
+      "rdfs:comment": "SKOS concept schemes for the care coordination lifecycle states, dispositions, and statuses used by the UCM core ontology.",
+      "rdfs:label": "UCM Lifecycle Vocabularies",
+      "owl:versionIRI": {
+        "@id": "ucm:lifecycle/0.0.1"
+      },
+      "owl:versionInfo": "v0.0.1"
     },
     {
       "@id": "ucm:locatedAt",

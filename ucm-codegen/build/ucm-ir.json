@@ -8,9 +8,9 @@
   "sources": [
     {
       "file": "ucm-ontology.jsonld",
-      "digest": "sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca",
-      "triples": 629,
-      "content": "sha256:cccf23d1df2f2a4b489bd3c0e7bda7d37a9b827fd26f4704c9cf4c2652087ff7"
+      "digest": "sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b",
+      "triples": 636,
+      "content": "sha256:0055aedfbfdbb357677fd82b34b629b2a506db639762bf8286b79f2968da4bf5"
     },
     {
       "file": "ucm-shapes.jsonld",
