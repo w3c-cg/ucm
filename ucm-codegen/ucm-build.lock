@@ -8,11 +8,11 @@
     "ontology": [
       {
         "path": "../unified-care-model.ttl",
-        "content": "sha256:d7186bf9085c2b2f98f9f7b8b1a3c0b2c8e692cc5a187417c251e00b2cf0e440"
+        "content": "sha256:c58f7c3a7b5f9e85e1e78fae7e6a5dcd803d31789ec7126aca733beb0a770be5"
       },
       {
         "path": "../ucm-lifecycle-vocabularies.ttl",
-        "content": "sha256:c72e3efaaf2eb814e2751068743b88c1f260ddac76c790f137066cfa5b80f73a"
+        "content": "sha256:247ba4cb4256c7211df94091695ed2bf5e4fa4302e64373ed115bb0b90d583d9"
       }
     ],
     "shapes": [
@@ -49,9 +49,9 @@
   "ir": [
     {
       "file": "ucm-ontology.jsonld",
-      "canonical": "sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca",
-      "content": "sha256:cccf23d1df2f2a4b489bd3c0e7bda7d37a9b827fd26f4704c9cf4c2652087ff7",
-      "triples": 629
+      "canonical": "sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b",
+      "content": "sha256:0055aedfbfdbb357677fd82b34b629b2a506db639762bf8286b79f2968da4bf5",
+      "triples": 636
     },
     {
       "file": "ucm-shapes.jsonld",
@@ -213,11 +213,11 @@
   "outputs": {
     "context.jsonld": "sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c",
     "fhir/ucm_fhir_adapter.py": "sha256:dcb8445cbfe036fd9de24143e57920a30ff48871532b6f47717b7089e1335071",
-    "openapi.yaml": "sha256:4277942145b36ca7c59ccf9a804aa75f5b3bef200eebdc6bf194b26037242597",
+    "openapi.yaml": "sha256:250baf035bbfa27bc1add61b4ea25ef4791c88deec317eb7d21b4c4fc855d2a5",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
-    "postgres/migrations/versions/ucm_0ab5001ebc4f_ucm_0_0_1.py": "sha256:dba0635ae856e7d88b19f0d866a6f54d41d3b587452da77fda0c23b489acd54e",
-    "postgres/ucm_models.py": "sha256:c978d054e039e0fb741bf69f9ebd002a42044e3a7e1c3a391668f4c9fb5b87fc"
+    "postgres/migrations/versions/ucm_be6300a694ad_ucm_0_0_1.py": "sha256:60a0bffe2c7a270bb77a06b2807120673b64c1f379934bd8dfeda8b5a599488a",
+    "postgres/ucm_models.py": "sha256:ae9b96ee7cbc0709be7a705831c6a4bea5473a3acad79516ad2b931909b4c467"
   }
 }
