@@ -4,4 +4,4 @@
 
 # Issue Discussion
 
-*
+* Roman to provide demo / high level walk-through on API generator. Best would be best if it could start after 9:30 EST Sean will be available then.
