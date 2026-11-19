@@ -1,4 +1,7 @@
 @prefix ucm: <https://www.w3.org/ns/ucm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -6,6 +9,12 @@
 # UCM controlled vocabularies (SKOS). The OWL ontology says what things are,
 # the SHACL shapes say what valid data looks like, and these schemes say which
 # values a state, outcome or reason may take.
+
+<https://www.w3.org/ns/ucm#lifecycle> rdf:type owl:Ontology ;
+    owl:versionIRI <https://www.w3.org/ns/ucm#lifecycle/0.0.1> ;
+    rdfs:label "UCM Lifecycle Vocabularies" ;
+    rdfs:comment "SKOS concept schemes for the care coordination lifecycle states, dispositions, and statuses used by the UCM core ontology." ;
+    owl:versionInfo "v0.0.1" .
 
 
 #################################################################

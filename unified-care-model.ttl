@@ -15,6 +15,8 @@
 
 <https://www.w3.org/ns/ucm#> rdf:type owl:Ontology ;
                    owl:versionIRI <https://www.w3.org/ns/ucm#0.0.1> ;
+                   owl:imports <https://www.w3.org/ns/ucm#lifecycle> ,
+                               <https://www.w3.org/ns/ucm#shapes> ;
                    rdfs:comment "Complete UCM model including Core, Participation, and Domain semantic layers." ;
                    rdfs:label "Unified Care Model" ;
                    owl:versionInfo "v0.0.1" .
