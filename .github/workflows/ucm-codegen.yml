@@ -75,10 +75,20 @@ jobs:
         run: python test_core_shapes.py .
 
       # Only bites for what is committed: if ucm-build.lock (and generated/,
-      # build/) are in git, a spec change must ship with its regenerated
-      # artifacts. report.html is a view of the build, not an artifact.
+      # build/, examples/db/) are in git, a spec change must ship with its
+      # regenerated artifacts. report.html is a view of the build, not an
+      # artifact. Postgres lands outside the job's working-directory
+      # (examples/db, not examples/api/ucm-codegen/generated), so this step
+      # runs from the repo root with paths spelled out in full.
       - name: Committed lockfile and artifacts are current
-        run: git diff --exit-code -- ucm-build.lock generated build ':(exclude)generated/report.html'
+        working-directory: .
+        run: >
+          git diff --exit-code --
+          examples/api/ucm-codegen/ucm-build.lock
+          examples/api/ucm-codegen/generated
+          examples/api/ucm-codegen/build
+          examples/db
+          ':(exclude)examples/api/ucm-codegen/generated/report.html'
 
       - name: Upload reference artifacts
         if: always()
@@ -88,6 +98,7 @@ jobs:
           path: |
             examples/api/ucm-codegen/generated
             examples/api/ucm-codegen/build
+            examples/db
           if-no-files-found: warn
 
       - name: Summary

@@ -12,6 +12,7 @@ Usage:
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, List, Optional, Sequence
@@ -352,8 +353,9 @@ def build(
     ir_json = compilation.ir.model_dump(mode="json")
     lock = make_lock(plan, compilation, outputs)
     diff = build_diff(previous, previous_ir, lock, ir_json)
+    postgres_href_prefix = os.path.relpath(plan.postgres_dir, plan.output_dir).replace(os.sep, "/")
     report = add_report(outputs, compilation, diff, lock, held=previous if gated else None,
-                        failed=reasons if gated else None)
+                        failed=reasons if gated else None, postgres_href_prefix=postgres_href_prefix)
     if summary is not None:
         with summary.open("a", encoding="utf-8", newline="\n") as f:
             f.write(markdown_summary(report))
@@ -369,16 +371,16 @@ def build(
                                      " (no previous good build)") + "[/yellow]")
     else:
         promote_ir(plan, ir_files)
-        written = outputs.write(plan.output_dir)
-        removed, kept = prune_outputs(plan.output_dir, previous, lock)
+        written = outputs.write(plan.output_dir, plan.postgres_dir)
+        removed, kept = prune_outputs(plan.output_dir, previous, lock, plan.postgres_dir)
         write_if_changed(ir_snapshot, json.dumps(ir_json, indent=2, ensure_ascii=False) + "\n")
         write_if_changed(plan.lockfile, lock.dumps())
-        console.print(f"✓ Wrote {len(written)} changed files to {plan.output_dir}; "
-                      f"{len(outputs.files) - len(written)} unchanged")
+        console.print(f"✓ Wrote {len(written)} changed files to {plan.output_dir} "
+                      f"(Postgres to {plan.postgres_dir}); {len(outputs.files) - len(written)} unchanged")
         for path in removed:
-            console.print(f"  [dim]removed stale output {path.relative_to(plan.output_dir)}[/dim]")
+            console.print(f"  [dim]removed stale output {path}[/dim]")
         for path in kept:
-            console.print(f"  [yellow]⚠ kept {path.relative_to(plan.output_dir)}: no longer generated, "
+            console.print(f"  [yellow]⚠ kept {path}: no longer generated, "
                           f"but edited since the last build[/yellow]")
         console.print(f"✓ IR root {short(lock.ir_root)} ({len(lock.nodes)} nodes); "
                       f"lock {plan.relative(plan.lockfile)}")

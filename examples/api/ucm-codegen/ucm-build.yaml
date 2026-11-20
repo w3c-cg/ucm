@@ -15,5 +15,6 @@ examples:
 profile: profiles/ucm-api-profile.yaml
 fhir-mapping: profiles/ucm-fhir-mapping.yaml
 
-ir-dir: build          # JSON-LD IR (the boundary every target compiles from)
-output-dir: generated  # OpenAPI, context, postgres/, fhir/, report.html
+ir-dir: build                        # JSON-LD IR (the boundary every target compiles from)
+output-dir: generated                # OpenAPI, context, fhir/, report.html
+postgres-output-dir: ../../../examples/db  # SQLAlchemy models + Alembic migrations

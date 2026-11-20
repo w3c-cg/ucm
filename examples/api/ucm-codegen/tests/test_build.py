@@ -47,6 +47,7 @@ def test_repository_manifest_resolves():
     assert manifest.missing() == []
     assert manifest.ontology[0].name == "unified-care-model.ttl"
     assert manifest.output_dir == (PROJECT / "generated").resolve()
+    assert manifest.postgres_dir == (PROJECT.parent.parent / "db").resolve()
 
 
 def outputs_for(compilation):
@@ -223,6 +224,34 @@ def test_edited_stale_outputs_are_kept(tmp_path, regressed_sources):
     assert "kept" in result.output and "edited since the last build" in result.output
     assert migration.exists()
     assert len(migrations(tmp_path)) == 2
+
+
+def test_postgres_output_dir_is_independently_configurable(tmp_path):
+    """postgres-output-dir splits Postgres artifacts out of output-dir, same as examples/db in the repo manifest"""
+    manifest = tmp_path / "ucm-build.yaml"
+    manifest.write_text(yaml.safe_dump({
+        "cache-dir": str(SHARED["cache"]),
+        "ontology": [str(p) for p in ONTOLOGY_TTL],
+        "shapes": [str(p) for p in SHAPES_TTL],
+        "shapes-lint": [str(p) for p in SHAPES_LINT_TTL],
+        "examples": [str(EXAMPLE_TTL)],
+        "profile": str(PROFILE),
+        "fhir-mapping": str(FHIR_MAPPING),
+        "ir-dir": "ir",
+        "output-dir": "out",
+        "postgres-output-dir": "db",
+    }), encoding="utf-8")
+
+    result = build(manifest)
+    assert result.exit_code == 0, result.output
+
+    assert (tmp_path / "db" / "ucm_models.py").exists()
+    assert (tmp_path / "db" / "alembic.ini").exists()
+    assert list((tmp_path / "db" / "migrations" / "versions").glob("*.py"))
+    assert not (tmp_path / "out" / "postgres").exists()
+
+    lock = BuildLock.read(tmp_path / "ucm-build.lock")
+    assert "postgres/ucm_models.py" in lock.outputs  # lockfile keys stay target-relative regardless of layout
 
 
 # ---------- Gate: a failed build writes only the report ----------

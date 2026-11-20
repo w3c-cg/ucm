@@ -26,7 +26,7 @@ SPEC_ROOT = PROJECT.parent.parent.parent
 ONTOLOGY_TTL = [SPEC_ROOT / "unified-care-model.ttl", SPEC_ROOT / "ucm-lifecycle-vocabularies.ttl"]
 SHAPES_TTL = [SPEC_ROOT / "ucm-core-shapes.ttl"]
 SHAPES_LINT_TTL = [SPEC_ROOT / "ucm-shapes-lint.ttl"]
-EXAMPLE_TTL = SPEC_ROOT / "ucm-core-shapes-example.ttl"
+EXAMPLE_TTL = SPEC_ROOT / "examples" / "shapes" / "ucm-core-shapes-example.ttl"
 PROFILE = PROJECT / "profiles" / "ucm-api-profile.yaml"
 FHIR_MAPPING = PROJECT / "profiles" / "ucm-fhir-mapping.yaml"
 

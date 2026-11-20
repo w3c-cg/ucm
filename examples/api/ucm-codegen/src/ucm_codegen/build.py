@@ -58,9 +58,17 @@ class BuildManifest(BaseModel):
     fhir_mapping: Optional[Path] = Field(None, alias="fhir-mapping")
     ir_dir: Path = Field(Path("build"), alias="ir-dir")
     output_dir: Path = Field(Path("generated"), alias="output-dir")
+    postgres_output_dir: Optional[Path] = Field(
+        None, alias="postgres-output-dir",
+        description="Where Postgres artifacts (models + Alembic) go. Default: <output-dir>/postgres",
+    )
     cache_dir: Optional[Path] = Field(None, alias="cache-dir", description="Default: <ir-dir>/.cache")
     lockfile: Path = Path("ucm-build.lock")
     base: Path = Field(Path("."), exclude=True, description="Directory of the manifest file")
+
+    @property
+    def postgres_dir(self) -> Path:
+        return self.postgres_output_dir if self.postgres_output_dir is not None else self.output_dir / "postgres"
 
     @classmethod
     def load(cls, path: Path) -> "BuildManifest":
@@ -80,6 +88,7 @@ class BuildManifest(BaseModel):
             "fhir_mapping": resolve(manifest.fhir_mapping) if manifest.fhir_mapping else None,
             "ir_dir": ir_dir,
             "output_dir": resolve(manifest.output_dir),
+            "postgres_output_dir": resolve(manifest.postgres_output_dir) if manifest.postgres_output_dir else None,
             "cache_dir": resolve(manifest.cache_dir) if manifest.cache_dir else ir_dir / ".cache",
             "lockfile": resolve(manifest.lockfile),
             "base": base,
@@ -104,6 +113,14 @@ class BuildManifest(BaseModel):
             "fhir-mapping": [self.fhir_mapping] if self.fhir_mapping else [],
         }
         return {name: paths for name, paths in groups.items() if paths}
+
+
+def resolve_output_path(relative: str, output_dir: Path, postgres_dir: Optional[Path]) -> Path:
+    """Where a generated file (keyed by its TargetOutputs.files path) actually lands"""
+    if postgres_dir is not None and (relative == "postgres" or relative.startswith("postgres/")):
+        rest = relative[len("postgres/"):] if relative.startswith("postgres/") else ""
+        return postgres_dir / rest if rest else postgres_dir
+    return output_dir / relative
 
 
 def write_if_changed(path: Path, text: str) -> bool:
@@ -170,12 +187,17 @@ class TargetOutputs:
             if include_report or path != REPORT
         }
 
-    def write(self, output_dir: Path) -> List[Path]:
-        """Write every file; returns the ones whose content actually changed"""
+    def write(self, output_dir: Path, postgres_dir: Optional[Path] = None) -> List[Path]:
+        """Write every file; returns the ones whose content actually changed.
+
+        Postgres artifacts (keyed "postgres/...") go to postgres_dir instead
+        of output_dir when one is given, since Postgres is generated into its
+        own location (examples/db) rather than alongside the other targets.
+        """
         return [
-            output_dir / relative
+            target
             for relative, text in self.files.items()
-            if write_if_changed(output_dir / relative, text)
+            if write_if_changed((target := resolve_output_path(relative, output_dir, postgres_dir)), text)
         ]
 
 
@@ -249,12 +271,16 @@ def add_report(
     lock: Optional["BuildLock"] = None,
     held: Optional["BuildLock"] = None,
     failed: Optional[List[str]] = None,
+    postgres_href_prefix: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Render report.html into outputs; returns the report data.
 
     held is the last good lock when a failed build kept the artifacts on disk:
     the report then lists those artifacts (what is actually next to it), not
     the outputs this build would have written.
+
+    postgres_href_prefix: where Postgres artifacts actually land relative to
+    the report, when that isn't output_dir/postgres (see BuildManifest.postgres_dir).
     """
     if failed and held is not None:
         artifacts = dict(held.outputs)
@@ -265,7 +291,7 @@ def add_report(
     report = ReportBuilder(
         compilation, outputs.spec, outputs.sql, outputs.adapter, outputs.validation,
         outputs.example_warnings, files=sorted(set(artifacts) | {REPORT}), diff=diff, lock=lock,
-        output_digests=artifacts, failed=failed, held=held,
+        output_digests=artifacts, failed=failed, held=held, postgres_href_prefix=postgres_href_prefix,
     ).build()
     outputs.files[REPORT] = Generator().generate_report(report)
     return report
@@ -337,7 +363,7 @@ def build_diff(
 
 
 def prune_outputs(
-    output_dir: Path, previous: Optional[BuildLock], lock: BuildLock
+    output_dir: Path, previous: Optional[BuildLock], lock: BuildLock, postgres_dir: Optional[Path] = None
 ) -> Tuple[List[Path], List[Path]]:
     """Delete outputs the previous build wrote that this build no longer produces.
 
@@ -351,7 +377,7 @@ def prune_outputs(
     for relative, digest in previous.outputs.items():
         if relative in lock.outputs:
             continue
-        path = output_dir / relative
+        path = resolve_output_path(relative, output_dir, postgres_dir)
         if not path.exists():
             continue
         if digest_file(path) == digest:

@@ -93,12 +93,16 @@ class ReportBuilder:
         output_digests: Optional[Dict[str, str]] = None,
         failed: Optional[List[str]] = None,
         held: Optional[Any] = None,
+        postgres_href_prefix: Optional[str] = None,
     ):
         self.failed = failed or []
         self.held = held
         self.diff = diff
         self.lock = lock
         self.output_digests = output_digests or {}
+        # Postgres artifacts aren't necessarily written next to this report
+        # (examples/db, not generated/); rewrite their hrefs accordingly.
+        self.postgres_href_prefix = postgres_href_prefix
         self.c = compilation
         self.ir = compilation.ir
         self.spec = spec
@@ -112,6 +116,13 @@ class ReportBuilder:
             col.term: (table.name, col) for table in (sql.tables if sql else []) for col in table.columns
         }
         self.associations = {a.term: a for a in (sql.associations if sql else [])}
+
+    def _href(self, relative: str) -> str:
+        """Link target for an artifact listed in self.files, as written next to this report"""
+        if self.postgres_href_prefix is not None and (relative == "postgres" or relative.startswith("postgres/")):
+            rest = relative[len("postgres/"):] if relative.startswith("postgres/") else ""
+            return f"{self.postgres_href_prefix}/{rest}" if rest else self.postgres_href_prefix
+        return relative
 
     # ---------- per property / class ----------
 
@@ -336,7 +347,7 @@ class ReportBuilder:
                 }
                 for term, spec in (self.adapter["resources"].items() if self.adapter else [])
             ],
-            "files": [(f, self.output_digests.get(f)) for f in self.files],
+            "files": [(f, self._href(f), self.output_digests.get(f)) for f in self.files],
             "provenance": {
                 "toolchain": toolchain_digest(),
                 "ir_root": self.lock.ir_root if self.lock else None,

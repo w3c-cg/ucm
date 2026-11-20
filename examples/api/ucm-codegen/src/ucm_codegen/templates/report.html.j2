@@ -755,7 +755,7 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-              {% for f, digest in r.files %}<tr><td class="mono"><a href="{{ f }}">{{ f }}</a></td><td class="mono muted" title="{{ digest or '' }}">{{ (digest or "")[7:23] or "(this file)" }}</td></tr>{% endfor %}
+              {% for f, href, digest in r.files %}<tr><td class="mono"><a href="{{ href }}">{{ f }}</a></td><td class="mono muted" title="{{ digest or '' }}">{{ (digest or "")[7:23] or "(this file)" }}</td></tr>{% endfor %}
             </tbody>
           </table>
         </div>
