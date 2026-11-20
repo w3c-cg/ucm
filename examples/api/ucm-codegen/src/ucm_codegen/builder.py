@@ -268,8 +268,21 @@ class SpecBuilder:
             SchemaProperty(
                 name="@type",
                 iri="@type",
-                description="Class of the node: this class or one of its subclasses.",
-                value_schema={"type": "string", "enum": type_terms},
+                description="Class of the node: this class or one of its subclasses. A real "
+                            "JSON-LD producer may type a node with more than one class (e.g. "
+                            "every OWL individual is also owl:NamedIndividual), so an array "
+                            "that merely contains one of these terms is accepted too.",
+                value_schema={
+                    "oneOf": [
+                        {"type": "string", "enum": list(type_terms)},
+                        {
+                            "type": "array",
+                            "items": {"type": "string"},
+                            "minItems": 1,
+                            "contains": {"enum": list(type_terms)},
+                        },
+                    ]
+                },
                 required=True,
             )
         ] + sorted((self.schema_property(p, cls.iri) for p in paths), key=lambda p: p.name)
@@ -323,8 +336,14 @@ class SpecBuilder:
             SchemaProperty(
                 name="@type",
                 iri="@type",
-                description="Class of the node, as a context term.",
-                value_schema={"type": "string"},
+                description="Class of the node, as a context term, or an array of terms "
+                            "(e.g. every OWL individual is also owl:NamedIndividual).",
+                value_schema={
+                    "oneOf": [
+                        {"type": "string"},
+                        {"type": "array", "items": {"type": "string"}, "minItems": 1},
+                    ]
+                },
             ),
         ]
         homeless = [

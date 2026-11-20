@@ -67,9 +67,24 @@ def test_participation_cardinality(openapi_doc):
     assert props["participatingEntity"]["$ref"] == "#/components/schemas/NodeRef"
     assert props["validFrom"] == {**props["validFrom"], "type": "string", "format": "date-time"}
     assert props["assumesRole"]["type"] == "array"
-    assert props["@type"]["enum"] == ["Participation"]
+    assert props["@type"]["oneOf"][0]["enum"] == ["Participation"]
     messages = [c["message"] for c in participation["x-ucm-constraints"]]
     assert "Participation validTo precedes validFrom." in messages
+
+
+def test_type_schema_accepts_scalar_or_array(openapi_doc):
+    """@type is oneOf a single enum string or an array containing one of those terms --
+    every real OWL individual is also owl:NamedIndividual, so @type compacts to a list"""
+    participation = schema(openapi_doc, "Participation")["properties"]["@type"]
+    scalar, array = participation["oneOf"]
+    assert scalar == {"type": "string", "enum": ["Participation"]}
+    assert array["type"] == "array" and array["minItems"] == 1
+    assert array["contains"] == {"enum": ["Participation"]}
+
+    base_type = schema(openapi_doc, "UcmNode")["properties"]["@type"]
+    base_scalar, base_array = base_type["oneOf"]
+    assert base_scalar == {"type": "string"}
+    assert base_array["type"] == "array" and base_array["minItems"] == 1
 
 
 def test_subclasses_compose_with_all_of(openapi_doc):
@@ -77,7 +92,9 @@ def test_subclasses_compose_with_all_of(openapi_doc):
     assert assessment["allOf"] == [{"$ref": "#/components/schemas/Process"}]
     assert "hasResident" in assessment["properties"]
     assert schema(openapi_doc, "Process")["allOf"] == [{"$ref": "#/components/schemas/UcmNode"}]
-    assert {"Handshake", "CoordinationRequest"} <= set(schema(openapi_doc, "Process")["properties"]["@type"]["enum"])
+    assert {"Handshake", "CoordinationRequest"} <= set(
+        schema(openapi_doc, "Process")["properties"]["@type"]["oneOf"][0]["enum"]
+    )
 
 
 def test_recommended_min_count_is_not_required(openapi_doc):

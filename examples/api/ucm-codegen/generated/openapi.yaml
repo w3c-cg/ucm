@@ -2358,8 +2358,13 @@ components:
           $ref: '#/components/schemas/IRI'
           description: "IRI of the node. Assigned by the server on create if absent."
         "@type":
-          type: string
-          description: "Class of the node, as a context term."
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+            minItems: 1
+          description: "Class of the node, as a context term, or an array of terms (e.g. every OWL individual is also owl:NamedIndividual)."
         "hasCareTrajectoryContext":
           type: array
           items:
@@ -2413,10 +2418,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - ActivityFocus
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ActivityFocus
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ActivityFocus
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/focus-1
@@ -2434,10 +2447,18 @@ components:
         - $ref: '#/components/schemas/SemanticContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - BehavioralHealthContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - BehavioralHealthContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - BehavioralHealthContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "BehavioralHealthDomain":
@@ -2449,10 +2470,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - BehavioralHealthDomain
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - BehavioralHealthDomain
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - BehavioralHealthDomain
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "BeneficiaryRole":
@@ -2464,10 +2493,18 @@ components:
         - $ref: '#/components/schemas/SubjectRole'
       properties:
         "@type":
-          type: string
-          enum:
-          - BeneficiaryRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - BeneficiaryRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - BeneficiaryRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareCommitment":
@@ -2479,10 +2516,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareCommitment
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareCommitment
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareCommitment
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasCommitmentStatus":
           $ref: '#/components/schemas/CommitmentStatus'
           description: "Relates a care commitment to whether it is binding on its participants."
@@ -2510,10 +2555,18 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareCoordinationInteraction
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareCoordinationInteraction
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareCoordinationInteraction
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareCoordinationStatement":
@@ -2525,10 +2578,18 @@ components:
         - $ref: '#/components/schemas/Statement'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareCoordinationStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareCoordinationStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareCoordinationStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareCoverageGap":
@@ -2540,10 +2601,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareCoverageGap
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareCoverageGap
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareCoverageGap
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareCoverageRequirement":
@@ -2555,10 +2624,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareCoverageRequirement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareCoverageRequirement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareCoverageRequirement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareTeam":
@@ -2570,10 +2647,18 @@ components:
         - $ref: '#/components/schemas/SocialGroupEntity'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareTeam
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareTeam
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareTeam
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CareTrajectoryContext":
@@ -2585,16 +2670,24 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - CareTrajectoryContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CareTrajectoryContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CareTrajectoryContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/traj-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CareTrajectoryContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           rdfs:label: After assessment, before referral acceptance
 
     "CaregiverRole":
@@ -2606,10 +2699,18 @@ components:
         - $ref: '#/components/schemas/Role'
       properties:
         "@type":
-          type: string
-          enum:
-          - CaregiverRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CaregiverRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CaregiverRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "ClientRole":
@@ -2621,10 +2722,18 @@ components:
         - $ref: '#/components/schemas/SubjectRole'
       properties:
         "@type":
-          type: string
-          enum:
-          - ClientRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ClientRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ClientRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "ClinicalCareContext":
@@ -2636,16 +2745,24 @@ components:
         - $ref: '#/components/schemas/SemanticContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - ClinicalCareContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ClinicalCareContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ClinicalCareContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/ctx-clin
           '@type':
-          - ClinicalCareContext
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ClinicalCareContext
 
     "ClinicalDomain":
       type: object
@@ -2656,10 +2773,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - ClinicalDomain
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ClinicalDomain
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ClinicalDomain
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "ClinicalEncounter":
@@ -2671,10 +2796,18 @@ components:
         - $ref: '#/components/schemas/Encounter'
       properties:
         "@type":
-          type: string
-          enum:
-          - ClinicalEncounter
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ClinicalEncounter
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ClinicalEncounter
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasPatient":
           type: array
           items:
@@ -2703,12 +2836,22 @@ components:
         - $ref: '#/components/schemas/Statement'
       properties:
         "@type":
-          type: string
-          enum:
-          - ClinicalStatement
-          - DiagnosisStatement
-          - ObservationStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ClinicalStatement
+            - DiagnosisStatement
+            - ObservationStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ClinicalStatement
+              - DiagnosisStatement
+              - ObservationStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - DiagnosisStatement
@@ -2723,10 +2866,18 @@ components:
         - $ref: '#/components/schemas/SocialGroupEntity'
       properties:
         "@type":
-          type: string
-          enum:
-          - CommunityGroup
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CommunityGroup
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CommunityGroup
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "CoordinationRequest":
@@ -2738,10 +2889,18 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - CoordinationRequest
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CoordinationRequest
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CoordinationRequest
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasClosureReason":
           $ref: '#/components/schemas/ClosureReason'
           description: "Relates a closed care coordination request to the reason it was closed."
@@ -2770,8 +2929,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/req-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CoordinationRequest
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasActivityFocus:
           - http://example.org/ucm/focus-1
           hasClosureReason: ClosedConnected
@@ -2787,11 +2946,20 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - CoordinativeActivity
-          - Handshake
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CoordinativeActivity
+            - Handshake
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CoordinativeActivity
+              - Handshake
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - Handshake
@@ -2809,16 +2977,24 @@ components:
         - $ref: '#/components/schemas/Role'
       properties:
         "@type":
-          type: string
-          enum:
-          - CoordinatorRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - CoordinatorRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CoordinatorRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-coord
           '@type':
-          - CoordinatorRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CoordinatorRole
 
     "DefinitionArtifact":
       type: object
@@ -2829,14 +3005,26 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - DefinitionArtifact
-          - EligibilityRuleset
-          - PolicyDefinition
-          - ProgramDefinition
-          - SemanticConstraint
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - DefinitionArtifact
+            - EligibilityRuleset
+            - PolicyDefinition
+            - ProgramDefinition
+            - SemanticConstraint
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - DefinitionArtifact
+              - EligibilityRuleset
+              - PolicyDefinition
+              - ProgramDefinition
+              - SemanticConstraint
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - EligibilityRuleset
@@ -2853,10 +3041,18 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Device
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Device
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Device
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "DiagnosisStatement":
@@ -2868,10 +3064,18 @@ components:
         - $ref: '#/components/schemas/ClinicalStatement'
       properties:
         "@type":
-          type: string
-          enum:
-          - DiagnosisStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - DiagnosisStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - DiagnosisStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "EligibilityDetermination":
@@ -2883,10 +3087,18 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - EligibilityDetermination
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - EligibilityDetermination
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - EligibilityDetermination
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "EligibilityRuleset":
@@ -2898,16 +3110,24 @@ components:
         - $ref: '#/components/schemas/DefinitionArtifact'
       properties:
         "@type":
-          type: string
-          enum:
-          - EligibilityRuleset
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - EligibilityRuleset
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - EligibilityRuleset
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/rules-1
           '@type':
-          - EligibilityRuleset
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - EligibilityRuleset
 
     "Encounter":
       type: object
@@ -2918,11 +3138,20 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - Encounter
-          - ClinicalEncounter
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Encounter
+            - ClinicalEncounter
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Encounter
+              - ClinicalEncounter
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - ClinicalEncounter
@@ -2936,19 +3165,36 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Entity
-          - CareTeam
-          - CommunityGroup
-          - Device
-          - Household
-          - InformationArtifact
-          - Location
-          - Organization
-          - Person
-          - SocialGroupEntity
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Entity
+            - CareTeam
+            - CommunityGroup
+            - Device
+            - Household
+            - InformationArtifact
+            - Location
+            - Organization
+            - Person
+            - SocialGroupEntity
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Entity
+              - CareTeam
+              - CommunityGroup
+              - Device
+              - Household
+              - InformationArtifact
+              - Location
+              - Organization
+              - Person
+              - SocialGroupEntity
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "acceptsRequest":
           type: array
           items:
@@ -3019,10 +3265,18 @@ components:
         - $ref: '#/components/schemas/CoordinativeActivity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Handshake
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Handshake
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Handshake
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasHandoffStatus":
           $ref: '#/components/schemas/HandoffStatus'
           description: "Relates a handshake to where responsibility for its agreed services stands between the sending and receiving parties."
@@ -3064,8 +3318,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hs-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Handshake
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasHandoffStatus: HandoffAssumed
           hasHandshakeFulfillment: FulfillmentConfirmed
           negotiates:
@@ -3080,10 +3334,18 @@ components:
         - $ref: '#/components/schemas/SocialGroupEntity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Household
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Household
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Household
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/hh-001
@@ -3102,10 +3364,18 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingAssessment
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingAssessment
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingAssessment
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasResident":
           type: array
           items:
@@ -3118,8 +3388,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/assess-1
           '@type':
-          - HousingAssessment
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - HousingAssessment
           hasParticipant:
           - http://example.org/ucm/p-res
           hasResident:
@@ -3136,11 +3406,20 @@ components:
         - $ref: '#/components/schemas/SemanticContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingContext
-          - HousingEligibilityContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingContext
+            - HousingEligibilityContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingContext
+              - HousingEligibilityContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - HousingEligibilityContext
@@ -3161,10 +3440,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingDomain
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingDomain
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingDomain
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "HousingEligibilityContext":
@@ -3176,10 +3463,18 @@ components:
         - $ref: '#/components/schemas/HousingContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingEligibilityContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingEligibilityContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingEligibilityContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/ctx-elig
@@ -3198,10 +3493,18 @@ components:
         - $ref: '#/components/schemas/HousingStatement'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingEligibilityStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingEligibilityStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingEligibilityStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/stmt-1
@@ -3229,11 +3532,20 @@ components:
         - $ref: '#/components/schemas/Statement'
       properties:
         "@type":
-          type: string
-          enum:
-          - HousingStatement
-          - HousingEligibilityStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - HousingStatement
+            - HousingEligibilityStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - HousingStatement
+              - HousingEligibilityStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - HousingEligibilityStatement
@@ -3247,10 +3559,18 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - InformationArtifact
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - InformationArtifact
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - InformationArtifact
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "Location":
@@ -3262,10 +3582,18 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Location
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Location
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Location
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "MatchClaim":
@@ -3277,16 +3605,24 @@ components:
         - $ref: '#/components/schemas/Statement'
       properties:
         "@type":
-          type: string
-          enum:
-          - MatchClaim
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - MatchClaim
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - MatchClaim
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/mc-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - MatchClaim
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           madeWithinContext:
           - http://example.org/ucm/ctx-housing
           statementDate: '2026-09-03T12:00:00-07:00'
@@ -3300,10 +3636,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Membership
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Membership
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Membership
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "membershipIn":
           $ref: '#/components/schemas/NodeRef'
           description: "membership in"
@@ -3324,8 +3668,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/mem-a
           '@type':
-          - Membership
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Membership
           membershipIn: http://example.org/ucm/hh-001
 
     "MembershipCriteria":
@@ -3337,16 +3681,24 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - MembershipCriteria
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - MembershipCriteria
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - MembershipCriteria
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/hh-criteria
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - MembershipCriteria
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "ObservationStatement":
       type: object
@@ -3357,10 +3709,18 @@ components:
         - $ref: '#/components/schemas/ClinicalStatement'
       properties:
         "@type":
-          type: string
-          enum:
-          - ObservationStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ObservationStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ObservationStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "Organization":
@@ -3372,20 +3732,28 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Organization
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Organization
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Organization
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/org-ecm
           '@type':
-          - Organization
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Organization
         - '@id': http://example.org/ucm/org-fund
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Organization
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           acceptsRequest:
           - http://example.org/ucm/p-fund
 
@@ -3398,10 +3766,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Participation
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Participation
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Participation
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "assumesRole":
           type: array
           items:
@@ -3519,8 +3895,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/p-cm
           '@type':
-          - Participation
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Participation
           assumesRole:
           - http://example.org/ucm/role-coord
           occursWithin: http://example.org/ucm/req-1
@@ -3529,8 +3905,8 @@ components:
           validTo: '2026-10-31T17:00:00-07:00'
         - '@id': http://example.org/ucm/p-fund
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Participation
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           assumesRole:
           - http://example.org/ucm/role-prov
           occursWithin: http://example.org/ucm/req-1
@@ -3567,10 +3943,18 @@ components:
         - $ref: '#/components/schemas/SubjectRole'
       properties:
         "@type":
-          type: string
-          enum:
-          - PatientRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - PatientRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - PatientRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-pat
@@ -3587,10 +3971,18 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - Person
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Person
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Person
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "affiliatedWith":
           type: array
           items:
@@ -3611,14 +4003,14 @@ components:
       examples:
         - '@id': http://example.org/ucm/cm-1
           '@type':
-          - Person
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Person
           affiliatedWith:
           - http://example.org/ucm/org-ecm
         - '@id': http://example.org/ucm/person-a
           '@type':
-          - Person
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Person
           hasMembership:
           - http://example.org/ucm/mem-a
 
@@ -3631,10 +4023,18 @@ components:
         - $ref: '#/components/schemas/DefinitionArtifact'
       properties:
         "@type":
-          type: string
-          enum:
-          - PolicyDefinition
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - PolicyDefinition
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - PolicyDefinition
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "Process":
@@ -3646,19 +4046,36 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Process
-          - CareCoordinationInteraction
-          - ClinicalEncounter
-          - CoordinationRequest
-          - CoordinativeActivity
-          - EligibilityDetermination
-          - Encounter
-          - Handshake
-          - HousingAssessment
-          - SocialCareInteraction
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Process
+            - CareCoordinationInteraction
+            - ClinicalEncounter
+            - CoordinationRequest
+            - CoordinativeActivity
+            - EligibilityDetermination
+            - Encounter
+            - Handshake
+            - HousingAssessment
+            - SocialCareInteraction
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Process
+              - CareCoordinationInteraction
+              - ClinicalEncounter
+              - CoordinationRequest
+              - CoordinativeActivity
+              - EligibilityDetermination
+              - Encounter
+              - Handshake
+              - HousingAssessment
+              - SocialCareInteraction
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasActivityFocus":
           type: array
           items:
@@ -3724,10 +4141,18 @@ components:
         - $ref: '#/components/schemas/DefinitionArtifact'
       properties:
         "@type":
-          type: string
-          enum:
-          - ProgramDefinition
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ProgramDefinition
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ProgramDefinition
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/prog-1
@@ -3744,10 +4169,18 @@ components:
         - $ref: '#/components/schemas/Role'
       properties:
         "@type":
-          type: string
-          enum:
-          - ProviderRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ProviderRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ProviderRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-prov
@@ -3764,10 +4197,18 @@ components:
         - $ref: '#/components/schemas/SemanticContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - PublicHealthContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - PublicHealthContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - PublicHealthContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "PublicHealthDomain":
@@ -3779,10 +4220,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - PublicHealthDomain
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - PublicHealthDomain
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - PublicHealthDomain
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "ResidentRole":
@@ -3794,16 +4243,24 @@ components:
         - $ref: '#/components/schemas/SubjectRole'
       properties:
         "@type":
-          type: string
-          enum:
-          - ResidentRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - ResidentRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ResidentRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-res
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ResidentRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Role":
       type: object
@@ -3814,18 +4271,34 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Role
-          - BeneficiaryRole
-          - CaregiverRole
-          - ClientRole
-          - CoordinatorRole
-          - PatientRole
-          - ProviderRole
-          - ResidentRole
-          - SubjectRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Role
+            - BeneficiaryRole
+            - CaregiverRole
+            - ClientRole
+            - CoordinatorRole
+            - PatientRole
+            - ProviderRole
+            - ResidentRole
+            - SubjectRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Role
+              - BeneficiaryRole
+              - CaregiverRole
+              - ClientRole
+              - CoordinatorRole
+              - PatientRole
+              - ProviderRole
+              - ResidentRole
+              - SubjectRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - CaregiverRole
@@ -3842,10 +4315,18 @@ components:
         - $ref: '#/components/schemas/DefinitionArtifact'
       properties:
         "@type":
-          type: string
-          enum:
-          - SemanticConstraint
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SemanticConstraint
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SemanticConstraint
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "SemanticContext":
@@ -3857,16 +4338,30 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - SemanticContext
-          - BehavioralHealthContext
-          - ClinicalCareContext
-          - HousingContext
-          - HousingEligibilityContext
-          - PublicHealthContext
-          - SocialCareContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SemanticContext
+            - BehavioralHealthContext
+            - ClinicalCareContext
+            - HousingContext
+            - HousingEligibilityContext
+            - PublicHealthContext
+            - SocialCareContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SemanticContext
+              - BehavioralHealthContext
+              - ClinicalCareContext
+              - HousingContext
+              - HousingEligibilityContext
+              - PublicHealthContext
+              - SocialCareContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "definedByArtifact":
           type: array
           items:
@@ -3896,10 +4391,18 @@ components:
         - $ref: '#/components/schemas/SemanticContext'
       properties:
         "@type":
-          type: string
-          enum:
-          - SocialCareContext
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SocialCareContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SocialCareContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "SocialCareDomain":
@@ -3911,10 +4414,18 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - SocialCareDomain
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SocialCareDomain
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SocialCareDomain
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "SocialCareInteraction":
@@ -3926,10 +4437,18 @@ components:
         - $ref: '#/components/schemas/Process'
       properties:
         "@type":
-          type: string
-          enum:
-          - SocialCareInteraction
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SocialCareInteraction
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SocialCareInteraction
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "hasClient":
           type: array
           items:
@@ -3949,10 +4468,18 @@ components:
         - $ref: '#/components/schemas/Statement'
       properties:
         "@type":
-          type: string
-          enum:
-          - SocialCareStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SocialCareStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SocialCareStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
     "SocialGroupEntity":
@@ -3964,13 +4491,24 @@ components:
         - $ref: '#/components/schemas/Entity'
       properties:
         "@type":
-          type: string
-          enum:
-          - SocialGroupEntity
-          - CareTeam
-          - CommunityGroup
-          - Household
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SocialGroupEntity
+            - CareTeam
+            - CommunityGroup
+            - Household
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SocialGroupEntity
+              - CareTeam
+              - CommunityGroup
+              - Household
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "definedByCriteria":
           type: array
           items:
@@ -4002,18 +4540,34 @@ components:
         - $ref: '#/components/schemas/UcmNode'
       properties:
         "@type":
-          type: string
-          enum:
-          - Statement
-          - CareCoordinationStatement
-          - ClinicalStatement
-          - DiagnosisStatement
-          - HousingEligibilityStatement
-          - HousingStatement
-          - MatchClaim
-          - ObservationStatement
-          - SocialCareStatement
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - Statement
+            - CareCoordinationStatement
+            - ClinicalStatement
+            - DiagnosisStatement
+            - HousingEligibilityStatement
+            - HousingStatement
+            - MatchClaim
+            - ObservationStatement
+            - SocialCareStatement
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Statement
+              - CareCoordinationStatement
+              - ClinicalStatement
+              - DiagnosisStatement
+              - HousingEligibilityStatement
+              - HousingStatement
+              - MatchClaim
+              - ObservationStatement
+              - SocialCareStatement
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
         "generatedByProcess":
           type: array
           items:
@@ -4080,14 +4634,26 @@ components:
         - $ref: '#/components/schemas/Role'
       properties:
         "@type":
-          type: string
-          enum:
-          - SubjectRole
-          - BeneficiaryRole
-          - ClientRole
-          - PatientRole
-          - ResidentRole
-          description: "Class of the node: this class or one of its subclasses."
+          oneOf:
+          - type: string
+            enum:
+            - SubjectRole
+            - BeneficiaryRole
+            - ClientRole
+            - PatientRole
+            - ResidentRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SubjectRole
+              - BeneficiaryRole
+              - ClientRole
+              - PatientRole
+              - ResidentRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
       - BeneficiaryRole

@@ -77,6 +77,19 @@ def test_schemas_reject_definitional_defects(spec, validators):
     assert list(validators("Participation").iter_errors(wrong_type))
 
 
+def test_schema_accepts_multi_typed_at_type(spec, validators):
+    """Every real individual is also owl:NamedIndividual, so @type is a list in practice
+    (['Participation', 'http://www.w3.org/2002/07/owl#NamedIndividual']); the schema must
+    accept that form, but still reject an array that doesn't name this class anywhere"""
+    participation = next(s for s in spec.schemas if s.name == "Participation").examples[0]
+    co_typed = {**participation, "@type": ["Participation", "http://www.w3.org/2002/07/owl#NamedIndividual"]}
+    assert list(validators("Participation").iter_errors(co_typed)) == []
+    wrong_array_type = {**participation, "@type": ["Process", "http://www.w3.org/2002/07/owl#NamedIndividual"]}
+    assert list(validators("Participation").iter_errors(wrong_array_type))
+    empty_type = {**participation, "@type": []}
+    assert list(validators("Participation").iter_errors(empty_type))
+
+
 def test_date_time_stamp_does_not_compact(compilation, spec, example_graph):
     _, warnings = build_examples(example_graph, compilation.ir, spec.context)
     assert warnings == [
