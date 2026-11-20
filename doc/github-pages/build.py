@@ -1,9 +1,9 @@
 """
 Build the UCM workbench pages from YAML
 
-  python docs/build.py                 validate the entries and write the pages
-  python docs/build.py --check         validate; fail if the committed pages are stale
-  python docs/build.py --check-links   also fetch every entry URL (CI does this)
+  python doc/github-pages/build.py                 validate the entries and write the pages
+  python doc/github-pages/build.py --check         validate; fail if the committed pages are stale
+  python doc/github-pages/build.py --check-links   also fetch every entry URL (CI does this)
 
 Entries are listed on objective criteria only: the fields are fixed (no
 contact, pricing or support fields), every URL is public https, the profile
@@ -296,7 +296,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.check:
         outdated = stale(pages, args.out)
         if outdated:
-            print("Pages are stale; run python docs/build.py and commit:", file=sys.stderr)
+            print("Pages are stale; run python doc/github-pages/build.py and commit:", file=sys.stderr)
             for name in outdated:
                 print(f"  - {name}", file=sys.stderr)
             return 1

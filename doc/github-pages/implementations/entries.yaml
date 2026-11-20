@@ -1,10 +1,10 @@
 # Implementations of the Unified Care Model, submitted by pull request.
-# Criteria and review: docs/README.md. File order does not matter: the page
-# lists entries alphabetically by name.
+# Criteria and review: doc/github-pages/README.md. File order does not
+# matter: the page lists entries alphabetically by name.
 #
 # - name: Example Care Platform
 #   url: https://example.org/care-platform          # public project or repository
-#   profile: ucm-core                               # an id from docs/workbench.yaml
+#   profile: ucm-core                               # an id from doc/github-pages/workbench.yaml
 #   test_run: https://example.org/care-platform/runs/42  # public run of the group's fixtures
 #   license: Apache-2.0                             # SPDX identifier or expression
 #   reported: 2026-11-01                            # date the results were reported

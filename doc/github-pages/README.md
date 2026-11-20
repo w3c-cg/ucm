@@ -2,8 +2,9 @@
 
 Static pages for the group's site, starting with the implementations page
 proposed in the adoption issue. Plain HTML, CSS and a little JavaScript,
-built from YAML; GitHub Pages serves this folder (branch `main`, folder
-`/docs`). The page stays a draft until the group and chairs adopt it.
+built from YAML; the `pages` workflow deploys this folder to GitHub Pages
+on every push to `main` that touches it. The page stays a draft until the
+group and chairs adopt it.
 
 | Path | What it is |
 |---|---|
@@ -49,21 +50,21 @@ review confirms that the test run is a run of the group's fixtures.
 
 ## Building
 
-Python 3.10+ with `pip install -r docs/requirements.txt`:
+Python 3.10+ with `pip install -r doc/github-pages/requirements.txt`:
 
 ```bash
-python docs/build.py                 # validate and write the pages
-python docs/build.py --check         # validate; fail if committed pages are stale
-python docs/build.py --check-links   # also fetch every entry URL
-pytest docs/tests
+python doc/github-pages/build.py                 # validate and write the pages
+python doc/github-pages/build.py --check         # validate; fail if committed pages are stale
+python doc/github-pages/build.py --check-links   # also fetch every entry URL
+pytest doc/github-pages/tests
 ```
 
 Commit the regenerated pages with the entry. The `workbench` workflow runs
-`--check --check-links` and the tests on every change under `docs/`.
+`--check --check-links` and the tests on every change under `doc/github-pages/`.
 
 To preview with sample entries, render them somewhere outside the repository
 and copy `assets/` next to the output:
 
 ```bash
-python docs/build.py --config docs/tests/sample-workbench.yaml --entries docs/tests/sample-entries.yaml --out <preview-dir>
+python doc/github-pages/build.py --config doc/github-pages/tests/sample-workbench.yaml --entries doc/github-pages/tests/sample-entries.yaml --out <preview-dir>
 ```
