@@ -13,8 +13,39 @@
   },
   "@graph": [
     {
+      "@id": "sh:NodeShape",
+      "@type": "owl:Class"
+    },
+    {
+      "@id": "sh:message",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:select",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:sparql",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetClass",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetObjectsOf",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetSubjectsOf",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
       "@id": "ucm:LintClosureRationale",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:sparql": {
         "@id": "_:c14n2"
       },
@@ -24,7 +55,10 @@
     },
     {
       "@id": "ucm:LintDefinitionalSeverity",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:sparql": {
         "@id": "_:c14n3"
       },
@@ -42,7 +76,10 @@
     },
     {
       "@id": "ucm:LintRecommendedSeverity",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:sparql": {
         "@id": "_:c14n1"
       },
@@ -60,7 +97,10 @@
     },
     {
       "@id": "ucm:LintTierDeclared",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:sparql": {
         "@id": "_:c14n0"
       },
@@ -74,6 +114,13 @@
       ],
       "sh:targetObjectsOf": {
         "@id": "sh:property"
+      }
+    },
+    {
+      "@id": "ucm:shapes-lint",
+      "@type": "owl:Ontology",
+      "owl:versionIRI": {
+        "@id": "ucm:shapes-lint/1.0.0"
       }
     },
     {

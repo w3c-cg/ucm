@@ -13,6 +13,22 @@
   },
   "@graph": [
     {
+      "@id": "dcterms:created",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "dcterms:description",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "dcterms:publisher",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "dcterms:title",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
       "@id": "http://purl.bioontology.org/ontology/SNOMEDCT#337915000",
       "@type": "owl:Class",
       "rdfs:label": "Homo sapiens",
@@ -47,6 +63,12 @@
           "@id": "ucm:lifecycle"
         },
         {
+          "@id": "ucm:participation-membership/0.0.1"
+        },
+        {
+          "@id": "ucm:shapes-lint/1.0.0"
+        },
+        {
           "@id": "ucm:shapes"
         }
       ],
@@ -56,12 +78,63 @@
       "owl:versionInfo": "v0.0.1"
     },
     {
+      "@id": "skos:Concept",
+      "@type": "owl:Class"
+    },
+    {
+      "@id": "skos:ConceptScheme",
+      "@type": "owl:Class"
+    },
+    {
       "@id": "skos:altLabel",
       "@type": "owl:AnnotationProperty"
     },
     {
+      "@id": "skos:broader",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:definition",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:editorialNote",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:exactMatch",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:hasTopConcept",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:inScheme",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:prefLabel",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:scopeNote",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:topConceptOf",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "time:TemporalEntity",
+      "@type": "owl:Class"
+    },
+    {
       "@id": "ucm:Accepted",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Accepted"
@@ -166,7 +239,10 @@
     },
     {
       "@id": "ucm:ClientDeclined",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -192,7 +268,10 @@
     },
     {
       "@id": "ucm:ClientUnreachable",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -239,7 +318,10 @@
     },
     {
       "@id": "ucm:ClosedConnected",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The person was connected to the requested services."
@@ -257,7 +339,10 @@
     },
     {
       "@id": "ucm:ClosedNoLongerNeeded",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The need was resolved, or stopped applying, without the requested services."
@@ -275,7 +360,10 @@
     },
     {
       "@id": "ucm:ClosedNotConnected",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The episode ended without connecting the person to the requested services. Record a narrower concept when the reason is known."
@@ -297,7 +385,10 @@
     },
     {
       "@id": "ucm:ClosureReason",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-11-07"
@@ -336,7 +427,10 @@
     },
     {
       "@id": "ucm:CommitmentInForce",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The commitment is agreed and binding on its participants."
@@ -354,7 +448,10 @@
     },
     {
       "@id": "ucm:CommitmentLapsed",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The commitment ended without being released, for example by expiry or abandonment."
@@ -372,7 +469,10 @@
     },
     {
       "@id": "ucm:CommitmentProposed",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The commitment has been offered but not yet agreed."
@@ -390,7 +490,10 @@
     },
     {
       "@id": "ucm:CommitmentReleased",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The commitment ended deliberately: completed, handed over or ended by agreement."
@@ -408,7 +511,10 @@
     },
     {
       "@id": "ucm:CommitmentStatus",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-11-07"
@@ -457,7 +563,10 @@
     },
     {
       "@id": "ucm:CommitmentSuspended",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The commitment is agreed but temporarily not binding."
@@ -509,7 +618,10 @@
     },
     {
       "@id": "ucm:Declined",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Declined"
@@ -584,7 +696,10 @@
     },
     {
       "@id": "ucm:FulfillmentConfirmed",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Completed"
@@ -606,7 +721,10 @@
     },
     {
       "@id": "ucm:FulfillmentNotStarted",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "None of the negotiated services has been delivered yet."
@@ -624,7 +742,10 @@
     },
     {
       "@id": "ucm:FulfillmentPartial",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Partially executed"
@@ -646,7 +767,10 @@
     },
     {
       "@id": "ucm:FulfillmentReported",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Pending confirmation"
@@ -668,7 +792,10 @@
     },
     {
       "@id": "ucm:HandoffAcknowledged",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Received"
@@ -690,7 +817,10 @@
     },
     {
       "@id": "ucm:HandoffAssumed",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The receiving party has assumed responsibility for the agreed services, and the sending party has released it."
@@ -708,7 +838,10 @@
     },
     {
       "@id": "ucm:HandoffDropped",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The sending party released responsibility before the receiving party assumed it, leaving no one responsible for the agreed services."
@@ -726,7 +859,10 @@
     },
     {
       "@id": "ucm:HandoffOffered",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The sending party has offered responsibility for the agreed services; the receiving party has not acknowledged it."
@@ -744,7 +880,10 @@
     },
     {
       "@id": "ucm:HandoffReturned",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The receiving party handed responsibility back to the sending party."
@@ -762,7 +901,10 @@
     },
     {
       "@id": "ucm:HandoffShared",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The sending and receiving parties hold responsibility for the agreed services jointly."
@@ -780,7 +922,10 @@
     },
     {
       "@id": "ucm:HandoffStatus",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-11-07"
@@ -841,7 +986,10 @@
     },
     {
       "@id": "ucm:HandshakeFulfillment",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-11-07"
@@ -936,7 +1084,10 @@
     },
     {
       "@id": "ucm:Ineligible",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -963,7 +1114,10 @@
     },
     {
       "@id": "ucm:LifecycleState",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-09-08"
@@ -1031,7 +1185,10 @@
     },
     {
       "@id": "ucm:MissingVerification",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -1066,7 +1223,10 @@
     },
     {
       "@id": "ucm:OtherClosureReason",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -1084,7 +1244,10 @@
     },
     {
       "@id": "ucm:OutOfArea",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -1116,7 +1279,10 @@
     },
     {
       "@id": "ucm:Pending",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:altLabel": {
         "@language": "en",
         "@value": "Pending"
@@ -1161,7 +1327,10 @@
     },
     {
       "@id": "ucm:ProgramCapacity",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:broader": {
         "@id": "ucm:ClosedNotConnected"
       },
@@ -1208,7 +1377,10 @@
     },
     {
       "@id": "ucm:ReferralAccepted",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The receiving party agreed to take part in the requested coordination."
@@ -1229,7 +1401,10 @@
     },
     {
       "@id": "ucm:ReferralDeclined",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The receiving party declined the request. The reason is recorded with a ucm:ClosureReason concept."
@@ -1250,7 +1425,10 @@
     },
     {
       "@id": "ucm:ReferralDisposition",
-      "@type": "skos:ConceptScheme",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
       "dcterms:created": {
         "@type": "xsd:date",
         "@value": "2026-11-07"
@@ -1299,7 +1477,10 @@
     },
     {
       "@id": "ucm:ReferralExpired",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The receiving party made no decision within the time allowed for a response."
@@ -1317,7 +1498,10 @@
     },
     {
       "@id": "ucm:ReferralPending",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The request has been sent and the receiving party has not yet decided."
@@ -1338,7 +1522,10 @@
     },
     {
       "@id": "ucm:ReferralWithdrawn",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "The requesting party withdrew the request before the receiving party decided."
@@ -1887,6 +2074,10 @@
       "rdfs:range": {
         "@id": "xsd:dateTime"
       }
+    },
+    {
+      "@id": "xsd:date",
+      "@type": "rdfs:Datatype"
     }
   ]
 }

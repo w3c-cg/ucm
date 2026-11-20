@@ -452,8 +452,8 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>JSON-LD IR</th><th class="num">Triples</th><th>Graph (URDNA2015)</th><th>File bytes</th></tr></thead>
             <tbody>
-              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">636</td><td class="mono" title="sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b">5b26092bcbfc291f</td><td class="mono" title="sha256:0055aedfbfdbb357677fd82b34b629b2a506db639762bf8286b79f2968da4bf5">0055aedfbfdbb357</td></tr>
-              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">392</td><td class="mono" title="sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c">74c1824251435960</td><td class="mono" title="sha256:f6c750f9ed9b1f22f829c2f26a397a2d36e7b9aac05c0c86ac5388065e0025bf">f6c750f9ed9b1f22</td></tr>
+              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">694</td><td class="mono" title="sha256:a713a4085c0c1c7ff568062211c8e5dbb150efdf6198b296ca3330a1e91903f2">a713a4085c0c1c7f</td><td class="mono" title="sha256:d8228e714da6db8423a50c91df423ea5e3cd0176dafe2115006799c175afe403">d8228e714da6db84</td></tr>
+              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">471</td><td class="mono" title="sha256:4b0748714ef584d8e0441eb8b612b1438dbc0abb1894a75b6b9c7ec3bd54bb75">4b0748714ef584d8</td><td class="mono" title="sha256:73e815968e3840b07cde58f1c0b899d9d0020e565b98a5ec974e6e4c342ce4fa">73e815968e3840b0</td></tr>
             </tbody>
           </table>
         </div>
@@ -462,7 +462,7 @@ h3 { font-size: 12px; }
         <div class="scroll">
           <table class="list">
             <tbody>
-<tr><td class="nowrap">IR root (141 nodes)</td><td class="mono break">sha256:6a575a95eb3ddf76865bb66975522f0868fa5ed017d962028eb5985ec9c7bd6d</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:86041137924314c88470bbcf04d98e0c2e63fd3640f4dce98c34c21b0d60bf8e</td></tr>
+<tr><td class="nowrap">IR root (141 nodes)</td><td class="mono break">sha256:6a575a95eb3ddf76865bb66975522f0868fa5ed017d962028eb5985ec9c7bd6d</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:e19fbe4b493abdc5a1f1598b4bb9bebbe305702f257a6b973815955e58ebba21</td></tr>
             </tbody>
           </table>
         </div>
@@ -477,7 +477,7 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>Change</th><th>File</th></tr></thead>
             <tbody>
-<tr><td><span class="pill amber">changed</span></td><td class="mono">openapi.yaml</td></tr><tr><td><span class="pill red">removed</span></td><td class="mono">postgres/migrations/versions/ucm_0ab5001ebc4f_ucm_0_0_1.py</td></tr><tr><td><span class="pill green">added</span></td><td class="mono">postgres/migrations/versions/ucm_be6300a694ad_ucm_0_0_1.py</td></tr><tr><td><span class="pill amber">changed</span></td><td class="mono">postgres/ucm_models.py</td></tr>            </tbody>
+<tr><td><span class="pill amber">changed</span></td><td class="mono">openapi.yaml</td></tr><tr><td><span class="pill green">added</span></td><td class="mono">postgres/migrations/versions/ucm_a70bfb3a0625_ucm_0_0_1.py</td></tr><tr><td><span class="pill red">removed</span></td><td class="mono">postgres/migrations/versions/ucm_be6300a694ad_ucm_0_0_1.py</td></tr><tr><td><span class="pill amber">changed</span></td><td class="mono">postgres/ucm_models.py</td></tr>            </tbody>
           </table>
         </div>
       </section>
@@ -2244,7 +2244,7 @@ Values of <span class="mono">hasReferralDisposition</span> <span class="muted">o
       <!-- ===================== Postgres ===================== -->
       <section class="pane" id="postgres">
         <h1>Postgres</h1>
-        <p class="lede">Revision <span class="mono">ucm_be6300a694ad</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
+        <p class="lede">Revision <span class="mono">ucm_a70bfb3a0625</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
         <div class="scroll">
           <table class="list">
             <thead><tr><th>Table</th><th>Columns</th><th>Checks</th><th class="num">Classes</th></tr></thead>
@@ -2513,7 +2513,7 @@ Values of <span class="mono">hasReferralDisposition</span> <span class="muted">o
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c">d02c45157e2fc69b</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:dcb8445cbfe036fd9de24143e57920a30ff48871532b6f47717b7089e1335071">dcb8445cbfe036fd</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:250baf035bbfa27bc1add61b4ea25ef4791c88deec317eb7d21b4c4fc855d2a5">250baf035bbfa27b</td></tr><tr><td class="mono"><a href="postgres/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="postgres/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="postgres/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="postgres/migrations/versions/ucm_be6300a694ad_ucm_0_0_1.py">postgres/migrations/versions/ucm_be6300a694ad_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:60a0bffe2c7a270bb77a06b2807120673b64c1f379934bd8dfeda8b5a599488a">60a0bffe2c7a270b</td></tr><tr><td class="mono"><a href="postgres/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:ae9b96ee7cbc0709be7a705831c6a4bea5473a3acad79516ad2b931909b4c467">ae9b96ee7cbc0709</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
+<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c">d02c45157e2fc69b</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:dcb8445cbfe036fd9de24143e57920a30ff48871532b6f47717b7089e1335071">dcb8445cbfe036fd</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:8c07835bb7d04f121408b17908a36ded740758e18bbe1b54740479df7628c2b6">8c07835bb7d04f12</td></tr><tr><td class="mono"><a href="../../../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../../../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../../../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../../../db/migrations/versions/ucm_a70bfb3a0625_ucm_0_0_1.py">postgres/migrations/versions/ucm_a70bfb3a0625_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:3c375467c93fa21adb4a20afb5e1f9f5ab5632f93cef25c9d420312665d2ee81">3c375467c93fa21a</td></tr><tr><td class="mono"><a href="../../../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:7690397197447e0e8957082027549b15dad9a12313caaaef1bfa94a4ec0f3266">7690397197447e0e</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
           </table>
         </div>
       </section>

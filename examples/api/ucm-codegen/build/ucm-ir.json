@@ -8,15 +8,15 @@
   "sources": [
     {
       "file": "ucm-ontology.jsonld",
-      "digest": "sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b",
-      "triples": 636,
-      "content": "sha256:0055aedfbfdbb357677fd82b34b629b2a506db639762bf8286b79f2968da4bf5"
+      "digest": "sha256:a713a4085c0c1c7ff568062211c8e5dbb150efdf6198b296ca3330a1e91903f2",
+      "triples": 694,
+      "content": "sha256:d8228e714da6db8423a50c91df423ea5e3cd0176dafe2115006799c175afe403"
     },
     {
       "file": "ucm-shapes.jsonld",
-      "digest": "sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c",
-      "triples": 392,
-      "content": "sha256:f6c750f9ed9b1f22f829c2f26a397a2d36e7b9aac05c0c86ac5388065e0025bf"
+      "digest": "sha256:4b0748714ef584d8e0441eb8b612b1438dbc0abb1894a75b6b9c7ec3bd54bb75",
+      "triples": 471,
+      "content": "sha256:73e815968e3840b07cde58f1c0b899d9d0020e565b98a5ec974e6e4c342ce4fa"
     }
   ],
   "classes": {

@@ -13,8 +13,99 @@
   },
   "@graph": [
     {
+      "@id": "sh:NodeShape",
+      "@type": "owl:Class"
+    },
+    {
+      "@id": "sh:PropertyShape",
+      "@type": "owl:Class"
+    },
+    {
+      "@id": "sh:alternativePath",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:class",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:datatype",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:inversePath",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:maxCount",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:message",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:minCount",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:nodeKind",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:or",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:path",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:property",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:select",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:severity",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:sparql",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetClass",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetObjectsOf",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "sh:targetSubjectsOf",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:Concept",
+      "@type": "owl:Class"
+    },
+    {
+      "@id": "skos:definition",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "skos:prefLabel",
+      "@type": "owl:AnnotationProperty"
+    },
+    {
       "@id": "ucm:AcceptsRequestShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "_:c14n13"
       },
@@ -24,7 +115,10 @@
     },
     {
       "@id": "ucm:ActivityFocusTypeShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "_:c14n1"
       },
@@ -34,7 +128,10 @@
     },
     {
       "@id": "ucm:AffiliationShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "_:c14n17"
       },
@@ -44,7 +141,10 @@
     },
     {
       "@id": "ucm:CareTrajectoryShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "_:c14n0"
       },
@@ -54,7 +154,10 @@
     },
     {
       "@id": "ucm:ClosedWhilePendingShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -70,7 +173,10 @@
     },
     {
       "@id": "ucm:ClosureReason-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -86,7 +192,10 @@
     },
     {
       "@id": "ucm:ClosureReason-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -107,7 +216,10 @@
     },
     {
       "@id": "ucm:ClosureReasonShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:ClosureReason-single"
       },
@@ -117,7 +229,10 @@
     },
     {
       "@id": "ucm:CommitmentStatus-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -133,7 +248,10 @@
     },
     {
       "@id": "ucm:CommitmentStatus-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -154,7 +272,10 @@
     },
     {
       "@id": "ucm:CommitmentStatusShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:CommitmentStatus-single"
       },
@@ -164,7 +285,10 @@
     },
     {
       "@id": "ucm:ContextArtifactShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "_:c14n21"
       },
@@ -174,7 +298,10 @@
     },
     {
       "@id": "ucm:CoordinativeActivityShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -195,7 +322,10 @@
     },
     {
       "@id": "ucm:Definitional",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "Failing data is not a well-formed instance of the concept. Reported as sh:Violation."
@@ -207,7 +337,10 @@
     },
     {
       "@id": "ucm:DualTemporalEncodingShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -223,7 +356,10 @@
     },
     {
       "@id": "ucm:FulfillmentAfterDeclineShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -239,7 +375,10 @@
     },
     {
       "@id": "ucm:HandoffStatus-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -255,7 +394,10 @@
     },
     {
       "@id": "ucm:HandoffStatus-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -276,7 +418,10 @@
     },
     {
       "@id": "ucm:HandoffStatusShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:HandoffStatus-single"
       },
@@ -286,7 +431,10 @@
     },
     {
       "@id": "ucm:Handshake-negotiates",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:message": "A handshake negotiates participation in at least one process.",
       "sh:minCount": {
         "@type": "xsd:integer",
@@ -307,7 +455,10 @@
     },
     {
       "@id": "ucm:HandshakeAcyclicShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Violation"
       },
@@ -323,7 +474,10 @@
     },
     {
       "@id": "ucm:HandshakeFulfillment-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -339,7 +493,10 @@
     },
     {
       "@id": "ucm:HandshakeFulfillment-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -360,7 +517,10 @@
     },
     {
       "@id": "ucm:HandshakeFulfillmentShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:HandshakeFulfillment-single"
       },
@@ -370,7 +530,10 @@
     },
     {
       "@id": "ucm:HandshakeShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:Handshake-negotiates"
       },
@@ -380,7 +543,10 @@
     },
     {
       "@id": "ucm:LifecycleState-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -396,7 +562,10 @@
     },
     {
       "@id": "ucm:LifecycleState-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -417,7 +586,10 @@
     },
     {
       "@id": "ucm:LifecycleStateShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:LifecycleState-single"
       },
@@ -427,7 +599,10 @@
     },
     {
       "@id": "ucm:Membership-group",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -452,7 +627,10 @@
     },
     {
       "@id": "ucm:Membership-groupType",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:SocialGroupEntity"
       },
@@ -469,7 +647,10 @@
     },
     {
       "@id": "ucm:Membership-member",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -491,7 +672,10 @@
     },
     {
       "@id": "ucm:MembershipShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": [
         {
           "@id": "ucm:Membership-group"
@@ -509,7 +693,10 @@
     },
     {
       "@id": "ucm:Participation-context",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:SemanticContext"
       },
@@ -526,7 +713,10 @@
     },
     {
       "@id": "ucm:Participation-entity",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -551,7 +741,10 @@
     },
     {
       "@id": "ucm:Participation-entityType",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:Entity"
       },
@@ -568,7 +761,10 @@
     },
     {
       "@id": "ucm:Participation-process",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -593,7 +789,10 @@
     },
     {
       "@id": "ucm:Participation-processType",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:Process"
       },
@@ -610,7 +809,10 @@
     },
     {
       "@id": "ucm:Participation-role",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:Role"
       },
@@ -627,7 +829,10 @@
     },
     {
       "@id": "ucm:Participation-validFrom",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -655,7 +860,10 @@
     },
     {
       "@id": "ucm:Participation-validTo",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -683,7 +891,10 @@
     },
     {
       "@id": "ucm:ParticipationEntityConsistencyShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Violation"
       },
@@ -699,7 +910,10 @@
     },
     {
       "@id": "ucm:ParticipationProcessConsistencyShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Violation"
       },
@@ -715,7 +929,10 @@
     },
     {
       "@id": "ucm:ParticipationShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": [
         {
           "@id": "ucm:Participation-context"
@@ -748,7 +965,10 @@
     },
     {
       "@id": "ucm:ParticipationValidityShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Violation"
       },
@@ -764,7 +984,10 @@
     },
     {
       "@id": "ucm:ProjectionBackingShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -788,7 +1011,10 @@
     },
     {
       "@id": "ucm:Recommended",
-      "@type": "skos:Concept",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
       "skos:definition": {
         "@language": "en",
         "@value": "Failing data is conformant but omits encouraged practice. Reported as sh:Warning."
@@ -800,7 +1026,10 @@
     },
     {
       "@id": "ucm:ReferralDisposition-anchored",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Warning"
       },
@@ -816,7 +1045,10 @@
     },
     {
       "@id": "ucm:ReferralDisposition-single",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -837,7 +1069,10 @@
     },
     {
       "@id": "ucm:ReferralDispositionShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": {
         "@id": "ucm:ReferralDisposition-single"
       },
@@ -847,7 +1082,10 @@
     },
     {
       "@id": "ucm:Statement-context",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:message": "Statement declares no semantic context; its interpretation depends on one.",
       "sh:minCount": {
         "@type": "xsd:integer",
@@ -865,7 +1103,10 @@
     },
     {
       "@id": "ucm:Statement-date",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:maxCount": {
         "@type": "xsd:integer",
         "@value": "1"
@@ -893,7 +1134,10 @@
     },
     {
       "@id": "ucm:Statement-processType",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:Process"
       },
@@ -910,7 +1154,10 @@
     },
     {
       "@id": "ucm:Statement-subjectType",
-      "@type": "sh:PropertyShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -927,7 +1174,10 @@
     },
     {
       "@id": "ucm:StatementShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:property": [
         {
           "@id": "ucm:Statement-context"
@@ -948,7 +1198,10 @@
     },
     {
       "@id": "ucm:TemporalEntityShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:message": "Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant.",
       "sh:nodeKind": {
         "@id": "sh:BlankNodeOrIRI"
@@ -976,7 +1229,10 @@
     },
     {
       "@id": "ucm:TemporalOrderShape",
-      "@type": "sh:NodeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
       "sh:severity": {
         "@id": "sh:Violation"
       },
@@ -1009,6 +1265,10 @@
       "owl:imports": {
         "@id": "https://www.w3.org/ns/ucm#"
       }
+    },
+    {
+      "@id": "ucm:tier",
+      "@type": "owl:AnnotationProperty"
     },
     {
       "@id": "_:c14n0",

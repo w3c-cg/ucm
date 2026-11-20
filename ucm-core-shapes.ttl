@@ -557,7 +557,7 @@ ucm:Participation-context rdf:type owl:NamedIndividual ,
                                    sh:PropertyShape ;
                           sh:class ucm:SemanticContext ;
                           sh:message "Participation context is not typed as ucm:SemanticContext." ;
-                          sh:path [ sh:alternativePath [ ]
+                          sh:path [ sh:alternativePath ( ucm:participationContext ucm:scopedBy )
                           ] ;
 sh:severity sh:Warning ;
 ucm:tier ucm:Recommended .

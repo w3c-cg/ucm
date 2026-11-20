@@ -15,11 +15,11 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b"
-        triples: 636
+        digest: "sha256:a713a4085c0c1c7ff568062211c8e5dbb150efdf6198b296ca3330a1e91903f2"
+        triples: 694
       - file: "ucm-shapes.jsonld"
-        digest: "sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c"
-        triples: 392
+        digest: "sha256:4b0748714ef584d8e0441eb8b612b1438dbc0abb1894a75b6b9c7ec3bd54bb75"
+        triples: 471
 
 servers:
   - url: "http://localhost:8000/ucm/v1"
@@ -2420,7 +2420,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/focus-1
-          '@type': ActivityFocus
+          '@type':
+          - ActivityFocus
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           rdfs:label: Tenancy preservation
 
     "BehavioralHealthContext":
@@ -2494,7 +2496,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/commit-1
-          '@type': CareCommitment
+          '@type':
+          - CareCommitment
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasCommitmentStatus: CommitmentInForce
 
     "CareCoordinationInteraction":
@@ -2588,7 +2592,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/traj-1
-          '@type': CareTrajectoryContext
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CareTrajectoryContext
           rdfs:label: After assessment, before referral acceptance
 
     "CaregiverRole":
@@ -2637,7 +2643,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/ctx-clin
-          '@type': ClinicalCareContext
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ClinicalCareContext
 
     "ClinicalDomain":
       type: object
@@ -2678,7 +2686,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/enc-1
-          '@type': ClinicalEncounter
+          '@type':
+          - ClinicalEncounter
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasParticipant:
           - http://example.org/ucm/p-pat
           hasPatient:
@@ -2759,7 +2769,9 @@ components:
         message: Coordination process declares no activity focus, directly or through a process it negotiates.
       examples:
         - '@id': http://example.org/ucm/req-1
-          '@type': CoordinationRequest
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CoordinationRequest
           hasActivityFocus:
           - http://example.org/ucm/focus-1
           hasClosureReason: ClosedConnected
@@ -2804,7 +2816,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-coord
-          '@type': CoordinatorRole
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CoordinatorRole
 
     "DefinitionArtifact":
       type: object
@@ -2891,7 +2905,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/rules-1
-          '@type': EligibilityRuleset
+          '@type':
+          - EligibilityRuleset
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Encounter":
       type: object
@@ -3047,7 +3063,9 @@ components:
         message: 'Handshake negotiates itself, directly or through a chain: the negotiation has no base case.'
       examples:
         - '@id': http://example.org/ucm/hs-1
-          '@type': Handshake
+          '@type':
+          - Handshake
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasHandoffStatus: HandoffAssumed
           hasHandshakeFulfillment: FulfillmentConfirmed
           negotiates:
@@ -3069,7 +3087,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/hh-001
-          '@type': Household
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Household
           definedByCriteria:
           - http://example.org/ucm/hh-criteria
 
@@ -3097,7 +3117,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/assess-1
-          '@type': HousingAssessment
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - HousingAssessment
           hasParticipant:
           - http://example.org/ucm/p-res
           hasResident:
@@ -3124,7 +3146,9 @@ components:
       - HousingEligibilityContext
       examples:
         - '@id': http://example.org/ucm/ctx-housing
-          '@type': HousingContext
+          '@type':
+          - HousingContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByArtifact:
           - http://example.org/ucm/prog-1
 
@@ -3159,7 +3183,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/ctx-elig
-          '@type': HousingEligibilityContext
+          '@type':
+          - HousingEligibilityContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByArtifact:
           - http://example.org/ucm/rules-1
 
@@ -3179,7 +3205,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/stmt-1
-          '@type': HousingEligibilityStatement
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - HousingEligibilityStatement
           generatedByProcess:
           - http://example.org/ucm/assess-1
           hasCareTrajectoryContext:
@@ -3256,7 +3284,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/mc-1
-          '@type': MatchClaim
+          '@type':
+          - MatchClaim
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           madeWithinContext:
           - http://example.org/ucm/ctx-housing
           statementDate: '2026-09-03T12:00:00-07:00'
@@ -3293,7 +3323,9 @@ components:
         message: A membership belongs to exactly one member entity (via hasMembership).
       examples:
         - '@id': http://example.org/ucm/mem-a
-          '@type': Membership
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Membership
           membershipIn: http://example.org/ucm/hh-001
 
     "MembershipCriteria":
@@ -3312,7 +3344,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/hh-criteria
-          '@type': MembershipCriteria
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - MembershipCriteria
 
     "ObservationStatement":
       type: object
@@ -3345,9 +3379,13 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/org-ecm
-          '@type': Organization
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Organization
         - '@id': http://example.org/ucm/org-fund
-          '@type': Organization
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Organization
           acceptsRequest:
           - http://example.org/ucm/p-fund
 
@@ -3480,7 +3518,9 @@ components:
         message: Participation validTo precedes validFrom.
       examples:
         - '@id': http://example.org/ucm/p-cm
-          '@type': Participation
+          '@type':
+          - Participation
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           assumesRole:
           - http://example.org/ucm/role-coord
           occursWithin: http://example.org/ucm/req-1
@@ -3488,13 +3528,17 @@ components:
           validFrom: '2026-08-28T09:00:00-07:00'
           validTo: '2026-10-31T17:00:00-07:00'
         - '@id': http://example.org/ucm/p-fund
-          '@type': Participation
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Participation
           assumesRole:
           - http://example.org/ucm/role-prov
           occursWithin: http://example.org/ucm/req-1
           participatingEntity: http://example.org/ucm/org-fund
         - '@id': http://example.org/ucm/p-pat
-          '@type': Participation
+          '@type':
+          - Participation
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           assumesRole:
           - http://example.org/ucm/role-pat
           occursWithin: http://example.org/ucm/enc-1
@@ -3502,7 +3546,9 @@ components:
           scopedBy:
           - http://example.org/ucm/ctx-clin
         - '@id': http://example.org/ucm/p-res
-          '@type': Participation
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Participation
           assumesRole:
           - http://example.org/ucm/role-res
           enactiveDuring:
@@ -3528,7 +3574,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-pat
-          '@type': PatientRole
+          '@type':
+          - PatientRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Person":
       type: object
@@ -3562,11 +3610,15 @@ components:
       - https://www.commoncoreontologies.org/AgentOntology#ont00001262
       examples:
         - '@id': http://example.org/ucm/cm-1
-          '@type': Person
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Person
           affiliatedWith:
           - http://example.org/ucm/org-ecm
         - '@id': http://example.org/ucm/person-a
-          '@type': Person
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Person
           hasMembership:
           - http://example.org/ucm/mem-a
 
@@ -3679,7 +3731,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/prog-1
-          '@type': ProgramDefinition
+          '@type':
+          - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ProgramDefinition
 
     "ProviderRole":
       type: object
@@ -3697,7 +3751,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-prov
-          '@type': ProviderRole
+          '@type':
+          - ProviderRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "PublicHealthContext":
       type: object
@@ -3745,7 +3801,9 @@ components:
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/role-res
-          '@type': ResidentRole
+          '@type':
+          - ResidentRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Role":
       type: object
