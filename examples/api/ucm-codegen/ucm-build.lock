@@ -2,7 +2,7 @@
   "lock-version": 1,
   "toolchain": {
     "version": "0.1.0",
-    "digest": "sha256:f7b2cf8490a92d9a70c664a9767f7034f5ecce3514518003cc7c4d0408728f60"
+    "digest": "sha256:18b8e4ec932d71b7dca2b958311ca785d249a00b076f2e42d57fb35b6df3a871"
   },
   "sources": {
     "ontology": [
@@ -213,7 +213,7 @@
   "outputs": {
     "context.jsonld": "sha256:d02c45157e2fc69bfe584a65286ae5a5258b94fbd91b337940f40a131166282c",
     "fhir/ucm_fhir_adapter.py": "sha256:993ac598e6e8c59328ff5491641425fbb804be8901de7315c8f0b3293ac1d42b",
-    "openapi.yaml": "sha256:abc9e512ca3ccba94d43ce267255cd360185d6ab031bf87f6253d3813f092cd7",
+    "openapi.yaml": "sha256:359e156508ec9b01036bcae8017192ff4da72e81cf4b27d35454e7b88ed22851",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",

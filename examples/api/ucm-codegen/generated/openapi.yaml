@@ -2542,8 +2542,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/commit-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CareCommitment
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasCommitmentStatus: CommitmentInForce
 
     "CareCoordinationInteraction":
@@ -2761,8 +2761,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/ctx-clin
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ClinicalCareContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "ClinicalDomain":
       type: object
@@ -2929,8 +2929,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/req-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CoordinationRequest
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasActivityFocus:
           - http://example.org/ucm/focus-1
           hasClosureReason: ClosedConnected
@@ -2993,8 +2993,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-coord
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CoordinatorRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "DefinitionArtifact":
       type: object
@@ -3350,8 +3350,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hh-001
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Household
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByCriteria:
           - http://example.org/ucm/hh-criteria
 
@@ -3388,8 +3388,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/assess-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - HousingAssessment
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasParticipant:
           - http://example.org/ucm/p-res
           hasResident:
@@ -3426,8 +3426,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/ctx-housing
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - HousingContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByArtifact:
           - http://example.org/ucm/prog-1
 
@@ -3748,12 +3748,12 @@ components:
       examples:
         - '@id': http://example.org/ucm/org-ecm
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Organization
+          - http://www.w3.org/2002/07/owl#NamedIndividual
         - '@id': http://example.org/ucm/org-fund
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Organization
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           acceptsRequest:
           - http://example.org/ucm/p-fund
 
@@ -3959,8 +3959,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-pat
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - PatientRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Person":
       type: object
@@ -4185,8 +4185,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-prov
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ProviderRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "PublicHealthContext":
       type: object
@@ -4259,8 +4259,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-res
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ResidentRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Role":
       type: object

@@ -29,7 +29,12 @@ def frame_node(data: Graph, subject: URIRef, context: Dict[str, Any]) -> Dict[st
         {"@context": context, "@id": str(subject)},
         {"embed": "@always", "omitGraph": True},
     )
-    return {k: v for k, v in framed.items() if k != "@context"}
+    node = {k: v for k, v in framed.items() if k != "@context"}
+    if isinstance(node.get("@type"), list):
+        # rdf:type is a set in the data; pyld iterates it in hash order, which varies
+        # run to run (PYTHONHASHSEED) and made the generated examples non-reproducible
+        node["@type"] = sorted(node["@type"])
+    return node
 
 
 def build_examples(
