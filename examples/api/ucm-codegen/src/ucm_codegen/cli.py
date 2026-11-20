@@ -70,6 +70,16 @@ def _fail(message: str) -> None:
     raise typer.Exit(1)
 
 
+def _short_output_path(path: Path, plan: BuildManifest) -> str:
+    """A short path for a console message: relative to output_dir when the file is
+    there (the common case), else relative to the manifest's own directory -- a
+    Postgres file can live outside output_dir (see BuildManifest.postgres_dir)"""
+    try:
+        return str(path.relative_to(plan.output_dir))
+    except ValueError:
+        return os.path.relpath(path, plan.base)
+
+
 def _compile(
     ontology: List[Path],
     shapes: List[Path],
@@ -378,9 +388,9 @@ def build(
         console.print(f"✓ Wrote {len(written)} changed files to {plan.output_dir} "
                       f"(Postgres to {plan.postgres_dir}); {len(outputs.files) - len(written)} unchanged")
         for path in removed:
-            console.print(f"  [dim]removed stale output {path}[/dim]")
+            console.print(f"  [dim]removed stale output {_short_output_path(path, plan)}[/dim]")
         for path in kept:
-            console.print(f"  [yellow]⚠ kept {path}: no longer generated, "
+            console.print(f"  [yellow]⚠ kept {_short_output_path(path, plan)}: no longer generated, "
                           f"but edited since the last build[/yellow]")
         console.print(f"✓ IR root {short(lock.ir_root)} ({len(lock.nodes)} nodes); "
                       f"lock {plan.relative(plan.lockfile)}")

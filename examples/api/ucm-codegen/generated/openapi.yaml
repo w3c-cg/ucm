@@ -2434,8 +2434,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/focus-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ActivityFocus
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           rdfs:label: Tenancy preservation
 
     "BehavioralHealthContext":
@@ -2929,8 +2929,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/req-1
           '@type':
-          - CoordinationRequest
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CoordinationRequest
           hasActivityFocus:
           - http://example.org/ucm/focus-1
           hasClosureReason: ClosedConnected
@@ -3126,8 +3126,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/rules-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - EligibilityRuleset
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "Encounter":
       type: object
@@ -3350,8 +3350,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hh-001
           '@type':
-          - Household
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Household
           definedByCriteria:
           - http://example.org/ucm/hh-criteria
 
@@ -3426,8 +3426,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/ctx-housing
           '@type':
-          - HousingContext
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - HousingContext
           definedByArtifact:
           - http://example.org/ucm/prog-1
 
@@ -3509,8 +3509,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/stmt-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - HousingEligibilityStatement
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           generatedByProcess:
           - http://example.org/ucm/assess-1
           hasCareTrajectoryContext:
@@ -3668,8 +3668,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/mem-a
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Membership
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           membershipIn: http://example.org/ucm/hh-001
 
     "MembershipCriteria":
@@ -3752,8 +3752,8 @@ components:
           - Organization
         - '@id': http://example.org/ucm/org-fund
           '@type':
-          - Organization
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Organization
           acceptsRequest:
           - http://example.org/ucm/p-fund
 
@@ -3895,8 +3895,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/p-cm
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Participation
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           assumesRole:
           - http://example.org/ucm/role-coord
           occursWithin: http://example.org/ucm/req-1
@@ -4003,14 +4003,14 @@ components:
       examples:
         - '@id': http://example.org/ucm/cm-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Person
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           affiliatedWith:
           - http://example.org/ucm/org-ecm
         - '@id': http://example.org/ucm/person-a
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Person
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasMembership:
           - http://example.org/ucm/mem-a
 
@@ -4157,8 +4157,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/prog-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ProgramDefinition
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "ProviderRole":
       type: object
@@ -4185,8 +4185,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-prov
           '@type':
-          - ProviderRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ProviderRole
 
     "PublicHealthContext":
       type: object
@@ -4259,8 +4259,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-res
           '@type':
-          - ResidentRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ResidentRole
 
     "Role":
       type: object
