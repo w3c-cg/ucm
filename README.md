@@ -2,7 +2,13 @@
 
 # Unified Care Model (UCM) Specification
 
-## All members: Please read the guidelines linked below to understand your membership rights and responsibilities. 
+## W3C Group Page
+
+[https://www.w3.org/community/ucm/](https://www.w3.org/community/ucm/)
+
+## Participation Guidelines
+
+All members: Please read the guidelines linked below to understand your membership rights and responsibilities. 
 
 W3C Community Group Guidelines and Policies (this is "officially" a W3C Community Group):
 * send all messages to the group to public-ucm@w3.org [public listserv archives](https://lists.w3.org/Archives/Public/public-ucm/)
@@ -11,9 +17,6 @@ W3C Community Group Guidelines and Policies (this is "officially" a W3C Communit
 * https://www.w3.org/community/about/process/final/
 * https://www.w3.org/2026/Talks/w3c-chairtraining.pdf
 * https://www.w3.org/community/about/
-
-W3C Group Page
-[https://www.w3.org/community/ucm/](https://www.w3.org/community/ucm/)
 
 ## Repository layout
 
@@ -48,7 +51,7 @@ W3C Group Page
 - `.github/workflows/` — CI workflows (ontology codegen build, GitHub Pages workbench build).
 - `.claude/` — Claude Code session metadata (not part of the ontology).
 
-# Visualization: 
+## Visualization: 
 
 [https://alexandriaconsulting.com/webvowl/#iri=https://raw.githubusercontent.com/w3c-cg/ucm/refs/heads/main/unified-care-model.ttl](https://alexandriaconsulting.com/webvowl/#iri=https://raw.githubusercontent.com/w3c-cg/ucm/refs/heads/main/unified-care-model.ttl)
 
