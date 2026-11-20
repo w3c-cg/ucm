@@ -1381,9 +1381,28 @@ def _to_json(value: Any, kind: str) -> Any:
     return value
 
 
+def _mapped_class(node_type: Any) -> Type[Base]:
+    """CLASSES lookup for a compacted @type, which is a term or a list of terms
+
+    Every example individual is typed owl:NamedIndividual alongside its UCM
+    class, so @type compacts to a list (owl:NamedIndividual has no term in
+    the context and stays a full IRI, never a CLASSES key). Terms that map
+    to the same table (a class and its own descendants) agree, so only two
+    or more DIFFERENT tables matching is a genuine conflict.
+    """
+    types = node_type if isinstance(node_type, list) else [node_type]
+    matches = {CLASSES[t] for t in types if t in CLASSES}
+    if not matches:
+        raise KeyError(f"no mapped class for @type {node_type!r}")
+    if len(matches) > 1:
+        raise ValueError(f"@type {node_type!r} matches more than one table: "
+                          f"{sorted(c.__tablename__ for c in matches)}")
+    return next(iter(matches))
+
+
 def to_rows(node: Dict[str, Any]) -> Tuple[Base, List[Tuple[sa.Table, Dict[str, Any]]]]:
     """One ORM row plus association rows for a compacted JSON-LD node"""
-    cls = CLASSES[node["@type"]]
+    cls = _mapped_class(node["@type"])
     table = cls.__tablename__
     row = cls(iri=node["@id"])
     extra: Dict[str, Any] = {}

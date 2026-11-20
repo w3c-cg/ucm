@@ -2421,8 +2421,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/focus-1
           '@type':
-          - ActivityFocus
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ActivityFocus
           rdfs:label: Tenancy preservation
 
     "BehavioralHealthContext":
@@ -2497,8 +2497,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/commit-1
           '@type':
-          - CareCommitment
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - CareCommitment
           hasCommitmentStatus: CommitmentInForce
 
     "CareCoordinationInteraction":
@@ -2644,8 +2644,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/ctx-clin
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - ClinicalCareContext
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "ClinicalDomain":
       type: object
@@ -2817,8 +2817,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-coord
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - CoordinatorRole
+          - http://www.w3.org/2002/07/owl#NamedIndividual
 
     "DefinitionArtifact":
       type: object
@@ -3064,8 +3064,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hs-1
           '@type':
-          - Handshake
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - Handshake
           hasHandoffStatus: HandoffAssumed
           hasHandshakeFulfillment: FulfillmentConfirmed
           negotiates:
@@ -3088,8 +3088,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/hh-001
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Household
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByCriteria:
           - http://example.org/ucm/hh-criteria
 
@@ -3118,8 +3118,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/assess-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - HousingAssessment
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasParticipant:
           - http://example.org/ucm/p-res
           hasResident:
@@ -3285,8 +3285,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/mc-1
           '@type':
-          - MatchClaim
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - MatchClaim
           madeWithinContext:
           - http://example.org/ucm/ctx-housing
           statementDate: '2026-09-03T12:00:00-07:00'
@@ -3324,8 +3324,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/mem-a
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Membership
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           membershipIn: http://example.org/ucm/hh-001
 
     "MembershipCriteria":
@@ -3380,8 +3380,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/org-ecm
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Organization
+          - http://www.w3.org/2002/07/owl#NamedIndividual
         - '@id': http://example.org/ucm/org-fund
           '@type':
           - http://www.w3.org/2002/07/owl#NamedIndividual
@@ -3547,8 +3547,8 @@ components:
           - http://example.org/ucm/ctx-clin
         - '@id': http://example.org/ucm/p-res
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Participation
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           assumesRole:
           - http://example.org/ucm/role-res
           enactiveDuring:
@@ -3575,8 +3575,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-pat
           '@type':
-          - PatientRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - PatientRole
 
     "Person":
       type: object
@@ -3611,14 +3611,14 @@ components:
       examples:
         - '@id': http://example.org/ucm/cm-1
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Person
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           affiliatedWith:
           - http://example.org/ucm/org-ecm
         - '@id': http://example.org/ucm/person-a
           '@type':
-          - http://www.w3.org/2002/07/owl#NamedIndividual
           - Person
+          - http://www.w3.org/2002/07/owl#NamedIndividual
           hasMembership:
           - http://example.org/ucm/mem-a
 
@@ -3802,8 +3802,8 @@ components:
       examples:
         - '@id': http://example.org/ucm/role-res
           '@type':
-          - ResidentRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          - ResidentRole
 
     "Role":
       type: object

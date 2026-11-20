@@ -89,8 +89,36 @@ def test_migration_matches_models(compilation, engine, models):
         assert connection.execute(sa.text("select count(*) from concept")).scalar() == concepts
 
 
+def test_multi_typed_node_resolves_to_its_mapped_class(models):
+    """A node also typed owl:NamedIndividual (a full IRI, not a UCM class term) used to
+    crash to_rows() with TypeError: unhashable type 'list'; it should resolve normally now."""
+    row, links = models.to_rows({
+        "@id": "urn:ex:multi-typed",
+        "@type": ["ActivityFocus", "http://www.w3.org/2002/07/owl#NamedIndividual"],
+    })
+    assert type(row).__name__ == "ActivityFocus"
+    assert links == []
+
+
+def test_unmapped_type_still_raises(models):
+    with pytest.raises(KeyError):
+        models.to_rows({"@id": "urn:ex:bad", "@type": "NotARealClass"})
+
+
+def test_genuinely_conflicting_types_raise(models):
+    """Two UCM class terms that map to different tables in the same @type is a real
+    conflict (not the owl:NamedIndividual case), and should fail loudly, not pick one"""
+    with pytest.raises(ValueError):
+        models.to_rows({"@id": "urn:ex:ambiguous", "@type": ["ActivityFocus", "CareCommitment"]})
+
+
 def test_examples_round_trip(engine, models, spec):
+    """Every example individual is also typed owl:NamedIndividual, so @type compacts to a
+    list (e.g. ["ActivityFocus", "http://www.w3.org/2002/07/owl#NamedIndividual"]); this is
+    the regression case that used to crash models.load() with TypeError: unhashable 'list'."""
     nodes = example_nodes(spec)
+    assert any(isinstance(n["@type"], list) for n in nodes), "fixture drifted: no multi-typed example left"
+
     with Session(engine) as session:
         assert models.load(session, nodes) == 29
         session.commit()
@@ -105,6 +133,13 @@ def test_examples_round_trip(engine, models, spec):
             dumped = models.dump(session, node["@id"])
             assert set(dumped) == set(node), node["@id"]
             for key, value in node.items():
+                if key == "@type":
+                    # the "type" column holds one discriminator value; owl:NamedIndividual
+                    # (a full IRI, never a compacted term) isn't a UCM class and isn't kept
+                    declared = value if isinstance(value, list) else [value]
+                    terms = [t for t in declared if "://" not in t]
+                    assert dumped[key] in terms, (node["@id"], key, dumped[key], value)
+                    continue
                 assert same(dumped[key], value), (node["@id"], key)
 
 

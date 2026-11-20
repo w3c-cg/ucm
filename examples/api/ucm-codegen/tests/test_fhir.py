@@ -129,6 +129,20 @@ def test_output_is_deterministic(adapter, spec, bundle):
     assert adapter.to_fhir_bundle(example_nodes(spec))[0] == bundle
 
 
+def test_multi_typed_node_is_mapped(adapter):
+    """A node also typed owl:NamedIndividual (a full IRI, not a UCM class term) used to
+    crash mapping_for()/_is_a() with TypeError: unhashable type 'list'; mapping and the
+    resulting coding should use the real UCM term, not the generic co-type."""
+    node = {
+        "@id": "http://example.org/ucm/req-multi",
+        "@type": ["http://www.w3.org/2002/07/owl#NamedIndividual", "CoordinationRequest"],
+    }
+    bundle, warnings = adapter.to_fhir_bundle([node])
+    assert warnings == []
+    tag = bundle["entry"][0]["resource"]["meta"]["tag"][0]["code"]
+    assert tag == "CoordinationRequest"
+
+
 # ---------- FHIR → UCM ----------
 
 def facts(nodes, keys):

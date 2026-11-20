@@ -586,8 +586,22 @@ def _values(node: Dict[str, Any], key: str) -> List[Any]:
     return []
 
 
-def _is_a(term: Optional[str], ancestor: str) -> bool:
-    return term == ancestor or ancestor in ANCESTORS.get(term or "", [])
+def _type_terms(value: Any) -> List[str]:
+    """Declared @type value(s) as UCM class terms: every example individual is also typed
+    owl:NamedIndividual, which compacts to a full IRI alongside the term (never a scalar
+    on its own), so full IRIs are filtered out rather than treated as a class term."""
+    types = value if isinstance(value, list) else ([value] if value else [])
+    return [t for t in types if isinstance(t, str) and "://" not in t]
+
+
+def _type_term(value: Any) -> Optional[str]:
+    """A single representative class term for @type, for contexts (coding, meta.tag) that need one"""
+    terms = _type_terms(value)
+    return terms[0] if terms else None
+
+
+def _is_a(term: Any, ancestor: str) -> bool:
+    return any(t == ancestor or ancestor in ANCESTORS.get(t, []) for t in _type_terms(term))
 
 
 def _expand(value: str) -> str:
@@ -636,15 +650,15 @@ class _Graph:
         return [n for _, n in sorted(self.nodes.items()) if iri in (_iri(v) for v in _values(n, prop))]
 
     def mapping_for(self, node: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        term = node.get("@type")
-        for candidate in [term] + ANCESTORS.get(term or "", []):
-            if candidate in MAPPINGS:
-                return MAPPINGS[candidate]
+        for term in _type_terms(node.get("@type")):
+            for candidate in [term] + ANCESTORS.get(term, []):
+                if candidate in MAPPINGS:
+                    return MAPPINGS[candidate]
         return None
 
     def role_terms(self, participation: Dict[str, Any]) -> List[str]:
         roles = (self.node(r) for r in _values(participation, "assumesRole"))
-        return [r["@type"] for r in roles if r and "@type" in r]
+        return [t for r in roles if r for t in _type_terms(r.get("@type"))]
 
 
 # ============================================================================
@@ -700,14 +714,16 @@ def _transform(g: _Graph, value: Any, field: Dict[str, Any]) -> Any:
         return {"text": iri, "extension": [{"url": NODE_IRI_EXTENSION, "valueUri": iri}]}
     if kind == "class-coding":
         target = g.node(value)
-        if target is None or "@type" not in target:
+        term = _type_term(target.get("@type")) if target else None
+        if term is None:
             return None
-        return {"coding": [{"system": CODE_SYSTEM, "code": target["@type"]}]}
+        return {"coding": [{"system": CODE_SYSTEM, "code": term}]}
     if kind == "role-coding":
         iri = _iri(value)
         role = g.node(iri)
+        role_term = _type_term(role.get("@type")) if role else None
         concept: Dict[str, Any] = (
-            {"coding": [{"system": CODE_SYSTEM, "code": role["@type"]}]} if role and "@type" in role
+            {"coding": [{"system": CODE_SYSTEM, "code": role_term}]} if role_term is not None
             else {"text": iri}
         )
         concept["extension"] = [{"url": NODE_IRI_EXTENSION, "valueUri": iri}]
@@ -766,7 +782,7 @@ def to_fhir_bundle(nodes: Iterable[Dict[str, Any]]) -> Tuple[Dict[str, Any], Lis
         spec = g.mapping_for(node)
         if spec is None:
             continue
-        meta: Dict[str, Any] = {"tag": [{"system": CODE_SYSTEM, "code": node["@type"]}]}
+        meta: Dict[str, Any] = {"tag": [{"system": CODE_SYSTEM, "code": _type_term(node.get("@type"))}]}
         if spec["profile"]:
             meta["profile"] = [spec["profile"]]
         resource: Dict[str, Any] = {
