@@ -3,14 +3,14 @@
 # the CI workflow only runs `ucm-codegen build --strict`.
 
 ontology:
-  - ../unified-care-model.ttl
-  - ../ucm-lifecycle-vocabularies.ttl
+  - ../../../unified-care-model.ttl
+  - ../../../ucm-lifecycle-vocabularies.ttl
 shapes:
-  - ../ucm-core-shapes.ttl
+  - ../../../ucm-core-shapes.ttl
 shapes-lint:
-  - ../ucm-shapes-lint.ttl
+  - ../../../ucm-shapes-lint.ttl
 examples:
-  - ../ucm-core-shapes-example.ttl
+  - ../../shapes/ucm-core-shapes-example.ttl
 
 profile: profiles/ucm-api-profile.yaml
 fhir-mapping: profiles/ucm-fhir-mapping.yaml

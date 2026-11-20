@@ -21,7 +21,7 @@ from ucm_codegen.pipeline import Compilation, compile_ir
 from ucm_codegen.utils import load_yaml_safe
 
 PROJECT = Path(__file__).resolve().parents[1]
-SPEC_ROOT = PROJECT.parent
+SPEC_ROOT = PROJECT.parent.parent.parent
 
 ONTOLOGY_TTL = [SPEC_ROOT / "unified-care-model.ttl", SPEC_ROOT / "ucm-lifecycle-vocabularies.ttl"]
 SHAPES_TTL = [SPEC_ROOT / "ucm-core-shapes.ttl"]
