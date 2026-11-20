@@ -1,7 +1,9 @@
 # Administrative Items
 
 * lifecycle/shapes namespace changes so the main ontology imports the others. https://github.com/w3c-cg/ucm/issues/60 [commit](https://github.com/w3c-cg/ucm/commit/f2111910a15e105bfbd0b326ae9d4f61f9d09328) @eric-jahn
-* reorg of repo https://github.com/w3c-cg/ucm/issues/54 @eric-jahn
+* reorg of repo:
+  * Issue: https://github.com/w3c-cg/ucm/issues/54 
+  * PR: https://github.com/w3c-cg/ucm/pull/62 @eric-jahn
 * directory of files in README https://github.com/w3c-cg/ucm/issues/53
 
 # Issue Discussion
