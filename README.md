@@ -1,6 +1,6 @@
 
 
-# Specification 'ucm'
+# Unified Care Model (UCM) Specification
 
 ## All members: Please read the guidelines linked below to understand your membership rights and responsibilities. 
 
