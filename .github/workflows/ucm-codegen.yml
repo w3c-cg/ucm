@@ -13,13 +13,13 @@ on:
     paths:
       - "**/*.ttl"
       - "examples/api/ucm-codegen/**"
-      - "test_core_shapes.py"
+      - "test-suites/test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   pull_request:
     paths:
       - "**/*.ttl"
       - "examples/api/ucm-codegen/**"
-      - "test_core_shapes.py"
+      - "test-suites/test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   workflow_dispatch:
 
@@ -72,7 +72,7 @@ jobs:
       # Exits non-zero on any failure.
       - name: Shapes suite
         working-directory: .
-        run: python test_core_shapes.py .
+        run: python test-suites/test_core_shapes.py .
 
       # Only bites for what is committed: if ucm-build.lock (and generated/,
       # build/, examples/db/) are in git, a spec change must ship with its
