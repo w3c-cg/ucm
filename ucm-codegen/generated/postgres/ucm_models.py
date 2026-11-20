@@ -30,8 +30,8 @@ from sqlalchemy.types import TypeDecorator
 
 ONTOLOGY_IRI = 'https://www.w3.org/ns/ucm#'
 ONTOLOGY_VERSION = 'v0.0.1'
-REVISION = 'ucm_0ab5001ebc4f'
-SOURCES = ['sha256:030067647e3395ead464f3b06c270ec5f4845c522ca6cbb01dd31536fc07ebca',
+REVISION = 'ucm_be6300a694ad'
+SOURCES = ['sha256:5b26092bcbfc291fb46e67da641756f14ca4c5d267607e737b4079c64f3a392b',
  'sha256:74c1824251435960bdb49728bb42f8c89e6b405c335a9ebadb910e6a6292970c']
 
 JSONType = sa.JSON().with_variant(postgresql.JSONB(), "postgresql")
