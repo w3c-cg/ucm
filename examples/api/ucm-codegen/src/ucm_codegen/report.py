@@ -1,0 +1,497 @@
+"""
+Build report: everything the HTML report shows, gathered from the IR and targets
+
+The report answers the questions a spec change raises: did a finding
+appear, does the example still conform, and where does each property land
+in the OpenAPI schema, the Postgres schema and the FHIR mapping.
+"""
+
+from __future__ import annotations
+
+from typing import Any, Dict, List, Optional, Tuple
+
+from .builder import BASE_SCHEMA
+from .content import BuildDiff, changed_keys, short, toolchain_digest
+from .models import APISchema, LintFinding, OpenAPISpec, Severity, ValidationReport
+from .pipeline import Compilation
+from .sql_target import SqlSchema
+
+SQL_LABELS = {
+    "sa.Text()": "text",
+    "UtcDateTime()": "timestamptz",
+    "sa.Date()": "date",
+    "sa.Time()": "time",
+    "sa.Boolean()": "boolean",
+    "sa.BigInteger()": "bigint",
+    "sa.Integer()": "integer",
+    "sa.Numeric()": "numeric",
+    "sa.Float()": "double precision",
+}
+
+
+def schema_summary(schema: Dict[str, Any]) -> str:
+    """Short type label for a JSON Schema fragment"""
+    if "$ref" in schema:
+        return schema["$ref"].rsplit("/", 1)[-1]
+    if schema.get("type") == "array":
+        return schema_summary(schema.get("items", {})) + "[]"
+    if "anyOf" in schema:
+        return " | ".join(schema_summary(s) for s in schema["anyOf"])
+    kind, fmt = schema.get("type", "any"), schema.get("format")
+    return f"{kind} ({fmt})" if fmt else str(kind)
+
+
+def cardinality(prop: Any) -> str:
+    if not prop.is_set:
+        return "1" if prop.required else "0..1"
+    low = prop.value_schema.get("minItems", 0)
+    return f"{low}..*"
+
+
+def _fhir_landings(adapter: Optional[Dict[str, Any]]) -> Dict[Tuple[Optional[str], str], List[str]]:
+    """(class term or None, property term) → FHIR element paths"""
+    landings: Dict[Tuple[Optional[str], str], List[str]] = {}
+    if not adapter:
+        return landings
+
+    def note(cls: Optional[str], term: str, where: str) -> None:
+        landings.setdefault((cls, term), [])
+        if where not in landings[(cls, term)]:
+            landings[(cls, term)].append(where)
+
+    def walk(fields: Dict[str, Any], context: Optional[str], prefix: str) -> None:
+        for path, field in fields.items():
+            where = f"{prefix}.{path}"
+            items = field["class"] if field["inverse"] else context
+            if field["inverse"]:
+                note(field["class"], field["inverse"], f"{where} (inverse)")
+            if field["property"]:
+                hop = field["property"][0]
+                suffix = " (via " + "/".join(field["property"]) + ")" if len(field["property"]) > 1 else ""
+                note(items, hop, where + suffix)
+            if "each" in field:
+                walk(field["each"], items, where)
+
+    for term, spec in adapter["resources"].items():
+        resources = [spec["resource"]] + [r for _, r in spec["by_role"] if r != spec["resource"]]
+        walk(spec["fields"], term, " | ".join(resources))
+    return landings
+
+
+class ReportBuilder:
+    def __init__(
+        self,
+        compilation: Compilation,
+        spec: OpenAPISpec,
+        sql: Optional[SqlSchema] = None,
+        adapter: Optional[Dict[str, Any]] = None,
+        validation: Optional[ValidationReport] = None,
+        example_warnings: Optional[List[str]] = None,
+        files: Optional[List[str]] = None,
+        diff: Optional[BuildDiff] = None,
+        lock: Optional[Any] = None,
+        output_digests: Optional[Dict[str, str]] = None,
+        failed: Optional[List[str]] = None,
+        held: Optional[Any] = None,
+        postgres_href_prefix: Optional[str] = None,
+    ):
+        self.failed = failed or []
+        self.held = held
+        self.diff = diff
+        self.lock = lock
+        self.output_digests = output_digests or {}
+        # Postgres artifacts aren't necessarily written next to this report
+        # (examples/db, not generated/); rewrite their hrefs accordingly.
+        self.postgres_href_prefix = postgres_href_prefix
+        self.c = compilation
+        self.ir = compilation.ir
+        self.spec = spec
+        self.sql = sql
+        self.adapter = adapter
+        self.validation = validation
+        self.example_warnings = example_warnings or []
+        self.files = files or []
+        self.fhir = _fhir_landings(adapter)
+        self.columns = {
+            col.term: (table.name, col) for table in (sql.tables if sql else []) for col in table.columns
+        }
+        self.associations = {a.term: a for a in (sql.associations if sql else [])}
+
+    def _href(self, relative: str) -> str:
+        """Link target for an artifact listed in self.files, as written next to this report"""
+        if self.postgres_href_prefix is not None and (relative == "postgres" or relative.startswith("postgres/")):
+            rest = relative[len("postgres/"):] if relative.startswith("postgres/") else ""
+            return f"{self.postgres_href_prefix}/{rest}" if rest else self.postgres_href_prefix
+        return relative
+
+    # ---------- per property / class ----------
+
+    def _related(self, term: Optional[str]) -> List[Optional[str]]:
+        if term is None or term not in {c.term for c in self.ir.classes.values()}:
+            return [term]
+        iri = next(c.iri for c in self.ir.classes.values() if c.term == term)
+        family = [iri] + self.ir.ancestors(iri) + self.ir.descendants(iri)
+        return [self.ir.classes[i].term for i in family]
+
+    def property_row(self, prop: Any, class_term: Optional[str]) -> Dict[str, Any]:
+        postgres = None
+        if prop.name in self.columns:
+            table, col = self.columns[prop.name]
+            postgres = f"{table}.{col.name}"
+            postgres_type = SQL_LABELS.get(col.orm_type, col.orm_type) + ("" if col.nullable else " not null")
+        elif prop.name in self.associations:
+            assoc = self.associations[prop.name]
+            postgres = assoc.name
+            postgres_type = "association"
+        else:
+            postgres_type = ""
+        fhir = []
+        for cls in self._related(class_term) + [None]:
+            fhir.extend(w for w in self.fhir.get((cls, prop.name), []) if w not in fhir)
+        constraints = prop.extensions.get("x-ucm-constraints", [])
+        return {
+            "name": prop.name,
+            "curie": self.ir.curie(prop.iri) if not prop.iri.startswith("@") else prop.iri,
+            "description": prop.description,
+            "cardinality": cardinality(prop),
+            "required": prop.required,
+            "recommended": bool(prop.extensions.get("x-ucm-recommended")),
+            "range": prop.extensions.get("x-ucm-range") or prop.extensions.get("x-ucm-datatype"),
+            "openapi": schema_summary(prop.value_schema),
+            "postgres": postgres,
+            "postgres_type": postgres_type,
+            "fhir": fhir,
+            "constraints": constraints,
+        }
+
+    def class_entry(self, schema: APISchema, depth: int) -> Dict[str, Any]:
+        cls = next((c for c in self.ir.classes.values() if c.term == schema.name), None)
+        root_term = self.ir.classes[self.ir.root_of(cls.iri)].term if cls else None
+        resource = next((r for r in self.spec.resources if r.name == root_term), None)
+        mapped = None
+        if self.adapter and cls:
+            for candidate in [cls.term] + [self.ir.classes[a].term for a in self.ir.ancestors(cls.iri)]:
+                spec = self.adapter["resources"].get(candidate)
+                if spec:
+                    names = [spec["resource"]] + [r for _, r in spec["by_role"] if r != spec["resource"]]
+                    mapped = {"resource": " | ".join(names), "via": candidate}
+                    break
+        return {
+            "name": schema.name,
+            "label": cls.label if cls else "Base node",
+            "comment": cls.comment if cls else schema.description,
+            "curie": schema.curie or "(base)",
+            "depth": depth,
+            "is_base": cls is None,
+            "parents": schema.parents,
+            "subclasses": schema.extensions.get("x-ucm-subclasses", []),
+            "equivalents": schema.extensions.get("x-ucm-equivalent-classes", []),
+            "constraints": schema.extensions.get("x-ucm-constraints", []),
+            "resource": resource.collection_path if resource else None,
+            "table": next((t.name for t in (self.sql.tables if self.sql else []) if t.class_name == root_term), None),
+            "fhir": mapped,
+            "examples": len(schema.examples),
+            "properties": [
+                self.property_row(p, schema.name if cls else None)
+                for p in schema.properties
+                if p.name != "@type" or cls is None
+            ],
+        }
+
+    def class_tree(self) -> List[Dict[str, Any]]:
+        schemas = {s.name: s for s in self.spec.schemas}
+        children: Dict[str, List[str]] = {}
+        for s in self.spec.schemas:
+            for parent in s.parents:
+                children.setdefault(parent, []).append(s.name)
+        ordered: List[Dict[str, Any]] = [self.class_entry(self.spec.base_schema, 0)]
+        seen = set()
+
+        def visit(name: str, depth: int) -> None:
+            if name in seen:
+                return
+            seen.add(name)
+            ordered.append(self.class_entry(schemas[name], depth))
+            for child in sorted(children.get(name, [])):
+                visit(child, depth + 1)
+
+        for root in sorted(children.get(BASE_SCHEMA, [])):
+            visit(root, 1)
+        return ordered
+
+    def vocabularies(self) -> List[Dict[str, Any]]:
+        """Each scheme with its concepts in hierarchy order and the properties that use it"""
+        properties = {p.term: p for p in self.ir.properties.values()}
+        out = []
+        for scheme in self.spec.concept_schemes:
+            concepts = scheme.concepts
+            children: Dict[Optional[str], List[str]] = {}
+            for term, concept in concepts.items():
+                parents = [b for b in concept.get("broader", []) if b in concepts]
+                children.setdefault(parents[0] if parents else None, []).append(term)
+            rows: List[Dict[str, Any]] = []
+            seen: set = set()
+
+            def visit(term: str, depth: int) -> None:
+                if term in seen:
+                    return  # a cycle; the concept-hierarchy lint reports it
+                seen.add(term)
+                concept = concepts[term]
+                rows.append({
+                    "term": term,
+                    "depth": depth,
+                    "label": concept["label"],
+                    "definition": concept.get("definition", ""),
+                    "iri": concept["iri"],
+                    "mappings": [
+                        (name, concept[name]) for name in
+                        ("exactMatch", "closeMatch", "broadMatch", "narrowMatch", "relatedMatch") if name in concept
+                    ],
+                })
+                for child in sorted(children.get(term, [])):
+                    visit(child, depth + 1)
+
+            for root in sorted(children.get(None, [])):
+                visit(root, 0)
+            for term in sorted(set(concepts) - seen):  # only reachable through a cycle
+                visit(term, 0)
+            out.append({
+                "name": scheme.name,
+                "iri": scheme.iri,
+                "description": self.ir.schemes[scheme.iri].description,  # the scheme's own, not the API boilerplate
+                "concepts": len(concepts),
+                "levels": 1 + max((r["depth"] for r in rows), default=0) if rows else 0,
+                "has_mappings": any(r["mappings"] for r in rows),
+                "rows": rows,
+                "used_by": [
+                    {
+                        "term": term,
+                        "domain": self.ir.curie(properties[term].domain) if properties[term].domain else None,
+                    }
+                    for term in scheme.properties
+                ],
+            })
+        return out
+
+    # ---------- report ----------
+
+    def build(self) -> Dict[str, Any]:
+        findings = self.c.findings
+        counts = {s: sum(f.severity == s for f in findings) for s in Severity}
+        validation_violations = self.validation.by_severity(Severity.VIOLATION) if self.validation else []
+        validation_warnings = self.validation.by_severity(Severity.WARNING) if self.validation else []
+        failed = bool(counts[Severity.VIOLATION] or validation_violations)
+        warned = bool(counts[Severity.WARNING] or validation_warnings)
+
+        def finding(f: LintFinding) -> Dict[str, str]:
+            return {"severity": f.severity.value, "code": f.code, "subject": f.subject, "message": f.message}
+
+        ir = self.ir
+        return {
+            "title": self.spec.title,
+            "ontology": {
+                "label": ir.label,
+                "iri": ir.iri,
+                "version": ir.version,
+                "comment": ir.comment,
+                "sources": [s.model_dump() for s in ir.sources],
+            },
+            "status": {
+                # --strict can fail a build on warnings alone; the gate decides
+                "state": "failed" if failed or self.failed else ("warnings" if warned else "passed"),
+                "violations": counts[Severity.VIOLATION],
+                "warnings": counts[Severity.WARNING],
+                "infos": counts[Severity.INFO],
+                "validated": self.validation is not None,
+                "conforms": self.validation is not None and not self.validation.results,
+                "validation_violations": len(validation_violations),
+                "validation_warnings": len(validation_warnings),
+            },
+            "counts": [
+                ("Classes", len(ir.classes)),
+                ("Properties", len(ir.properties)),
+                ("Concept schemes", len(ir.schemes)),
+                ("Concepts", sum(len(s.concepts) for s in ir.schemes.values())),
+                ("Node shapes", len(ir.shapes)),
+                ("Constraints", sum(len(s.properties) + len(s.sparql) for s in ir.shapes)),
+                ("API resources", len(self.spec.resources)),
+                ("API operations", len(self.spec.operations)),
+                ("Tables", len(self.sql.tables) if self.sql else 0),
+                ("Association tables", len(self.sql.associations) if self.sql else 0),
+                ("FHIR-mapped classes", len(self.adapter["resources"]) if self.adapter else 0),
+            ],
+            "findings": [finding(f) for f in findings],
+            "validation": [r.model_dump(mode="json") for r in (self.validation.results if self.validation else [])],
+            "example_warnings": self.example_warnings,
+            "classes": self.class_tree(),
+            "schemes": self.vocabularies(),
+            "resources": [
+                {
+                    "name": r.name,
+                    "collection": r.collection_path,
+                    "item": r.item_path,
+                    "subtypes": len(r.type_terms) - 1,
+                    "operations": [(op.method.upper(), op.path, op.operation_id) for op in r.operations],
+                }
+                for r in self.spec.resources
+            ],
+            "sql": self.sql.model_dump() if self.sql else None,
+            "fhir": [
+                {
+                    "term": term,
+                    "resource": spec["resource"],
+                    "by_role": spec["by_role"],
+                    "fields": [
+                        {"path": path, "source": _describe(field)} for path, field in spec["fields"].items()
+                    ],
+                }
+                for term, spec in (self.adapter["resources"].items() if self.adapter else [])
+            ],
+            "files": [(f, self._href(f), self.output_digests.get(f)) for f in self.files],
+            "provenance": {
+                "toolchain": toolchain_digest(),
+                "ir_root": self.lock.ir_root if self.lock else None,
+                "nodes": len(self.lock.nodes) if self.lock else None,
+            },
+            "changes": self._changes(),
+            "gate": {
+                "failed": self.failed,
+                "held": bool(self.failed),
+                "last_good": short(self.held.ir_root) if self.held is not None else None,
+            },
+        }
+
+    def _changes(self) -> Dict[str, Any]:
+        """Build diff for the Changes pane; state is untracked, first, unchanged or changed"""
+        if self.diff is None:
+            return {"state": "untracked", "count": 0}
+        if self.diff.first_build:
+            return {"state": "first", "count": 0}
+        added, removed, changed = changed_keys(self.diff.nodes)
+        def compact(value: Optional[str]) -> Optional[str]:
+            return self.ir.curie(value) if value and "://" in value or (value or "").startswith("urn:") else value
+
+        nodes = []
+        for change in self.diff.nodes:
+            kind, _, name = change.key.partition(":")
+            fields = []
+            for f in change.fields:
+                fields.append({
+                    "field": f.field,
+                    "before": compact(f.before),
+                    "after": compact(f.after),
+                    "added": [compact(a) for a in f.added],
+                    "removed": [compact(r) for r in f.removed],
+                })
+            nodes.append({"kind": change.kind, "type": kind, "name": name, "fields": fields})
+        return {
+            "state": "unchanged" if self.diff.unchanged else "changed",
+            "previous": short(self.diff.previous),
+            "count": len(self.diff.nodes) + len(self.diff.outputs),
+            "added": added,
+            "removed": removed,
+            "changed": changed,
+            "nodes": nodes,
+            "outputs": [o.model_dump() for o in self.diff.outputs],
+        }
+
+
+def _describe(field: Dict[str, Any]) -> str:
+    parts = []
+    if field["inverse"]:
+        what = f"{field['class']} " if field["class"] else ""
+        parts.append(f"{what}nodes whose {field['inverse']} points here")
+    if field["roles"]:
+        parts.append("role " + " | ".join(field["roles"]))
+    if field["exclude_roles"]:
+        parts.append("not role " + " | ".join(field["exclude_roles"]))
+    if field["property"]:
+        parts.append("/".join(field["property"]))
+    if field["transform"] != "direct":
+        parts.append(field["transform"])
+    if field.get("map"):
+        parts.append(", ".join(f"{k.rsplit('#', 1)[-1]}→{v}" for k, v in field["map"].items()))
+    if "each" in field:
+        parts.append(f"{len(field['each'])} sub-elements")
+    return " · ".join(parts) or "this node"
+
+
+# ============= Markdown summary =============
+
+def _cell(text: Any) -> str:
+    return str(text if text is not None else "").replace("|", r"\|").replace("\n", " ")
+
+
+def markdown_summary(report: Dict[str, Any], limit: int = 20) -> str:
+    """The report's headline as GitHub-flavored Markdown, for a CI job summary.
+
+    A CI runner's report.html is a download; this puts the result, the
+    vocabularies and the findings on the run page itself.
+    """
+    status = report["status"]
+    lines = [f"### UCM reference build: {status['state']}", ""]
+    for reason in report["gate"]["failed"] or []:
+        lines.append(f"- **Failed:** {_cell(reason)}")
+    lines += [
+        f"{status['violations']} lint violations · {status['warnings']} lint warnings · "
+        f"{status['infos']} informational"
+        + (f" · example {'conforms' if status['conforms'] else 'has results'}" if status["validated"] else ""),
+        "",
+        "| Compiled | |",
+        "|---|--:|",
+        *[f"| {label} | {value} |" for label, value in report["counts"]],
+        "",
+    ]
+
+    lines += ["#### Vocabularies", ""]
+    if report["schemes"]:
+        lines += ["| Concept scheme | Concepts | Levels | Values of |", "|---|--:|--:|---|"]
+        for scheme in report["schemes"]:
+            used = ", ".join(
+                f"`{u['term']}`" + (f" on {u['domain']}" if u["domain"] else "") for u in scheme["used_by"]
+            ) or "**no property uses this scheme**"
+            lines.append(f"| {scheme['name']} | {scheme['concepts']} | {scheme['levels']} | {used} |")
+    else:
+        lines.append("No concept schemes. Is the vocabulary file listed under `ontology` in ucm-build.yaml?")
+    lines.append("")
+
+    serious = [f for f in report["findings"] if f["severity"] != "Info"]
+    if serious:
+        lines += ["#### Lint findings", "", "| Severity | Code | Subject | Message |", "|---|---|---|---|"]
+        lines += [
+            f"| {f['severity']} | {f['code']} | `{_cell(f['subject'])}` | {_cell(f['message'])} |"
+            for f in serious[:limit]
+        ]
+        if len(serious) > limit:
+            lines.append(f"\n… {len(serious) - limit} more in the report")
+        lines.append("")
+
+    if report["validation"]:
+        lines += ["#### Example validation", "", "| Severity | Focus | Shape | Message |", "|---|---|---|---|"]
+        lines += [
+            f"| {_cell(r.get('severity'))} | `{_cell(r.get('focus_node'))}` | {_cell(r.get('source_shape'))} "
+            f"| {_cell(r.get('message'))} |"
+            for r in report["validation"][:limit]
+        ]
+        lines.append("")
+
+    changes = report["changes"]
+    if changes["state"] == "changed":
+        lines += [
+            "#### Changes since the previous build",
+            "",
+            f"{changes['added']} added, {changes['removed']} removed, {changes['changed']} changed IR nodes; "
+            f"{len(changes['outputs'])} generated files differ.",
+            "",
+        ]
+        lines += [
+            f"- {n['kind']} {n['type']} `{n['name']}`"
+            + (f" ({', '.join(f['field'] for f in n['fields'])})" if n["fields"] else "")
+            for n in changes["nodes"][:limit]
+        ]
+        if len(changes["nodes"]) > limit:
+            lines.append(f"- … {len(changes['nodes']) - limit} more in the report")
+        lines.append("")
+    elif changes["state"] == "unchanged":
+        lines += ["No changes since the previous build.", ""]
+    return "\n".join(lines) + "\n"

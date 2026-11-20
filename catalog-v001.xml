@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri id="Imports Wizard Entry" name="https://www.w3.org/ns/ucm#shapes-lint/1.0.0" uri="ucm-shapes-lint.ttl"/>
+    <uri id="Imports Wizard Entry" name="https://www.w3.org/ns/ucm#participation-membership" uri="ucm-participation-membership.ttl"/>
+    <uri id="User Entered Import Resolution" name="https://www.w3.org/ns/ucm#" uri="unified-care-model.ttl"/>
+    <uri id="User Entered Import Resolution" name="https://www.w3.org/ns/ucm#shapes" uri="ucm-core-shapes.ttl"/>
+    <uri id="User Entered Import Resolution" name="https://www.w3.org/ns/ucm#lifecycle" uri="ucm-lifecycle-vocabularies.ttl"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public"/>
 </catalog>
