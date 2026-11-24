@@ -1,111 +1,32 @@
-@prefix : <https://www.w3.org/ns/ucm#shapes-lint#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix ucm-shapes: <https://www.w3.org/ns/ucm#shapes> .
-@prefix ucm-shapes-lint: <https://www.w3.org/ns/ucm#shapes-lint> .
-@base <https://www.w3.org/ns/ucm#shapes-lint#> .
+@prefix ucmsh: <https://www.w3.org/ns/ucm#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
 
-<https://www.w3.org/ns/ucm#shapes-lint> rdf:type owl:Ontology ;
-                                         owl:versionIRI <https://www.w3.org/ns/ucm#shapes-lint/1.0.0> .
+# Shapes over the shapes graph. Validate ucm-core-shapes.ttl AS DATA against
+# this file to enforce the open-by-default convention mechanically.
 
-#################################################################
-#    Annotation properties
-#################################################################
-
-###  http://www.w3.org/ns/shacl#message
-sh:message rdf:type owl:AnnotationProperty .
-
-
-###  http://www.w3.org/ns/shacl#select
-sh:select rdf:type owl:AnnotationProperty .
-
-
-###  http://www.w3.org/ns/shacl#sparql
-sh:sparql rdf:type owl:AnnotationProperty .
-
-
-###  http://www.w3.org/ns/shacl#targetClass
-sh:targetClass rdf:type owl:AnnotationProperty .
-
-
-###  http://www.w3.org/ns/shacl#targetObjectsOf
-sh:targetObjectsOf rdf:type owl:AnnotationProperty .
-
-
-###  http://www.w3.org/ns/shacl#targetSubjectsOf
-sh:targetSubjectsOf rdf:type owl:AnnotationProperty .
-
-
-#################################################################
-#    Classes
-#################################################################
-
-###  http://www.w3.org/ns/shacl#NodeShape
-sh:NodeShape rdf:type owl:Class .
-
-
-#################################################################
-#    Individuals
-#################################################################
-
-###  https://www.w3.org/ns/ucm#LintClosureRationale
-<https://www.w3.org/ns/ucm#LintClosureRationale> rdf:type owl:NamedIndividual ,
-                                                          sh:NodeShape ;
-                                                 sh:sparql [ sh:message "Shape is closed without a ucmsh:closureRationale. Spec shapes stay open unless closure is definitional and the reason is written down." ;
-                                                             sh:select """
+# L1. Closure needs a written reason. Any sh:closed true without
+#     ucmsh:closureRationale fails review.
+ucmsh:LintClosureRationale a sh:NodeShape ;
+    sh:targetSubjectsOf sh:closed ;
+    sh:sparql [
+        sh:message "Shape is closed without a ucmsh:closureRationale. Spec shapes stay open unless closure is definitional and the reason is written down." ;
+        sh:select """
             PREFIX sh:    <http://www.w3.org/ns/shacl#>
             PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
             SELECT $this WHERE {
                 $this sh:closed true .
                 FILTER NOT EXISTS { $this ucmsh:closureRationale ?r }
-            }"""
-                                                           ] ;
-                                                 sh:targetSubjectsOf sh:closed .
+            }""" ;
+    ] .
 
-
-###  https://www.w3.org/ns/ucm#LintDefinitionalSeverity
-<https://www.w3.org/ns/ucm#LintDefinitionalSeverity> rdf:type owl:NamedIndividual ,
-                                                              sh:NodeShape ;
-                                                     sh:sparql [ sh:message "Definitional-tier shape is downgraded below sh:Violation." ;
-                                                                 sh:select """
-            PREFIX sh:    <http://www.w3.org/ns/shacl#>
-            PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE {
-                $this ucmsh:tier ucmsh:Definitional ; sh:severity ?s .
-                FILTER (?s != sh:Violation)
-            }"""
-                                                               ] ;
-                                                     sh:targetClass sh:NodeShape ,
-                                                                    sh:PropertyShape ;
-                                                     sh:targetObjectsOf sh:property .
-
-
-###  https://www.w3.org/ns/ucm#LintRecommendedSeverity
-<https://www.w3.org/ns/ucm#LintRecommendedSeverity> rdf:type owl:NamedIndividual ,
-                                                             sh:NodeShape ;
-                                                    sh:sparql [ sh:message "Recommended-tier shape would report sh:Violation (severity missing or wrong)." ;
-                                                                sh:select """
-            PREFIX sh:    <http://www.w3.org/ns/shacl#>
-            PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE {
-                $this ucmsh:tier ucmsh:Recommended .
-                FILTER NOT EXISTS { $this sh:severity ?s . FILTER (?s IN (sh:Warning, sh:Info)) }
-            }"""
-                                                              ] ;
-                                                    sh:targetClass sh:NodeShape ,
-                                                                   sh:PropertyShape ;
-                                                    sh:targetObjectsOf sh:property .
-
-
-###  https://www.w3.org/ns/ucm#LintTierDeclared
-<https://www.w3.org/ns/ucm#LintTierDeclared> rdf:type owl:NamedIndividual ,
-                                                      sh:NodeShape ;
-                                             sh:sparql [ sh:message "Constraint-bearing shape has no ucmsh:tier." ;
-                                                         sh:select """
+# L2. Every constraint-bearing shape declares a tier. Members of sh:or /
+#     sh:and lists are exempt: their results take the enclosing shape's severity.
+ucmsh:LintTierDeclared a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Constraint-bearing shape has no ucmsh:tier." ;
+        sh:select """
             PREFIX sh:    <http://www.w3.org/ns/shacl#>
             PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
@@ -113,11 +34,37 @@ sh:NodeShape rdf:type owl:Class .
                 FILTER EXISTS { $this sh:path|sh:sparql|sh:nodeKind|sh:closed ?x }
                 FILTER NOT EXISTS { ?list rdf:first $this }
                 FILTER NOT EXISTS { $this ucmsh:tier ?t }
-            }"""
-                                                       ] ;
-                                             sh:targetClass sh:NodeShape ,
-                                                            sh:PropertyShape ;
-                                             sh:targetObjectsOf sh:property .
+            }""" ;
+    ] .
 
+# L3. Recommended shapes must not report Violation. sh:severity defaults to
+#     sh:Violation and is not inherited from an enclosing node shape, so an
+#     omitted severity on a Recommended shape is a lint failure.
+ucmsh:LintRecommendedSeverity a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Recommended-tier shape would report sh:Violation (severity missing or wrong)." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE {
+                $this ucmsh:tier ucmsh:Recommended .
+                FILTER NOT EXISTS { $this sh:severity ?s . FILTER (?s IN (sh:Warning, sh:Info)) }
+            }""" ;
+    ] .
 
-###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
+# L4. Definitional shapes must report Violation.
+ucmsh:LintDefinitionalSeverity a sh:NodeShape ;
+    sh:targetClass sh:NodeShape , sh:PropertyShape ;
+    sh:targetObjectsOf sh:property ;
+    sh:sparql [
+        sh:message "Definitional-tier shape is downgraded below sh:Violation." ;
+        sh:select """
+            PREFIX sh:    <http://www.w3.org/ns/shacl#>
+            PREFIX ucmsh: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE {
+                $this ucmsh:tier ucmsh:Definitional ; sh:severity ?s .
+                FILTER (?s != sh:Violation)
+            }""" ;
+    ] .
