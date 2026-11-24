@@ -46,8 +46,8 @@ def test_repository_manifest_resolves():
     manifest = BuildManifest.load(PROJECT / "ucm-build.yaml")
     assert manifest.missing() == []
     assert manifest.ontology[0].name == "unified-care-model.ttl"
-    assert manifest.output_dir == (PROJECT / "generated").resolve()
-    assert manifest.postgres_dir == (PROJECT.parent.parent / "db").resolve()
+    assert manifest.output_dir == (PROJECT.parent / "examples" / "api").resolve()
+    assert manifest.postgres_dir == (PROJECT.parent / "examples" / "db").resolve()
 
 
 def outputs_for(compilation):

@@ -36,8 +36,9 @@ W3C Community Group Guidelines and Policies (this is "officially" a W3C Communit
 
 **Directories**
 - `ns/` — the files served at the `https://www.w3.org/ns/ucm#` namespace: `ucm.ttl`, `ucm.jsonld`, `index.html`.
+- `codegen/` — the codegen tool that builds the ontology and generates API/DB artifacts from it (source, tests, build output/IR — not example output).
 - `examples/` — non-normative example/generated artifacts, split by target:
-  - `examples/api/ucm-codegen/` — the codegen tool that builds the ontology and generates API/DB artifacts from it (source, tests, build output, generated OpenAPI/FHIR/JSON-LD).
+  - `examples/api/` — generated OpenAPI/FHIR/JSON-LD, produced by `codegen/`.
   - `examples/db/` — generated Postgres models and Alembic migrations.
   - `examples/shapes/` — example instance data validated against the core shapes.
 - `test-suites/` — the test suite validating the core ontology and shapes (`test_core_shapes.py`).
