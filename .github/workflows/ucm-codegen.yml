@@ -2,9 +2,8 @@
 # (any .ttl) or the toolchain changes.
 #
 # Paths assume the spec files at the repository root and the toolchain in
-# examples/api/ucm-codegen/. After moving into the UCM repository, update the
-# source paths in examples/api/ucm-codegen/ucm-build.yaml and the `paths`
-# filters below.
+# ucm-codegen/. After moving into the UCM repository, update the source paths
+# in ucm-codegen/ucm-build.yaml and the `paths` filters below.
 
 name: ucm-codegen
 
@@ -12,14 +11,14 @@ on:
   push:
     paths:
       - "**/*.ttl"
-      - "examples/api/ucm-codegen/**"
-      - "test-suites/test_core_shapes.py"
+      - "ucm-codegen/**"
+      - "test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   pull_request:
     paths:
       - "**/*.ttl"
-      - "examples/api/ucm-codegen/**"
-      - "test-suites/test_core_shapes.py"
+      - "ucm-codegen/**"
+      - "test_core_shapes.py"
       - ".github/workflows/ucm-codegen.yml"
   workflow_dispatch:
 
@@ -35,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: examples/api/ucm-codegen
+        working-directory: ucm-codegen
     steps:
       - uses: actions/checkout@v4
 
@@ -43,7 +42,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: examples/api/ucm-codegen/pyproject.toml
+          cache-dependency-path: ucm-codegen/pyproject.toml
 
       - name: Install
         run: pip install -e ".[dev]"
@@ -53,8 +52,8 @@ jobs:
       # safe: changed inputs simply miss.
       - uses: actions/cache@v4
         with:
-          path: examples/api/ucm-codegen/build/.cache
-          key: ucm-stage-cache-${{ hashFiles('**/*.ttl', 'examples/api/ucm-codegen/src/**', 'examples/api/ucm-codegen/profiles/**') }}
+          path: ucm-codegen/build/.cache
+          key: ucm-stage-cache-${{ hashFiles('**/*.ttl', 'ucm-codegen/src/**', 'ucm-codegen/profiles/**') }}
           restore-keys: ucm-stage-cache-
 
       # Export → lint (SHACL-SHACL, ucm-shapes-lint, consistency) → validate the
@@ -72,23 +71,13 @@ jobs:
       # Exits non-zero on any failure.
       - name: Shapes suite
         working-directory: .
-        run: python test-suites/test_core_shapes.py .
+        run: python test_core_shapes.py .
 
       # Only bites for what is committed: if ucm-build.lock (and generated/,
-      # build/, examples/db/) are in git, a spec change must ship with its
-      # regenerated artifacts. report.html is a view of the build, not an
-      # artifact. Postgres lands outside the job's working-directory
-      # (examples/db, not examples/api/ucm-codegen/generated), so this step
-      # runs from the repo root with paths spelled out in full.
+      # build/) are in git, a spec change must ship with its regenerated
+      # artifacts. report.html is a view of the build, not an artifact.
       - name: Committed lockfile and artifacts are current
-        working-directory: .
-        run: >
-          git diff --exit-code --
-          examples/api/ucm-codegen/ucm-build.lock
-          examples/api/ucm-codegen/generated
-          examples/api/ucm-codegen/build
-          examples/db
-          ':(exclude)examples/api/ucm-codegen/generated/report.html'
+        run: git diff --exit-code -- ucm-build.lock generated build ':(exclude)generated/report.html'
 
       - name: Upload reference artifacts
         if: always()
@@ -96,9 +85,8 @@ jobs:
         with:
           name: ucm-reference
           path: |
-            examples/api/ucm-codegen/generated
-            examples/api/ucm-codegen/build
-            examples/db
+            ucm-codegen/generated
+            ucm-codegen/build
           if-no-files-found: warn
 
       - name: Summary
