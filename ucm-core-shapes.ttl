@@ -1,16 +1,18 @@
-@prefix ucm:    <https://www.w3.org/ns/ucm#> .
-@prefix ucmsh:  <https://www.w3.org/ns/ucm#> .
-@prefix sh:     <http://www.w3.org/ns/shacl#> .
-@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
-@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix : <https://www.w3.org/ns/ucm#shapes#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ucm: <https://www.w3.org/ns/ucm#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ucm-shapes: <https://www.w3.org/ns/ucm#shapes> .
+@base <https://www.w3.org/ns/ucm#shapes#> .
 
-<https://www.w3.org/ns/ucm#shapes> a owl:Ontology ;
-    owl:imports <https://www.w3.org/ns/ucm#> ;
-    rdfs:label "UCM Core Shapes (draft)" ;
-    rdfs:comment """Validation shapes for the Unified Care Model core.
+<https://www.w3.org/ns/ucm#shapes> rdf:type owl:Ontology ;
+                                    owl:imports ucm: ;
+                                    rdfs:comment """Validation shapes for the Unified Care Model core.
 
 CONVENTION
   Open by default. No shape uses sh:closed: adopters' own predicates and
@@ -37,327 +39,184 @@ CONVENTION
   Date and time values accept xsd:dateTime or xsd:dateTimeStamp. sh:datatype
   xsd:dateTime alone rejects xsd:dateTimeStamp, the form OWL-Time recommends.
   Ordering checks use SPARQL with explicit casts; sh:lessThanOrEquals crashes
-  pySHACL on misordered xsd:dateTimeStamp values.""" .
-
-ucmsh:Definitional a skos:Concept ; skos:prefLabel "Definitional"@en ;
-    skos:definition "Failing data is not a well-formed instance of the concept. Reported as sh:Violation."@en .
-ucmsh:Recommended a skos:Concept ; skos:prefLabel "Recommended"@en ;
-    skos:definition "Failing data is conformant but omits encouraged practice. Reported as sh:Warning."@en .
+  pySHACL on misordered xsd:dateTimeStamp values.""" ;
+                                    rdfs:label "UCM Core Shapes (draft)" .
 
 #################################################################
-#  Participation (reified n-ary relation)
+#    Annotation properties
 #################################################################
 
-ucmsh:ParticipationShape a sh:NodeShape ;
-    sh:targetClass ucm:Participation ;
-    sh:property ucmsh:Participation-entity , ucmsh:Participation-entityType ,
-                ucmsh:Participation-process , ucmsh:Participation-processType ,
-                ucmsh:Participation-role , ucmsh:Participation-validFrom ,
-                ucmsh:Participation-validTo , ucmsh:Participation-context .
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
 
-ucmsh:Participation-entity a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:participatingEntity ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:message "A participation has exactly one participating entity, which must be a node, not a literal." .
 
-ucmsh:Participation-entityType a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:participatingEntity ;
-    sh:class ucm:Entity ;
-    sh:message "Participating entity is not typed as ucm:Entity or a subclass. Assert a UCM type, or validate with OWL RL inference if it is typed in a mapped ontology." .
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+skos:prefLabel rdf:type owl:AnnotationProperty .
 
-ucmsh:Participation-process a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:occursWithin ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:message "A participation occurs within exactly one process." .
 
-ucmsh:Participation-processType a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:occursWithin ;
-    sh:class ucm:Process ;
-    sh:message "The process a participation occurs within is not typed as ucm:Process." .
+###  http://www.w3.org/ns/shacl#alternativePath
+sh:alternativePath rdf:type owl:AnnotationProperty .
 
-ucmsh:Participation-role a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:assumesRole ;
-    sh:class ucm:Role ;
-    sh:message "Assumed role is not typed as ucm:Role." .
 
-ucmsh:Participation-validFrom a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:validFrom ;
-    sh:maxCount 1 ;
-    sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
-    sh:message "validFrom is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." .
+###  http://www.w3.org/ns/shacl#class
+sh:class rdf:type owl:AnnotationProperty .
 
-ucmsh:Participation-validTo a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:validTo ;
-    sh:maxCount 1 ;
-    sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
-    sh:message "validTo is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." .
 
-ucmsh:Participation-context a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path [ sh:alternativePath ( ucm:participationContext ucm:scopedBy ) ] ;
-    sh:class ucm:SemanticContext ;
-    sh:message "Participation context is not typed as ucm:SemanticContext." .
+###  http://www.w3.org/ns/shacl#datatype
+sh:datatype rdf:type owl:AnnotationProperty .
 
-ucmsh:ParticipationValidityShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetClass ucm:Participation ;
-    sh:sparql [
-        sh:message "Participation validTo precedes validFrom." ;
-        sh:select """
-            PREFIX ucm: <https://www.w3.org/ns/ucm#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            SELECT $this WHERE {
-                $this ucm:validFrom ?f ; ucm:validTo ?t .
-                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))
-            }""" ;
-    ] .
 
-# A participation belongs to exactly one process and one entity, so an
-# inverse edge naming a different one is a contradiction, not an omission.
-ucmsh:ParticipationProcessConsistencyShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetClass ucm:Participation ;
-    sh:sparql [
-        sh:message "A process lists this participation via hasParticipant, but the participation occurs within a different process." ;
-        sh:select """
-            PREFIX ucm: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE {
-                ?claimant ucm:hasParticipant $this .
-                $this ucm:occursWithin ?actual .
-                FILTER (?claimant != ?actual)
-            }""" ;
-    ] .
+###  http://www.w3.org/ns/shacl#inversePath
+sh:inversePath rdf:type owl:AnnotationProperty .
 
-ucmsh:ParticipationEntityConsistencyShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetClass ucm:Participation ;
-    sh:sparql [
-        sh:message "An entity participates through this participation via participatesThrough, but the participation names a different participating entity." ;
-        sh:select """
-            PREFIX ucm: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE {
-                ?claimant ucm:participatesThrough $this .
-                $this ucm:participatingEntity ?actual .
-                FILTER (?claimant != ?actual)
-            }""" ;
-    ] .
 
-ucmsh:DualTemporalEncodingShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetClass ucm:Participation ;
-    sh:sparql [
-        sh:message "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring." ;
-        sh:select """
-            PREFIX ucm: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE {
-                $this ucm:enactiveDuring ?iv .
-                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }
-            }""" ;
-    ] .
+###  http://www.w3.org/ns/shacl#maxCount
+sh:maxCount rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#message
+sh:message rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#minCount
+sh:minCount rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#nodeKind
+sh:nodeKind rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#or
+sh:or rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#path
+sh:path rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#property
+sh:property rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#select
+sh:select rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#severity
+sh:severity rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#sparql
+sh:sparql rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#targetClass
+sh:targetClass rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#targetObjectsOf
+sh:targetObjectsOf rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/shacl#targetSubjectsOf
+sh:targetSubjectsOf rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#tier
+ucm:tier rdf:type owl:AnnotationProperty .
+
 
 #################################################################
-#  Membership (reified)
+#    Classes
 #################################################################
 
-ucmsh:MembershipShape a sh:NodeShape ;
-    sh:targetClass ucm:Membership ;
-    sh:property ucmsh:Membership-group , ucmsh:Membership-member , ucmsh:Membership-groupType .
+###  http://www.w3.org/2004/02/skos/core#Concept
+skos:Concept rdf:type owl:Class .
 
-ucmsh:Membership-group a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:membershipIn ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:message "A membership is in exactly one social group." .
 
-ucmsh:Membership-member a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path [ sh:inversePath ucm:hasMembership ] ;
-    sh:minCount 1 ; sh:maxCount 1 ;
-    sh:message "A membership belongs to exactly one member entity (via hasMembership)." .
+###  http://www.w3.org/ns/shacl#NodeShape
+sh:NodeShape rdf:type owl:Class .
 
-ucmsh:Membership-groupType a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:membershipIn ;
-    sh:class ucm:SocialGroupEntity ;
-    sh:message "Membership target is not typed as ucm:SocialGroupEntity." .
+
+###  http://www.w3.org/ns/shacl#PropertyShape
+sh:PropertyShape rdf:type owl:Class .
+
 
 #################################################################
-#  Handshake: grounded recursion without an arbitrary depth bound
-#################################################################
-# minCount 1 plus acyclicity means every finite negotiates-chain ends in a
-# process that is not itself negotiating: the base case. No depth constant.
-
-ucmsh:HandshakeShape a sh:NodeShape ;
-    sh:targetClass ucm:Handshake ;
-    sh:property ucmsh:Handshake-negotiates .
-
-ucmsh:Handshake-negotiates a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:negotiates ;
-    sh:minCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:message "A handshake negotiates participation in at least one process." .
-
-ucmsh:HandshakeAcyclicShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetClass ucm:Handshake ;
-    sh:sparql [
-        sh:message "Handshake negotiates itself, directly or through a chain: the negotiation has no base case." ;
-        sh:select """
-            PREFIX ucm: <https://www.w3.org/ns/ucm#>
-            SELECT $this WHERE { $this ucm:negotiates+ $this }""" ;
-    ] .
-
-#################################################################
-#  Lifecycle state: open vocabulary, anchored to the UCM scheme
+#    Individuals
 #################################################################
 
-ucmsh:LifecycleStateShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasLifecycleState ;
-    sh:property ucmsh:LifecycleState-single .
+###  https://www.w3.org/ns/ucm#AcceptsRequestShape
+ucm:AcceptsRequestShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property [ sh:class ucm:Participation ;
+                                      sh:message "acceptsRequest target is not typed as ucm:Participation." ;
+                                      sh:path ucm:acceptsRequest ;
+                                      sh:severity sh:Warning ;
+                                      ucm:tier ucm:Recommended
+                                    ] ;
+                        sh:targetSubjectsOf ucm:acceptsRequest .
 
-ucmsh:LifecycleState-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasLifecycleState ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A process holds at most one lifecycle state, identified by IRI. (Relax to temporalized state assertions once those exist.)" .
 
-# Deliberately not sh:in: adopters may use their own state concepts as long
-# as each is in the UCM scheme or SKOS-mapped to a concept that is.
-# Written as SPARQL rather than sh:or over a nested sequence/alternative path:
-# the nested form validates data correctly but crashes pySHACL's SHACL-for-SHACL
-# meta-validation, and it is the least uniformly supported corner of SHACL Core.
-ucmsh:LifecycleState-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasLifecycleState ;
-    sh:sparql [
-        sh:message "Lifecycle state is neither in ucm:LifecycleState nor SKOS-mapped to a concept that is." ;
-        sh:select """
+###  https://www.w3.org/ns/ucm#ActivityFocusTypeShape
+ucm:ActivityFocusTypeShape rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:property [ sh:class ucm:ActivityFocus ;
+                                         sh:message "Activity focus is not typed as ucm:ActivityFocus." ;
+                                         sh:path ucm:hasActivityFocus ;
+                                         sh:severity sh:Warning ;
+                                         ucm:tier ucm:Recommended
+                                       ] ;
+                           sh:targetSubjectsOf ucm:hasActivityFocus .
+
+
+###  https://www.w3.org/ns/ucm#AffiliationShape
+ucm:AffiliationShape rdf:type owl:NamedIndividual ,
+                              sh:NodeShape ;
+                     sh:property [ sh:class ucm:Organization ;
+                                   sh:message "Affiliation target is not typed as ucm:Organization." ;
+                                   sh:path ucm:affiliatedWith ;
+                                   sh:severity sh:Warning ;
+                                   ucm:tier ucm:Recommended
+                                 ] ;
+                     sh:targetSubjectsOf ucm:affiliatedWith .
+
+
+###  https://www.w3.org/ns/ucm#CareTrajectoryShape
+ucm:CareTrajectoryShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property [ sh:class ucm:CareTrajectoryContext ;
+                                      sh:message "Care trajectory context is not typed as ucm:CareTrajectoryContext." ;
+                                      sh:path ucm:hasCareTrajectoryContext ;
+                                      sh:severity sh:Warning ;
+                                      ucm:tier ucm:Recommended
+                                    ] ;
+                        sh:targetSubjectsOf ucm:hasCareTrajectoryContext .
+
+
+###  https://www.w3.org/ns/ucm#ClosedWhilePendingShape
+ucm:ClosedWhilePendingShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:severity sh:Warning ;
+                            sh:sparql [ sh:message "Closure reason recorded on a request that is still pending a decision." ;
+                                        sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this ?value WHERE {
-                $this ucm:hasLifecycleState ?value .
-                FILTER NOT EXISTS { ?value skos:inScheme ucm:LifecycleState }
-                FILTER NOT EXISTS {
-                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
-                           ucm:LifecycleState
-                }
-            }""" ;
-    ] .
+                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .
+                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .
+            }"""
+                                      ] ;
+                            sh:targetSubjectsOf ucm:hasClosureReason ;
+                            ucm:tier ucm:Recommended .
 
-#################################################################
-#  Referral, handoff, fulfillment, closure and commitment
-#  Same pattern as the lifecycle state: one value, identified by IRI
-#  (Definitional), drawn from the scheme of the same name or SKOS-mapped
-#  into it (Recommended). One single/anchored pair per property.
-#################################################################
 
-ucmsh:ReferralDispositionShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasReferralDisposition ;
-    sh:property ucmsh:ReferralDisposition-single .
-
-ucmsh:ReferralDisposition-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasReferralDisposition ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A coordination request holds at most one referral disposition, identified by IRI." .
-
-ucmsh:ReferralDisposition-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasReferralDisposition ;
-    sh:sparql [
-        sh:message "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is." ;
-        sh:select """
-            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            SELECT $this ?value WHERE {
-                $this ucm:hasReferralDisposition ?value .
-                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }
-                FILTER NOT EXISTS {
-                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
-                           ucm:ReferralDisposition
-                }
-            }""" ;
-    ] .
-
-ucmsh:HandoffStatusShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasHandoffStatus ;
-    sh:property ucmsh:HandoffStatus-single .
-
-ucmsh:HandoffStatus-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasHandoffStatus ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A handshake holds at most one handoff status, identified by IRI." .
-
-ucmsh:HandoffStatus-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasHandoffStatus ;
-    sh:sparql [
-        sh:message "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is." ;
-        sh:select """
-            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            SELECT $this ?value WHERE {
-                $this ucm:hasHandoffStatus ?value .
-                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }
-                FILTER NOT EXISTS {
-                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
-                           ucm:HandoffStatus
-                }
-            }""" ;
-    ] .
-
-ucmsh:HandshakeFulfillmentShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
-    sh:property ucmsh:HandshakeFulfillment-single .
-
-ucmsh:HandshakeFulfillment-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasHandshakeFulfillment ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A handshake holds at most one fulfillment state, identified by IRI." .
-
-ucmsh:HandshakeFulfillment-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
-    sh:sparql [
-        sh:message "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is." ;
-        sh:select """
-            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            SELECT $this ?value WHERE {
-                $this ucm:hasHandshakeFulfillment ?value .
-                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }
-                FILTER NOT EXISTS {
-                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
-                           ucm:HandshakeFulfillment
-                }
-            }""" ;
-    ] .
-
-ucmsh:ClosureReasonShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasClosureReason ;
-    sh:property ucmsh:ClosureReason-single .
-
-ucmsh:ClosureReason-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasClosureReason ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A coordination request holds at most one closure reason, identified by IRI." .
-
-ucmsh:ClosureReason-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasClosureReason ;
-    sh:sparql [
-        sh:message "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is." ;
-        sh:select """
+###  https://www.w3.org/ns/ucm#ClosureReason-anchored
+ucm:ClosureReason-anchored rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Warning ;
+                           sh:sparql [ sh:message "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is." ;
+                                       sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this ?value WHERE {
@@ -367,25 +226,36 @@ ucmsh:ClosureReason-anchored a sh:NodeShape ;
                     ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
                            ucm:ClosureReason
                 }
-            }""" ;
-    ] .
+            }"""
+                                     ] ;
+                           sh:targetSubjectsOf ucm:hasClosureReason ;
+                           ucm:tier ucm:Recommended .
 
-ucmsh:CommitmentStatusShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasCommitmentStatus ;
-    sh:property ucmsh:CommitmentStatus-single .
 
-ucmsh:CommitmentStatus-single a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:hasCommitmentStatus ;
-    sh:maxCount 1 ; sh:nodeKind sh:IRI ;
-    sh:message "A care commitment holds at most one commitment status, identified by IRI." .
+###  https://www.w3.org/ns/ucm#ClosureReason-single
+ucm:ClosureReason-single rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:maxCount 1 ;
+                         sh:message "A coordination request holds at most one closure reason, identified by IRI." ;
+                         sh:nodeKind sh:IRI ;
+                         sh:path ucm:hasClosureReason ;
+                         sh:severity sh:Violation ;
+                         ucm:tier ucm:Definitional .
 
-ucmsh:CommitmentStatus-anchored a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasCommitmentStatus ;
-    sh:sparql [
-        sh:message "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is." ;
-        sh:select """
+
+###  https://www.w3.org/ns/ucm#ClosureReasonShape
+ucm:ClosureReasonShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property ucm:ClosureReason-single ;
+                       sh:targetSubjectsOf ucm:hasClosureReason .
+
+
+###  https://www.w3.org/ns/ucm#CommitmentStatus-anchored
+ucm:CommitmentStatus-anchored rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is." ;
+                                          sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this ?value WHERE {
@@ -395,36 +265,87 @@ ucmsh:CommitmentStatus-anchored a sh:NodeShape ;
                     ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
                            ucm:CommitmentStatus
                 }
-            }""" ;
-    ] .
+            }"""
+                                        ] ;
+                              sh:targetSubjectsOf ucm:hasCommitmentStatus ;
+                              ucm:tier ucm:Recommended .
 
-#################################################################
-#  Across schemes: states that contradict each other
-#  Exact matches are followed in both directions, so ucm:Pending,
-#  ucm:ReferralPending and an adopter concept exactly matched to either
-#  are the same state here.
-#################################################################
 
-ucmsh:ClosedWhilePendingShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasClosureReason ;
-    sh:sparql [
-        sh:message "Closure reason recorded on a request that is still pending a decision." ;
-        sh:select """
-            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            SELECT $this ?value WHERE {
-                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .
-                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .
-            }""" ;
-    ] .
+###  https://www.w3.org/ns/ucm#CommitmentStatus-single
+ucm:CommitmentStatus-single rdf:type owl:NamedIndividual ,
+                                     sh:PropertyShape ;
+                            sh:maxCount 1 ;
+                            sh:message "A care commitment holds at most one commitment status, identified by IRI." ;
+                            sh:nodeKind sh:IRI ;
+                            sh:path ucm:hasCommitmentStatus ;
+                            sh:severity sh:Violation ;
+                            ucm:tier ucm:Definitional .
 
-ucmsh:FulfillmentAfterDeclineShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
-    sh:sparql [
-        sh:message "Handshake reports services delivered for a request that was declined, withdrawn or expired." ;
-        sh:select """
+
+###  https://www.w3.org/ns/ucm#CommitmentStatusShape
+ucm:CommitmentStatusShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property ucm:CommitmentStatus-single ;
+                          sh:targetSubjectsOf ucm:hasCommitmentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ContextArtifactShape
+ucm:ContextArtifactShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property [ sh:class ucm:DefinitionArtifact ;
+                                       sh:message "definedByArtifact target is not typed as ucm:DefinitionArtifact." ;
+                                       sh:path ucm:definedByArtifact ;
+                                       sh:severity sh:Warning ;
+                                       ucm:tier ucm:Recommended
+                                     ] ;
+                         sh:targetSubjectsOf ucm:definedByArtifact .
+
+
+###  https://www.w3.org/ns/ucm#CoordinativeActivityShape
+ucm:CoordinativeActivityShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Coordination process declares no activity focus, directly or through a process it negotiates." ;
+                                          sh:select """
+            PREFIX ucm: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE {
+                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }
+            }"""
+                                        ] ;
+                              sh:targetClass ucm:CoordinationRequest ,
+                                             ucm:CoordinativeActivity ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Definitional
+ucm:Definitional rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:definition "Failing data is not a well-formed instance of the concept. Reported as sh:Violation."@en ;
+                 skos:prefLabel "Definitional"@en .
+
+
+###  https://www.w3.org/ns/ucm#DualTemporalEncodingShape
+ucm:DualTemporalEncodingShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring." ;
+                                          sh:select """
+            PREFIX ucm: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE {
+                $this ucm:enactiveDuring ?iv .
+                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }
+            }"""
+                                        ] ;
+                              sh:targetClass ucm:Participation ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#FulfillmentAfterDeclineShape
+ucm:FulfillmentAfterDeclineShape rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:severity sh:Warning ;
+                                 sh:sparql [ sh:message "Handshake reports services delivered for a request that was declined, withdrawn or expired." ;
+                                             sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this ?value WHERE {
@@ -434,75 +355,361 @@ ucmsh:FulfillmentAfterDeclineShape a sh:NodeShape ;
                 ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .
                 ?state (skos:exactMatch|^skos:exactMatch)* ?ended .
                 FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))
-            }""" ;
-    ] .
+            }"""
+                                           ] ;
+                                 sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
+                                 ucm:tier ucm:Recommended .
 
-#################################################################
-#  Shared object
-#################################################################
 
-ucmsh:CoordinativeActivityShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetClass ucm:CoordinationRequest , ucm:CoordinativeActivity ;
-    sh:sparql [
-        sh:message "Coordination process declares no activity focus, directly or through a process it negotiates." ;
-        sh:select """
+###  https://www.w3.org/ns/ucm#HandoffStatus-anchored
+ucm:HandoffStatus-anchored rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Warning ;
+                           sh:sparql [ sh:message "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is." ;
+                                       sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasHandoffStatus ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:HandoffStatus
+                }
+            }"""
+                                     ] ;
+                           sh:targetSubjectsOf ucm:hasHandoffStatus ;
+                           ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#HandoffStatus-single
+ucm:HandoffStatus-single rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:maxCount 1 ;
+                         sh:message "A handshake holds at most one handoff status, identified by IRI." ;
+                         sh:nodeKind sh:IRI ;
+                         sh:path ucm:hasHandoffStatus ;
+                         sh:severity sh:Violation ;
+                         ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#HandoffStatusShape
+ucm:HandoffStatusShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property ucm:HandoffStatus-single ;
+                       sh:targetSubjectsOf ucm:hasHandoffStatus .
+
+
+###  https://www.w3.org/ns/ucm#Handshake-negotiates
+ucm:Handshake-negotiates rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:message "A handshake negotiates participation in at least one process." ;
+                         sh:minCount 1 ;
+                         sh:nodeKind sh:BlankNodeOrIRI ;
+                         sh:path ucm:negotiates ;
+                         sh:severity sh:Violation ;
+                         ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#HandshakeAcyclicShape
+ucm:HandshakeAcyclicShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Violation ;
+                          sh:sparql [ sh:message "Handshake negotiates itself, directly or through a chain: the negotiation has no base case." ;
+                                      sh:select """
+            PREFIX ucm: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE { $this ucm:negotiates+ $this }"""
+                                    ] ;
+                          sh:targetClass ucm:Handshake ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#HandshakeFulfillment-anchored
+ucm:HandshakeFulfillment-anchored rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is." ;
+                                              sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasHandshakeFulfillment ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:HandshakeFulfillment
+                }
+            }"""
+                                            ] ;
+                                  sh:targetSubjectsOf ucm:hasHandshakeFulfillment ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#HandshakeFulfillment-single
+ucm:HandshakeFulfillment-single rdf:type owl:NamedIndividual ,
+                                         sh:PropertyShape ;
+                                sh:maxCount 1 ;
+                                sh:message "A handshake holds at most one fulfillment state, identified by IRI." ;
+                                sh:nodeKind sh:IRI ;
+                                sh:path ucm:hasHandshakeFulfillment ;
+                                sh:severity sh:Violation ;
+                                ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#HandshakeFulfillmentShape
+ucm:HandshakeFulfillmentShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:property ucm:HandshakeFulfillment-single ;
+                              sh:targetSubjectsOf ucm:hasHandshakeFulfillment .
+
+
+###  https://www.w3.org/ns/ucm#HandshakeShape
+ucm:HandshakeShape rdf:type owl:NamedIndividual ,
+                            sh:NodeShape ;
+                   sh:property ucm:Handshake-negotiates ;
+                   sh:targetClass ucm:Handshake .
+
+
+###  https://www.w3.org/ns/ucm#LifecycleState-anchored
+ucm:LifecycleState-anchored rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:severity sh:Warning ;
+                            sh:sparql [ sh:message "Lifecycle state is neither in ucm:LifecycleState nor SKOS-mapped to a concept that is." ;
+                                        sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasLifecycleState ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:LifecycleState }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:LifecycleState
+                }
+            }"""
+                                      ] ;
+                            sh:targetSubjectsOf ucm:hasLifecycleState ;
+                            ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#LifecycleState-single
+ucm:LifecycleState-single rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:maxCount 1 ;
+                          sh:message "A process holds at most one lifecycle state, identified by IRI. (Relax to temporalized state assertions once those exist.)" ;
+                          sh:nodeKind sh:IRI ;
+                          sh:path ucm:hasLifecycleState ;
+                          sh:severity sh:Violation ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#LifecycleStateShape
+ucm:LifecycleStateShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property ucm:LifecycleState-single ;
+                        sh:targetSubjectsOf ucm:hasLifecycleState .
+
+
+###  https://www.w3.org/ns/ucm#Membership-group
+ucm:Membership-group rdf:type owl:NamedIndividual ,
+                              sh:PropertyShape ;
+                     sh:maxCount 1 ;
+                     sh:message "A membership is in exactly one social group." ;
+                     sh:minCount 1 ;
+                     sh:nodeKind sh:BlankNodeOrIRI ;
+                     sh:path ucm:membershipIn ;
+                     sh:severity sh:Violation ;
+                     ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Membership-groupType
+ucm:Membership-groupType rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:class ucm:SocialGroupEntity ;
+                         sh:message "Membership target is not typed as ucm:SocialGroupEntity." ;
+                         sh:path ucm:membershipIn ;
+                         sh:severity sh:Warning ;
+                         ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Membership-member
+ucm:Membership-member rdf:type owl:NamedIndividual ,
+                               sh:PropertyShape ;
+                      sh:maxCount 1 ;
+                      sh:message "A membership belongs to exactly one member entity (via hasMembership)." ;
+                      sh:minCount 1 ;
+                      sh:path [ sh:inversePath ucm:hasMembership
+                              ] ;
+                      sh:severity sh:Violation ;
+                      ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#MembershipShape
+ucm:MembershipShape rdf:type owl:NamedIndividual ,
+                             sh:NodeShape ;
+                    sh:property ucm:Membership-group ,
+                                ucm:Membership-groupType ,
+                                ucm:Membership-member ;
+                    sh:targetClass ucm:Membership .
+
+
+###  https://www.w3.org/ns/ucm#Participation-context
+ucm:Participation-context rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:class ucm:SemanticContext ;
+                          sh:message "Participation context is not typed as ucm:SemanticContext." ;
+                          sh:path [ sh:alternativePath ( ucm:participationContext ucm:scopedBy )
+                          ] ;
+sh:severity sh:Warning ;
+ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Participation-entity
+ucm:Participation-entity rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:maxCount 1 ;
+                         sh:message "A participation has exactly one participating entity, which must be a node, not a literal." ;
+                         sh:minCount 1 ;
+                         sh:nodeKind sh:BlankNodeOrIRI ;
+                         sh:path ucm:participatingEntity ;
+                         sh:severity sh:Violation ;
+                         ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Participation-entityType
+ucm:Participation-entityType rdf:type owl:NamedIndividual ,
+                                      sh:PropertyShape ;
+                             sh:class ucm:Entity ;
+                             sh:message "Participating entity is not typed as ucm:Entity or a subclass. Assert a UCM type, or validate with OWL RL inference if it is typed in a mapped ontology." ;
+                             sh:path ucm:participatingEntity ;
+                             sh:severity sh:Warning ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Participation-process
+ucm:Participation-process rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:maxCount 1 ;
+                          sh:message "A participation occurs within exactly one process." ;
+                          sh:minCount 1 ;
+                          sh:nodeKind sh:BlankNodeOrIRI ;
+                          sh:path ucm:occursWithin ;
+                          sh:severity sh:Violation ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Participation-processType
+ucm:Participation-processType rdf:type owl:NamedIndividual ,
+                                       sh:PropertyShape ;
+                              sh:class ucm:Process ;
+                              sh:message "The process a participation occurs within is not typed as ucm:Process." ;
+                              sh:path ucm:occursWithin ;
+                              sh:severity sh:Warning ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Participation-role
+ucm:Participation-role rdf:type owl:NamedIndividual ,
+                                sh:PropertyShape ;
+                       sh:class ucm:Role ;
+                       sh:message "Assumed role is not typed as ucm:Role." ;
+                       sh:path ucm:assumesRole ;
+                       sh:severity sh:Warning ;
+                       ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Participation-validFrom
+ucm:Participation-validFrom rdf:type owl:NamedIndividual ,
+                                     sh:PropertyShape ;
+                            sh:maxCount 1 ;
+                            sh:message "validFrom is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." ;
+                            sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
+sh:path ucm:validFrom ;
+sh:severity sh:Violation ;
+ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Participation-validTo
+ucm:Participation-validTo rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:maxCount 1 ;
+                          sh:message "validTo is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." ;
+                          sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
+sh:path ucm:validTo ;
+sh:severity sh:Violation ;
+ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ParticipationEntityConsistencyShape
+ucm:ParticipationEntityConsistencyShape rdf:type owl:NamedIndividual ,
+                                                 sh:NodeShape ;
+                                        sh:severity sh:Violation ;
+                                        sh:sparql [ sh:message "An entity participates through this participation via participatesThrough, but the participation names a different participating entity." ;
+                                                    sh:select """
             PREFIX ucm: <https://www.w3.org/ns/ucm#>
             SELECT $this WHERE {
-                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }
-            }""" ;
-    ] .
+                ?claimant ucm:participatesThrough $this .
+                $this ucm:participatingEntity ?actual .
+                FILTER (?claimant != ?actual)
+            }"""
+                                                  ] ;
+                                        sh:targetClass ucm:Participation ;
+                                        ucm:tier ucm:Definitional .
 
-ucmsh:ActivityFocusTypeShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasActivityFocus ;
-    sh:property [
-        ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-        sh:path ucm:hasActivityFocus ; sh:class ucm:ActivityFocus ;
-        sh:message "Activity focus is not typed as ucm:ActivityFocus." ;
-    ] .
 
-#################################################################
-#  Statements
-#################################################################
+###  https://www.w3.org/ns/ucm#ParticipationProcessConsistencyShape
+ucm:ParticipationProcessConsistencyShape rdf:type owl:NamedIndividual ,
+                                                  sh:NodeShape ;
+                                         sh:severity sh:Violation ;
+                                         sh:sparql [ sh:message "A process lists this participation via hasParticipant, but the participation occurs within a different process." ;
+                                                     sh:select """
+            PREFIX ucm: <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE {
+                ?claimant ucm:hasParticipant $this .
+                $this ucm:occursWithin ?actual .
+                FILTER (?claimant != ?actual)
+            }"""
+                                                   ] ;
+                                         sh:targetClass ucm:Participation ;
+                                         ucm:tier ucm:Definitional .
 
-ucmsh:StatementShape a sh:NodeShape ;
-    sh:targetClass ucm:Statement ;
-    sh:property ucmsh:Statement-date , ucmsh:Statement-context ,
-                ucmsh:Statement-subjectType , ucmsh:Statement-processType .
 
-ucmsh:Statement-date a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:path ucm:statementDate ;
-    sh:maxCount 1 ;
-    sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
-    sh:message "A statement is made once: statementDate is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." .
+###  https://www.w3.org/ns/ucm#ParticipationShape
+ucm:ParticipationShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property ucm:Participation-context ,
+                                   ucm:Participation-entity ,
+                                   ucm:Participation-entityType ,
+                                   ucm:Participation-process ,
+                                   ucm:Participation-processType ,
+                                   ucm:Participation-role ,
+                                   ucm:Participation-validFrom ,
+                                   ucm:Participation-validTo ;
+                       sh:targetClass ucm:Participation .
 
-ucmsh:Statement-context a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:madeWithinContext ;
-    sh:minCount 1 ;
-    sh:message "Statement declares no semantic context; its interpretation depends on one." .
 
-ucmsh:Statement-subjectType a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:statementSubject ; sh:class ucm:Participation ;
-    sh:message "Statement subject is not typed as ucm:Participation." .
+###  https://www.w3.org/ns/ucm#ParticipationValidityShape
+ucm:ParticipationValidityShape rdf:type owl:NamedIndividual ,
+                                        sh:NodeShape ;
+                               sh:severity sh:Violation ;
+                               sh:sparql [ sh:message "Participation validTo precedes validFrom." ;
+                                           sh:select """
+            PREFIX ucm: <https://www.w3.org/ns/ucm#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this WHERE {
+                $this ucm:validFrom ?f ; ucm:validTo ?t .
+                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))
+            }"""
+                                         ] ;
+                               sh:targetClass ucm:Participation ;
+                               ucm:tier ucm:Definitional .
 
-ucmsh:Statement-processType a sh:PropertyShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:path ucm:generatedByProcess ; sh:class ucm:Process ;
-    sh:message "Generating process is not typed as ucm:Process." .
 
-#################################################################
-#  Convenience projections must be backed by participation
-#################################################################
-
-ucmsh:ProjectionBackingShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-    sh:targetSubjectsOf ucm:hasClient , ucm:hasPatient , ucm:hasResident ;
-    sh:sparql [
-        sh:message "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role." ;
-        sh:select """
+###  https://www.w3.org/ns/ucm#ProjectionBackingShape
+ucm:ProjectionBackingShape rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Warning ;
+                           sh:sparql [ sh:message "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role." ;
+                                       sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             SELECT $this WHERE {
@@ -517,68 +724,143 @@ ucmsh:ProjectionBackingShape a sh:NodeShape ;
                        ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .
                     { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }
                 }
-            }""" ;
-    ] .
+            }"""
+                                     ] ;
+                           sh:targetSubjectsOf ucm:hasClient ,
+                                               ucm:hasPatient ,
+                                               ucm:hasResident ;
+                           ucm:tier ucm:Recommended .
 
-#################################################################
-#  Temporal context
-#################################################################
 
-ucmsh:TemporalEntityShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetObjectsOf ucm:hasTemporalContext , ucm:validDuring ,
-                       ucm:enactiveDuring , ucm:occursDuring ;
-    sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:message "Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant." .
+###  https://www.w3.org/ns/ucm#Recommended
+ucm:Recommended rdf:type owl:NamedIndividual ,
+                         skos:Concept ;
+                skos:definition "Failing data is conformant but omits encouraged practice. Reported as sh:Warning."@en ;
+                skos:prefLabel "Recommended"@en .
 
-ucmsh:TemporalOrderShape a sh:NodeShape ;
-    ucmsh:tier ucmsh:Definitional ; sh:severity sh:Violation ;
-    sh:targetObjectsOf ucm:hasTemporalContext , ucm:validDuring ,
-                       ucm:enactiveDuring , ucm:occursDuring ;
-    sh:sparql [
-        sh:message "Interval ends before it begins." ;
-        sh:select """
+
+###  https://www.w3.org/ns/ucm#ReferralDisposition-anchored
+ucm:ReferralDisposition-anchored rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:severity sh:Warning ;
+                                 sh:sparql [ sh:message "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is." ;
+                                             sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasReferralDisposition ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme
+                           ucm:ReferralDisposition
+                }
+            }"""
+                                           ] ;
+                                 sh:targetSubjectsOf ucm:hasReferralDisposition ;
+                                 ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ReferralDisposition-single
+ucm:ReferralDisposition-single rdf:type owl:NamedIndividual ,
+                                        sh:PropertyShape ;
+                               sh:maxCount 1 ;
+                               sh:message "A coordination request holds at most one referral disposition, identified by IRI." ;
+                               sh:nodeKind sh:IRI ;
+                               sh:path ucm:hasReferralDisposition ;
+                               sh:severity sh:Violation ;
+                               ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ReferralDispositionShape
+ucm:ReferralDispositionShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:property ucm:ReferralDisposition-single ;
+                             sh:targetSubjectsOf ucm:hasReferralDisposition .
+
+
+###  https://www.w3.org/ns/ucm#Statement-context
+ucm:Statement-context rdf:type owl:NamedIndividual ,
+                               sh:PropertyShape ;
+                      sh:message "Statement declares no semantic context; its interpretation depends on one." ;
+                      sh:minCount 1 ;
+                      sh:path ucm:madeWithinContext ;
+                      sh:severity sh:Warning ;
+                      ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Statement-date
+ucm:Statement-date rdf:type owl:NamedIndividual ,
+                            sh:PropertyShape ;
+                   sh:maxCount 1 ;
+                   sh:message "A statement is made once: statementDate is single-valued and must be xsd:dateTime or xsd:dateTimeStamp." ;
+                   sh:or ( [ sh:datatype xsd:dateTime ] [ sh:datatype xsd:dateTimeStamp ] ) ;
+sh:path ucm:statementDate ;
+sh:severity sh:Violation ;
+ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Statement-processType
+ucm:Statement-processType rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:class ucm:Process ;
+                          sh:message "Generating process is not typed as ucm:Process." ;
+                          sh:path ucm:generatedByProcess ;
+                          sh:severity sh:Warning ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#Statement-subjectType
+ucm:Statement-subjectType rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:class ucm:Participation ;
+                          sh:message "Statement subject is not typed as ucm:Participation." ;
+                          sh:path ucm:statementSubject ;
+                          sh:severity sh:Warning ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#StatementShape
+ucm:StatementShape rdf:type owl:NamedIndividual ,
+                            sh:NodeShape ;
+                   sh:property ucm:Statement-context ,
+                               ucm:Statement-date ,
+                               ucm:Statement-processType ,
+                               ucm:Statement-subjectType ;
+                   sh:targetClass ucm:Statement .
+
+
+###  https://www.w3.org/ns/ucm#TemporalEntityShape
+ucm:TemporalEntityShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:message "Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant." ;
+                        sh:nodeKind sh:BlankNodeOrIRI ;
+                        sh:severity sh:Violation ;
+                        sh:targetObjectsOf ucm:enactiveDuring ,
+                                           ucm:hasTemporalContext ,
+                                           ucm:occursDuring ,
+                                           ucm:validDuring ;
+                        ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#TemporalOrderShape
+ucm:TemporalOrderShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:severity sh:Violation ;
+                       sh:sparql [ sh:message "Interval ends before it begins." ;
+                                   sh:select """
             PREFIX time: <http://www.w3.org/2006/time#>
             PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
             SELECT $this WHERE {
                 $this time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?b ;
                       time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?e .
                 FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))
-            }""" ;
-    ] .
+            }"""
+                                 ] ;
+                       sh:targetObjectsOf ucm:enactiveDuring ,
+                                          ucm:hasTemporalContext ,
+                                          ucm:occursDuring ,
+                                          ucm:validDuring ;
+                       ucm:tier ucm:Definitional .
 
-ucmsh:CareTrajectoryShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:hasCareTrajectoryContext ;
-    sh:property [
-        ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-        sh:path ucm:hasCareTrajectoryContext ; sh:class ucm:CareTrajectoryContext ;
-        sh:message "Care trajectory context is not typed as ucm:CareTrajectoryContext." ;
-    ] .
 
-#################################################################
-#  Remaining range checks (all Recommended)
-#################################################################
-
-ucmsh:AffiliationShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:affiliatedWith ;
-    sh:property [
-        ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-        sh:path ucm:affiliatedWith ; sh:class ucm:Organization ;
-        sh:message "Affiliation target is not typed as ucm:Organization." ;
-    ] .
-
-ucmsh:AcceptsRequestShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:acceptsRequest ;
-    sh:property [
-        ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-        sh:path ucm:acceptsRequest ; sh:class ucm:Participation ;
-        sh:message "acceptsRequest target is not typed as ucm:Participation." ;
-    ] .
-
-ucmsh:ContextArtifactShape a sh:NodeShape ;
-    sh:targetSubjectsOf ucm:definedByArtifact ;
-    sh:property [
-        ucmsh:tier ucmsh:Recommended ; sh:severity sh:Warning ;
-        sh:path ucm:definedByArtifact ; sh:class ucm:DefinitionArtifact ;
-        sh:message "definedByArtifact target is not typed as ucm:DefinitionArtifact." ;
-    ] .
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

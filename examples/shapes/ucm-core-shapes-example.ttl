@@ -1,0 +1,470 @@
+@prefix : <https://www.w3.org/ns/ucm#shapes-example#> .
+@prefix ex: <http://example.org/ucm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ucm: <https://www.w3.org/ns/ucm#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix ucm-shapes-example: <https://www.w3.org/ns/ucm#shapes-example> .
+@base <https://www.w3.org/ns/ucm#shapes-example#> .
+
+<https://www.w3.org/ns/ucm#shapes-example> rdf:type owl:Ontology ;
+                                            owl:versionIRI <https://www.w3.org/ns/ucm#shapes-example/0.0.1> .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.w3.org/2006/time#hasBeginning
+time:hasBeginning rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2006/time#hasEnd
+time:hasEnd rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2006/time#inXSDDateTimeStamp
+time:inXSDDateTimeStamp rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#acceptsRequest
+ucm:acceptsRequest rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#affiliatedWith
+ucm:affiliatedWith rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#assumesRole
+ucm:assumesRole rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#definedByArtifact
+ucm:definedByArtifact rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#definedByCriteria
+ucm:definedByCriteria rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#enactiveDuring
+ucm:enactiveDuring rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#generatedByProcess
+ucm:generatedByProcess rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasActivityFocus
+ucm:hasActivityFocus rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasCareTrajectoryContext
+ucm:hasCareTrajectoryContext rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasClosureReason
+ucm:hasClosureReason rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasCommitmentStatus
+ucm:hasCommitmentStatus rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasHandoffStatus
+ucm:hasHandoffStatus rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasHandshakeFulfillment
+ucm:hasHandshakeFulfillment rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasLifecycleState
+ucm:hasLifecycleState rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasMembership
+ucm:hasMembership rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasParticipant
+ucm:hasParticipant rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasPatient
+ucm:hasPatient rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasReferralDisposition
+ucm:hasReferralDisposition rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#hasResident
+ucm:hasResident rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#madeWithinContext
+ucm:madeWithinContext rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#membershipIn
+ucm:membershipIn rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#negotiates
+ucm:negotiates rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#occursDuring
+ucm:occursDuring rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#occursWithin
+ucm:occursWithin rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#participatingEntity
+ucm:participatingEntity rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#participationContext
+ucm:participationContext rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#scopedBy
+ucm:scopedBy rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#statementDate
+ucm:statementDate rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#statementSubject
+ucm:statementSubject rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#validFrom
+ucm:validFrom rdf:type owl:AnnotationProperty .
+
+
+###  https://www.w3.org/ns/ucm#validTo
+ucm:validTo rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.w3.org/2006/time#Instant
+time:Instant rdf:type owl:Class .
+
+
+###  http://www.w3.org/2006/time#ProperInterval
+time:ProperInterval rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ActivityFocus
+ucm:ActivityFocus rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#CareCommitment
+ucm:CareCommitment rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#CareTrajectoryContext
+ucm:CareTrajectoryContext rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ClinicalCareContext
+ucm:ClinicalCareContext rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ClinicalEncounter
+ucm:ClinicalEncounter rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#CoordinationRequest
+ucm:CoordinationRequest rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#CoordinatorRole
+ucm:CoordinatorRole rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#EligibilityRuleset
+ucm:EligibilityRuleset rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Handshake
+ucm:Handshake rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Household
+ucm:Household rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#HousingAssessment
+ucm:HousingAssessment rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#HousingContext
+ucm:HousingContext rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#HousingEligibilityContext
+ucm:HousingEligibilityContext rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#HousingEligibilityStatement
+ucm:HousingEligibilityStatement rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#MatchClaim
+ucm:MatchClaim rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Membership
+ucm:Membership rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#MembershipCriteria
+ucm:MembershipCriteria rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Organization
+ucm:Organization rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Participation
+ucm:Participation rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#PatientRole
+ucm:PatientRole rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#Person
+ucm:Person rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ProgramDefinition
+ucm:ProgramDefinition rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ProviderRole
+ucm:ProviderRole rdf:type owl:Class .
+
+
+###  https://www.w3.org/ns/ucm#ResidentRole
+ucm:ResidentRole rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/ucm/assess-1
+ex:assess-1 rdf:type owl:NamedIndividual ,
+                     ucm:HousingAssessment ;
+            ucm:hasParticipant ex:p-res ;
+            ucm:hasResident ex:person-a ;
+            ucm:occursDuring ex:t-assess .
+
+
+###  http://example.org/ucm/cm-1
+ex:cm-1 rdf:type owl:NamedIndividual ,
+                 ucm:Person ;
+        ucm:affiliatedWith ex:org-ecm .
+
+
+###  http://example.org/ucm/commit-1
+ex:commit-1 rdf:type owl:NamedIndividual ,
+                     ucm:CareCommitment ;
+            ucm:hasCommitmentStatus ucm:CommitmentInForce .
+
+
+###  http://example.org/ucm/ctx-clin
+ex:ctx-clin rdf:type owl:NamedIndividual ,
+                     ucm:ClinicalCareContext .
+
+
+###  http://example.org/ucm/ctx-elig
+ex:ctx-elig rdf:type owl:NamedIndividual ,
+                     ucm:HousingEligibilityContext ;
+            ucm:definedByArtifact ex:rules-1 .
+
+
+###  http://example.org/ucm/ctx-housing
+ex:ctx-housing rdf:type owl:NamedIndividual ,
+                        ucm:HousingContext ;
+               ucm:definedByArtifact ex:prog-1 .
+
+
+###  http://example.org/ucm/enc-1
+ex:enc-1 rdf:type owl:NamedIndividual ,
+                  ucm:ClinicalEncounter ;
+         ucm:hasParticipant ex:p-pat ;
+         ucm:hasPatient ex:person-a .
+
+
+###  http://example.org/ucm/focus-1
+ex:focus-1 rdf:type owl:NamedIndividual ,
+                    ucm:ActivityFocus ;
+           rdfs:label "Tenancy preservation" .
+
+
+###  http://example.org/ucm/hh-001
+ex:hh-001 rdf:type owl:NamedIndividual ,
+                   ucm:Household ;
+          ucm:definedByCriteria ex:hh-criteria .
+
+
+###  http://example.org/ucm/hh-criteria
+ex:hh-criteria rdf:type owl:NamedIndividual ,
+                        ucm:MembershipCriteria .
+
+
+###  http://example.org/ucm/hs-1
+ex:hs-1 rdf:type owl:NamedIndividual ,
+                 ucm:Handshake ;
+        ucm:hasHandoffStatus ucm:HandoffAssumed ;
+        ucm:hasHandshakeFulfillment ucm:FulfillmentConfirmed ;
+        ucm:negotiates ex:req-1 .
+
+
+###  http://example.org/ucm/mc-1
+ex:mc-1 rdf:type owl:NamedIndividual ,
+                 ucm:MatchClaim ;
+        ucm:madeWithinContext ex:ctx-housing ;
+        ucm:statementDate "2026-09-03T12:00:00-07:00"^^xsd:dateTime .
+
+
+###  http://example.org/ucm/mem-a
+ex:mem-a rdf:type owl:NamedIndividual ,
+                  ucm:Membership ;
+         ucm:membershipIn ex:hh-001 .
+
+
+###  http://example.org/ucm/org-ecm
+ex:org-ecm rdf:type owl:NamedIndividual ,
+                    ucm:Organization .
+
+
+###  http://example.org/ucm/org-fund
+ex:org-fund rdf:type owl:NamedIndividual ,
+                     ucm:Organization ;
+            ucm:acceptsRequest ex:p-fund .
+
+
+###  http://example.org/ucm/p-cm
+ex:p-cm rdf:type owl:NamedIndividual ,
+                 ucm:Participation ;
+        ucm:assumesRole ex:role-coord ;
+        ucm:occursWithin ex:req-1 ;
+        ucm:participatingEntity ex:cm-1 ;
+        ucm:validFrom "2026-08-28T09:00:00-07:00"^^xsd:dateTime ;
+        ucm:validTo "2026-10-31T17:00:00-07:00"^^xsd:dateTime .
+
+
+###  http://example.org/ucm/p-fund
+ex:p-fund rdf:type owl:NamedIndividual ,
+                   ucm:Participation ;
+          ucm:assumesRole ex:role-prov ;
+          ucm:occursWithin ex:req-1 ;
+          ucm:participatingEntity ex:org-fund .
+
+
+###  http://example.org/ucm/p-pat
+ex:p-pat rdf:type owl:NamedIndividual ,
+                  ucm:Participation ;
+         ucm:assumesRole ex:role-pat ;
+         ucm:occursWithin ex:enc-1 ;
+         ucm:participatingEntity ex:person-a ;
+         ucm:scopedBy ex:ctx-clin .
+
+
+###  http://example.org/ucm/p-res
+ex:p-res rdf:type owl:NamedIndividual ,
+                  ucm:Participation ;
+         ucm:assumesRole ex:role-res ;
+         ucm:enactiveDuring ex:t-assess ;
+         ucm:occursWithin ex:assess-1 ;
+         ucm:participatingEntity ex:person-a ;
+         ucm:participationContext ex:ctx-housing .
+
+
+###  http://example.org/ucm/person-a
+ex:person-a rdf:type owl:NamedIndividual ,
+                     ucm:Person ;
+            ucm:hasMembership ex:mem-a .
+
+
+###  http://example.org/ucm/prog-1
+ex:prog-1 rdf:type owl:NamedIndividual ,
+                   ucm:ProgramDefinition .
+
+
+###  http://example.org/ucm/req-1
+ex:req-1 rdf:type owl:NamedIndividual ,
+                  ucm:CoordinationRequest ;
+         ucm:hasActivityFocus ex:focus-1 ;
+         ucm:hasClosureReason ucm:ClosedConnected ;
+         ucm:hasLifecycleState ucm:Accepted ;
+         ucm:hasReferralDisposition ucm:ReferralAccepted .
+
+
+###  http://example.org/ucm/role-coord
+ex:role-coord rdf:type owl:NamedIndividual ,
+                       ucm:CoordinatorRole .
+
+
+###  http://example.org/ucm/role-pat
+ex:role-pat rdf:type owl:NamedIndividual ,
+                     ucm:PatientRole .
+
+
+###  http://example.org/ucm/role-prov
+ex:role-prov rdf:type owl:NamedIndividual ,
+                      ucm:ProviderRole .
+
+
+###  http://example.org/ucm/role-res
+ex:role-res rdf:type owl:NamedIndividual ,
+                     ucm:ResidentRole .
+
+
+###  http://example.org/ucm/rules-1
+ex:rules-1 rdf:type owl:NamedIndividual ,
+                    ucm:EligibilityRuleset .
+
+
+###  http://example.org/ucm/stmt-1
+ex:stmt-1 rdf:type owl:NamedIndividual ,
+                   ucm:HousingEligibilityStatement ;
+          ucm:generatedByProcess ex:assess-1 ;
+          ucm:hasCareTrajectoryContext ex:traj-1 ;
+          ucm:madeWithinContext ex:ctx-elig ;
+          ucm:statementDate "2026-09-02T10:45:00-07:00"^^xsd:dateTimeStamp ;
+          ucm:statementSubject ex:p-res .
+
+
+###  http://example.org/ucm/t-assess
+ex:t-assess rdf:type owl:NamedIndividual ,
+                     time:ProperInterval ;
+            time:hasBeginning [ rdf:type time:Instant ;
+                                time:inXSDDateTimeStamp "2026-09-02T09:00:00-07:00"^^xsd:dateTimeStamp
+                              ] ;
+            time:hasEnd [ rdf:type time:Instant ;
+                          time:inXSDDateTimeStamp "2026-09-02T10:30:00-07:00"^^xsd:dateTimeStamp
+                        ] .
+
+
+###  http://example.org/ucm/traj-1
+ex:traj-1 rdf:type owl:NamedIndividual ,
+                   ucm:CareTrajectoryContext ;
+          rdfs:label "After assessment, before referral acceptance" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
