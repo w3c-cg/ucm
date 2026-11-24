@@ -1,0 +1,18 @@
+# Build manifest for `ucm-codegen build`. Paths are relative to this file.
+
+ontology:
+  - ../unified-care-model.ttl
+  - ../ucm-lifecycle-vocabularies.ttl
+shapes:
+  - ../ucm-core-shapes.ttl
+shapes-lint:
+  - ../ucm-shapes-lint.ttl
+examples:
+  - ../examples/shapes/ucm-core-shapes-example.ttl
+
+profile: profiles/ucm-api-profile.yaml
+fhir-mapping: profiles/ucm-fhir-mapping.yaml
+
+ir-dir: build                        # JSON-LD IR (the boundary every target compiles from) — stays in ./codegen, not example output
+output-dir: ../examples/api          # OpenAPI, context, fhir/, report.html
+postgres-output-dir: ../examples/db  # SQLAlchemy models + Alembic migrations

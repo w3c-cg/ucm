@@ -7,29 +7,29 @@
   "sources": {
     "ontology": [
       {
-        "path": "../../../unified-care-model.ttl",
+        "path": "../unified-care-model.ttl",
         "content": "sha256:7e4c74080f7d91b7f031b754f4f66dcb92a1e8b2f574714a417164f22296327e"
       },
       {
-        "path": "../../../ucm-lifecycle-vocabularies.ttl",
+        "path": "../ucm-lifecycle-vocabularies.ttl",
         "content": "sha256:e791ad49a83c968d36cf080bb67d24b9efe5c941b3630bea242a288e39a6a6a5"
       }
     ],
     "shapes": [
       {
-        "path": "../../../ucm-core-shapes.ttl",
+        "path": "../ucm-core-shapes.ttl",
         "content": "sha256:3059ea1dd00a14975965af5e58bb7789c22912d0cef99126fbed799b93136a1a"
       }
     ],
     "shapes-lint": [
       {
-        "path": "../../../ucm-shapes-lint.ttl",
+        "path": "../ucm-shapes-lint.ttl",
         "content": "sha256:aba25505ca9f1ed8fc56cd71c8493ec458c0c5383103b6fedfc6bcf747914e97"
       }
     ],
     "examples": [
       {
-        "path": "../../shapes/ucm-core-shapes-example.ttl",
+        "path": "../examples/shapes/ucm-core-shapes-example.ttl",
         "content": "sha256:aa20765ee98833cc3a8532bab31bed66d3a7fa9cbe4fe0e2b6cc6a75f487d8cd"
       }
     ],
