@@ -1,0 +1,304 @@
+"""One-shot build: manifest, targets, report, exit codes, lockfile"""
+
+import json
+from pathlib import Path
+
+import pytest
+import yaml
+from typer.testing import CliRunner
+
+from ucm_codegen.build import BuildLock, BuildManifest, build_failed, build_targets
+from ucm_codegen.cli import app
+from ucm_codegen.content import digest_file
+from ucm_codegen.fhir_target import FhirMapping
+from ucm_codegen.models import ApiProfile
+from ucm_codegen.utils import load_yaml_safe
+
+from .conftest import EXAMPLE_TTL, FHIR_MAPPING, ONTOLOGY_TTL, PROFILE, PROJECT, SHAPES_LINT_TTL, SHAPES_TTL
+
+
+SHARED: dict = {}
+
+
+@pytest.fixture(scope="session", autouse=True)
+def shared_cache(tmp_path_factory):
+    """One stage cache for every build in this module: content addressing makes sharing safe"""
+    SHARED["cache"] = tmp_path_factory.mktemp("stage-cache")
+
+
+def manifest_file(tmp_path: Path, ontology) -> Path:
+    path = tmp_path / "ucm-build.yaml"
+    path.write_text(yaml.safe_dump({
+        "cache-dir": str(SHARED["cache"]),
+        "ontology": [str(p) for p in ontology],
+        "shapes": [str(p) for p in SHAPES_TTL],
+        "shapes-lint": [str(p) for p in SHAPES_LINT_TTL],
+        "examples": [str(EXAMPLE_TTL)],
+        "profile": str(PROFILE),
+        "fhir-mapping": str(FHIR_MAPPING),
+        "ir-dir": "ir",
+        "output-dir": "out",
+    }), encoding="utf-8")
+    return path
+
+
+def test_repository_manifest_resolves():
+    manifest = BuildManifest.load(PROJECT / "ucm-build.yaml")
+    assert manifest.missing() == []
+    assert manifest.ontology[0].name == "unified-care-model.ttl"
+    assert manifest.output_dir == (PROJECT.parent / "examples" / "api").resolve()
+    assert manifest.postgres_dir == (PROJECT.parent / "examples" / "db").resolve()
+
+
+def outputs_for(compilation):
+    return build_targets(
+        compilation,
+        ApiProfile.model_validate(load_yaml_safe(PROFILE)),
+        FhirMapping.model_validate(load_yaml_safe(FHIR_MAPPING)),
+        [EXAMPLE_TTL],
+    )
+
+
+def test_all_targets_and_report(compilation):
+    outputs = outputs_for(compilation)
+    assert {"openapi.yaml", "context.jsonld", "report.html", "fhir/ucm_fhir_adapter.py",
+            "postgres/ucm_models.py"} <= set(outputs.files)
+    assert outputs.validation is not None and outputs.validation.conforms
+    assert build_failed(compilation, outputs, strict=True) == []
+
+    html = outputs.files["report.html"]
+    assert "Build passed" in html
+    assert "participation.participating_entity" in html
+    assert "Encounter.participant.individual" in html
+    assert "Patient | Practitioner" in html
+
+
+def test_report_flags_a_regressed_spec(regressed_compilation):
+    outputs = outputs_for(regressed_compilation)
+    html = outputs.files["report.html"]
+    assert "Passed with warnings" in html
+    assert "namespace-drift" in html
+    assert "&lt;http://mdixinc.com/ucm#&gt;" in html  # escaped, not markup
+    assert build_failed(regressed_compilation, outputs, strict=False) == []
+    assert build_failed(regressed_compilation, outputs, strict=True) == [
+        # namespace-drift, undeclared-term, range-mismatch
+        "3 lint warnings (--strict), 1 of them namespace drift between spec files",
+        "6 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
+    ]
+
+
+def test_build_command(tmp_path):
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, ONTOLOGY_TTL)), "--strict"])
+    assert result.exit_code == 0, result.output
+    assert (tmp_path / "ir" / "ucm-shapes-lint.jsonld").exists()
+    assert (tmp_path / "out" / "report.html").exists()
+    assert (tmp_path / "out" / "fhir" / "ucm_fhir_adapter.py").exists()
+
+
+def test_build_command_fails_strict_but_still_reports(tmp_path, regressed_sources):
+    summary = tmp_path / "summary.md"
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, regressed_sources)), "--strict",
+                                      "--summary", str(summary)])
+    assert result.exit_code == 1
+    assert "Build failed" in result.output
+    assert (tmp_path / "out" / "report.html").exists()
+    text = summary.read_text(encoding="utf-8")
+    assert text.startswith("### UCM reference build: failed")
+    assert "| Warning | namespace-drift |" in text
+
+
+def test_report_summarizes_the_vocabularies(compilation):
+    html = outputs_for(compilation).files["report.html"]
+    overview = html[html.index('id="overview"'):html.index('id="changes"')]
+    for scheme in ["ClosureReason", "CommitmentStatus", "HandoffStatus", "HandshakeFulfillment",
+                   "LifecycleState", "ReferralDisposition"]:
+        assert f"<b>{scheme}</b>" in overview
+    assert '<span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span>' in overview
+    assert "No property uses this scheme" not in html
+    assert "<tr><th>Concepts</th><td>33</td></tr>" in html
+    vocabularies = html[html.index('id="vocabularies"'):html.index('id="openapi"')]
+    assert vocabularies.index("<b>ClosedNotConnected</b>") < vocabularies.index("<b>OutOfArea</b>")  # parent first
+    assert "2 levels" in vocabularies
+
+
+def test_summary_for_ci(tmp_path):
+    summary = tmp_path / "summary.md"
+    summary.write_text("earlier step\n", encoding="utf-8")
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, ONTOLOGY_TTL)), "--strict",
+                                      "--summary", str(summary)])
+    assert result.exit_code == 0, result.output
+    text = summary.read_text(encoding="utf-8")
+    assert text.startswith("earlier step\n### UCM reference build: passed")  # appended, like $GITHUB_STEP_SUMMARY
+    assert "| Concepts | 33 |" in text
+    assert "| ClosureReason | 10 | 2 | `hasClosureReason` on ucm:CoordinationRequest |" in text
+    assert "#### Lint findings" not in text
+
+
+def test_report_explains_a_missing_vocabulary(tmp_path):
+    """The vocabulary left out of the manifest: the build fails on the FHIR mapping, and the report says why"""
+    result = CliRunner().invoke(app, ["build", "-m", str(manifest_file(tmp_path, ONTOLOGY_TTL[:1]))])
+    assert result.exit_code == 1
+    output = " ".join(result.output.split())  # undo console wrapping
+    assert "transform code needs a property bound to a concept scheme" in output  # Task.status cannot bind
+    assert "No concept schemes were compiled. Is the vocabulary file listed under ontology" in output
+
+
+def test_lint_names_a_missing_vocabulary(tmp_path):
+    from ucm_codegen.pipeline import compile_ir
+    from .conftest import export_ir
+    ontology, shapes, shapes_lint = export_ir(tmp_path, ONTOLOGY_TTL[:1])
+    findings = compile_ir([ontology], [shapes], [shapes_lint]).findings
+    (finding,) = [f for f in findings if f.code == "no-concept-schemes"]
+    assert finding.message.startswith("6 properties take skos:Concept values (hasClosureReason, ")
+    assert "listed under ontology in ucm-build.yaml" in finding.message
+
+
+# ---------- Lockfile, diff and stale outputs ----------
+
+def build(manifest: Path, *args: str):
+    return CliRunner().invoke(app, ["build", "-m", str(manifest), *args])
+
+
+def migrations(tmp_path: Path):
+    return sorted(p.name for p in (tmp_path / "out" / "postgres" / "migrations" / "versions").glob("*.py"))
+
+
+def test_lockfile_is_reproducible(tmp_path):
+    manifest = manifest_file(tmp_path, ONTOLOGY_TTL)
+    first = build(manifest)
+    assert first.exit_code == 0, first.output
+    assert "First build" in first.output
+    lock_bytes = (tmp_path / "ucm-build.lock").read_bytes()
+
+    second = build(manifest)
+    assert "Cache: 8 hits, 0 misses" in second.output
+    assert "No changes since the previous build" in second.output
+    assert (tmp_path / "ucm-build.lock").read_bytes() == lock_bytes
+
+    uncached = build(manifest, "--no-cache")
+    assert "No changes since the previous build" in uncached.output
+    assert (tmp_path / "ucm-build.lock").read_bytes() == lock_bytes
+
+
+def test_lock_records_what_is_on_disk(tmp_path):
+    manifest = manifest_file(tmp_path, ONTOLOGY_TTL)
+    assert build(manifest).exit_code == 0
+    lock = BuildLock.read(tmp_path / "ucm-build.lock")
+    assert lock is not None
+    assert "report.html" not in lock.outputs  # a view of the build, not an artifact
+    for relative, digest in lock.outputs.items():
+        path = tmp_path / "out" / relative
+        assert digest_file(path) == digest, relative
+        assert b"\r\n" not in path.read_bytes(), relative  # LF everywhere
+    assert [s["path"].endswith(".ttl") for s in lock.sources["ontology"]] == [True, True]
+    assert {e["file"] for e in lock.ir} == {"ucm-ontology.jsonld", "ucm-shapes.jsonld", "ucm-shapes-lint.jsonld"}
+    snapshot = json.loads((tmp_path / "ir" / "ucm-ir.json").read_text(encoding="utf-8"))
+    assert snapshot["iri"] == "https://www.w3.org/ns/ucm#"
+
+
+def test_spec_change_is_diffed_and_stale_outputs_pruned(tmp_path, compilation, regressed_sources):
+    assert build(manifest_file(tmp_path, ONTOLOGY_TTL)).exit_code == 0
+    (before,) = migrations(tmp_path)
+
+    result = build(manifest_file(tmp_path, regressed_sources))
+    assert result.exit_code == 0, result.output
+    schemes = len(compilation.ir.schemes)  # every scheme drifts with the vocabulary
+    assert f"Since the previous build: {schemes} added, {schemes} removed, 1 changed nodes" in result.output
+    assert "changed  property:ucm:acceptsRequest" in result.output
+    assert "removed stale output" in result.output  # Rich wraps the path; the files are checked below
+
+    (after,) = migrations(tmp_path)  # one head: the old revision is gone
+    assert after != before
+    report = (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
+    assert "acceptsRequest" in report and "ParticipationContext" in report
+    assert "postgres/migrations/versions/" + before in report
+
+
+def test_edited_stale_outputs_are_kept(tmp_path, regressed_sources):
+    assert build(manifest_file(tmp_path, ONTOLOGY_TTL)).exit_code == 0
+    (before,) = migrations(tmp_path)
+    migration = tmp_path / "out" / "postgres" / "migrations" / "versions" / before
+    migration.write_text(migration.read_text(encoding="utf-8") + "\n# local edit\n", encoding="utf-8")
+
+    result = build(manifest_file(tmp_path, regressed_sources))
+    assert "kept" in result.output and "edited since the last build" in result.output
+    assert migration.exists()
+    assert len(migrations(tmp_path)) == 2
+
+
+def test_postgres_output_dir_is_independently_configurable(tmp_path):
+    """postgres-output-dir splits Postgres artifacts out of output-dir, same as examples/db in the repo manifest"""
+    manifest = tmp_path / "ucm-build.yaml"
+    manifest.write_text(yaml.safe_dump({
+        "cache-dir": str(SHARED["cache"]),
+        "ontology": [str(p) for p in ONTOLOGY_TTL],
+        "shapes": [str(p) for p in SHAPES_TTL],
+        "shapes-lint": [str(p) for p in SHAPES_LINT_TTL],
+        "examples": [str(EXAMPLE_TTL)],
+        "profile": str(PROFILE),
+        "fhir-mapping": str(FHIR_MAPPING),
+        "ir-dir": "ir",
+        "output-dir": "out",
+        "postgres-output-dir": "db",
+    }), encoding="utf-8")
+
+    result = build(manifest)
+    assert result.exit_code == 0, result.output
+
+    assert (tmp_path / "db" / "ucm_models.py").exists()
+    assert (tmp_path / "db" / "alembic.ini").exists()
+    assert list((tmp_path / "db" / "migrations" / "versions").glob("*.py"))
+    assert not (tmp_path / "out" / "postgres").exists()
+
+    lock = BuildLock.read(tmp_path / "ucm-build.lock")
+    assert "postgres/ucm_models.py" in lock.outputs  # lockfile keys stay target-relative regardless of layout
+
+
+# ---------- Gate: a failed build writes only the report ----------
+
+def snapshot(tmp_path: Path) -> dict:
+    """Every file a build may write, except the report, by relative path"""
+    files = {}
+    for root in ("out", "ir"):
+        for path in sorted((tmp_path / root).rglob("*")) if (tmp_path / root).exists() else []:
+            if path.is_file() and path.name != "report.html":
+                files[path.relative_to(tmp_path).as_posix()] = path.read_bytes()
+    lock = tmp_path / "ucm-build.lock"
+    if lock.exists():
+        files["ucm-build.lock"] = lock.read_bytes()
+    return files
+
+
+def test_failed_build_keeps_the_last_good_build(tmp_path, regressed_sources):
+    assert build(manifest_file(tmp_path, ONTOLOGY_TTL)).exit_code == 0
+    good = snapshot(tmp_path)
+    good_lock = BuildLock.read(tmp_path / "ucm-build.lock")
+
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict")
+    assert result.exit_code == 1
+    assert "wrote only the report" in result.output
+    assert snapshot(tmp_path) == good  # artifacts, IR, snapshot, lock: byte-identical, nothing pruned
+
+    report = (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
+    assert 'class="notice"' in report and "last good build" in report
+    assert good_lock.ir_root.removeprefix("sha256:")[:12] in report
+    assert ">Build failed<" in report  # the status chip, though the findings are only warnings
+    assert "acceptsRequest" in report  # Changes still compares against the last good build
+
+
+def test_failed_first_build_writes_only_the_report(tmp_path, regressed_sources):
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict")
+    assert result.exit_code == 1
+    assert "no previous good build" in result.output
+    assert snapshot(tmp_path) == {}
+    assert [p.name for p in (tmp_path / "out").iterdir()] == ["report.html"]
+    assert "No artifacts were written" in (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
+
+
+def test_write_on_failure_writes_everything(tmp_path, regressed_sources):
+    result = build(manifest_file(tmp_path, regressed_sources), "--strict", "--write-on-failure")
+    assert result.exit_code == 1
+    assert (tmp_path / "ucm-build.lock").exists()
+    assert (tmp_path / "ir" / "ucm-ontology.jsonld").exists()
+    assert (tmp_path / "out" / "openapi.yaml").exists()
+    assert 'class="notice"' not in (tmp_path / "out" / "report.html").read_text(encoding="utf-8")
