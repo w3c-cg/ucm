@@ -1,16 +1,38 @@
 """FHIR target: mapping overlay validation and the generated adapter"""
 
+import functools
 import importlib.util
 
 import pytest
 from fhir.resources.R4B.bundle import Bundle
+from fhir.resources.R4B.provenance import Provenance
 
 from ucm_codegen.builder import SpecBuilder
 from ucm_codegen.fhir_target import FhirCompiler, FhirMapping, FhirMappingError
 from ucm_codegen.generator import Generator
 from ucm_codegen.utils import load_yaml_safe
 
-from .conftest import FHIR_MAPPING, example_nodes
+from .conftest import EXAMPLE_TTL, FHIR_MAPPING, example_nodes
+
+TIME = "http://www.w3.org/2006/time#"
+
+
+@functools.lru_cache(maxsize=1)
+def time_nodes():
+    """The example's time instants and intervals as JSON-LD nodes. The API examples frame only
+    typed UCM nodes, so these are added back for dateTime, periods and Provenance.recorded."""
+    from pyld import jsonld
+    from rdflib import Graph, URIRef
+    from rdflib.namespace import RDF
+    data = Graph().parse(EXAMPLE_TTL)
+    keep = Graph()
+    for cls in ("Instant", "ProperInterval"):
+        for subject in data.subjects(RDF.type, URIRef(TIME + cls)):
+            for triple in data.cbd(subject):
+                keep.add(triple)
+    expanded = jsonld.from_rdf(keep.serialize(format="nt"), {"format": "application/n-quads"})
+    compact = jsonld.compact(expanded, {"time": TIME})
+    return compact.get("@graph", [compact] if "@id" in compact else [])
 
 
 def load_adapter(tmp_path_factory, compilation, profile, name):
@@ -38,7 +60,7 @@ def regressed_adapter(tmp_path_factory, regressed_compilation, profile):
 
 @pytest.fixture(scope="module")
 def bundle(adapter, spec):
-    bundle, warnings = adapter.to_fhir_bundle(example_nodes(spec))
+    bundle, warnings = adapter.to_fhir_bundle(example_nodes(spec) + time_nodes())
     assert warnings == EXPECTED_WARNINGS
     return bundle
 
@@ -50,11 +72,20 @@ EXPECTED_WARNINGS = [
     # a household-wide directive: R4 Consent.patient takes only a Patient (R5 subject allows a Group)
     "http://example.org/ucm/cd-thomson-hh Consent.patient: http://example.org/ucm/hh-thomson maps to Group; "
     "FHIR R4 allows only Patient here",
+    # Ruth is proxy for two minors; R4 Provenance.agent.onBehalfOf holds one
+    "http://example.org/ucm/ci-thomson-hh Provenance.agent.onBehalfOf: FHIR allows one value here; kept the first of 2",
 ]
 
 
+def iri_of(resource):
+    """A resource's UCM IRI: its identifier, or the node-iri extension on a type with no identifier (Provenance)"""
+    if "identifier" in resource:
+        return resource["identifier"][0]["value"]
+    return next(x["valueUri"] for x in resource["extension"] if x["url"].endswith("#fhirNode"))
+
+
 def resources(bundle):
-    return {e["resource"]["identifier"][0]["value"].rsplit("/", 1)[-1]: e["resource"] for e in bundle["entry"]}
+    return {iri_of(e["resource"]).rsplit("/", 1)[-1]: e["resource"] for e in bundle["entry"]}
 
 
 # ---------- Overlay validation ----------
@@ -108,6 +139,9 @@ def test_resource_types_and_identity(bundle):
         **{o: "Organization" for o in ("org-assessor", "org-clinic", "org-csp", "org-lead-agency", "org-state-e")},
         "hh-thomson": "Group",
         "loc-intake": "Location",
+        # one Provenance per consent interaction
+        **{i: "Provenance" for i in ("ci-a-2025", "ci-a-revoke", "ci-a-verbal", "ci-sarah", "ci-thomson",
+                                     "ci-thomson-2023", "ci-thomson-hh", "ci-youth", "ci-youth-verify")},
         **{d: "Consent" for d in ("cd-a-2025", "cd-a-verbal", "cd-jameson", "cd-jameson-2023",
                                   "cd-madison", "cd-sarah", "cd-thomson-hh", "cd-youth")},
     }
@@ -118,7 +152,7 @@ def test_task_from_coordination_request(bundle):
     task = resources(bundle)["req-1"]
     assert task["status"] == "accepted"
     assert task["description"] == "Tenancy preservation"
-    entries = {e["resource"]["identifier"][0]["value"]: e["fullUrl"] for e in bundle["entry"]}
+    entries = {iri_of(e["resource"]): e["fullUrl"] for e in bundle["entry"]}
     assert task["requester"]["reference"] == entries["http://example.org/ucm/cm-1"]
     assert task["owner"]["reference"] == entries["http://example.org/ucm/org-fund"]
     assert "for" not in task  # no subject-role participation in the example
@@ -135,7 +169,7 @@ def test_observation_follows_the_participation_chain(bundle):
     assert observation["code"]["coding"][0]["code"] == "HousingEligibilityStatement"
     assert observation["effectiveDateTime"] == "2026-09-02T10:45:00-07:00"  # read from the value object
     patient_url = next(e["fullUrl"] for e in bundle["entry"]
-                       if e["resource"]["identifier"][0]["value"].endswith("person-a"))
+                       if iri_of(e["resource"]).endswith("person-a"))
     assert observation["subject"]["reference"] == patient_url
 
 
@@ -143,12 +177,12 @@ def test_namespace_drift_reaches_the_adapter(regressed_adapter, regressed_spec):
     bundle, warnings = regressed_adapter.to_fhir_bundle(example_nodes(regressed_spec))
     assert resources(bundle)["req-1"]["status"] == "draft"  # mapping default
     # the consent vocabularies drift too; outside Consent, only the request's status is affected
-    assert [w for w in warnings if " Consent." not in w] == [
+    assert [w for w in warnings if " Consent." not in w and " Provenance." not in w] == [
         "http://example.org/ucm/req-1 Task.status: 'ucm:Accepted' has no FHIR code in the mapping"]
 
 
 def test_output_is_deterministic(adapter, spec, bundle):
-    assert adapter.to_fhir_bundle(example_nodes(spec))[0] == bundle
+    assert adapter.to_fhir_bundle(example_nodes(spec) + time_nodes())[0] == bundle
 
 
 def test_multi_typed_node_is_mapped(adapter):
@@ -176,12 +210,14 @@ def facts(nodes, keys):
                 continue
             term = next((t for t, aliases in keys.items() if key in aliases), key)
             for v in value if isinstance(value, list) else [value]:
-                out.add((node["@id"], term, v["@value"] if isinstance(v, dict) and "@value" in v else v))
+                if isinstance(v, dict):
+                    v = v["@value"] if "@value" in v else v.get("@id")
+                out.add((node["@id"], term, v))
     return out
 
 
 def test_round_trip_invents_nothing(adapter, spec, bundle):
-    original = facts(example_nodes(spec), adapter.KEYS)
+    original = facts(example_nodes(spec) + time_nodes(), adapter.KEYS)
     back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
     assert back <= original, back - original
 
@@ -254,7 +290,7 @@ EX = "http://example.org/ucm/"
 
 
 def url_of(bundle, local):
-    return next(e["fullUrl"] for e in bundle["entry"] if e["resource"]["identifier"][0]["value"] == EX + local)
+    return next(e["fullUrl"] for e in bundle["entry"] if iri_of(e["resource"]) == EX + local)
 
 
 def test_consent_from_directive(bundle):
@@ -334,6 +370,10 @@ def test_consent_dates_and_shared_labels(adapter):
          "hasConsentCategory": "ConsentToShare", "hasConsentDecision": "Permit",
          "recordsConsentFrom": [EX + "ci-t"], "validDuring": [EX + "t-valid"], "hasProvision": [EX + "pr-t"]},
         {"@id": EX + "ci-t", "@type": "ConsentInteraction", "occursDuring": [EX + "t-signed"]},
+        {"@id": EX + "p-t", "@type": "Participation", "occursWithin": [EX + "ci-t"],
+         "participatingEntity": [EX + "pat"], "assumesRole": [EX + "r-g"]},
+        {"@id": EX + "r-g", "@type": "ConsentGrantorRole"},
+        {"@id": EX + "pat", "@type": "Person"},
         {"@id": EX + "t-signed", "time:inXSDDateTimeStamp": {"@value": "2026-10-05T10:00:00-05:00"}},
         {"@id": EX + "t-valid", "time:hasBeginning": {"@id": EX + "t-b"}, "time:hasEnd": {"@id": EX + "t-e"}},
         {"@id": EX + "t-b", "time:inXSDDateTimeStamp": "2026-10-05T00:00:00-05:00"},
@@ -366,3 +406,84 @@ def test_consent_options_are_checked(compilation, profile, field, message):
         FhirCompiler(compilation.ir, mapping_with({"ConsentDirective": {"resource": "Consent", "fields": {
             "x": field}}}), SpecBuilder(compilation.ir, profile)).compile()
     assert any(message in e for e in error.value.errors), error.value.errors
+
+
+# ---------- Provenance for the consent interaction ----------
+
+def test_provenance_from_interaction(bundle):
+    prov = resources(bundle)["ci-sarah"]
+    assert prov["resourceType"] == "Provenance"
+    assert [t["reference"] for t in prov["target"]] == [url_of(bundle, "cd-sarah")]
+    assert prov["recorded"] == "2026-10-05T10:00:00-05:00"
+    assert prov["activity"] == {"coding": [{"system": UCM_CODES, "code": "ConsentGrant"}]}
+    # the grantor is an agent; the subject and the recipient are not agents of the act
+    assert [a["who"]["reference"] for a in prov["agent"]] == [url_of(bundle, "sarah")]
+    assert prov["agent"][0]["role"][0]["coding"][0]["code"] == "ConsentGrantorRole"
+
+
+def test_provenance_target_includes_a_revoked_directive(bundle):
+    """The revoking interaction is not what recorded the directive; revokedBy points the other way"""
+    prov = resources(bundle)["ci-a-revoke"]
+    assert [t["reference"] for t in prov["target"]] == [url_of(bundle, "cd-a-2025")]
+    assert prov["activity"]["coding"][0]["code"] == "ConsentRevocation"
+    assert [a["who"]["reference"] for a in prov["agent"]] == [url_of(bundle, "person-a")]
+
+
+def test_provenance_names_the_notice_seen_and_the_proxy_principal(bundle):
+    prov = resources(bundle)["ci-a-verbal"]
+    assert prov["entity"][0]["role"] == "source"
+    assert prov["entity"][0]["what"]["identifier"]["value"] == EX + "notice-coc-e"  # no FHIR resource for a notice
+    household = resources(bundle)["ci-thomson-hh"]
+    proxy = next(a for a in household["agent"] if "ConsentProxyRole" in
+                 [c["coding"][0]["code"] for c in a["role"]])
+    assert proxy["onBehalfOf"]["reference"] in (url_of(bundle, "jameson"), url_of(bundle, "madison"))
+
+
+def test_provenance_needs_a_time(adapter):
+    """Provenance.recorded is required in R4; an interaction with no time instant warns, one with it does not"""
+    nodes = [
+        {"@id": EX + "cd-t", "@type": "ConsentDirective", "recordsConsentFrom": [EX + "ci-t"]},
+        {"@id": EX + "ci-t", "@type": "ConsentInteraction", "hasConsentInteractionType": "ConsentGrant",
+         "occursDuring": [EX + "t-signed"]},
+        {"@id": EX + "p-t", "@type": "Participation", "occursWithin": [EX + "ci-t"],
+         "participatingEntity": [EX + "pat"], "assumesRole": [EX + "r-g"]},
+        {"@id": EX + "r-g", "@type": "ConsentGrantorRole"},
+        {"@id": EX + "pat", "@type": "Person"},
+    ]
+    _, warnings = adapter.to_fhir_bundle(nodes)
+    assert f"{EX}ci-t Provenance.recorded: FHIR R4 requires a value here and UCM has none" in warnings
+    nodes.append({"@id": EX + "t-signed", "time:inXSDDateTimeStamp": {"@value": "2026-10-05T10:00:00-05:00"}})
+    bundle, warnings = adapter.to_fhir_bundle(nodes)
+    assert not [w for w in warnings if "Provenance" in w]
+    prov = next(e["resource"] for e in bundle["entry"] if e["resource"]["resourceType"] == "Provenance")
+    assert prov["recorded"] == "2026-10-05T10:00:00-05:00"
+    Provenance.model_validate(prov)
+
+
+def test_provenance_round_trip(adapter):
+    nodes = [
+        {"@id": EX + "cd-t", "@type": "ConsentDirective", "recordsConsentFrom": [EX + "ci-t"],
+         "revokedBy": [EX + "ci-r"]},
+        {"@id": EX + "ci-t", "@type": "ConsentInteraction", "hasConsentInteractionType": "ConsentGrant",
+         "occursDuring": [EX + "t-1"]},
+        {"@id": EX + "ci-r", "@type": "ConsentInteraction", "hasConsentInteractionType": "ConsentRevocation",
+         "occursDuring": [EX + "t-2"]},
+        {"@id": EX + "t-1", "time:inXSDDateTimeStamp": {"@value": "2026-10-05T10:00:00-05:00"}},
+        {"@id": EX + "t-2", "time:inXSDDateTimeStamp": {"@value": "2026-11-05T10:00:00-05:00"}},
+        {"@id": EX + "p-t", "@type": "Participation", "occursWithin": [EX + "ci-t"],
+         "participatingEntity": [EX + "pat"], "assumesRole": [EX + "r-g"]},
+        {"@id": EX + "r-g", "@type": "ConsentGrantorRole"},
+        {"@id": EX + "pat", "@type": "Person"},
+    ]
+    bundle, warnings = adapter.to_fhir_bundle(nodes)
+    assert [w for w in warnings if "Provenance" in w] == [
+        f"{EX}ci-r Provenance.agent: FHIR R4 requires a value here and UCM has none"]
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    assert {
+        (EX + "cd-t", "recordsConsentFrom", EX + "ci-t"),
+        (EX + "cd-t", "revokedBy", EX + "ci-r"),
+        (EX + "ci-t", "hasConsentInteractionType", "ConsentGrant"),
+        (EX + "ci-r", "hasConsentInteractionType", "ConsentRevocation"),
+        (EX + "p-t", "occursWithin", EX + "ci-t"),
+        (EX + "p-t", "participatingEntity", EX + "pat"),
+    } <= back

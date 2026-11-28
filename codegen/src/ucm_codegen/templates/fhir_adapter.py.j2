@@ -9,7 +9,8 @@ to_fhir_bundle(nodes)   UCM JSON-LD nodes (compacted with the generated context)
 from_fhir_bundle(b)     Bundle produced by to_fhir_bundle → UCM JSON-LD nodes
 
 Identity: every resource carries its UCM IRI as identifier (system
-urn:ietf:rfc:3986) and its UCM class as meta.tag; fullUrl and id are
+urn:ietf:rfc:3986; Provenance, which has no identifier in R4, carries it in the
+node-iri extension) and its UCM class as meta.tag; fullUrl and id are
 UUIDv5 of the IRI, so output is deterministic. Nodes folded into a resource
 (e.g., participations in Encounter.participant) carry their IRI in the
 node-iri extension. A two-hop path (statementSubject/participatingEntity)
@@ -28,7 +29,10 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 FHIR_VERSION = {{ adapter.fhir_version | pyrepr }}
 CODE_SYSTEM = {{ adapter.code_system | pyrepr }}
 NODE_IRI_EXTENSION = {{ adapter.node_iri_extension | pyrepr }}
+LINK_EXTENSION = NODE_IRI_EXTENSION + "Link"
 URI_SYSTEM = "urn:ietf:rfc:3986"
+# R4 resources with no identifier element; their UCM IRI goes in the node-iri extension instead
+NO_IDENTIFIER = {{ adapter.no_identifier | pyrepr }}
 
 # Compiled mapping: UCM class term → resource spec
 MAPPINGS: Dict[str, Dict[str, Any]] = {{ adapter.resources | pyrepr }}
@@ -271,9 +275,12 @@ def _transform(g: _Graph, value: Any, field: Dict[str, Any]) -> Any:
     return value
 
 
-def _tag(element: Any, origin: Optional[Dict[str, Any]]) -> Any:
-    if origin is not None and isinstance(element, dict):
-        element.setdefault("extension", []).append({"url": NODE_IRI_EXTENSION, "valueUri": origin["@id"]})
+def _tag(element: Any, origin: Optional[Dict[str, Any]], marker: Optional[str] = None) -> Any:
+    if isinstance(element, dict):
+        if origin is not None:
+            element.setdefault("extension", []).append({"url": NODE_IRI_EXTENSION, "valueUri": origin["@id"]})
+        if marker is not None:  # tells fields that share one FHIR element which of them wrote this value
+            element.setdefault("extension", []).append({"url": LINK_EXTENSION, "valueCode": marker})
     return element
 
 
@@ -287,6 +294,9 @@ def _fill(g: _Graph, node: Any, fields: Dict[str, Any], target: Dict[str, Any], 
         ext = _code_extension(g, node, field)
         if ext is not None:
             _set(target, _ext_path(key), ext)
+    for key, field in fields.items():  # after the loop, so fields sharing an element count together
+        if field.get("required") and _get(target, _base(key)) is None:
+            warnings.append(f"{where}.{_base(key)}: FHIR R4 requires a value here and UCM has none")
 
 
 def _code_extension(g: _Graph, node: Any, field: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -324,7 +334,7 @@ def _field(g: _Graph, node: Any, field: Dict[str, Any], warnings: List[str], whe
             if field["transform"] == "code":
                 warnings.append(f"{where}: {value!r} has no FHIR code in the mapping")
             continue
-        result = _tag(result, origin)
+        result = _tag(result, origin, field.get("marker"))
         if result not in outputs:
             outputs.append(result)
 
@@ -361,8 +371,11 @@ def to_fhir_bundle(nodes: Iterable[Dict[str, Any]]) -> Tuple[Dict[str, Any], Lis
             "resourceType": _resource_type(g, node, spec),
             "id": resource_id(iri),
             "meta": meta,
-            "identifier": [{"system": URI_SYSTEM, "value": iri}],
         }
+        if resource["resourceType"] in NO_IDENTIFIER:  # no Provenance.identifier in R4: the IRI rides in an extension
+            resource["extension"] = [{"url": NODE_IRI_EXTENSION, "valueUri": iri}]
+        else:
+            resource["identifier"] = [{"system": URI_SYSTEM, "value": iri}]
         resource.update(copy.deepcopy(spec["constants"]))
         _fill(g, node, spec["fields"], resource, warnings, f"{iri} {resource['resourceType']}")
         entries.append({"fullUrl": full_url(iri), "resource": resource})
@@ -437,7 +450,17 @@ def _reverse_value(field: Dict[str, Any], value: Any, urls: Dict[str, str], out:
     return value
 
 
+def _marker(element: Any) -> Optional[str]:
+    if isinstance(element, dict):
+        for ext in element.get("extension", []):
+            if ext.get("url") == LINK_EXTENSION:
+                return ext.get("valueCode")
+    return None
+
+
 def _matches(field: Dict[str, Any], element: Any) -> bool:
+    if _marker(element) != field.get("marker"):
+        return False
     return all(_get(element, k) == v for k, v in (field.get("when") or {}).items()) \
         if isinstance(element, dict) else not field.get("when")
 
@@ -506,6 +529,10 @@ def from_fhir_bundle(bundle: Dict[str, Any]) -> List[Dict[str, Any]]:
         for identifier in entry["resource"].get("identifier", []):
             if identifier.get("system") == URI_SYSTEM:
                 urls[entry["fullUrl"]] = identifier["value"]
+        if entry["resource"].get("resourceType") in NO_IDENTIFIER:
+            node_iri = _node_iri_extension(entry["resource"])
+            if node_iri:
+                urls[entry["fullUrl"]] = node_iri
 
     out = _Nodes()
     for entry in bundle.get("entry", []):

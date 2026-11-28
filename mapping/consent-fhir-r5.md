@@ -69,9 +69,32 @@ maps `ConsentDirective` to R4 `Consent`, and the generated
 | `.actor{role, reference}` | `provisionActor` participation | yes |
 | `.data{meaning, reference}` | `coversInstance`, `coversRelated`, `coversDependents`, `coversAuthoredBy` | yes |
 
-Not mapped: `verification` (R4 cannot name the verifier) and the consent
-interaction itself, which an R4 `Provenance` could carry. A household-wide
-directive has no R4 `patient` (R5 `subject` allows a Group); the adapter warns.
+Not mapped on the Consent: `verification` (R4 cannot name the verifier). A
+household-wide directive has no R4 `patient` (R5 `subject` allows a Group); the
+adapter warns. The consent interaction goes in its own `Provenance`, below.
+
+### The consent interaction as an R4 Provenance
+
+Each `ConsentInteraction` becomes one `Provenance` resource that targets the
+directive it recorded or revoked.
+
+| R4 `Provenance` | UCM | Read back |
+|---|---|---|
+| `target` | the directive: `recordsConsentFrom` (inverse) and `revokedBy` (inverse, marked) | yes, each to its own property |
+| `recorded` | `occursDuring` instant | yes |
+| `activity` | `hasConsentInteractionType` (grant, refuse, amend, renew, revoke, verify) | yes |
+| `agent.who` | a grantor, proxy, witness, verifier or custodian participation's entity | yes |
+| `agent.role` | the participation's role | yes |
+| `agent.onBehalfOf` | `consentOnBehalfOf` (first value; R4 holds one) | yes |
+| `entity` (`role: source`, `what`) | `acknowledgesNotice` | yes |
+
+The consent subject and the recipient are not agents of the act, so they are left
+out. Not mapped, because R4 `Provenance` has no element for them: the modality,
+`authenticatedBy` and the jurisdiction. `target`, `recorded` and `agent` are 1..* in
+R4, so the adapter warns when UCM has no value for one (for example an interaction
+with no time instant, or a revocation with no participant). R4 `Provenance` also has
+no `identifier`, so the adapter carries the UCM IRI in the node-iri extension on the
+resource instead.
 
 Concept codings use the concept's own namespace as the coding system: UCM concepts
 are coded in `https://www.w3.org/ns/ucm#`, and concepts UCM reuses from DPV in DPV's

@@ -6669,6 +6669,12 @@ components:
           - http://example.org/ucm/role-grantor
           occursWithin: http://example.org/ucm/ci-a-2025
           participatingEntity: http://example.org/ucm/person-a
+        - '@id': http://example.org/ucm/p-a-grantor-revoke
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-a-revoke
+          participatingEntity: http://example.org/ucm/person-a
         - '@id': http://example.org/ucm/p-a-subj
           '@type': Participation
           assumesRole:

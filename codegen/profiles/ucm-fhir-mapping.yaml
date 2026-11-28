@@ -20,6 +20,10 @@
 #   resource-types for transform: reference, the FHIR types allowed; others warn
 #   when           constant sub-elements of an each element (data.meaning);
 #                  the reverse direction reads only elements that match
+#   marker         names a field that shares a FHIR element with another (target#a,
+#                  target#b); the written value carries it, so the reverse direction
+#                  can tell which field wrote it
+#   required       the FHIR element is 1..* in R4: warn when UCM has no value
 #   one-way        never read back (a projection another field already carries)
 #                  (concept-coding writes the UCM concept itself as a
 #                  CodeableConcept in the code-system; an adopter's own
@@ -137,6 +141,40 @@ resources:
 
   HousingStatement: *observation
   SocialCareStatement: *observation
+
+  # FHIR R4 Provenance for the consent interaction: who granted, refused,
+  # amended, renewed or revoked a directive, when, and which notice they saw.
+  # Provenance.target is the directive (the inverse of recordsConsentFrom).
+  # Agents are the grantor or proxy, witness, verifier and custodian
+  # participations; the consent subject and the recipient are not agents of
+  # the act. Not mapped: the modality (written, electronic, verbal), the
+  # authentication and the jurisdiction, which R4 Provenance has no element for.
+  ConsentInteraction:
+    resource: Provenance
+    fields:
+      # the directive this interaction recorded, or the directive it revoked
+      target#recorded:
+        {inverse: recordsConsentFrom, class: ConsentDirective, transform: reference,
+         resource-types: [Consent], list: true, required: true}
+      target#revoked:
+        {inverse: revokedBy, class: ConsentDirective, transform: reference,
+         resource-types: [Consent], list: true, marker: revoked}
+      recorded: {property: [occursDuring, "time:inXSDDateTimeStamp"], required: true}
+      activity: {property: hasConsentInteractionType, transform: concept-coding}
+      agent:
+        inverse: occursWithin
+        class: Participation
+        roles: [ConsentGrantorRole, ConsentWitnessRole, ConsentVerifierRole, InformationCustodianRole]
+        required: true
+        each:
+          role: {property: assumesRole, transform: role-coding, list: true}
+          who: {property: participatingEntity, transform: reference}
+          onBehalfOf: {property: consentOnBehalfOf, transform: reference}
+      entity:
+        property: acknowledgesNotice
+        when: {role: source}
+        each:
+          what: {transform: reference}
 
   # FHIR R4 Consent. R4 has no top-level decision: the root provision is the
   # directive itself, and nested provisions follow two levels deep. R4

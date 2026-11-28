@@ -683,8 +683,8 @@ implementation differs from the sections above, the implementation wins:
   `_status`. `scope` is derived from the category and not read back. Limits, each
   reported as a warning rather than written wrongly: R4 `patient` takes only a
   Patient, so a household subject is left out; R4 `policyRule` holds one regulatory
-  basis. Not mapped: `verification` (R4 cannot name the verifier) and the
-  interaction itself (a `Provenance` would carry it). `dateTime` and periods are
+  basis. Not mapped: `verification` (R4 cannot name the verifier). The consent
+  interaction is a `Provenance` (section 15). `dateTime` and periods are
   filled when the time nodes are in the input. To support this, the adapter engine
   gained `via` paths, bare `Coding` output, `system` on code maps, `resource-types`,
   `when` constants, `#tag` keys for shared elements, child nodes for backbone
@@ -747,6 +747,29 @@ reuse audit" doc.
   namespace (system `https://w3id.org/dpv#`, code `Disclose`) and UCM's own in
   `https://www.w3.org/ns/ucm#`. The FHIR status map adds `ConsentWithdrawn` and
   `ConsentRevoked`, both `inactive`.
+
+## 15. Consent interaction as FHIR Provenance (2026-11-28)
+
+Eric asked for the consent interaction itself to be carried by an R4 `Provenance`.
+
+- **Mapping:** `ConsentInteraction` maps to `Provenance`. `target` is the directive
+  (`recordsConsentFrom`, plus `revokedBy` so a revocation points at the directive it
+  revoked), `recorded` is the interaction's time instant, `activity` is the interaction
+  type, `agent` is each grantor, proxy, witness, verifier or custodian participation
+  (`who`, `role`, and `onBehalfOf` from `consentOnBehalfOf`), and `entity` with role
+  `source` is the privacy notice the person acknowledged. Subject and recipient
+  participations are not agents. Modality, authentication and jurisdiction have no
+  R4 Provenance element and stay unmapped. Full table in `mapping/consent-fhir-r5.md`.
+- **Adapter engine:** a new `required` option warns when an R4 1..* element has no
+  UCM value; a new `marker` option lets two fields share one FHIR element
+  (`target#recorded`, `target#revoked`) and be told apart on the way back; and
+  resources with no `identifier` in R4 (Provenance, AuditEvent and a few others) carry
+  the UCM IRI in the node-iri extension instead.
+- **Example:** the revocation interaction `ci-a-revoke` now has a grantor
+  participation, so its Provenance has an agent.
+- **Tests:** four new Provenance tests (content, revoked target, notice and proxy
+  principal, required time and round trip). Every example Provenance validates
+  against the R4B model. Example counts rose from 129 to 130.
 
 ## Sources
 

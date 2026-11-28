@@ -358,7 +358,7 @@ h3 { font-size: 12px; }
       <h2>Targets</h2>
       <a href="#openapi" data-pane="openapi"><span class="label">OpenAPI</span><span class="badge">20</span></a>
       <a href="#postgres" data-pane="postgres"><span class="label">Postgres</span><span class="badge">20</span></a>
-      <a href="#fhir" data-pane="fhir"><span class="label">FHIR</span><span class="badge">13</span></a>
+      <a href="#fhir" data-pane="fhir"><span class="label">FHIR</span><span class="badge">14</span></a>
       <h2>Output</h2>
       <a href="#artifacts" data-pane="artifacts"><span class="label">Artifacts</span><span class="badge">9</span></a>
     </nav>
@@ -397,7 +397,7 @@ h3 { font-size: 12px; }
               <tr><th>Association tables</th><td>85</td></tr>
             </table>
             <table class="info">
-              <tr><th>FHIR-mapped classes</th><td>13</td></tr>
+              <tr><th>FHIR-mapped classes</th><td>14</td></tr>
             </table>
           </div>
         </div>
@@ -594,7 +594,7 @@ h3 { font-size: 12px; }
         <div class="scroll">
           <table class="list">
             <tbody>
-<tr><td class="nowrap">IR root (350 nodes)</td><td class="mono break">sha256:0c8181d61040d8e89c72de94d187e554b1bae7587d539413a6a771632f70fc38</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:1abc2e408dc407a854078a9bf3f658f260b556efe71f7e1fdd54422577ffaac3</td></tr>
+<tr><td class="nowrap">IR root (350 nodes)</td><td class="mono break">sha256:0c8181d61040d8e89c72de94d187e554b1bae7587d539413a6a771632f70fc38</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:88c98467faff8f30d21456865ae1b1e1ba8f4c059de3118e98af07a2f8bd66b7</td></tr>
             </tbody>
           </table>
         </div>
@@ -1525,7 +1525,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:ConsentInteraction</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">entity__records_consent_from<br><span class="muted">association</span></td>
-                      <td class="mono">Consent.dateTime (via recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp)</td>
+                      <td class="mono">Provenance.target#recorded (inverse)<br>Consent.dateTime (via recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>revokedBy</b><br><span class="mono muted">ucm:revokedBy</span></td>
@@ -1533,7 +1533,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:ConsentInteraction</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">entity__revoked_by<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Provenance.target#revoked (inverse)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>supersedes</b><br><span class="mono muted">ucm:supersedes</span></td>
@@ -1954,7 +1954,7 @@ h3 { font-size: 12px; }
             </summary>
             <div class="class-body">
 <p>Contextual involvement of an Entity within a Process and Semantic Context.</p>              <div class="meta">
-<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">participation</b></span><span>Examples <b>27</b></span>              </div>
+<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">participation</b></span><span>Examples <b>28</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -1965,7 +1965,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Role</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">participation__assumes_role<br><span class="muted">association</span></td>
-                      <td class="mono">Encounter.participant.type</td>
+                      <td class="mono">Encounter.participant.type<br>Provenance.agent.role</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>consentOnBehalfOf</b><br><span class="mono muted">ucm:consentOnBehalfOf</span></td>
@@ -1973,7 +1973,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Entity</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">participation__consent_on_behalf_of<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Provenance.agent.onBehalfOf</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>enactiveDuring</b><br><span class="mono muted">ucm:enactiveDuring</span></td>
@@ -1997,7 +1997,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Process</td>
                       <td class="mono">NodeRef</td>
                       <td class="mono">participation.occurs_within<br><span class="muted">text not null</span></td>
-                      <td class="mono">Encounter.participant (inverse)<br>Task.for (inverse)<br>Task.requester (inverse)<br>Task.owner (inverse)<br>Consent.performer (inverse)<br>Consent.organization (inverse)</td>
+                      <td class="mono">Encounter.participant (inverse)<br>Task.for (inverse)<br>Task.requester (inverse)<br>Task.owner (inverse)<br>Provenance.agent (inverse)<br>Consent.performer (inverse)<br>Consent.organization (inverse)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>participatingEntity</b><br><span class="mono muted">ucm:participatingEntity</span></td>
@@ -2005,7 +2005,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Entity</td>
                       <td class="mono">NodeRef</td>
                       <td class="mono">participation.participating_entity<br><span class="muted">text not null</span></td>
-                      <td class="mono">Encounter.participant.individual<br>Task.for<br>Task.requester<br>Task.owner<br>Consent.performer<br>Consent.organization</td>
+                      <td class="mono">Encounter.participant.individual<br>Task.for<br>Task.requester<br>Task.owner<br>Provenance.agent.who<br>Consent.performer<br>Consent.organization</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>participationContext</b><br><span class="mono muted">ucm:participationContext</span></td>
@@ -2114,7 +2114,7 @@ h3 { font-size: 12px; }
                       <td class="mono">time:TemporalEntity</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">process__occurs_during<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Provenance.recorded (via occursDuring/time:inXSDDateTimeStamp)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -2175,11 +2175,11 @@ h3 { font-size: 12px; }
               <span class="term">ConsentInteraction</span>
               <span class="mono muted">ucm:ConsentInteraction</span>
               <span class="tags">
-<span class="badge">4</span>              </span>
+<span class="pill green">Provenance</span><span class="badge">4</span>              </span>
             </summary>
             <div class="class-body">
 <p>A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them.</p>              <div class="meta">
-<span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span><span>Examples <b>9</b></span>              </div>
+<span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span><span>FHIR <b>Provenance</b></span><span>Examples <b>9</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -2190,7 +2190,7 @@ h3 { font-size: 12px; }
                       <td class="mono">dpv:PrivacyNotice</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">process__acknowledges_notice<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Provenance.entity</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>authenticatedBy</b><br><span class="mono muted">ucm:authenticatedBy</span></td>
@@ -2206,7 +2206,7 @@ h3 { font-size: 12px; }
                       <td class="mono">skos:Concept</td>
                       <td class="mono">ConsentInteractionType</td>
                       <td class="mono">process.has_consent_interaction_type<br><span class="muted">text</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Provenance.activity</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>hasConsentModality</b><br><span class="mono muted">ucm:hasConsentModality</span></td>
@@ -5058,6 +5058,16 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
           </div>
         </div>
         <div class="group">
+          <h3>ConsentInteraction → Provenance</h3>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>FHIR element</th><th>From</th></tr></thead>
+              <tbody>
+<tr><td class="mono nowrap">Provenance.target#recorded</td><td>ConsentDirective nodes whose recordsConsentFrom points here · reference</td></tr><tr><td class="mono nowrap">Provenance.target#revoked</td><td>ConsentDirective nodes whose revokedBy points here · reference</td></tr><tr><td class="mono nowrap">Provenance.recorded</td><td>occursDuring/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Provenance.activity</td><td>hasConsentInteractionType · concept-coding</td></tr><tr><td class="mono nowrap">Provenance.agent</td><td>Participation nodes whose occursWithin points here · role ConsentGrantorRole | ConsentWitnessRole | ConsentVerifierRole | InformationCustodianRole · 3 sub-elements</td></tr><tr><td class="mono nowrap">Provenance.entity</td><td>acknowledgesNotice · 1 sub-elements</td></tr>              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="group">
           <h3>ConsentDirective → Consent</h3>
           <div class="scroll">
             <table class="list">
@@ -5077,7 +5087,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:010761795d5ddaea2e38ef4b81834b9850ee80e67eff5223059f69396d551d15">010761795d5ddaea</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:9c9541fac3c0b019a78827f7974bb1a16732dd794765fd780c4a30af6865d9c2">9c9541fac3c0b019</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:9d5ded8cd57575b6fb1163286cd5bf84e8b6a8aa96c184e0c3d0c059b4e58f01">9d5ded8cd57575b6</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py">postgres/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:fbf369bee75ca1953cfb50af7d8657aa32fd96a0a72dc47fc4db1bb4b1da94c8">fbf369bee75ca195</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:1a78cee24c784b56f30bfdc1204147278dbeb5f66a4d4a0d9344e51cdea16c7b">1a78cee24c784b56</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
+<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:010761795d5ddaea2e38ef4b81834b9850ee80e67eff5223059f69396d551d15">010761795d5ddaea</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:1c406ac4bc6e425acc0219a3d288a872801ffe9e15afe5600adfe93f9b8587cf">1c406ac4bc6e425a</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:aee8f09457a2f11b3a35cda79c7125d8e64ec458bb0da7935eb77fa3a7ba0c4b">aee8f09457a2f11b</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py">postgres/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:fbf369bee75ca1953cfb50af7d8657aa32fd96a0a72dc47fc4db1bb4b1da94c8">fbf369bee75ca195</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:1a78cee24c784b56f30bfdc1204147278dbeb5f66a4d4a0d9344e51cdea16c7b">1a78cee24c784b56</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
           </table>
         </div>
       </section>

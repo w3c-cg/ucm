@@ -841,6 +841,8 @@ ex:ci-a-revoke a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentRevocation ;
     ucm:hasConsentModality ucm:VerbalConsent ;
     ucm:occursDuring ex:t-ci-revoke .
+ex:p-a-grantor-revoke a ucm:Participation ;
+    ucm:occursWithin ex:ci-a-revoke ; ucm:participatingEntity ex:person-a ; ucm:assumesRole ex:role-grantor .
 ex:cd-a-2025 a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-a-2025 ;
     ucm:hasConsentCategory ucm:ConsentToShare ;

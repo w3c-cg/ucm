@@ -43,6 +43,9 @@ Substance SupplyDelivery SupplyRequest Task TerminologyCapabilities TestReport T
 ValueSet VerificationResult VisionPrescription
 """.split())
 
+# R4 resources the adapter might emit that have no `identifier` element
+R4_NO_IDENTIFIER = ["AuditEvent", "Binary", "OperationOutcome", "Parameters", "Provenance"]
+
 Transform = Literal["direct", "reference", "code", "concept-coding", "class-coding", "role-coding", "iri"]
 
 
@@ -74,6 +77,8 @@ class FhirField(BaseModel):
     coding: bool = False
     resource_types: List[str] = Field(default_factory=list, alias="resource-types")
     when: Dict[str, Any] = Field(default_factory=dict)
+    required: bool = False
+    marker: Optional[str] = None
 
     @property
     def path(self) -> List[str]:
@@ -207,6 +212,8 @@ class FhirCompiler:
             "coding": field.coding,
             "resource_types": field.resource_types,
             "when": field.when,
+            "required": field.required,
+            "marker": field.marker,
             "shared": shared,
             "inverse": field.inverse,
             "class": field.class_,
@@ -303,4 +310,5 @@ class FhirCompiler:
             "concepts": concepts,
             "concept_terms": {iri: term for term, iri in concepts.items()},
             "prefixes": dict(ir.prefixes),
+            "no_identifier": R4_NO_IDENTIFIER,
         }

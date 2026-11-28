@@ -2,7 +2,7 @@
   "lock-version": 1,
   "toolchain": {
     "version": "0.1.0",
-    "digest": "sha256:1abc2e408dc407a854078a9bf3f658f260b556efe71f7e1fdd54422577ffaac3"
+    "digest": "sha256:88c98467faff8f30d21456865ae1b1e1ba8f4c059de3118e98af07a2f8bd66b7"
   },
   "sources": {
     "ontology": [
@@ -30,7 +30,7 @@
     "examples": [
       {
         "path": "../examples/shapes/ucm-core-shapes-example.ttl",
-        "content": "sha256:9a23164cc0c60469c4bf0917f0a599f5abe4925fc2437de8a193f40689598d43"
+        "content": "sha256:8fe4b44cc429d61a2e6d46e61602262ad31550cca011ae08a7bf7e629f962d60"
       }
     ],
     "profile": [
@@ -42,7 +42,7 @@
     "fhir-mapping": [
       {
         "path": "profiles/ucm-fhir-mapping.yaml",
-        "content": "sha256:a345ccc6ef3fc3aa75f022d05e3365f13f03819ef89aad305cc0601f1cbee709"
+        "content": "sha256:19e2d2bb0fc844472e5dfb7162708b8171a8af75160461b104e7fa5d9a4eadae"
       }
     ]
   },
@@ -421,8 +421,8 @@
   },
   "outputs": {
     "context.jsonld": "sha256:010761795d5ddaea2e38ef4b81834b9850ee80e67eff5223059f69396d551d15",
-    "fhir/ucm_fhir_adapter.py": "sha256:9c9541fac3c0b019a78827f7974bb1a16732dd794765fd780c4a30af6865d9c2",
-    "openapi.yaml": "sha256:9d5ded8cd57575b6fb1163286cd5bf84e8b6a8aa96c184e0c3d0c059b4e58f01",
+    "fhir/ucm_fhir_adapter.py": "sha256:1c406ac4bc6e425acc0219a3d288a872801ffe9e15afe5600adfe93f9b8587cf",
+    "openapi.yaml": "sha256:aee8f09457a2f11b3a35cda79c7125d8e64ec458bb0da7935eb77fa3a7ba0c4b",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
