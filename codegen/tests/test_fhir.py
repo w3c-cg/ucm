@@ -5,6 +5,7 @@ import importlib.util
 import pytest
 from fhir.resources.R4B.bundle import Bundle
 
+from ucm_codegen.builder import SpecBuilder
 from ucm_codegen.fhir_target import FhirCompiler, FhirMapping, FhirMappingError
 from ucm_codegen.generator import Generator
 from ucm_codegen.utils import load_yaml_safe
@@ -12,9 +13,11 @@ from ucm_codegen.utils import load_yaml_safe
 from .conftest import FHIR_MAPPING, example_nodes
 
 
-def load_adapter(tmp_path_factory, compilation, name):
+def load_adapter(tmp_path_factory, compilation, profile, name):
+    """Compile as the build does: the API profile's scheme bindings type governsAction and the like"""
     mapping = FhirMapping.model_validate(load_yaml_safe(FHIR_MAPPING))
-    source = Generator().generate_fhir_adapter(FhirCompiler(compilation.ir, mapping).compile())
+    api = SpecBuilder(compilation.ir, profile)
+    source = Generator().generate_fhir_adapter(FhirCompiler(compilation.ir, mapping, api).compile())
     path = tmp_path_factory.mktemp(name) / f"{name}.py"
     path.write_text(source, encoding="utf-8")
     spec = importlib.util.spec_from_file_location(name, path)
@@ -24,20 +27,30 @@ def load_adapter(tmp_path_factory, compilation, name):
 
 
 @pytest.fixture(scope="module")
-def adapter(tmp_path_factory, compilation):
-    return load_adapter(tmp_path_factory, compilation, "adapter_shipped")
+def adapter(tmp_path_factory, compilation, profile):
+    return load_adapter(tmp_path_factory, compilation, profile, "adapter_shipped")
 
 
 @pytest.fixture(scope="module")
-def regressed_adapter(tmp_path_factory, regressed_compilation):
-    return load_adapter(tmp_path_factory, regressed_compilation, "adapter_regressed")
+def regressed_adapter(tmp_path_factory, regressed_compilation, profile):
+    return load_adapter(tmp_path_factory, regressed_compilation, profile, "adapter_regressed")
 
 
 @pytest.fixture(scope="module")
 def bundle(adapter, spec):
     bundle, warnings = adapter.to_fhir_bundle(example_nodes(spec))
-    assert warnings == []
+    assert warnings == EXPECTED_WARNINGS
     return bundle
+
+
+# R4 limits the examples run into, each reported rather than written wrongly
+EXPECTED_WARNINGS = [
+    # Sarah's directive cites two regulatory bases; R4 Consent.policyRule holds one
+    "http://example.org/ucm/cd-sarah Consent.policyRule: FHIR allows one value here; kept the first of 2",
+    # a household-wide directive: R4 Consent.patient takes only a Patient (R5 subject allows a Group)
+    "http://example.org/ucm/cd-thomson-hh Consent.patient: http://example.org/ucm/hh-thomson maps to Group; "
+    "FHIR R4 allows only Patient here",
+]
 
 
 def resources(bundle):
@@ -91,11 +104,12 @@ def test_resource_types_and_identity(bundle):
         "req-1": "Task",
         "stmt-1": "Observation",   # HousingEligibilityStatement via HousingStatement
         # consent and identity examples: people, households, organizations, a location
-        # (no FHIR Consent mapping yet, so directives are not in the bundle)
         **{p: "Patient" for p in ("ruth", "jameson", "madison", "sarah", "youth", "liaison", "proofer")},
         **{o: "Organization" for o in ("org-assessor", "org-clinic", "org-csp", "org-lead-agency", "org-state-e")},
         "hh-thomson": "Group",
         "loc-intake": "Location",
+        **{d: "Consent" for d in ("cd-a-2025", "cd-a-verbal", "cd-jameson", "cd-jameson-2023",
+                                  "cd-madison", "cd-sarah", "cd-thomson-hh", "cd-youth")},
     }
     assert found["req-1"]["meta"]["tag"] == [{"system": "https://www.w3.org/ns/ucm#", "code": "CoordinationRequest"}]
 
@@ -128,7 +142,9 @@ def test_observation_follows_the_participation_chain(bundle):
 def test_namespace_drift_reaches_the_adapter(regressed_adapter, regressed_spec):
     bundle, warnings = regressed_adapter.to_fhir_bundle(example_nodes(regressed_spec))
     assert resources(bundle)["req-1"]["status"] == "draft"  # mapping default
-    assert warnings == ["http://example.org/ucm/req-1 Task.status: 'ucm:Accepted' has no FHIR code in the mapping"]
+    # the consent vocabularies drift too; outside Consent, only the request's status is affected
+    assert [w for w in warnings if " Consent." not in w] == [
+        "http://example.org/ucm/req-1 Task.status: 'ucm:Accepted' has no FHIR code in the mapping"]
 
 
 def test_output_is_deterministic(adapter, spec, bundle):
@@ -230,3 +246,117 @@ def test_concept_coding_is_checked(compilation, field, message):
             "statusReason": field}}})).compile()
     assert any(message in e for e in error.value.errors), error.value.errors
 
+
+
+# ---------- Consent ----------
+
+EX = "http://example.org/ucm/"
+
+
+def url_of(bundle, local):
+    return next(e["fullUrl"] for e in bundle["entry"] if e["resource"]["identifier"][0]["value"] == EX + local)
+
+
+def test_consent_from_directive(bundle):
+    consent = resources(bundle)["cd-sarah"]
+    assert consent["status"] == "active"
+    assert consent["scope"]["coding"][0] == {
+        "system": "http://terminology.hl7.org/CodeSystem/consentscope", "code": "patient-privacy"}
+    assert consent["category"] == [{"coding": [{"system": UCM_CODES, "code": "ReleaseOfInformation"}]}]
+    assert consent["patient"]["reference"] == url_of(bundle, "sarah")
+    assert [p["reference"] for p in consent["performer"]] == [url_of(bundle, "sarah")]
+    # R4 has no top-level decision: the directive is the root provision
+    root = consent["provision"]
+    assert root["type"] == "permit"
+    deny = root["provision"][0]
+    assert deny["type"] == "deny"
+    assert deny["securityLabel"] == [{"system": UCM_CODES, "code": "Part2Protected"}]  # a bare Coding
+    assert deny["data"][0]["meaning"] == "instance"
+    permit = deny["provision"][0]
+    assert permit["type"] == "permit"
+    assert permit["purpose"] == [{"system": UCM_CODES, "code": "Treatment"}]
+    assert permit["actor"][0]["reference"]["reference"] == url_of(bundle, "org-clinic")
+    assert permit["actor"][0]["role"]["coding"][0]["code"] == "InformationRecipientRole"
+
+
+def test_proxy_is_the_performer(bundle):
+    consent = resources(bundle)["cd-jameson"]
+    assert consent["patient"]["reference"] == url_of(bundle, "jameson")
+    assert [p["reference"] for p in consent["performer"]] == [url_of(bundle, "ruth")]
+    assert consent["organization"][0]["reference"] == url_of(bundle, "org-lead-agency")
+    assert consent["policy"] == [{"uri": EX + "policy-coc-e", "extension": [
+        {"url": "https://www.w3.org/ns/ucm#fhirNode", "valueUri": EX + "policy-coc-e"}]}]
+
+
+def test_shared_status_code_keeps_the_exact_concept(adapter, bundle):
+    consent = resources(bundle)["cd-jameson-2023"]
+    assert consent["status"] == "inactive"
+    assert consent["_status"]["extension"][0]["valueUri"] == UCM_CODES + "ConsentSuperseded"
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    assert (EX + "cd-jameson-2023", "hasConsentStatus", "ConsentSuperseded") in back
+    assert (EX + "cd-jameson-2023", "hasConsentStatus", "ConsentInactive") not in back
+
+
+def test_consent_round_trip(adapter, bundle):
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    assert {
+        (EX + "cd-sarah", "hasConsentStatus", "ConsentActive"),
+        (EX + "cd-sarah", "hasConsentCategory", "ReleaseOfInformation"),
+        (EX + "cd-sarah", "hasConsentDecision", "Permit"),
+        (EX + "cd-sarah", "consentSubject", EX + "p-sarah-subj"),
+        (EX + "p-sarah-subj", "participatingEntity", EX + "sarah"),
+        (EX + "cd-sarah", "hasProvision", EX + "prov-sarah-part2"),
+        (EX + "prov-sarah-part2", "@type", "ConsentProvision"),
+        (EX + "prov-sarah-part2", "hasConsentDecision", "Deny"),
+        (EX + "prov-sarah-part2", "governsAction", "RediscloseAction"),
+        (EX + "prov-sarah-part2", "coversSensitivity", "Part2Protected"),
+        (EX + "prov-sarah-part2", "coversInstance", EX + "doc-sud-note"),
+        (EX + "prov-sarah-part2", "hasProvision", EX + "prov-sarah-part2-tx"),
+        (EX + "prov-sarah-part2-tx", "forPurpose", "Treatment"),
+        (EX + "prov-sarah-part2-tx", "coversDataCategory", "BehavioralHealthInformation"),
+        (EX + "prov-sarah-part2-tx", "provisionActor", EX + "p-clinic-recipient"),
+        (EX + "p-clinic-recipient", "participatingEntity", EX + "org-clinic"),
+        (EX + "p-clinic-recipient", "assumesRole", EX + "role-recipient"),
+        (EX + "cd-jameson", "governedByPolicy", EX + "policy-coc-e"),
+    } <= back
+
+
+def test_consent_dates_and_shared_labels(adapter):
+    """Time nodes, when present, give dateTime and periods; two schemes share securityLabel"""
+    nodes = [
+        {"@id": EX + "cd-t", "@type": "ConsentDirective", "hasConsentStatus": "ConsentActive",
+         "hasConsentCategory": "ConsentToShare", "hasConsentDecision": "Permit",
+         "recordsConsentFrom": [EX + "ci-t"], "validDuring": [EX + "t-valid"], "hasProvision": [EX + "pr-t"]},
+        {"@id": EX + "ci-t", "@type": "ConsentInteraction", "occursDuring": [EX + "t-signed"]},
+        {"@id": EX + "t-signed", "time:inXSDDateTimeStamp": {"@value": "2026-10-05T10:00:00-05:00"}},
+        {"@id": EX + "t-valid", "time:hasBeginning": {"@id": EX + "t-b"}, "time:hasEnd": {"@id": EX + "t-e"}},
+        {"@id": EX + "t-b", "time:inXSDDateTimeStamp": "2026-10-05T00:00:00-05:00"},
+        {"@id": EX + "t-e", "time:inXSDDateTimeStamp": "2029-10-05T00:00:00-05:00"},
+        {"@id": EX + "pr-t", "@type": "ConsentProvision", "hasConsentDecision": "Deny",
+         "coversSensitivity": ["HIV"], "coversConfidentiality": ["ConfidentialityRestricted"]},
+    ]
+    bundle, warnings = adapter.to_fhir_bundle(nodes)
+    assert warnings == []
+    consent = bundle["entry"][0]["resource"]
+    assert consent["dateTime"] == "2026-10-05T10:00:00-05:00"
+    assert consent["provision"]["period"] == {"start": "2026-10-05T00:00:00-05:00", "end": "2029-10-05T00:00:00-05:00"}
+    assert [c["code"] for c in consent["provision"]["provision"][0]["securityLabel"]] == [
+        "HIV", "ConfidentialityRestricted"]
+    Bundle.model_validate(bundle)
+    back = facts(adapter.from_fhir_bundle(bundle), adapter.KEYS)
+    assert (EX + "pr-t", "coversSensitivity", "HIV") in back
+    assert (EX + "pr-t", "coversConfidentiality", "ConfidentialityRestricted") in back
+    assert (EX + "pr-t", "coversSensitivity", "ConfidentialityRestricted") not in back
+
+
+@pytest.mark.parametrize("field, message", [
+    ({"via": "recordsConsentFrom", "property": "participatingEntity"}, "via needs inverse"),
+    ({"property": "hasConsentStatus", "transform": "code", "coding": True}, "coding applies only to transform concept-coding"),
+    ({"property": "hasConsentStatus", "transform": "concept-coding", "system": "http://x"}, "system applies only to transform code"),
+    ({"property": "consentSubject", "transform": "reference", "resource-types": ["Human"]}, "'Human' is not a FHIR R4 resource type"),
+], ids=["via", "coding", "system", "resource-types"])
+def test_consent_options_are_checked(compilation, profile, field, message):
+    with pytest.raises(FhirMappingError) as error:
+        FhirCompiler(compilation.ir, mapping_with({"ConsentDirective": {"resource": "Consent", "fields": {
+            "x": field}}}), SpecBuilder(compilation.ir, profile)).compile()
+    assert any(message in e for e in error.value.errors), error.value.errors

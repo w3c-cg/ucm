@@ -1738,7 +1738,7 @@ ucm:BirthDateQuality rdf:type owl:NamedIndividual ,
                      dcterms:description "How reliable is the recorded birth date?"@en ;
                      dcterms:publisher "MDIX"@en ;
                      dcterms:title "UCM Birth Date Quality"@en ;
-                     skos:definition "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2024 HMIS Data Dictionary v1.5). skos:notation carries the HMIS response code."@en ;
+                     skos:definition "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2026 HMIS Data Dictionary, October 2025). skos:notation carries the HMIS response code."@en ;
                      skos:hasTopConcept ucm:FullDateReported ,
                                         ucm:ApproximateOrPartial ,
                                         ucm:ClientDoesNotKnow ,

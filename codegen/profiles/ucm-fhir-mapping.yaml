@@ -11,14 +11,25 @@
 #   roles          keep participations whose assumed role is one of these
 #   exclude-roles  drop participations whose assumed role is one of these
 #   each           build one backbone element per item from nested field specs
-#   transform      direct | reference | code | concept-coding | class-coding | role-coding
+#   via            forward hops taken before inverse (a directive's consent
+#                  interaction, then the participations within it); one-way
+#   transform      direct | reference | code | concept-coding | class-coding | role-coding | iri
 #   map / default  concept term → FHIR code, for transform: code
+#   system         for transform: code, write a CodeableConcept in this system
+#   coding         for transform: concept-coding, write a bare Coding
+#   resource-types for transform: reference, the FHIR types allowed; others warn
+#   when           constant sub-elements of an each element (data.meaning);
+#                  the reverse direction reads only elements that match
+#   one-way        never read back (a projection another field already carries)
 #                  (concept-coding writes the UCM concept itself as a
 #                  CodeableConcept in the code-system; an adopter's own
 #                  concept keeps its IRI in the node-iri extension)
 #   single / list  cardinality of the FHIR element (default: single, each: list)
+# A key may end in #tag so several fields fill one repeating element
+# (securityLabel#sensitivity, securityLabel#confidentiality).
 # Collected nodes are tagged with the node-iri extension so the reverse
-# direction can rebuild them (single-hop paths only; chains are one-way).
+# direction can rebuild them (paths of one or two hops; longer chains and
+# via paths are one-way).
 
 fhir-version: 4.0.1
 code-system: https://www.w3.org/ns/ucm#
@@ -126,3 +137,84 @@ resources:
 
   HousingStatement: *observation
   SocialCareStatement: *observation
+
+  # FHIR R4 Consent. R4 has no top-level decision: the root provision is the
+  # directive itself, and nested provisions follow two levels deep. R4
+  # Consent.patient takes only a Patient, so a household-wide directive
+  # leaves it out with a warning (R5 Consent.subject allows a Group).
+  ConsentDirective:
+    resource: Consent
+    fields:
+      status:
+        property: hasConsentStatus
+        transform: code
+        map:
+          ConsentDraft: draft
+          ConsentActive: active
+          ConsentInactive: inactive
+          ConsentRevoked: inactive
+          ConsentExpired: inactive
+          ConsentSuperseded: inactive
+          ConsentRefused: rejected
+          ConsentEnteredInError: entered-in-error
+      scope:
+        property: hasConsentCategory
+        transform: code
+        system: http://terminology.hl7.org/CodeSystem/consentscope
+        one-way: true   # category carries the exact UCM concept
+        map:
+          PrivacyConsent: patient-privacy
+          ReleaseOfInformation: patient-privacy
+          ConsentToCollect: patient-privacy
+          ConsentToShare: patient-privacy
+          TreatmentConsent: treatment
+          ResearchConsent: research
+          AdvanceDirective: adr
+      category: {property: hasConsentCategory, transform: concept-coding, list: true}
+      patient:
+        {property: [consentSubject, participatingEntity], transform: reference, resource-types: [Patient]}
+      dateTime: {property: [recordsConsentFrom, occursDuring, "time:inXSDDateTimeStamp"]}
+      performer:   # R4 performer is the grantor (R5 Consent.grantor)
+        {via: recordsConsentFrom, inverse: occursWithin, class: Participation, roles: [ConsentGrantorRole],
+         property: participatingEntity, transform: reference, list: true}
+      organization:
+        {via: recordsConsentFrom, inverse: occursWithin, class: Participation, roles: [InformationCustodianRole],
+         property: participatingEntity, transform: reference, list: true}
+      sourceReference: {property: sourceDocument, transform: reference}
+      policy:
+        property: governedByPolicy
+        each:
+          uri: {transform: iri}
+      policyRule: {property: hasRegulatoryBasis, transform: concept-coding}
+      provision.type: {property: hasConsentDecision, transform: code, map: {Permit: permit, Deny: deny}}
+      provision.period.start: {property: [validDuring, "time:hasBeginning", "time:inXSDDateTimeStamp"]}
+      provision.period.end: {property: [validDuring, "time:hasEnd", "time:inXSDDateTimeStamp"]}
+      provision.provision:
+        property: hasProvision
+        class: ConsentProvision
+        each:
+          <<: &provision
+            type: {property: hasConsentDecision, transform: code, map: {Permit: permit, Deny: deny}}
+            period.start: {property: [validDuring, "time:hasBeginning", "time:inXSDDateTimeStamp"]}
+            period.end: {property: [validDuring, "time:hasEnd", "time:inXSDDateTimeStamp"]}
+            actor:
+              property: provisionActor
+              class: Participation
+              each:
+                role: {property: assumesRole, transform: role-coding}
+                reference: {property: participatingEntity, transform: reference}
+            action: {property: governsAction, transform: concept-coding, list: true}
+            securityLabel#sensitivity: {property: coversSensitivity, transform: concept-coding, coding: true, list: true}
+            securityLabel#confidentiality: {property: coversConfidentiality, transform: concept-coding, coding: true, list: true}
+            purpose: {property: forPurpose, transform: concept-coding, coding: true, list: true}
+            code: {property: coversDataCategory, transform: concept-coding, list: true}
+            dataPeriod.start: {property: [dataPeriod, "time:hasBeginning", "time:inXSDDateTimeStamp"]}
+            dataPeriod.end: {property: [dataPeriod, "time:hasEnd", "time:inXSDDateTimeStamp"]}
+            data#instance: {property: coversInstance, when: {meaning: instance}, each: {reference: {transform: reference}}}
+            data#related: {property: coversRelated, when: {meaning: related}, each: {reference: {transform: reference}}}
+            data#dependents: {property: coversDependents, when: {meaning: dependents}, each: {reference: {transform: reference}}}
+            data#authoredby: {property: coversAuthoredBy, when: {meaning: authoredby}, each: {reference: {transform: reference}}}
+          provision:
+            property: hasProvision
+            class: ConsentProvision
+            each: *provision

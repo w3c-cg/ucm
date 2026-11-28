@@ -24,7 +24,7 @@ def test_ontology_header(compilation):
 def test_classes_and_properties(compilation):
     ir = compilation.ir
     assert len(ir.classes) == 95
-    assert len(ir.properties) == 109
+    assert len(ir.properties) == 110
     assert sum(p.kind == "datatype" for p in ir.properties.values()) == 13
     # External equivalents are annotations on Person, not classes of their own
     assert all(iri.startswith(UCM) for iri in ir.classes)

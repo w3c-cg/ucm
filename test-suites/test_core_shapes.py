@@ -277,10 +277,12 @@ CASES = [
   {(W, "AuthorizedByActiveConsentShape", "req-1")}),
  ("C23 policy requires IAL3, grantor proofed only to IAL2",
   "ex:policy-coc-e ucm:requiresIAL ucm:IAL3 .",
-  {(W, "ConsentIdentityAssuranceShape", "cd-jameson"), (W, "ConsentIdentityAssuranceShape", "cd-madison")}),
+  {(W, "ConsentIdentityAssuranceShape", "cd-jameson"), (W, "ConsentIdentityAssuranceShape", "cd-madison"),
+   (W, "ConsentIdentityAssuranceShape", "cd-thomson-hh")}),
  ("C24 policy requires AAL3",
   "ex:policy-coc-e ucm:requiresAAL ucm:AAL3 .",
-  {(W, "ConsentIdentityAssuranceShape", "cd-jameson"), (W, "ConsentIdentityAssuranceShape", "cd-madison")}),
+  {(W, "ConsentIdentityAssuranceShape", "cd-jameson"), (W, "ConsentIdentityAssuranceShape", "cd-madison"),
+   (W, "ConsentIdentityAssuranceShape", "cd-thomson-hh")}),
  ("C25 applicant reference is also the applicant's consent proxy",
   "ex:p-liaison-proxy a ucm:Participation ; ucm:occursWithin ex:ci-youth ; ucm:participatingEntity ex:liaison ; ucm:assumesRole ex:role-proxy .",
   {(W, "ApplicantReferenceShape", "proof-youth")}),
@@ -295,9 +297,34 @@ CASES = [
  ("C28 untyped jurisdiction",
   "ex:cd-madison ucm:processingLocation ex:somewhere .",
   {(W, "ProcessingLocationTypeShape/processingLocation", "cd-madison")}),
+ ("C29 household ROI whose proxy acts for only one of the two minors",
+  "ex:ci-hh2 a ucm:ConsentInteraction ; ucm:occursDuring ex:t-ci-thomson . "
+  "ex:p-hh2-s a ucm:Participation ; ucm:occursWithin ex:ci-hh2 ; ucm:participatingEntity ex:hh-thomson ; ucm:assumesRole ex:role-csubject . "
+  "ex:p-hh2-proxy a ucm:Participation ; ucm:occursWithin ex:ci-hh2 ; ucm:participatingEntity ex:ruth ; "
+  "ucm:assumesRole ex:role-proxy ; ucm:consentOnBehalfOf ex:jameson . "
+  "ex:cd-hh2 a ucm:ConsentDirective ; ucm:recordsConsentFrom ex:ci-hh2 ; ucm:consentSubject ex:p-hh2-s ; "
+  "ucm:hasConsentDecision ucm:Permit ; ucm:hasConsentStatus ucm:ConsentActive ; ucm:validDuring ex:t-roi .",
+  {(W, "HouseholdMinorProxyShape", "cd-hh2")}),
+ ("C30 proxy names a minor who is not the one in the household",
+  "ex:p-on-behalf a ucm:Participation ; ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:sarah ; "
+  "ucm:assumesRole ex:role-grantor ; ucm:consentOnBehalfOf ex:youth .",
+  {(W, "OnBehalfOfProxyShape", "p-on-behalf")}),
+ ("C31 a non-member grants for the household without a proxy role",
+  "ex:p-liaison-hh a ucm:Participation ; ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:liaison ; ucm:assumesRole ex:role-grantor .",
+  {(W, "ProxyGrantorShape", "cd-thomson-hh")}),
+ ("C32 a new minor joins the household with no proxy",
+  'ex:baby a ucm:Person ; ucm:birthDate "2025-01-15"^^xsd:date ; ucm:memberOf ex:hh-thomson .',
+  {(W, "HouseholdMinorProxyShape", "cd-thomson-hh")}),
  ("N08 adopter decision concept mapped to ucm:Deny still alternates correctly",
   "ex:cd-madison ucm:hasProvision ex:prov-x . ex:prov-x a ucm:ConsentProvision ; ucm:hasConsentDecision fhir:deny . "
   "fhir:deny a skos:Concept ; skos:inScheme fhir:ConsentProvisionType ; skos:exactMatch ucm:Deny .",
+  set()),
+ ("N10 household minor covered by a proxy acting for them",
+  'ex:baby a ucm:Person ; ucm:birthDate "2025-01-15"^^xsd:date ; ucm:memberOf ex:hh-thomson . '
+  "ex:p-ruth-proxy-hh ucm:consentOnBehalfOf ex:baby .",
+  set()),
+ ("N11 household member with no birth date is not judged",
+  "ex:guest a ucm:Person ; ucm:memberOf ex:hh-thomson .",
   set()),
  ("N09 withdrawal method as a link written as text",
   'ex:cd-madison ucm:withdrawalMethod "https://example.org/revoke" .',

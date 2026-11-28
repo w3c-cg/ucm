@@ -563,7 +563,7 @@
       },
       "skos:definition": {
         "@language": "en",
-        "@value": "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2024 HMIS Data Dictionary v1.5). skos:notation carries the HMIS response code."
+        "@value": "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2026 HMIS Data Dictionary, October 2025). skos:notation carries the HMIS response code."
       },
       "skos:hasTopConcept": [
         {
@@ -6364,6 +6364,18 @@
       "rdfs:label": "certifies",
       "rdfs:range": {
         "@id": "ucm:Organization"
+      }
+    },
+    {
+      "@id": "ucm:consentOnBehalfOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent proxy's participation to a person it consents for. Needed when the consent subject is a group, such as a household, and the proxy acts for some of its members.",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "consent on behalf of",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
       }
     },
     {

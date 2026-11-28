@@ -2,23 +2,23 @@
   "lock-version": 1,
   "toolchain": {
     "version": "0.1.0",
-    "digest": "sha256:9f91cd160500202b03b0a1d5f8905a717abbc0350120d16b951070a677713468"
+    "digest": "sha256:87f871a9bd7d258a0e7e2bd0cace15a1ad467188518d40e150231754432da763"
   },
   "sources": {
     "ontology": [
       {
         "path": "../unified-care-model.ttl",
-        "content": "sha256:064844e3aa8d2cabb73018830369acec2d9f6d1e48b469d1dbec7d473d92dee6"
+        "content": "sha256:1eb062abd875d05e6b91b0358f051875b8507e5cb50e869dd79003581828ddd0"
       },
       {
         "path": "../ucm-lifecycle-vocabularies.ttl",
-        "content": "sha256:3a64780d3f44a873aa49616e456ff7af833a1951d833c605218cb8b3fbd6fdaa"
+        "content": "sha256:5f7ee3156039452938eef30980f1416d4d8a03d6991ec05679a6176fd46b3efa"
       }
     ],
     "shapes": [
       {
         "path": "../ucm-core-shapes.ttl",
-        "content": "sha256:76a1505dee390c8a7abb5630ebe68c6c63fd2a035bd1c40e0d411f75c3617d8c"
+        "content": "sha256:d411186bd21321d2e618ccddccf34ad501d3a56a6b4280c525f6aa82c2609f3e"
       }
     ],
     "shapes-lint": [
@@ -30,7 +30,7 @@
     "examples": [
       {
         "path": "../examples/shapes/ucm-core-shapes-example.ttl",
-        "content": "sha256:943b5532a5a13af33ad1deabf4ae7263e4124f5cca5b07fe8f843bab83e13f5f"
+        "content": "sha256:b5255636766802b6246d93c05a54536998477469e8a1b6a72f5e534254dac4e8"
       }
     ],
     "profile": [
@@ -42,22 +42,22 @@
     "fhir-mapping": [
       {
         "path": "profiles/ucm-fhir-mapping.yaml",
-        "content": "sha256:22c15fd3c068a4b911259538e6382ce15d6218f4d1f49f90afff60b1ecdd62c3"
+        "content": "sha256:6815ffa142002e0903feca1626f55c802eae31c33ed1ea11c756f41bd1f7efd3"
       }
     ]
   },
   "ir": [
     {
       "file": "ucm-ontology.jsonld",
-      "canonical": "sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e",
-      "content": "sha256:73a748572263e62b730f641d39f17d2e045208ecdf00dff6e6f02dfb0190bd0f",
-      "triples": 2515
+      "canonical": "sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b",
+      "content": "sha256:daaf469c440e9ae591639937dffa15ffee72c487646e244f0cc7a4aedf0cdb39",
+      "triples": 2520
     },
     {
       "file": "ucm-shapes.jsonld",
-      "canonical": "sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f",
-      "content": "sha256:36db4a58e497df1d03695046173cc26ea44261b7a5f656f2297b4b8454910f16",
-      "triples": 1264
+      "canonical": "sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9",
+      "content": "sha256:32aaf11eb41cf672e860504f55d0901d0c330f8aec0032dc4cf5cd44b1940e65",
+      "triples": 1289
     },
     {
       "file": "ucm-shapes-lint.jsonld",
@@ -66,7 +66,7 @@
       "triples": 39
     }
   ],
-  "ir-root": "sha256:3712a918b36059f1f9e4a722a0226b6a5816f56bf1e37200feb17cbd24667611",
+  "ir-root": "sha256:3c9857602434b84d1ad58caf6fe726b4f1a6bd25df8778bbbf6c4862471abfd4",
   "nodes": {
     "ontology": "sha256:c374dc114e39fdec7e529c714ca6226be20c5cae6d19ecc76785e7e9c38ba25c",
     "class:ucm:ActivityFocus": "sha256:d62f729f1285f3a633f372968cfe6418976b630121e66df9c17522793b5cfb0d",
@@ -179,6 +179,7 @@
     "property:ucm:birthDate": "sha256:0a4213acc3025f7cd920e8ff2b82c75328468597eea9117f6a8469be83108bca",
     "property:ucm:birthDateQuality": "sha256:6c1f2f4a22d594229df1817776d7f5f8874e4b896f34874c0ad280d5884a2c9f",
     "property:ucm:certifies": "sha256:48e743165c6420cd34651abbf82783a83caec8c613a0a60f9f8ea7d4f5decd1b",
+    "property:ucm:consentOnBehalfOf": "sha256:4d5c7b83a9d70fdc9c1b7f89323a5a34b61b096208350b6c78387cf8c4b2508d",
     "property:ucm:consentSubject": "sha256:d049cc338f23855448eaf28c2aa5249eeae52eb36ed8b70e88ca9537cb33bd9f",
     "property:ucm:coversAuthoredBy": "sha256:2730588148b2f2a6d3cb4a8912d3ff810dcc114229ee2ac70d520ca55e36bbba",
     "property:ucm:coversConfidentiality": "sha256:93b9451d7d58e06a7ff9f56e5a9751f116c933348f8e0229f08e0673f2a54f36",
@@ -337,6 +338,7 @@
     "shape:ucm:ConsentModality-anchored": "sha256:b215bafa3ad55e455aa23951e5c960608c38ba52ae386a9cce4ecd299085d290",
     "shape:ucm:ConsentModalityShape": "sha256:e05eba9b6e4a8a619a53f692fae6f477d10a0d6c4108658671d65eb4f2e0c109",
     "shape:ucm:ConsentModel-anchored": "sha256:80fa801da77646aa71e9995f14f51e10193156e167e6f012d4bfd3436d80e83f",
+    "shape:ucm:ConsentOnBehalfOfTypeShape": "sha256:6a1fcca74070d249c73001e62446658456fc65d3306fe984b66cf6dc7f5359a4",
     "shape:ucm:ConsentProvisionShape": "sha256:6c3d19369c55cd38c962e93fcd59c69bed1b1d7ead8994aa7c556c6ea82ce086",
     "shape:ucm:ConsentStatus-anchored": "sha256:0c4c954d7bc787c327e53a80f4c08a3e6b5ab0af83074ddd9ae7deb1548dd112",
     "shape:ucm:ConsentStatusShape": "sha256:f1c30e88643c4a47735674b0178a621daed4b3e1baba1a5f755c0e5f25b3d670",
@@ -360,6 +362,7 @@
     "shape:ucm:HasIdentifierTypeShape": "sha256:967b9c52e9221d1e0d8fae0c5dd9a40b57c4bd4692233b2435602cd41927def8",
     "shape:ucm:HasIdentityTypeShape": "sha256:0671e51500c6d58845764129276645dee4e6eb92a5a323276751df0ba39616ed",
     "shape:ucm:HasProvisionTypeShape": "sha256:c2972780ac2039c5a30f6470725f76db2fc82a54d3f42624b93939300322f457",
+    "shape:ucm:HouseholdMinorProxyShape": "sha256:9274dab441568fed3a18fce6dd5659c4d02388e867a316bc324260757443f64a",
     "shape:ucm:IdentifiedAsTypeShape": "sha256:343042e403b19e99f65e4bb430b873fb1554d5ae9ff33927b050e126631baf50",
     "shape:ucm:IdentifierShape": "sha256:c3d17722c48747dde7276a552f58ab2070bd879fa6bee578774515e7a1e18c6b",
     "shape:ucm:IdentifierType-anchored": "sha256:2f08880a60c4e3e492ed9984a9288545e0386420e7b7ebf3738557ca183006ed",
@@ -375,6 +378,7 @@
     "shape:ucm:LifecycleStateShape": "sha256:1793992f0a468ddfcc040e1b0dec2066f439458826e858ef015e621b6088bfa3",
     "shape:ucm:MatchesIdentityTypeShape": "sha256:8886e956b0e948cbb7a4a4adcde7312da970ab6a3fd0cd14c1ae1af90c9c7857",
     "shape:ucm:MembershipShape": "sha256:b552273b8a6dc110a4dbcbb9d029473c6afdbb6e399642422b2b82cc8b13d38c",
+    "shape:ucm:OnBehalfOfProxyShape": "sha256:5a5311bc759f13eb2daa1b08d835bab2a6a8f11452c9e210fcee419e7fff734c",
     "shape:ucm:ParticipationEntityConsistencyShape": "sha256:830d08a5c7980ab63915239538a768eada6a4a37265179817755f5d00276c0ad",
     "shape:ucm:ParticipationProcessConsistencyShape": "sha256:12986a928fd1f68ae8089af1ec5ee66c20bdd5a8833f197284d38227487d29da",
     "shape:ucm:ParticipationShape": "sha256:a4d6faa6c3d20786e902f677b3bf60de4fe60b24785079bbe44bb4f0a6da5cd1",
@@ -388,7 +392,7 @@
     "shape:ucm:ProvisionActorTypeShape": "sha256:68ad9e2ebfa2279a9b88a1f424ea2047d5283f4dcb97421215bdab910790804c",
     "shape:ucm:ProvisionAcyclicShape": "sha256:9d2543ea9761cc152c868ac4c6b48f49aed669312719c7a2d5d0a46cf03dbd22",
     "shape:ucm:ProvisionAlternationShape": "sha256:ad2a46a0ca4a3c3f5bd0bb9290c7e6b2b7e9c4d21e699823b7eb41e4ea1fa73a",
-    "shape:ucm:ProxyGrantorShape": "sha256:5a8ee8f03fcc061d6d4365e3b33678a5e76fe1334e8eb861190ef06b303bcf2a",
+    "shape:ucm:ProxyGrantorShape": "sha256:2a6fefc9ec4245aa5d60a8e39dab411ae0587493ec475173387e5c6a1e5c222e",
     "shape:ucm:PurposeOfUse-anchored": "sha256:1c7ce988c4a0a4a4dadb70c35652a13776f15ebd25bd2f51e61974c097f65768",
     "shape:ucm:RecordsConsentFromTypeShape": "sha256:8c214d9833cec2ad8192d32ccd44796026198ebc1c241946f8ba9b55d06bd04f",
     "shape:ucm:ReferralDisposition-anchored": "sha256:8526c068b8df34c26223d68009755fe597879ef639755f14543bc490b7c6d5f4",
@@ -416,13 +420,13 @@
     "shape:ucm:WithinJurisdictionTypeShape": "sha256:f14346681f2f7f00e6a389193af91b4ac9e2bcc97bcdeec3abe32b5c54d6f54a"
   },
   "outputs": {
-    "context.jsonld": "sha256:6115285645c00fea6d238784a6f716bb97dc8af2a5300215b3fdafbbc0e3e075",
-    "fhir/ucm_fhir_adapter.py": "sha256:5d198dfa7625bf6db18a7f8fb9284e45ed7ae0e30eb1fb21697752415b458276",
-    "openapi.yaml": "sha256:299920e9d8ae8d5972035122db41f30e952a46886ede30ed0ef803cb6d7fefbc",
+    "context.jsonld": "sha256:f277d454663cc15047130489c22bd60326a24d7f8be8c83a69b86bf02bc0e17d",
+    "fhir/ucm_fhir_adapter.py": "sha256:27794872e154dfdd40f870bebd5058b39310f03db401a3bcbba5eecbc918cb7e",
+    "openapi.yaml": "sha256:092445b46969aa6f51f55027f976dfecba2d0d10e71dda5704556e10d74ad2e6",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
-    "postgres/migrations/versions/ucm_fbdcc29d7c1b_ucm_0_0_1.py": "sha256:71957b01a82818bc51b2139c8e5f50be12af51091bad590422d9ee5b82dc7346",
-    "postgres/ucm_models.py": "sha256:bfdaa858c92ebb5fd236f59f5448a4cfba448853c4a687446dc2f31331bc938f"
+    "postgres/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py": "sha256:74847c9ff8e048bb27afa1e0370e8c663dfee01fd3231994e5a2542876182969",
+    "postgres/ucm_models.py": "sha256:512861a412db0f8f6a3a69fda75fcee0d7c74240d4df5def7539c9e65eed30df"
   }
 }

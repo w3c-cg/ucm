@@ -116,6 +116,7 @@
     "birthDate": {"@id": "ucm:birthDate", "@type": "xsd:date"},
     "birthDateQuality": {"@id": "ucm:birthDateQuality", "@type": "@vocab"},
     "certifies": {"@container": "@set", "@id": "ucm:certifies", "@type": "@id"},
+    "consentOnBehalfOf": {"@container": "@set", "@id": "ucm:consentOnBehalfOf", "@type": "@id"},
     "consentSubject": {"@container": "@set", "@id": "ucm:consentSubject", "@type": "@id"},
     "coversAuthoredBy": {"@container": "@set", "@id": "ucm:coversAuthoredBy", "@type": "@id"},
     "coversConfidentiality": {"@container": "@set", "@id": "ucm:coversConfidentiality", "@type": "@vocab"},

@@ -725,6 +725,43 @@ ex:cd-madison a ucm:ConsentDirective ;
     ucm:inJurisdiction ex:ExampleCoCE ;
     ucm:validDuring ex:t-roi .
 
+# (b) a household-wide ROI: one directive whose subject is the Thomson
+# household. The adults, Ruth and Sarah, grant for themselves as members;
+# Ruth also acts as proxy for each minor, named with consentOnBehalfOf.
+ex:mem-ruth a ucm:Membership ; ucm:membershipIn ex:hh-thomson .
+ex:mem-sarah a ucm:Membership ; ucm:membershipIn ex:hh-thomson .
+ex:mem-jameson a ucm:Membership ; ucm:membershipIn ex:hh-thomson .
+ex:mem-madison a ucm:Membership ; ucm:membershipIn ex:hh-thomson .
+ex:ruth ucm:hasMembership ex:mem-ruth .
+ex:sarah ucm:hasMembership ex:mem-sarah .
+ex:jameson ucm:hasMembership ex:mem-jameson .
+ex:madison ucm:hasMembership ex:mem-madison .
+
+ex:ci-thomson-hh a ucm:ConsentInteraction ;
+    ucm:hasConsentInteractionType ucm:ConsentGrant ;
+    ucm:hasConsentModality ucm:WrittenConsent ;
+    ucm:occursDuring ex:t-ci-thomson ;
+    ucm:inJurisdiction ex:ExampleCoCE .
+ex:p-hh-subj a ucm:Participation ;
+    ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:hh-thomson ; ucm:assumesRole ex:role-csubject .
+ex:p-ruth-grantor-hh a ucm:Participation ;
+    ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:ruth ; ucm:assumesRole ex:role-grantor .
+ex:p-sarah-grantor-hh a ucm:Participation ;
+    ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:sarah ; ucm:assumesRole ex:role-grantor .
+ex:p-ruth-proxy-hh a ucm:Participation ;
+    ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:ruth ; ucm:assumesRole ex:role-proxy ;
+    ucm:consentOnBehalfOf ex:jameson , ex:madison .
+
+ex:cd-thomson-hh a ucm:ConsentDirective ;
+    ucm:recordsConsentFrom ex:ci-thomson-hh ;
+    ucm:consentSubject ex:p-hh-subj ;
+    ucm:hasConsentDecision ucm:Permit ;
+    ucm:hasConsentStatus ucm:ConsentActive ;
+    ucm:hasConsentCategory ucm:ReleaseOfInformation ;
+    ucm:governedByPolicy ex:policy-coc-e ;
+    ucm:inJurisdiction ex:ExampleCoCE ;
+    ucm:validDuring ex:t-roi .
+
 # (d) renewal: the 2023 ROI that cd-jameson renews (three-year re-confirmation).
 ex:ci-thomson-2023 a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentGrant ;
@@ -804,6 +841,7 @@ ex:ci-a-revoke a ucm:ConsentInteraction ;
     ucm:occursDuring ex:t-ci-revoke .
 ex:cd-a-2025 a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-a-2025 ;
+    ucm:hasConsentCategory ucm:ConsentToShare ;
     ucm:consentSubject ex:p-a-subj-2025 ;
     ucm:hasConsentDecision ucm:Permit ;
     ucm:hasConsentStatus ucm:ConsentRevoked ;

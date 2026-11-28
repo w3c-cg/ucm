@@ -1818,6 +1818,18 @@ ucm:ConsentSubjectTypeShape rdf:type owl:NamedIndividual ,
                             sh:targetSubjectsOf ucm:consentSubject .
 
 
+###  https://www.w3.org/ns/ucm#ConsentOnBehalfOfTypeShape
+ucm:ConsentOnBehalfOfTypeShape rdf:type owl:NamedIndividual ,
+                                        sh:NodeShape ;
+                               sh:property [ sh:class ucm:Entity ;
+                sh:message "consentOnBehalfOf target is not typed as ucm:Entity." ;
+                sh:path ucm:consentOnBehalfOf ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                               sh:targetSubjectsOf ucm:consentOnBehalfOf .
+
+
 ###  https://www.w3.org/ns/ucm#HasProvisionTypeShape
 ucm:HasProvisionTypeShape rdf:type owl:NamedIndividual ,
                                    sh:NodeShape ;
@@ -2142,7 +2154,7 @@ ucm:ConsentGrantorShape rdf:type owl:NamedIndividual ,
 ucm:ProxyGrantorShape rdf:type owl:NamedIndividual ,
                                sh:NodeShape ;
                       sh:severity sh:Warning ;
-                      sh:sparql [ sh:message "Grantor is not the subject, so the grantor's role should be ucm:ConsentProxyRole (or a subclass)." ;
+                      sh:sparql [ sh:message "Grantor is neither the subject nor a member of the subject group, so the grantor's role should be ucm:ConsentProxyRole (or a subclass)." ;
                 sh:select """
             PREFIX ucm:  <https://www.w3.org/ns/ucm#>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -2154,6 +2166,10 @@ ucm:ProxyGrantorShape rdf:type owl:NamedIndividual ,
                 $this ucm:consentSubject/ucm:participatingEntity ?subject .
                 FILTER (?grantor != ?subject)
                 FILTER NOT EXISTS { ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole }
+                # A member of a group subject (such as a household) may grant for themselves.
+                FILTER NOT EXISTS { ?subject ucm:hasMember ?grantor }
+                FILTER NOT EXISTS { ?grantor ucm:memberOf ?subject }
+                FILTER NOT EXISTS { ?grantor ucm:hasMembership/ucm:membershipIn ?subject }
             }"""
               ] ;
                       sh:targetClass ucm:ConsentDirective ;
@@ -2200,6 +2216,70 @@ ucm:SelfConsentBasisShape rdf:type owl:NamedIndividual ,
               ] ;
                           sh:targetClass ucm:ConsentDirective ;
                           ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#HouseholdMinorProxyShape
+ucm:HouseholdMinorProxyShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Warning ;
+                             sh:sparql [ sh:message "The consent subject is a household, and a member who was a minor on the consent date (under 18, from ucm:birthDate) has no ucm:ConsentProxyRole participation acting ucm:consentOnBehalfOf them, and does not self-consent under a ucm:SelfConsentRule whose minimum age they had reached." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX time: <http://www.w3.org/2006/time#>
+            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+               SELECT DISTINCT $this ?member WHERE {
+                   $this ucm:consentSubject/ucm:participatingEntity ?hh ;
+                         ucm:recordsConsentFrom ?ci .
+                   ?hh a/rdfs:subClassOf* ucm:Household .
+                   { ?hh ucm:hasMember ?member } UNION { ?member ucm:memberOf ?hh }
+                   UNION { ?member ucm:hasMembership/ucm:membershipIn ?hh }
+            ?member ucm:birthDate ?bd .
+            ?ci ucm:occursDuring ?when .
+            ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .
+            BIND (STR(?bd) AS ?b)
+            BIND (IF(STRLEN(?b) = 4, CONCAT(?b, "-12-31"), IF(STRLEN(?b) = 7, CONCAT(?b, "-31"), SUBSTR(?b, 1, 10))) AS ?latest)
+            BIND (SUBSTR(STR(?at), 1, 10) AS ?on)
+            BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))
+                  - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)
+            FILTER (?age < 18)
+                   FILTER NOT EXISTS {
+                       $this ucm:recordsConsentFrom ?pci .
+                       ?pp ucm:consentOnBehalfOf ?member ;
+                           ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole .
+                       { ?pp ucm:occursWithin ?pci } UNION { ?pci ucm:hasParticipant ?pp }
+                   }
+                   FILTER NOT EXISTS {
+                       $this ucm:recordsConsentFrom ?sci ;
+                             ucm:governedByPolicy ?rule .
+                       ?sp ucm:participatingEntity ?member ;
+                           ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .
+                       { ?sp ucm:occursWithin ?sci } UNION { ?sci ucm:hasParticipant ?sp }
+                       ?rule a/rdfs:subClassOf* ucm:SelfConsentRule .
+                       OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }
+                       FILTER (!BOUND(?min) || ?age >= ?min)
+                   }
+               }"""
+              ] ;
+                             sh:targetClass ucm:ConsentDirective ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#OnBehalfOfProxyShape
+ucm:OnBehalfOfProxyShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:severity sh:Warning ;
+                         sh:sparql [ sh:message "Participation consents on behalf of someone but does not assume a ucm:ConsentProxyRole (or a subclass)." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT $this WHERE {
+                $this ucm:consentOnBehalfOf ?someone .
+                FILTER NOT EXISTS { $this ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole }
+            }"""
+              ] ;
+                         sh:targetSubjectsOf ucm:consentOnBehalfOf ;
+                         ucm:tier ucm:Recommended .
 
 
 ###  https://www.w3.org/ns/ucm#RevokedHasRevocationShape

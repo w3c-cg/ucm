@@ -664,9 +664,31 @@ implementation differs from the sections above, the implementation wins:
   `UnaccompaniedYouth` label and `DependentRole` was left out: the label sits on
   data, not on the person, and `DependentRole` is only in the participation
   module's old namespace.
-- **Not implemented yet:** the shape requiring a member-level proxy for each
-  minor when a `Household` is the subject (Q4), and a FHIR `Consent` resource in
-  the codegen FHIR adapter.
+- **Household subjects (Q4), added 2026-11-28:** a new property
+  `ucm:consentOnBehalfOf` (Participation to Entity) names the member a proxy acts
+  for. `HouseholdMinorProxyShape` (Recommended) flags a household-subject directive
+  where a member who was under 18 on the consent date has no `ConsentProxyRole`
+  participation acting on their behalf and does not self-consent under a
+  `SelfConsentRule` they qualify for. Members are found through `hasMember`,
+  `memberOf` or `Membership`. Members with no birth date are not judged.
+  `OnBehalfOfProxyShape` flags `consentOnBehalfOf` on a participation without a
+  proxy role. `ProxyGrantorShape` now accepts a member of a group subject granting
+  for themselves. Adults are not yet required to sign a household directive.
+- **FHIR R4 Consent adapter, added 2026-11-28:** the overlay
+  (`codegen/profiles/ucm-fhir-mapping.yaml`) maps `ConsentDirective` to R4
+  `Consent`. The directive is the root provision (R4 has no top-level decision),
+  with two levels of nested provisions. `performer` is the grantor or proxy and
+  `organization` the custodian, both reached through the consent interaction.
+  Status codes several UCM concepts share (`inactive`) keep the exact concept in
+  `_status`. `scope` is derived from the category and not read back. Limits, each
+  reported as a warning rather than written wrongly: R4 `patient` takes only a
+  Patient, so a household subject is left out; R4 `policyRule` holds one regulatory
+  basis. Not mapped: `verification` (R4 cannot name the verifier) and the
+  interaction itself (a `Provenance` would carry it). `dateTime` and periods are
+  filled when the time nodes are in the input. To support this, the adapter engine
+  gained `via` paths, bare `Coding` output, `system` on code maps, `resource-types`,
+  `when` constants, `#tag` keys for shared elements, child nodes for backbone
+  elements, and two-hop round trips.
 - **Codegen fixes the new terms needed:** the JSON-LD context no longer coerces
   `xsd:string` terms, and coerces a datatype-union term to the shapes' first
   datatype; examples write coerced booleans and numbers as JSON values and sort
@@ -679,7 +701,7 @@ implementation differs from the sections above, the implementation wins:
   SP 800-63B-4 and SP 800-63C-4 section 2 (AAL2 verifiers must offer a
   phishing-resistant option; AAL3 needs a non-exportable cryptographic key; FAL3 needs
   a holder-of-key assertion or a bound authenticator). The BirthDateQuality codes match
-  HMIS element 3.03 in the FY 2024 HMIS Data Dictionary v1.5 (1, 2, 8, 9, 99, carried as
+  HMIS element 3.03 in the FY 2026 HMIS Data Dictionary (October 2025; unchanged from FY 2024 v1.5) (1, 2, 8, 9, 99, carried as
   `skos:notation`). The TS 27560 names `storage_locations` and `retention_period` are
   confirmed from the ISO sample; `withdrawal_method` and `processing_locations` are from
   Pandit et al. and the DPV guide, because the free sample stops before them.
@@ -708,7 +730,7 @@ Sources for the section 6.3 examples:
 - SchoolHouse Connection, State Laws on Minor Consent for Housing and Related Services (June 2026): https://schoolhouseconnection.org/article/state-laws-on-minor-consent-for-housing-and-related-services
 - NIST SP 800-63B-4, section 2 (AAL): https://pages.nist.gov/800-63-4/sp800-63b/aal
 - NIST SP 800-63C-4, section 2 (FAL): https://pages.nist.gov/800-63-4/sp800-63c/fal
-- HUD FY 2024 HMIS Data Dictionary v1.5, element 3.03 (copy hosted by Palm Beach County): https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
+- HUD FY 2026 HMIS Data Dictionary (October 2025), element 3.03, supplied by Eric; same codes as the FY 2024 v1.5 copy hosted by Palm Beach County: https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
 - ISO/IEC TS 27560:2023 sample (through clause 6.3.4, Table 2): https://cdn.standards.iteh.ai/samples/80392/9102635615bf4b88803e1dc61ba5944b/ISO-IEC-TS-27560-2023.pdf
 - W3C DPV, Consent Records and Receipts as per ISO/IEC TS 27560:2023: https://w3c-cg.github.io/dpv/guides/consent-27560.html
 

@@ -120,7 +120,7 @@ def test_examples_round_trip(engine, models, spec):
     assert any(isinstance(n["@type"], list) for n in nodes), "fixture drifted: no multi-typed example left"
 
     with Session(engine) as session:
-        assert models.load(session, nodes) == 119
+        assert models.load(session, nodes) == 129
         session.commit()
 
     def same(a, b):

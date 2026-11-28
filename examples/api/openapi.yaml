@@ -15,11 +15,11 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e"
-        triples: 2515
+        digest: "sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b"
+        triples: 2520
       - file: "ucm-shapes.jsonld"
-        digest: "sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f"
-        triples: 1264
+        digest: "sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9"
+        triples: 1289
 
 servers:
   - url: "http://localhost:8000/ucm/v1"
@@ -4290,7 +4290,10 @@ components:
         message: The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach.
       - severity: Warning
         tier: Recommended
-        message: Grantor is not the subject, so the grantor's role should be ucm:ConsentProxyRole (or a subclass).
+        message: The consent subject is a household, and a member who was a minor on the consent date (under 18, from ucm:birthDate) has no ucm:ConsentProxyRole participation acting ucm:consentOnBehalfOf them, and does not self-consent under a ucm:SelfConsentRule whose minimum age they had reached.
+      - severity: Warning
+        tier: Recommended
+        message: Grantor is neither the subject nor a member of the subject group, so the grantor's role should be ucm:ConsentProxyRole (or a subclass).
       - severity: Warning
         tier: Recommended
         message: 'Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.'
@@ -4302,6 +4305,7 @@ components:
           '@type': ConsentDirective
           consentSubject:
           - http://example.org/ucm/p-a-subj-2025
+          hasConsentCategory: ConsentToShare
           hasConsentDecision: Permit
           hasConsentStatus: ConsentRevoked
           recordsConsentFrom:
@@ -4388,6 +4392,21 @@ components:
           - http://example.org/ucm/ExampleCoCE
           recordsConsentFrom:
           - http://example.org/ucm/ci-sarah
+          validDuring:
+          - http://example.org/ucm/t-roi
+        - '@id': http://example.org/ucm/cd-thomson-hh
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-hh-subj
+          governedByPolicy:
+          - http://example.org/ucm/policy-coc-e
+          hasConsentCategory: ReleaseOfInformation
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-thomson-hh
           validDuring:
           - http://example.org/ucm/t-roi
         - '@id': http://example.org/ucm/cd-youth
@@ -4552,6 +4571,14 @@ components:
           hasConsentModality: WrittenConsent
           occursDuring:
           - http://example.org/ucm/t-ci-2023
+        - '@id': http://example.org/ucm/ci-thomson-hh
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: WrittenConsent
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          occursDuring:
+          - http://example.org/ucm/t-ci-thomson
         - '@id': http://example.org/ucm/ci-youth
           '@type': ConsentInteraction
           hasConsentInteractionType: ConsentGrant
@@ -6352,6 +6379,18 @@ components:
           - Membership
           - http://www.w3.org/2002/07/owl#NamedIndividual
           membershipIn: http://example.org/ucm/hh-001
+        - '@id': http://example.org/ucm/mem-jameson
+          '@type': Membership
+          membershipIn: http://example.org/ucm/hh-thomson
+        - '@id': http://example.org/ucm/mem-madison
+          '@type': Membership
+          membershipIn: http://example.org/ucm/hh-thomson
+        - '@id': http://example.org/ucm/mem-ruth
+          '@type': Membership
+          membershipIn: http://example.org/ucm/hh-thomson
+        - '@id': http://example.org/ucm/mem-sarah
+          '@type': Membership
+          membershipIn: http://example.org/ucm/hh-thomson
 
     "MembershipCriteria":
       type: object
@@ -6486,6 +6525,18 @@ components:
           - severity: Warning
             tier: Recommended
             message: Assumed role is not typed as ucm:Role.
+        "consentOnBehalfOf":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent proxy's participation to a person it consents for. Needed when the consent subject is a group, such as a household, and the proxy acts for some of its members."
+          x-semantic-uri: https://www.w3.org/ns/ucm#consentOnBehalfOf
+          x-ucm-range: ucm:Entity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: consentOnBehalfOf target is not typed as ucm:Entity.
         "enactiveDuring":
           type: array
           items:
@@ -6655,6 +6706,12 @@ components:
           - http://example.org/ucm/role-prov
           occursWithin: http://example.org/ucm/req-1
           participatingEntity: http://example.org/ucm/org-fund
+        - '@id': http://example.org/ucm/p-hh-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-thomson-hh
+          participatingEntity: http://example.org/ucm/hh-thomson
         - '@id': http://example.org/ucm/p-jameson-subj
           '@type': Participation
           assumesRole:
@@ -6713,6 +6770,12 @@ components:
           participatingEntity: http://example.org/ucm/person-a
           participationContext:
           - http://example.org/ucm/ctx-housing
+        - '@id': http://example.org/ucm/p-ruth-grantor-hh
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-thomson-hh
+          participatingEntity: http://example.org/ucm/ruth
         - '@id': http://example.org/ucm/p-ruth-proxy
           '@type': Participation
           assumesRole:
@@ -6727,11 +6790,26 @@ components:
           - http://example.org/ucm/role-proxy
           occursWithin: http://example.org/ucm/ci-thomson-2023
           participatingEntity: http://example.org/ucm/ruth
+        - '@id': http://example.org/ucm/p-ruth-proxy-hh
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-proxy
+          consentOnBehalfOf:
+          - http://example.org/ucm/jameson
+          - http://example.org/ucm/madison
+          occursWithin: http://example.org/ucm/ci-thomson-hh
+          participatingEntity: http://example.org/ucm/ruth
         - '@id': http://example.org/ucm/p-sarah-grantor
           '@type': Participation
           assumesRole:
           - http://example.org/ucm/role-grantor
           occursWithin: http://example.org/ucm/ci-sarah
+          participatingEntity: http://example.org/ucm/sarah
+        - '@id': http://example.org/ucm/p-sarah-grantor-hh
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-thomson-hh
           participatingEntity: http://example.org/ucm/sarah
         - '@id': http://example.org/ucm/p-sarah-subj
           '@type': Participation
@@ -6864,6 +6942,8 @@ components:
           '@type': Person
           rdfs:label: Jameson Thomson
           birthDate: '2014-06-10'
+          hasMembership:
+          - http://example.org/ucm/mem-jameson
         - '@id': http://example.org/ucm/liaison
           '@type': Person
           rdfs:label: School district homeless liaison
@@ -6871,6 +6951,8 @@ components:
           '@type': Person
           rdfs:label: Madison Thomson
           birthDate: '2017-02-20'
+          hasMembership:
+          - http://example.org/ucm/mem-madison
         - '@id': http://example.org/ucm/person-a
           '@type':
           - Person
@@ -6887,10 +6969,14 @@ components:
           birthDateQuality: FullDateReported
           hasIdentity:
           - http://example.org/ucm/id-ruth
+          hasMembership:
+          - http://example.org/ucm/mem-ruth
         - '@id': http://example.org/ucm/sarah
           '@type': Person
           rdfs:label: Sarah Thomson
           birthDate: '1996-09-15'
+          hasMembership:
+          - http://example.org/ucm/mem-sarah
         - '@id': http://example.org/ucm/youth
           '@type': Person
           rdfs:label: Youth (fictitious)

@@ -44,5 +44,31 @@ requires it to be the opposite of its parent's.
 - **From R5:** each provision's decision is the opposite of its parent's.
 - **To and from R4:** the decision maps directly to `provision.type`.
 
-The codegen FHIR adapter (`codegen/profiles/ucm-fhir-mapping.yaml`) does not map
-`ConsentDirective` to `Consent` yet.
+## Generated adapter (FHIR R4)
+
+The codegen FHIR adapter targets R4 (4.0.1). `codegen/profiles/ucm-fhir-mapping.yaml`
+maps `ConsentDirective` to R4 `Consent`, and the generated
+`examples/api/fhir/ucm_fhir_adapter.py` converts both ways:
+
+| R4 `Consent` | UCM | Read back |
+|---|---|---|
+| `status` | `hasConsentStatus` (`inactive` carries the exact concept in `_status`) | yes |
+| `scope` | from `hasConsentCategory` (consentscope codes) | no, `category` carries it |
+| `category` | `hasConsentCategory` | yes |
+| `patient` | `consentSubject` / `participatingEntity`, a Patient only | yes |
+| `dateTime` | the consent interaction's `occursDuring` instant | no |
+| `performer` | grantor or proxy participations in the consent interaction | no |
+| `organization` | custodian participations in the consent interaction | no |
+| `sourceReference` | `sourceDocument` | yes |
+| `policy.uri` | `governedByPolicy` | yes |
+| `policyRule` | `hasRegulatoryBasis` (first value; more are warned) | yes |
+| `provision` (root) | the directive: `hasConsentDecision`, `validDuring` | type yes, period no |
+| `provision.provision` | `hasProvision`, two levels deep | yes |
+| `.type`, `.action`, `.purpose`, `.code` | `hasConsentDecision`, `governsAction`, `forPurpose`, `coversDataCategory` | yes |
+| `.securityLabel` | `coversSensitivity` and `coversConfidentiality` | yes, each to its own property |
+| `.actor{role, reference}` | `provisionActor` participation | yes |
+| `.data{meaning, reference}` | `coversInstance`, `coversRelated`, `coversDependents`, `coversAuthoredBy` | yes |
+
+Not mapped: `verification` (R4 cannot name the verifier) and the consent
+interaction itself, which an R4 `Provenance` could carry. A household-wide
+directive has no R4 `patient` (R5 `subject` allows a Group); the adapter warns.

@@ -351,14 +351,14 @@ h3 { font-size: 12px; }
       <a href="#validation" data-pane="validation"><span class="label">Validation</span>
 </a>
       <a href="#changes" data-pane="changes"><span class="label">Changes</span>
-<span class="badge amber">7</span></a>
+</a>
       <h2>Ontology</h2>
       <a href="#classes" data-pane="classes"><span class="label">Classes</span><span class="badge">95</span></a>
       <a href="#vocabularies" data-pane="vocabularies"><span class="label">Vocabularies</span><span class="badge">28</span></a>
       <h2>Targets</h2>
       <a href="#openapi" data-pane="openapi"><span class="label">OpenAPI</span><span class="badge">20</span></a>
       <a href="#postgres" data-pane="postgres"><span class="label">Postgres</span><span class="badge">20</span></a>
-      <a href="#fhir" data-pane="fhir"><span class="label">FHIR</span><span class="badge">12</span></a>
+      <a href="#fhir" data-pane="fhir"><span class="label">FHIR</span><span class="badge">13</span></a>
       <h2>Output</h2>
       <a href="#artifacts" data-pane="artifacts"><span class="label">Artifacts</span><span class="badge">9</span></a>
     </nav>
@@ -384,20 +384,20 @@ h3 { font-size: 12px; }
           <div class="cols">
             <table class="info">
               <tr><th>Classes</th><td>95</td></tr>
-              <tr><th>Properties</th><td>109</td></tr>
+              <tr><th>Properties</th><td>110</td></tr>
               <tr><th>Concept schemes</th><td>28</td></tr>
               <tr><th>Concepts</th><td>181</td></tr>
-              <tr><th>Node shapes</th><td>113</td></tr>
+              <tr><th>Node shapes</th><td>116</td></tr>
             </table>
             <table class="info">
-              <tr><th>Constraints</th><td>127</td></tr>
+              <tr><th>Constraints</th><td>130</td></tr>
               <tr><th>API resources</th><td>20</td></tr>
               <tr><th>API operations</th><td>100</td></tr>
               <tr><th>Tables</th><td>20</td></tr>
-              <tr><th>Association tables</th><td>84</td></tr>
+              <tr><th>Association tables</th><td>85</td></tr>
             </table>
             <table class="info">
-              <tr><th>FHIR-mapped classes</th><td>12</td></tr>
+              <tr><th>FHIR-mapped classes</th><td>13</td></tr>
             </table>
           </div>
         </div>
@@ -584,8 +584,8 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>JSON-LD IR</th><th class="num">Triples</th><th>Graph (URDNA2015)</th><th>File bytes</th></tr></thead>
             <tbody>
-              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">2515</td><td class="mono" title="sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e">8433479e61ffa268</td><td class="mono" title="sha256:73a748572263e62b730f641d39f17d2e045208ecdf00dff6e6f02dfb0190bd0f">73a748572263e62b</td></tr>
-              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">1264</td><td class="mono" title="sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f">48c9034d0e7c3a55</td><td class="mono" title="sha256:36db4a58e497df1d03695046173cc26ea44261b7a5f656f2297b4b8454910f16">36db4a58e497df1d</td></tr>
+              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">2520</td><td class="mono" title="sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b">ab0f501ce9ea8403</td><td class="mono" title="sha256:daaf469c440e9ae591639937dffa15ffee72c487646e244f0cc7a4aedf0cdb39">daaf469c440e9ae5</td></tr>
+              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">1289</td><td class="mono" title="sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9">1e62d43538c32e8d</td><td class="mono" title="sha256:32aaf11eb41cf672e860504f55d0901d0c330f8aec0032dc4cf5cd44b1940e65">32aaf11eb41cf672</td></tr>
             </tbody>
           </table>
         </div>
@@ -594,7 +594,7 @@ h3 { font-size: 12px; }
         <div class="scroll">
           <table class="list">
             <tbody>
-<tr><td class="nowrap">IR root (346 nodes)</td><td class="mono break">sha256:3712a918b36059f1f9e4a722a0226b6a5816f56bf1e37200feb17cbd24667611</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:9f91cd160500202b03b0a1d5f8905a717abbc0350120d16b951070a677713468</td></tr>
+<tr><td class="nowrap">IR root (350 nodes)</td><td class="mono break">sha256:3c9857602434b84d1ad58caf6fe726b4f1a6bd25df8778bbbf6c4862471abfd4</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:87f871a9bd7d258a0e7e2bd0cace15a1ad467188518d40e150231754432da763</td></tr>
             </tbody>
           </table>
         </div>
@@ -603,46 +603,7 @@ h3 { font-size: 12px; }
       <!-- ===================== Changes ===================== -->
       <section class="pane" id="changes">
         <h1>Changes</h1>
-        <p class="lede">Compared with the previous build (IR root <span class="mono">a10466f6be59</span>) by content digest: 0 added, 0 removed, 3 changed IR nodes.</p>
-        <div class="scroll">
-          <table class="list">
-            <thead><tr><th>Change</th><th>Node</th><th>Fields</th></tr></thead>
-            <tbody>
-              <tr>
-                <td><span class="pill amber">changed</span></td>
-                <td class="nowrap"><span class="muted">scheme</span> <b class="mono">ucm:AuthenticatorAssuranceLevel</b></td>
-                <td class="wide">
-                  <div><span class="mono">concepts</span>
-<span class="pill green">+ AAL1</span> <span class="pill green">+ AAL2</span> <span class="pill green">+ AAL3</span> <span class="pill red">&minus; AAL1</span> <span class="pill red">&minus; AAL2</span> <span class="pill red">&minus; AAL3</span>                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="pill amber">changed</span></td>
-                <td class="nowrap"><span class="muted">scheme</span> <b class="mono">ucm:BirthDateQuality</b></td>
-                <td class="wide">
-                  <div><span class="mono">concepts</span>
-<span class="pill green">+ ApproximateOrPartial</span> <span class="pill green">+ ClientDoesNotKnow</span> <span class="pill green">+ ClientPreferNotToAnswer</span> <span class="pill green">+ DataNotCollected</span> <span class="pill green">+ FullDateReported</span> <span class="pill red">&minus; ApproximateOrPartial</span> <span class="pill red">&minus; ClientDoesNotKnow</span> <span class="pill red">&minus; ClientPreferNotToAnswer</span> <span class="pill red">&minus; DataNotCollected</span> <span class="pill red">&minus; FullDateReported</span>                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="pill amber">changed</span></td>
-                <td class="nowrap"><span class="muted">scheme</span> <b class="mono">ucm:FederationAssuranceLevel</b></td>
-                <td class="wide">
-                  <div><span class="mono">concepts</span>
-<span class="pill green">+ FAL1</span> <span class="pill green">+ FAL2</span> <span class="pill green">+ FAL3</span> <span class="pill red">&minus; FAL1</span> <span class="pill red">&minus; FAL2</span> <span class="pill red">&minus; FAL3</span>                   </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <h3>Generated files</h3>
-        <div class="scroll">
-          <table class="list">
-            <thead><tr><th>Change</th><th>File</th></tr></thead>
-            <tbody>
-<tr><td><span class="pill amber">changed</span></td><td class="mono">openapi.yaml</td></tr><tr><td><span class="pill red">removed</span></td><td class="mono">postgres/migrations/versions/ucm_47d15426eae9_ucm_0_0_1.py</td></tr><tr><td><span class="pill green">added</span></td><td class="mono">postgres/migrations/versions/ucm_fbdcc29d7c1b_ucm_0_0_1.py</td></tr><tr><td><span class="pill amber">changed</span></td><td class="mono">postgres/ucm_models.py</td></tr>            </tbody>
-          </table>
-        </div>
+        <p class="lede">No changes since the previous build (IR root <span class="mono">3c9857602434</span>). Every node and output has the same content digest.</p>
       </section>
 
       <!-- ===================== Lint ===================== -->
@@ -1509,11 +1470,11 @@ h3 { font-size: 12px; }
               <span class="term">ConsentDirective</span>
               <span class="mono muted">ucm:ConsentDirective</span>
               <span class="tags">
-<span class="badge">7</span>              </span>
+<span class="pill green">Consent</span><span class="badge">7</span>              </span>
             </summary>
             <div class="class-body">
 <p>A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. Corresponds to an FHIR Consent and an HMIS release of information. It is an information artifact, not a statement.</p>              <div class="meta">
-<span>Extends <b>InformationArtifact</b></span><span>Table <b class="mono">entity</b></span><span>Examples <b>7</b></span>              </div>
+<span>Extends <b>InformationArtifact</b></span><span>Table <b class="mono">entity</b></span><span>FHIR <b>Consent</b></span><span>Examples <b>8</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -1524,7 +1485,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Participation</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">entity__consent_subject<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Consent.patient (via consentSubject/participatingEntity)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>hasConsentCategory</b><br><span class="mono muted">ucm:hasConsentCategory</span></td>
@@ -1532,7 +1493,7 @@ h3 { font-size: 12px; }
                       <td class="mono">skos:Concept</td>
                       <td class="mono">ConsentCategory</td>
                       <td class="mono">entity.has_consent_category<br><span class="muted">text</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Consent.scope<br>Consent.category</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>hasConsentStatus</b><br><span class="mono muted">ucm:hasConsentStatus</span></td>
@@ -1540,7 +1501,7 @@ h3 { font-size: 12px; }
                       <td class="mono">skos:Concept</td>
                       <td class="mono">ConsentStatus</td>
                       <td class="mono">entity.has_consent_status<br><span class="muted">text</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Consent.status</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>recordLocked</b><br><span class="mono muted">ucm:recordLocked</span></td>
@@ -1556,7 +1517,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:ConsentInteraction</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">entity__records_consent_from<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
+                      <td class="mono">Consent.dateTime (via recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>revokedBy</b><br><span class="mono muted">ucm:revokedBy</span></td>
@@ -1581,7 +1542,8 @@ h3 { font-size: 12px; }
                 <li><span class="pill Warning">Recommended</span><span>Consent directive is marked active but its period of validity has ended.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>Consent directive has no grantor: its recording consent interaction has no participation in a ConsentGrantorRole.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>The governing consent policy requires an identity or authenticator assurance level that the grantor&#39;s recorded identity or authentication does not reach.</span></li>
-                <li><span class="pill Warning">Recommended</span><span>Grantor is not the subject, so the grantor&#39;s role should be ucm:ConsentProxyRole (or a subclass).</span></li>
+                <li><span class="pill Warning">Recommended</span><span>The consent subject is a household, and a member who was a minor on the consent date (under 18, from ucm:birthDate) has no ucm:ConsentProxyRole participation acting ucm:consentOnBehalfOf them, and does not self-consent under a ucm:SelfConsentRule whose minimum age they had reached.</span></li>
+                <li><span class="pill Warning">Recommended</span><span>Grantor is neither the subject nor a member of the subject group, so the grantor&#39;s role should be ucm:ConsentProxyRole (or a subclass).</span></li>
                 <li><span class="pill Warning">Recommended</span><span>Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A consent directive names at least one subject participation, which must be a node, not a literal.</span></li>
@@ -1940,7 +1902,7 @@ h3 { font-size: 12px; }
             </summary>
             <div class="class-body">
 <p>Contextual membership relationship between an Entity and a SocialGroupEntity.</p>              <div class="meta">
-<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">membership</b></span><span>Examples <b>1</b></span>              </div>
+<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">membership</b></span><span>Examples <b>5</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -1975,16 +1937,16 @@ h3 { font-size: 12px; }
 <span>Extends <b>UcmNode</b></span><span>Table <b class="mono">membership_criteria</b></span><span>Examples <b>1</b></span>              </div>
             </div>
           </details>
-          <details class="class" data-search="participation participation assumesrole enactiveduring identifiedas occurswithin participatingentity participationcontext scopedby validfrom validto">
+          <details class="class" data-search="participation participation assumesrole consentonbehalfof enactiveduring identifiedas occurswithin participatingentity participationcontext scopedby validfrom validto">
             <summary style="padding-left: 24px">
               <span class="term">Participation</span>
               <span class="mono muted">ucm:Participation</span>
               <span class="tags">
-<span class="pill blue">/participations</span><span class="pill graphite">participation</span><span class="badge">9</span>              </span>
+<span class="pill blue">/participations</span><span class="pill graphite">participation</span><span class="badge">10</span>              </span>
             </summary>
             <div class="class-body">
 <p>Contextual involvement of an Entity within a Process and Semantic Context.</p>              <div class="meta">
-<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">participation</b></span><span>Examples <b>23</b></span>              </div>
+<span>Extends <b>UcmNode</b></span><span>Table <b class="mono">participation</b></span><span>Examples <b>27</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -1996,6 +1958,14 @@ h3 { font-size: 12px; }
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">participation__assumes_role<br><span class="muted">association</span></td>
                       <td class="mono">Encounter.participant.type</td>
+                    </tr>
+                    <tr>
+                      <td class="nowrap"><b>consentOnBehalfOf</b><br><span class="mono muted">ucm:consentOnBehalfOf</span></td>
+                      <td class="mono nowrap">0..*</td>
+                      <td class="mono">ucm:Entity</td>
+                      <td class="mono">NodeRef[]</td>
+                      <td class="mono">participation__consent_on_behalf_of<br><span class="muted">association</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>enactiveDuring</b><br><span class="mono muted">ucm:enactiveDuring</span></td>
@@ -2019,7 +1989,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Process</td>
                       <td class="mono">NodeRef</td>
                       <td class="mono">participation.occurs_within<br><span class="muted">text not null</span></td>
-                      <td class="mono">Encounter.participant (inverse)<br>Task.for (inverse)<br>Task.requester (inverse)<br>Task.owner (inverse)</td>
+                      <td class="mono">Encounter.participant (inverse)<br>Task.for (inverse)<br>Task.requester (inverse)<br>Task.owner (inverse)<br>Consent.performer (inverse)<br>Consent.organization (inverse)</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>participatingEntity</b><br><span class="mono muted">ucm:participatingEntity</span></td>
@@ -2027,7 +1997,7 @@ h3 { font-size: 12px; }
                       <td class="mono">ucm:Entity</td>
                       <td class="mono">NodeRef</td>
                       <td class="mono">participation.participating_entity<br><span class="muted">text not null</span></td>
-                      <td class="mono">Encounter.participant.individual<br>Task.for<br>Task.requester<br>Task.owner</td>
+                      <td class="mono">Encounter.participant.individual<br>Task.for<br>Task.requester<br>Task.owner<br>Consent.performer<br>Consent.organization</td>
                     </tr>
                     <tr>
                       <td class="nowrap"><b>participationContext</b><br><span class="mono muted">ucm:participationContext</span></td>
@@ -2070,6 +2040,7 @@ h3 { font-size: 12px; }
                 <li><span class="pill Violation">Definitional</span><span>A process lists this participation via hasParticipant, but the participation occurs within a different process.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Participation validTo precedes validFrom.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>Assumed role is not typed as ucm:Role.</span></li>
+                <li><span class="pill Warning">Recommended</span><span>consentOnBehalfOf target is not typed as ucm:Entity.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Interval ends before it begins.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>identifiedAs target is not typed as ucm:Identity.</span></li>
@@ -2200,7 +2171,7 @@ h3 { font-size: 12px; }
             </summary>
             <div class="class-body">
 <p>A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them.</p>              <div class="meta">
-<span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span><span>Examples <b>8</b></span>              </div>
+<span>Extends <b>Process</b></span><span>Table <b class="mono">process</b></span><span>Examples <b>9</b></span>              </div>
               <div class="scroll">
                 <table class="list">
                   <thead><tr><th>Property</th><th>Card.</th><th>Range</th><th>OpenAPI</th><th>Postgres</th><th>FHIR</th></tr></thead>
@@ -4749,7 +4720,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
       <!-- ===================== Postgres ===================== -->
       <section class="pane" id="postgres">
         <h1>Postgres</h1>
-        <p class="lede">Revision <span class="mono">ucm_fbdcc29d7c1b</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
+        <p class="lede">Revision <span class="mono">ucm_8535f380cce4</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
         <div class="scroll">
           <table class="list">
             <thead><tr><th>Table</th><th>Columns</th><th>Checks</th><th class="num">Classes</th></tr></thead>
@@ -4893,6 +4864,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
               <tr><td class="mono">process__authenticated_by</td><td>authenticatedBy</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">process__authorized_by_consent</td><td>authorizedByConsent</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">entity__certifies</td><td>certifies</td><td class="mono">entity</td><td>reference</td></tr>
+              <tr><td class="mono">participation__consent_on_behalf_of</td><td>consentOnBehalfOf</td><td class="mono">participation</td><td>reference</td></tr>
               <tr><td class="mono">entity__consent_subject</td><td>consentSubject</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">consent_provision__covers_authored_by</td><td>coversAuthoredBy</td><td class="mono">consent_provision</td><td>reference</td></tr>
               <tr><td class="mono">consent_provision__covers_confidentiality</td><td>coversConfidentiality</td><td class="mono">consent_provision</td><td>reference</td></tr>
@@ -5071,6 +5043,16 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
             </table>
           </div>
         </div>
+        <div class="group">
+          <h3>ConsentDirective → Consent</h3>
+          <div class="scroll">
+            <table class="list">
+              <thead><tr><th>FHIR element</th><th>From</th></tr></thead>
+              <tbody>
+<tr><td class="mono nowrap">Consent.status</td><td>hasConsentStatus · code · ConsentDraft→draft, ConsentActive→active, ConsentInactive→inactive, ConsentRevoked→inactive, ConsentExpired→inactive, ConsentSuperseded→inactive, ConsentRefused→rejected, ConsentEnteredInError→entered-in-error</td></tr><tr><td class="mono nowrap">Consent.scope</td><td>hasConsentCategory · code · PrivacyConsent→patient-privacy, ReleaseOfInformation→patient-privacy, ConsentToCollect→patient-privacy, ConsentToShare→patient-privacy, TreatmentConsent→treatment, ResearchConsent→research, AdvanceDirective→adr</td></tr><tr><td class="mono nowrap">Consent.category</td><td>hasConsentCategory · concept-coding</td></tr><tr><td class="mono nowrap">Consent.patient</td><td>consentSubject/participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.dateTime</td><td>recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.performer</td><td>Participation nodes whose occursWithin points here · role ConsentGrantorRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.organization</td><td>Participation nodes whose occursWithin points here · role InformationCustodianRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.sourceReference</td><td>sourceDocument · reference</td></tr><tr><td class="mono nowrap">Consent.policy</td><td>governedByPolicy · 1 sub-elements</td></tr><tr><td class="mono nowrap">Consent.policyRule</td><td>hasRegulatoryBasis · concept-coding</td></tr><tr><td class="mono nowrap">Consent.provision.type</td><td>hasConsentDecision · code · Permit→permit, Deny→deny</td></tr><tr><td class="mono nowrap">Consent.provision.period.start</td><td>validDuring/time:hasBeginning/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.period.end</td><td>validDuring/time:hasEnd/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.provision</td><td>hasProvision · 16 sub-elements</td></tr>              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <!-- ===================== Artifacts ===================== -->
@@ -5081,7 +5063,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:6115285645c00fea6d238784a6f716bb97dc8af2a5300215b3fdafbbc0e3e075">6115285645c00fea</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:5d198dfa7625bf6db18a7f8fb9284e45ed7ae0e30eb1fb21697752415b458276">5d198dfa7625bf6d</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:299920e9d8ae8d5972035122db41f30e952a46886ede30ed0ef803cb6d7fefbc">299920e9d8ae8d59</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_fbdcc29d7c1b_ucm_0_0_1.py">postgres/migrations/versions/ucm_fbdcc29d7c1b_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:71957b01a82818bc51b2139c8e5f50be12af51091bad590422d9ee5b82dc7346">71957b01a82818bc</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:bfdaa858c92ebb5fd236f59f5448a4cfba448853c4a687446dc2f31331bc938f">bfdaa858c92ebb5f</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
+<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:f277d454663cc15047130489c22bd60326a24d7f8be8c83a69b86bf02bc0e17d">f277d454663cc150</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:27794872e154dfdd40f870bebd5058b39310f03db401a3bcbba5eecbc918cb7e">27794872e154dfdd</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:092445b46969aa6f51f55027f976dfecba2d0d10e71dda5704556e10d74ad2e6">092445b46969aa6f</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py">postgres/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:74847c9ff8e048bb27afa1e0370e8c663dfee01fd3231994e5a2542876182969">74847c9ff8e048bb</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:512861a412db0f8f6a3a69fda75fcee0d7c74240d4df5def7539c9e65eed30df">512861a412db0f8f</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
           </table>
         </div>
       </section>
@@ -5089,7 +5071,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
   </div>
 
   <div class="statusbar">
-    <span>95 classes · 109 properties · 181 concepts · 20 resources</span>
+    <span>95 classes · 110 properties · 181 concepts · 20 resources</span>
     <span class="mono">https://www.w3.org/ns/ucm#</span>
     <span>Generated by ucm-codegen</span>
   </div>

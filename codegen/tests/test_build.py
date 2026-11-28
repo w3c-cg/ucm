@@ -83,7 +83,7 @@ def test_report_flags_a_regressed_spec(regressed_compilation):
     assert build_failed(regressed_compilation, outputs, strict=True) == [
         # namespace-drift, undeclared-term, range-mismatch
         "3 lint warnings (--strict), 1 of them namespace drift between spec files",
-        "104 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
+        "110 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
     ]
 
 

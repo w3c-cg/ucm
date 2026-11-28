@@ -768,6 +768,14 @@ ucm:consentSubject rdf:type owl:ObjectProperty ;
                    rdfs:label "consent subject" .
 
 
+###  https://www.w3.org/ns/ucm#consentOnBehalfOf
+ucm:consentOnBehalfOf rdf:type owl:ObjectProperty ;
+                      rdfs:domain ucm:Participation ;
+                      rdfs:range ucm:Entity ;
+                      rdfs:comment "Relates a consent proxy's participation to a person it consents for. Needed when the consent subject is a group, such as a household, and the proxy acts for some of its members." ;
+                      rdfs:label "consent on behalf of" .
+
+
 ###  https://www.w3.org/ns/ucm#hasConsentDecision
 ucm:hasConsentDecision rdf:type owl:ObjectProperty ;
                        rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;

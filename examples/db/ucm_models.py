@@ -30,9 +30,9 @@ from sqlalchemy.types import TypeDecorator
 
 ONTOLOGY_IRI = 'https://www.w3.org/ns/ucm#'
 ONTOLOGY_VERSION = 'v0.0.1'
-REVISION = 'ucm_fbdcc29d7c1b'
-SOURCES = ['sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e',
- 'sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f']
+REVISION = 'ucm_8535f380cce4'
+SOURCES = ['sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b',
+ 'sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9']
 
 JSONType = sa.JSON().with_variant(postgresql.JSONB(), "postgresql")
 SurrogateKey = sa.BigInteger().with_variant(sa.Integer(), "sqlite")
@@ -1120,6 +1120,19 @@ entity__certifies = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:certifies: Relates an assurance certification to the provider it certifies.',
+)
+
+participation__consent_on_behalf_of = sa.Table(
+    'participation__consent_on_behalf_of',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('participation.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=("ucm:consentOnBehalfOf: Relates a consent proxy's participation to a person it consents for. "
+ 'Needed when the consent subject is a group, such as a household, and the proxy acts for some of '
+ 'its members.'),
 )
 
 entity__consent_subject = sa.Table(
@@ -3032,6 +3045,7 @@ ASSOCIATIONS: Dict[str, Tuple[sa.Table, Optional[str], str]] = {
     'authenticatedBy': (process__authenticated_by, 'process', 'reference'),
     'authorizedByConsent': (process__authorized_by_consent, 'process', 'reference'),
     'certifies': (entity__certifies, 'entity', 'reference'),
+    'consentOnBehalfOf': (participation__consent_on_behalf_of, 'participation', 'reference'),
     'consentSubject': (entity__consent_subject, 'entity', 'reference'),
     'coversAuthoredBy': (consent_provision__covers_authored_by, 'consent_provision', 'reference'),
     'coversConfidentiality': (consent_provision__covers_confidentiality, 'consent_provision', 'reference'),
