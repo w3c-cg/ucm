@@ -23,11 +23,12 @@ def test_ontology_header(compilation):
 
 def test_classes_and_properties(compilation):
     ir = compilation.ir
-    assert len(ir.classes) == 63
-    assert len(ir.properties) == 39
-    assert sum(p.kind == "datatype" for p in ir.properties.values()) == 3
-    # External equivalents are annotations on Person, not classes of their own
-    assert all(iri.startswith(UCM) for iri in ir.classes)
+    assert len(ir.classes) == 95
+    assert len(ir.properties) == 110
+    assert sum(p.kind == "datatype" for p in ir.properties.values()) == 13
+    # External equivalents are annotations on Person, not classes of their own; the one
+    # class from another vocabulary is DPV's, declared in the core with rdfs:isDefinedBy
+    assert {iri for iri in ir.classes if not iri.startswith(UCM)} == {"https://w3id.org/dpv#PrivacyNotice"}
 
 
 def test_hierarchy(compilation):
@@ -56,6 +57,14 @@ def test_properties(compilation):
     assert ir.properties[UCM + "validDuring"].superproperties == [UCM + "hasTemporalContext"]
     assert {p.term for p in ir.domainless_properties()} == {
         "hasCareTrajectoryContext", "hasTemporalContext", "validDuring",
+        # consent and identity properties whose domain is an owl:unionOf (or several
+        # dcam:domainIncludes, for reused DPV properties), or that
+        # apply to any information (sensitivity and confidentiality labels)
+        "achievedIAL", "assertsIdentity", "hasPurpose", "governedByPolicy",
+        "hasConfidentialityLevel", "hasConsentDecision", "hasConsentModel", "hasProvision",
+        "hasApplicableLaw", "hasRetentionDisposition", "hasSensitivityLabel", "hasJurisdiction",
+        "issuedBy", "processingLocation", "requiresAAL", "requiresIAL", "retentionPeriod",
+        "sourceDocument", "underTrustFramework", "withdrawalMethod",
     }
 
 

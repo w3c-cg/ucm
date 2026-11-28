@@ -39,6 +39,10 @@ EXPORT_PREFIXES: Dict[str, str] = {
     "sh": "http://www.w3.org/ns/shacl#",
     "time": "http://www.w3.org/2006/time#",
     "dcterms": "http://purl.org/dc/terms/",
+    "dcam": "http://purl.org/dc/dcam/",
+    "dpv": "https://w3id.org/dpv#",
+    "pd": "https://w3id.org/dpv/pd#",
+    "legal-eu": "https://w3id.org/dpv/legal/eu#",
 }
 
 

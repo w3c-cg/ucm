@@ -9,7 +9,11 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "sh": "http://www.w3.org/ns/shacl#",
     "time": "http://www.w3.org/2006/time#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcam": "http://purl.org/dc/dcam/",
+    "dpv": "https://w3id.org/dpv#",
+    "pd": "https://w3id.org/dpv/pd#",
+    "legal-eu": "https://w3id.org/dpv/legal/eu#"
   },
   "@graph": [
     {
@@ -27,6 +31,429 @@
     {
       "@id": "dcterms:title",
       "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "dpv:Access",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to access data"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Access"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: retrieve and view information."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:Collect",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to gather data from someone"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Collect"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: gather and record information."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:ConsentExpired",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the temporal or contextual validity of consent has 'expired'"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Expired"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the directive's period of validity ended."
+      }
+    },
+    {
+      "@id": "dpv:ConsentRefused",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where consent has been refused"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Refused"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the subject or grantor declined to give consent, so the directive never came into force."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "dpv:ConsentRevoked",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Revoked"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: a party other than the subject or their grantor, such as a court or the data controller, revoked the directive."
+      }
+    },
+    {
+      "@id": "dpv:ConsentUnknown",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "State where information about consent is not available or is unknown"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Unknown"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the status of the directive is not known."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "dpv:ConsentWithdrawn",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Withdrawn"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the subject, or a grantor acting for them, withdrew the directive."
+      }
+    },
+    {
+      "@id": "dpv:Disclose",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to make data known"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Disclose"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: release information to another party."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:PrivacyNotice",
+      "@type": "owl:Class",
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "rdfs:subClassOf": {
+        "@id": "ucm:PolicyDefinition"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Represents a notice or document outlining information regarding privacy"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Privacy Notice"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."
+      }
+    },
+    {
+      "@id": "dpv:ScientificResearch",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Purposes associated with scientific research"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Scientific Research"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: research."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "dpv:Use",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to use data"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Use"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: use information for a purpose."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:hasApplicableLaw",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "ucm:ConsentDirective"
+        },
+        {
+          "@id": "ucm:ConsentPolicy"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates applicability of a Law"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has applicable law"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis."
+      }
+    },
+    {
+      "@id": "dpv:hasConsentStatus",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Specifies the state or status of consent"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has consent status"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus."
+      }
+    },
+    {
+      "@id": "dpv:hasJurisdiction",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "ucm:ConsentDirective"
+        },
+        {
+          "@id": "ucm:ConsentInteraction"
+        },
+        {
+          "@id": "ucm:ConsentPolicy"
+        },
+        {
+          "@id": "ucm:Identifier"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates applicability of specified jurisdiction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has jurisdiction"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued."
+      }
+    },
+    {
+      "@id": "dpv:hasPurpose",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "dpv:PrivacyNotice"
+        },
+        {
+          "@id": "ucm:ConsentProvision"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates association with Purpose"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has purpose"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one."
+      }
     },
     {
       "@id": "http://purl.bioontology.org/ontology/SNOMEDCT#337915000",
@@ -76,6 +503,86 @@
         "@id": "ucm:0.0.1"
       },
       "owl:versionInfo": "v0.0.1"
+    },
+    {
+      "@id": "legal-eu:law-GDPR",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/legal/eu#"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "General Data Protection Regulation (GDPR)"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the EU General Data Protection Regulation (Regulation (EU) 2016/679)."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "pd:Education",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/pd#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about education"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Education"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: education records."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
+      "@id": "pd:Identifying",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/pd#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information that uniquely or semi-uniquely identifies an individual or a group"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Identifying"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: information that identifies a person, such as name, birth date and identifiers."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
     },
     {
       "@id": "skos:Concept",
@@ -130,6 +637,102 @@
       "@type": "owl:Class"
     },
     {
+      "@id": "ucm:AAL1",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "AAL1"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      }
+    },
+    {
+      "@id": "ucm:AAL2",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "AAL2"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "2"
+      }
+    },
+    {
+      "@id": "ucm:AAL3",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "AAL3"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:AuthenticatorAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "3"
+      }
+    },
+    {
+      "@id": "ucm:Abortion",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SexualAndReproductiveHealth"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about seeking, obtaining, providing or facilitating abortion. Kept separate because its legal sensitivity varies by jurisdiction."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Abortion"
+      }
+    },
+    {
       "@id": "ucm:Accepted",
       "@type": [
         "owl:NamedIndividual",
@@ -161,6 +764,202 @@
       "rdfs:label": "Activity Focus"
     },
     {
+      "@id": "ucm:Adolescent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about an adolescent's care that calls for extra protection."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Adolescent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:AdvanceDirective",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Instructions for future care if the person cannot decide for themselves. Placeholder."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Advance directive"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentCategory"
+      }
+    },
+    {
+      "@id": "ucm:AgeOfMajority",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person has reached the age of majority in the jurisdiction."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Age of majority"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:AlcoholUseDisorder",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SubstanceUseDisorder"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about an alcohol use disorder."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Alcohol use disorder"
+      }
+    },
+    {
+      "@id": "ucm:ApplicantReferenceRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a person who vouches for an applicant's identity or circumstances, such as homelessness, without acting on the applicant's behalf (NIST SP 800-63A).",
+      "rdfs:label": "Applicant Reference Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:ApproximateOrPartial",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:BirthDateQuality"
+      },
+      "skos:notation": "2",
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Approximate or partial"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:BirthDateQuality"
+      }
+    },
+    {
+      "@id": "ucm:AssuranceCertification",
+      "@type": "owl:Class",
+      "rdfs:comment": "A record that an assessor has found a provider conformant to a trust framework at stated assurance levels, for a period.",
+      "rdfs:label": "Assurance Certification",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:Authentication",
+      "@type": "owl:Class",
+      "rdfs:comment": "A process in which a claimant proves control of one or more authenticators bound to an identity (NIST SP 800-63B).",
+      "rdfs:label": "Authentication",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:AuthenticatorAssuranceLevel",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How strongly was the claimant authenticated?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Authenticator Assurance Level"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "NIST SP 800-63B-4 authenticator assurance levels (section 2)."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:AAL1"
+        },
+        {
+          "@id": "ucm:AAL2"
+        },
+        {
+          "@id": "ucm:AAL3"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Authenticator Assurance Level"
+      }
+    },
+    {
+      "@id": "ucm:BehavioralHealth",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about behavioral health."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Behavioral health"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
       "@id": "ucm:BehavioralHealthContext",
       "@type": "owl:Class",
       "rdfs:label": "Behavioral Health Context",
@@ -174,6 +973,30 @@
       "rdfs:label": "Behavioral Health Domain"
     },
     {
+      "@id": "ucm:BehavioralHealthInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:seeAlso": {
+        "@id": "ucm:BehavioralHealthDomain"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Mental health and substance use information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Behavioral health information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
       "@id": "ucm:BeneficiaryRole",
       "@type": "owl:Class",
       "rdfs:label": "Beneficiary Role",
@@ -182,10 +1005,121 @@
       }
     },
     {
+      "@id": "ucm:BenefitsEnrollment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:EligibilityPurpose"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Applying for, enrolling in or recertifying public benefits."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Benefits enrollment"
+      }
+    },
+    {
+      "@id": "ucm:BirthDateQuality",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How reliable is the recorded birth date?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Birth Date Quality"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2026 HMIS Data Dictionary, October 2025). skos:notation carries the HMIS response code."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:ApproximateOrPartial"
+        },
+        {
+          "@id": "ucm:ClientDoesNotKnow"
+        },
+        {
+          "@id": "ucm:ClientPreferNotToAnswer"
+        },
+        {
+          "@id": "ucm:DataNotCollected"
+        },
+        {
+          "@id": "ucm:FullDateReported"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Birth Date Quality"
+      }
+    },
+    {
+      "@id": "ucm:CFR42Part2",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Confidentiality of Substance Use Disorder Patient Records, 42 CFR Part 2."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "42 CFR Part 2"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
       "@id": "ucm:CareCommitment",
       "@type": "owl:Class",
       "rdfs:comment": "A continuing agreement among participants to coordinate care toward a joint purpose, according to terms or conditions that may evolve.",
       "rdfs:label": "Care Commitment"
+    },
+    {
+      "@id": "ucm:CareCoordination",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Coordinating care for the person across providers."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Care coordination"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
     },
     {
       "@id": "ucm:CareCoordinationInteraction",
@@ -216,6 +1150,27 @@
       "rdfs:label": "Care Coverage Requirement"
     },
     {
+      "@id": "ucm:CareManagement",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Managing a person's care over time."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Care management"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
       "@id": "ucm:CareTeam",
       "@type": "owl:Class",
       "rdfs:label": "Care Team",
@@ -238,6 +1193,27 @@
       }
     },
     {
+      "@id": "ucm:ChildWelfareInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Child welfare and family services information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Child welfare information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
       "@id": "ucm:ClientDeclined",
       "@type": [
         "owl:NamedIndividual",
@@ -256,6 +1232,50 @@
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Declined by the person"
+      }
+    },
+    {
+      "@id": "ucm:ClientDoesNotKnow",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person does not know their date of birth. HMIS allows this only with no birth date recorded."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:BirthDateQuality"
+      },
+      "skos:notation": "8",
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Client doesn't know"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:BirthDateQuality"
+      }
+    },
+    {
+      "@id": "ucm:ClientPreferNotToAnswer",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person declined to give their date of birth. HMIS allows this only with no birth date recorded."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:BirthDateQuality"
+      },
+      "skos:notation": "9",
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Client prefers not to answer"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:BirthDateQuality"
       }
     },
     {
@@ -306,6 +1326,30 @@
       "rdfs:label": "Clinical Encounter",
       "rdfs:subClassOf": {
         "@id": "ucm:Encounter"
+      }
+    },
+    {
+      "@id": "ucm:ClinicalInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:seeAlso": {
+        "@id": "ucm:ClinicalDomain"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Health and clinical care information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Clinical information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
       }
     },
     {
@@ -583,11 +1627,914 @@
       }
     },
     {
+      "@id": "ucm:CommonRule",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The Federal Policy for the Protection of Human Subjects (45 CFR 46)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Common Rule"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
       "@id": "ucm:CommunityGroup",
       "@type": "owl:Class",
       "rdfs:label": "Community Group",
       "rdfs:subClassOf": {
         "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityLevel",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How confidential is the information?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Confidentiality Level"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Confidentiality levels aligned with HL7 v3 Confidentiality."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:ConfidentialityLow"
+        },
+        {
+          "@id": "ucm:ConfidentialityModerate"
+        },
+        {
+          "@id": "ucm:ConfidentialityNormal"
+        },
+        {
+          "@id": "ucm:ConfidentialityRestricted"
+        },
+        {
+          "@id": "ucm:ConfidentialityUnrestricted"
+        },
+        {
+          "@id": "ucm:ConfidentialityVeryRestricted"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Confidentiality Level"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityLow",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Low confidentiality; minimal harm if disclosed."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Low"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityModerate",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Moderate confidentiality."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Moderate"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityNormal",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The usual level for health and social care information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Normal"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityRestricted",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Highly sensitive; restricted to a few parties."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Restricted"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityUnrestricted",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Not confidential; may be shared freely."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Unrestricted"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityVeryRestricted",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Extremely sensitive; very few parties may see it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConfidentialityLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Very restricted"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConsentAction",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What action does this provision permit or deny?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Action"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Actions on information that a consent provision governs."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "dpv:Access"
+        },
+        {
+          "@id": "dpv:Collect"
+        },
+        {
+          "@id": "dpv:Disclose"
+        },
+        {
+          "@id": "dpv:Use"
+        },
+        {
+          "@id": "ucm:CorrectAction"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Action"
+      }
+    },
+    {
+      "@id": "ucm:ConsentActive",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The directive is in force."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Active"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "ucm:ConsentAmendment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An existing consent was changed."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Amend"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentCategory",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What kind of consent is this?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Category"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The kind of consent a directive records."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:AdvanceDirective"
+        },
+        {
+          "@id": "ucm:PrivacyConsent"
+        },
+        {
+          "@id": "ucm:ResearchConsent"
+        },
+        {
+          "@id": "ucm:TreatmentConsent"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Category"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDecision",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Does this consent or provision permit or deny?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Decision"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The decision of a consent directive or provision. A nested provision's decision is the opposite of its parent's."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:Deny"
+        },
+        {
+          "@id": "ucm:Permit"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Decision"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDirective",
+      "@type": "owl:Class",
+      "rdfs:comment": "A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. Corresponds to an FHIR Consent and an HMIS release of information. It is an information artifact, not a statement.",
+      "rdfs:label": "Consent Directive",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDraft",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The directive is being prepared and is not yet in force."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Draft"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "ucm:ConsentEnteredInError",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The directive was recorded by mistake and should be disregarded."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Entered in error"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "ucm:ConsentGrant",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent was given."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Grant"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentGrantorRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of the party who makes a consent choice. Often the same entity as the subject.",
+      "rdfs:label": "Consent Grantor Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInactive",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The directive was in force and no longer is. Record a narrower reason when known."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Inactive"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInteraction",
+      "@type": "owl:Class",
+      "rdfs:comment": "A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them.",
+      "rdfs:label": "Consent Interaction",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInteractionType",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What did this consent interaction do?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Interaction Type"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "What a consent interaction did to a consent directive."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:ConsentAmendment"
+        },
+        {
+          "@id": "ucm:ConsentGrant"
+        },
+        {
+          "@id": "ucm:ConsentRefusal"
+        },
+        {
+          "@id": "ucm:ConsentRenewal"
+        },
+        {
+          "@id": "ucm:ConsentRevocation"
+        },
+        {
+          "@id": "ucm:ConsentVerification"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Interaction Type"
+      }
+    },
+    {
+      "@id": "ucm:ConsentManagerRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a custodian that maintains the consent record (FHIR Consent.manager).",
+      "rdfs:label": "Consent Manager Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationCustodianRole"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModality",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How was consent expressed?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Modality"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "How a person expressed consent in a consent interaction (HUD HMIS FAQ 3310)."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:InferredConsent"
+        },
+        {
+          "@id": "ucm:VerbalConsent"
+        },
+        {
+          "@id": "ucm:WrittenConsent"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Modality"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModel",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What is the default when no individual choice is recorded?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Model"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "How a policy, program or notice treats consent by default."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:NoConsentRequired"
+        },
+        {
+          "@id": "ucm:OptIn"
+        },
+        {
+          "@id": "ucm:OptInWithRestrictions"
+        },
+        {
+          "@id": "ucm:OptOut"
+        },
+        {
+          "@id": "ucm:OptOutWithExceptions"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Model"
+      }
+    },
+    {
+      "@id": "ucm:ConsentPolicy",
+      "@type": "owl:Class",
+      "rdfs:comment": "A policy, regulation or program rule that sets the consent model, the default decision and the conditions under which consent is required, allowed or not needed.",
+      "rdfs:label": "Consent Policy",
+      "rdfs:subClassOf": {
+        "@id": "ucm:PolicyDefinition"
+      }
+    },
+    {
+      "@id": "ucm:ConsentProvision",
+      "@type": "owl:Class",
+      "rdfs:comment": "A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's.",
+      "rdfs:label": "Consent Provision"
+    },
+    {
+      "@id": "ucm:ConsentProxyRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a grantor acting for the subject, such as a parent, guardian, legal representative or authorized caregiver.",
+      "rdfs:label": "Consent Proxy Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:ConsentGrantorRole"
+      }
+    },
+    {
+      "@id": "ucm:ConsentRefusal",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent was declined."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Refuse"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentRenewal",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An existing consent was confirmed for a further period."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Renew"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentRevocation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An existing consent was withdrawn."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Revoke"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentStatus",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Does this consent apply now?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Consent Status"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Whether a consent directive is in force, from draft through active to inactive."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "dpv:ConsentRefused"
+        },
+        {
+          "@id": "dpv:ConsentUnknown"
+        },
+        {
+          "@id": "ucm:ConsentActive"
+        },
+        {
+          "@id": "ucm:ConsentDraft"
+        },
+        {
+          "@id": "ucm:ConsentEnteredInError"
+        },
+        {
+          "@id": "ucm:ConsentInactive"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Status"
+      }
+    },
+    {
+      "@id": "ucm:ConsentSubjectRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of the person or group whose information or care a consent concerns.",
+      "rdfs:label": "Consent Subject Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:ConsentSuperseded",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A newer directive amended or renewed this one."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Superseded"
+      }
+    },
+    {
+      "@id": "ucm:ConsentToCollect",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:PrivacyConsent"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent for an organization to collect and record a person's information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent to collect"
+      }
+    },
+    {
+      "@id": "ucm:ConsentToShare",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:PrivacyConsent"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent for information already held to be shared with other parties."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent to share"
+      }
+    },
+    {
+      "@id": "ucm:ConsentVerification",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An existing consent was verified with the subject or grantor, or a self-consent condition was verified by a third party."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentInteractionType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Verify"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentVerifierRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party who verified a consent with the subject or grantor.",
+      "rdfs:label": "Consent Verifier Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:ConsentWitnessRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party who witnessed a consent interaction.",
+      "rdfs:label": "Consent Witness Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:CoordinatedEntry",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SocialCareCoordination"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Assessing, prioritizing and referring people experiencing homelessness through a Continuum of Care's coordinated entry process."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Coordinated entry"
       }
     },
     {
@@ -614,6 +2561,97 @@
       "rdfs:label": "Coordinator Role",
       "rdfs:subClassOf": {
         "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:CorrectAction",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Access information in order to correct it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Access and correct"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "ucm:Credential",
+      "@type": "owl:Class",
+      "rdfs:comment": "A set of claims about an identity, issued and signed by an issuer, and held by the subject or a holder, such as a W3C Verifiable Credential.",
+      "rdfs:label": "Credential",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:CredentialServiceProviderRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party that proofs identities and issues or binds authenticators (NIST CSP).",
+      "rdfs:label": "Credential Service Provider Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:DataControllerRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a custodian that determines the purposes and means of processing and enforces the consent (FHIR Consent.controller; GDPR controller).",
+      "rdfs:label": "Data Controller Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationCustodianRole"
+      }
+    },
+    {
+      "@id": "ucm:DataNotCollected",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The date of birth was not collected. HMIS allows this only with no birth date recorded."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:BirthDateQuality"
+      },
+      "skos:notation": "99",
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Data not collected"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:BirthDateQuality"
+      }
+    },
+    {
+      "@id": "ucm:DecentralizedIdentifier",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A W3C decentralized identifier (DID)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Decentralized identifier"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
       }
     },
     {
@@ -648,6 +2686,27 @@
       "rdfs:label": "Definition Artifact"
     },
     {
+      "@id": "ucm:Deny",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The actions in scope are denied."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentDecision"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Deny"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentDecision"
+      }
+    },
+    {
       "@id": "ucm:Device",
       "@type": "owl:Class",
       "rdfs:label": "Device",
@@ -664,6 +2723,111 @@
       }
     },
     {
+      "@id": "ucm:DocumentEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A physical or digital identity document."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityEvidenceType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Document"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityEvidenceType"
+      }
+    },
+    {
+      "@id": "ucm:DriversLicenseNumber",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A driver's license number."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Driver's license number"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
+      "@id": "ucm:ElectronicConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:WrittenConsent"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Written consent given through an electronic signature or form."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModality"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Electronic"
+      }
+    },
+    {
+      "@id": "ucm:ElectronicRecordEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An electronic record from an authoritative source."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityEvidenceType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Electronic record"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityEvidenceType"
+      }
+    },
+    {
+      "@id": "ucm:ElectronicSignatureEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An electronic signature tied to a verified identity."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityEvidenceType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Electronic signature"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityEvidenceType"
+      }
+    },
+    {
       "@id": "ucm:EligibilityDetermination",
       "@type": "owl:Class",
       "rdfs:label": "Eligibility Determination",
@@ -672,11 +2836,74 @@
       }
     },
     {
+      "@id": "ucm:EligibilityPurpose",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Determining whether the person is eligible for a program or benefit."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Eligibility determination"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
       "@id": "ucm:EligibilityRuleset",
       "@type": "owl:Class",
       "rdfs:label": "Eligibility Ruleset",
       "rdfs:subClassOf": {
         "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:EmancipatedMinor",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person is a legally emancipated minor."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Emancipated minor"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:EmergencyTreatment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:Treatment"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Providing care in an emergency."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Emergency treatment"
       }
     },
     {
@@ -693,6 +2920,232 @@
       "@type": "owl:Class",
       "rdfs:comment": "A stable independently identifiable semantic thing.",
       "rdfs:label": "Entity"
+    },
+    {
+      "@id": "ucm:EvidenceStrength",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How strong is this identity evidence?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Evidence Strength"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "NIST SP 800-63A-4 strengths of identity evidence."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:FairEvidence"
+        },
+        {
+          "@id": "ucm:StrongEvidence"
+        },
+        {
+          "@id": "ucm:SuperiorEvidence"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Evidence Strength"
+      }
+    },
+    {
+      "@id": "ucm:FAL1",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "FAL1"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      }
+    },
+    {
+      "@id": "ucm:FAL2",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "FAL2"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "2"
+      }
+    },
+    {
+      "@id": "ucm:FAL3",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "FAL3"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:FederationAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "3"
+      }
+    },
+    {
+      "@id": "ucm:FERPA",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The Family Educational Rights and Privacy Act (20 U.S.C. 1232g; 34 CFR Part 99)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "FERPA"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "ucm:FairEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Evidence of fair strength (NIST FAIR)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Fair"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      }
+    },
+    {
+      "@id": "ucm:FamilyRequested",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Disclosure requested by the person's family."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Family requested"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "ucm:FederationAssuranceLevel",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How strongly was the identity assertion protected?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Federation Assurance Level"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "NIST SP 800-63C-4 federation assurance levels (section 2)."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:FAL1"
+        },
+        {
+          "@id": "ucm:FAL2"
+        },
+        {
+          "@id": "ucm:FAL3"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Federation Assurance Level"
+      }
     },
     {
       "@id": "ucm:FulfillmentConfirmed",
@@ -788,6 +3241,217 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:HandshakeFulfillment"
+      }
+    },
+    {
+      "@id": "ucm:FullDateReported",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The full date of birth was reported (HMIS: Full DOB reported)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:BirthDateQuality"
+      },
+      "skos:notation": "1",
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Full date reported"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:BirthDateQuality"
+      }
+    },
+    {
+      "@id": "ucm:GenderAndSexualOrientation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about gender identity or sexual orientation."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Gender and sexual orientation"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:GeneticDisease",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about a genetic condition."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Genetic disease"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:HIPAA",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The HIPAA Privacy Rule (45 CFR Parts 160 and 164)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HIPAA"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "ucm:HIPAAAuthorization",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:HIPAA"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A HIPAA authorization for a use or disclosure."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HIPAA authorization"
+      }
+    },
+    {
+      "@id": "ucm:HIPAANoticeOfPrivacyPractices",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:HIPAA"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A HIPAA notice of privacy practices."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HIPAA notice of privacy practices"
+      }
+    },
+    {
+      "@id": "ucm:HIPAAResearch",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:HIPAA"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A HIPAA authorization for research."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HIPAA research"
+      }
+    },
+    {
+      "@id": "ucm:HIV",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about HIV or AIDS."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HIV/AIDS"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:HMISDataStandards",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The HUD HMIS Data and Technical Standards, including the privacy and security standards, and the current HMIS Data Standards."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HMIS Data Standards"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "ucm:HMISPersonalID",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The HMIS Personal ID."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "HMIS Personal ID"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
       }
     },
     {
@@ -1030,6 +3694,27 @@
       }
     },
     {
+      "@id": "ucm:HealthcareOperations",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Operating the organization that provides care or services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Operations"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
       "@id": "ucm:Household",
       "@type": "owl:Class",
       "rdfs:label": "Household",
@@ -1075,11 +3760,393 @@
       }
     },
     {
+      "@id": "ucm:HousingInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:seeAlso": {
+        "@id": "ucm:HousingDomain"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Housing status, history, assessments and placements."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Housing information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
+      "@id": "ucm:HousingPlacement",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SocialCareCoordination"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Matching a person or household to a housing program or unit and moving them in."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Housing placement"
+      }
+    },
+    {
       "@id": "ucm:HousingStatement",
       "@type": "owl:Class",
       "rdfs:label": "Housing Statement",
       "rdfs:subClassOf": {
         "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:HumanTrafficking",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information that a person is or was a victim of sex or labor trafficking, or is fleeing it."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Human trafficking"
+      },
+      "skos:related": {
+        "@id": "ucm:SexualAssaultAbuseDomesticViolence"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:IAL1",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Identity proofing that confirms the claimed identity exists and is likely the applicant's (NIST IAL1)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "IAL1"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      }
+    },
+    {
+      "@id": "ucm:IAL2",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Identity proofing with stronger evidence and verification, remote or in person (NIST IAL2)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "IAL2"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "2"
+      }
+    },
+    {
+      "@id": "ucm:IAL3",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Identity proofing in person or supervised remote, with the strongest evidence (NIST IAL3)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "IAL3"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "3"
+      }
+    },
+    {
+      "@id": "ucm:Identifier",
+      "@type": "owl:Class",
+      "rdfs:comment": "A value, unique within a stated system or issuer, that designates an identity, such as a medical record number, HMIS Personal ID, Medicaid ID, state ID number, OpenID Connect subject or decentralized identifier.",
+      "rdfs:label": "Identifier",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:IdentifierType",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What kind of identifier is this?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Identifier Type"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Kinds of identifiers. Seed list; adopters can add their own."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:DecentralizedIdentifier"
+        },
+        {
+          "@id": "ucm:DriversLicenseNumber"
+        },
+        {
+          "@id": "ucm:HMISPersonalID"
+        },
+        {
+          "@id": "ucm:MedicaidID"
+        },
+        {
+          "@id": "ucm:MedicalRecordNumber"
+        },
+        {
+          "@id": "ucm:OIDCSubject"
+        },
+        {
+          "@id": "ucm:OtherIdentifier"
+        },
+        {
+          "@id": "ucm:SocialSecurityNumber"
+        },
+        {
+          "@id": "ucm:StateIDNumber"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Identifier Type"
+      }
+    },
+    {
+      "@id": "ucm:Identity",
+      "@type": "owl:Class",
+      "rdfs:comment": "A set of identifiers, attributes and characteristics by which one entity is recognized within a context, such as a system, program, jurisdiction or trust framework. An entity can have many identities.",
+      "rdfs:label": "Identity",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:IdentityApplicantRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of the entity whose identity is being proofed.",
+      "rdfs:label": "Identity Applicant Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:IdentityAssertion",
+      "@type": "owl:Class",
+      "rdfs:comment": "A statement from an identity provider to a relying party about an authenticated identity, at a stated federation assurance level, such as an OpenID Connect ID Token or a SAML assertion (NIST SP 800-63C).",
+      "rdfs:label": "Identity Assertion",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:IdentityAssuranceLevel",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How strongly was this identity proofed?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Identity Assurance Level"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "NIST SP 800-63-4 identity assurance levels. Each level carries ucm:assuranceRank so levels can be compared."
+      },
+      "skos:editorialNote": {
+        "@language": "en",
+        "@value": "NIST SP 800-63-4 names no IAL0; NoIdentityProofing covers the case it describes in words."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:IAL1"
+        },
+        {
+          "@id": "ucm:IAL2"
+        },
+        {
+          "@id": "ucm:IAL3"
+        },
+        {
+          "@id": "ucm:NoIdentityProofing"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Identity Assurance Level"
+      }
+    },
+    {
+      "@id": "ucm:IdentityEvidence",
+      "@type": "owl:Class",
+      "rdfs:comment": "Evidence used in identity proofing: a document, an electronic record, a vouch by another party, or an electronic signature.",
+      "rdfs:label": "Identity Evidence",
+      "rdfs:subClassOf": {
+        "@id": "ucm:InformationArtifact"
+      }
+    },
+    {
+      "@id": "ucm:IdentityEvidenceType",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What kind of identity evidence is this?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Identity Evidence Type"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Kinds of identity evidence, following OpenID Connect for Identity Assurance."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:DocumentEvidence"
+        },
+        {
+          "@id": "ucm:ElectronicRecordEvidence"
+        },
+        {
+          "@id": "ucm:ElectronicSignatureEvidence"
+        },
+        {
+          "@id": "ucm:VouchEvidence"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Identity Evidence Type"
+      }
+    },
+    {
+      "@id": "ucm:IdentityProofing",
+      "@type": "owl:Class",
+      "rdfs:comment": "A process that establishes, to a stated assurance level, that an identity corresponds to a specific real-life entity (NIST SP 800-63A).",
+      "rdfs:label": "Identity Proofing",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:IdentityProviderRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party that authenticates a subscriber and issues identity assertions to relying parties.",
+      "rdfs:label": "Identity Provider Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:IncomeAndBenefitsInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Income, employment and public benefits information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Income and benefits information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
       }
     },
     {
@@ -1104,12 +4171,141 @@
       }
     },
     {
+      "@id": "ucm:InferredConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent inferred from a posted notice and the person's continued participation."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModality"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Inferred"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModality"
+      }
+    },
+    {
       "@id": "ucm:InformationArtifact",
       "@type": "owl:Class",
       "rdfs:comment": "A logical information abstraction or computable information object.",
       "rdfs:label": "Information Artifact",
       "rdfs:subClassOf": {
         "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:InformationCategory",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What kind of information is covered?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Information Category"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Cross-sector categories of information that a consent provision can cover."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "pd:Education"
+        },
+        {
+          "@id": "pd:Identifying"
+        },
+        {
+          "@id": "ucm:BehavioralHealthInformation"
+        },
+        {
+          "@id": "ucm:ChildWelfareInformation"
+        },
+        {
+          "@id": "ucm:ClinicalInformation"
+        },
+        {
+          "@id": "ucm:HousingInformation"
+        },
+        {
+          "@id": "ucm:IncomeAndBenefitsInformation"
+        },
+        {
+          "@id": "ucm:JusticeInformation"
+        },
+        {
+          "@id": "ucm:NutritionInformation"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Information Category"
+      }
+    },
+    {
+      "@id": "ucm:InformationCustodianRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party responsible for holding, managing or enforcing a consent or the data it covers.",
+      "rdfs:label": "Information Custodian Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:InformationRecipientRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party that a consent provision permits or denies to collect, access, use or disclose information.",
+      "rdfs:label": "Information Recipient Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:JurisdictionContext",
+      "@type": "owl:Class",
+      "rdfs:comment": "A legal or administrative region whose rules govern consent or identity, such as a country, state, county, tribal nation or HUD Continuum of Care. Jurisdictions can nest.",
+      "rdfs:label": "Jurisdiction Context",
+      "rdfs:subClassOf": {
+        "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:JusticeInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Criminal and juvenile justice information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Justice information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
       }
     },
     {
@@ -1163,12 +4359,96 @@
       }
     },
     {
+      "@id": "ucm:MarriedMinor",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person is a married minor."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Married minor"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
       "@id": "ucm:MatchClaim",
       "@type": "owl:Class",
       "rdfs:comment": "An assertion that two or more entity references co-refer to the same identifiable entity.",
       "rdfs:label": "Match Claim",
       "rdfs:subClassOf": {
         "@id": "ucm:Statement"
+      }
+    },
+    {
+      "@id": "ucm:MatureMinor",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A clinician judged the minor to have capacity to consent."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Mature minor"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:MedicaidID",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A Medicaid member identifier."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Medicaid ID"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
+      "@id": "ucm:MedicalRecordNumber",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An identifier assigned by a health care organization."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Medical record number"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
       }
     },
     {
@@ -1182,6 +4462,48 @@
       "@type": "owl:Class",
       "rdfs:comment": "Rules or conditions defining membership within a SocialGroupEntity.",
       "rdfs:label": "Membership Criteria"
+    },
+    {
+      "@id": "ucm:MentalHealth",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:BehavioralHealth"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about mental health."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Mental health"
+      }
+    },
+    {
+      "@id": "ucm:MinorParent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person is a minor who is a parent."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Minor parent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
     },
     {
       "@id": "ucm:MissingVerification",
@@ -1205,11 +4527,246 @@
       }
     },
     {
+      "@id": "ucm:NoConsentRequired",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Another lawful basis applies, so individual consent is not needed."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "No consent required"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModel"
+      }
+    },
+    {
+      "@id": "ucm:NoIdentityProofing",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "No identity proofing was performed; attributes are self-asserted."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "No identity proofing"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityAssuranceLevel"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "0"
+      }
+    },
+    {
+      "@id": "ucm:NutritionInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Food security and nutrition information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Nutrition information"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
+      "@id": "ucm:OIDCSubject",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An OpenID Connect sub value, unique within its issuer."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "OpenID Connect subject"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
       "@id": "ucm:ObservationStatement",
       "@type": "owl:Class",
       "rdfs:label": "Observation Statement",
       "rdfs:subClassOf": {
         "@id": "ucm:ClinicalStatement"
+      }
+    },
+    {
+      "@id": "ucm:OnsiteAttendedProofing",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "On-site proofing with a proofing agent present."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ProofingType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "On-site attended"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ProofingType"
+      }
+    },
+    {
+      "@id": "ucm:OnsiteUnattendedProofing",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "On-site proofing at a kiosk or device with no agent."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ProofingType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "On-site unattended"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ProofingType"
+      }
+    },
+    {
+      "@id": "ucm:OpioidUseDisorder",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SubstanceUseDisorder"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about an opioid use disorder."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Opioid use disorder"
+      }
+    },
+    {
+      "@id": "ucm:OptIn",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information is not shared unless the person consents."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Opt-in"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModel"
+      }
+    },
+    {
+      "@id": "ucm:OptInWithRestrictions",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person may opt in and restrict what is shared."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Opt-in with restrictions"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModel"
+      }
+    },
+    {
+      "@id": "ucm:OptOut",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information is shared unless the person objects."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Opt-out"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModel"
+      }
+    },
+    {
+      "@id": "ucm:OptOutWithExceptions",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information is shared unless the person objects, and some information always needs explicit consent."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModel"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Opt-out with exceptions"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModel"
       }
     },
     {
@@ -1243,6 +4800,27 @@
       }
     },
     {
+      "@id": "ucm:OtherIdentifier",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Another kind of identifier."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Other identifier"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
       "@id": "ucm:OutOfArea",
       "@type": [
         "owl:NamedIndividual",
@@ -1264,10 +4842,52 @@
       }
     },
     {
+      "@id": "ucm:Part2Protected",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Substance use disorder records protected under 42 CFR Part 2."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "42 CFR Part 2 protected"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
       "@id": "ucm:Participation",
       "@type": "owl:Class",
       "rdfs:comment": "Contextual involvement of an Entity within a Process and Semantic Context.",
       "rdfs:label": "Participation"
+    },
+    {
+      "@id": "ucm:PatientRequested",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Disclosure requested by the person themselves."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Person requested"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
     },
     {
       "@id": "ucm:PatientRole",
@@ -1275,6 +4895,27 @@
       "rdfs:label": "Patient Role",
       "rdfs:subClassOf": {
         "@id": "ucm:SubjectRole"
+      }
+    },
+    {
+      "@id": "ucm:Payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Payment for care or services."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Payment"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
       }
     },
     {
@@ -1303,6 +4944,27 @@
       }
     },
     {
+      "@id": "ucm:Permit",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The actions in scope are permitted."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentDecision"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Permit"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentDecision"
+      }
+    },
+    {
       "@id": "ucm:Person",
       "@type": "owl:Class",
       "rdfs:comment": "A homo sapiens (NCBI) with the social context of a Person.  Looking for an object property of cco:PersonRole to have a \"similar to\" skos: relationship.",
@@ -1317,6 +4979,48 @@
       "rdfs:label": "Policy Definition",
       "rdfs:subClassOf": {
         "@id": "ucm:DefinitionArtifact"
+      }
+    },
+    {
+      "@id": "ucm:PostsecondaryEnrollment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person attends a postsecondary institution."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Postsecondary enrollment"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:PrivacyConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent concerning the collection, use or disclosure of information."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Privacy consent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentCategory"
       }
     },
     {
@@ -1355,11 +5059,128 @@
       }
     },
     {
+      "@id": "ucm:ProgramReporting",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Required reporting to funders or oversight bodies, such as HUD HMIS reports."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Program reporting"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "ucm:ProofingAgentRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a person who conducts attended identity proofing for a credential service provider.",
+      "rdfs:label": "Proofing Agent Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:ProofingType",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "How was identity proofing conducted?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Proofing Type"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "NIST SP 800-63A-4 types of identity proofing."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:OnsiteAttendedProofing"
+        },
+        {
+          "@id": "ucm:OnsiteUnattendedProofing"
+        },
+        {
+          "@id": "ucm:RemoteAttendedProofing"
+        },
+        {
+          "@id": "ucm:RemoteUnattendedProofing"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Proofing Type"
+      }
+    },
+    {
       "@id": "ucm:ProviderRole",
       "@type": "owl:Class",
       "rdfs:label": "Provider Role",
       "rdfs:subClassOf": {
         "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:PsychiatricDisorder",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:BehavioralHealth"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about a psychiatric disorder."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Psychiatric disorder"
+      }
+    },
+    {
+      "@id": "ucm:PsychotherapyNote",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:BehavioralHealth"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Psychotherapy notes."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Psychotherapy note"
       }
     },
     {
@@ -1374,6 +5195,114 @@
       "@id": "ucm:PublicHealthDomain",
       "@type": "owl:Class",
       "rdfs:label": "Public Health Domain"
+    },
+    {
+      "@id": "ucm:PublicHealthPurpose",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Public health activities and reporting."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Public health"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "ucm:PurposeOfUse",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "For what purpose may the information be used?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Purpose of Use"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Purposes for which information may be collected, used or disclosed, across health and social care."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "dpv:ScientificResearch"
+        },
+        {
+          "@id": "ucm:CareCoordination"
+        },
+        {
+          "@id": "ucm:CareManagement"
+        },
+        {
+          "@id": "ucm:EligibilityPurpose"
+        },
+        {
+          "@id": "ucm:FamilyRequested"
+        },
+        {
+          "@id": "ucm:HealthcareOperations"
+        },
+        {
+          "@id": "ucm:PatientRequested"
+        },
+        {
+          "@id": "ucm:Payment"
+        },
+        {
+          "@id": "ucm:ProgramReporting"
+        },
+        {
+          "@id": "ucm:PublicHealthPurpose"
+        },
+        {
+          "@id": "ucm:Treatment"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Purpose of Use"
+      }
+    },
+    {
+      "@id": "ucm:RediscloseAction",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "dpv:Disclose"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A recipient releasing information it received to a further party."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Redisclose"
+      }
     },
     {
       "@id": "ucm:ReferralAccepted",
@@ -1542,6 +5471,156 @@
       }
     },
     {
+      "@id": "ucm:RegulatoryBasis",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "Which law or regulation does this consent rest on?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Regulatory Basis"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Laws and regulations that govern consent. Adopters can add their own."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "legal-eu:law-GDPR"
+        },
+        {
+          "@id": "ucm:CFR42Part2"
+        },
+        {
+          "@id": "ucm:CommonRule"
+        },
+        {
+          "@id": "ucm:FERPA"
+        },
+        {
+          "@id": "ucm:HIPAA"
+        },
+        {
+          "@id": "ucm:HMISDataStandards"
+        },
+        {
+          "@id": "ucm:StateLaw"
+        },
+        {
+          "@id": "ucm:VAWA"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Regulatory Basis"
+      }
+    },
+    {
+      "@id": "ucm:ReleaseOfInformation",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:PrivacyConsent"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent to release or share a person's information with named parties, such as an HMIS ROI."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Release of information"
+      }
+    },
+    {
+      "@id": "ucm:RelyingPartyRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a party that relies on an identity assertion or credential.",
+      "rdfs:label": "Relying Party Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:RemoteAttendedProofing",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Remote proofing with a proofing agent over video."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ProofingType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Remote attended"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ProofingType"
+      }
+    },
+    {
+      "@id": "ucm:RemoteUnattendedProofing",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Remote proofing with no proofing agent present."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ProofingType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Remote unattended"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ProofingType"
+      }
+    },
+    {
+      "@id": "ucm:ResearchConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent to take part in research or for information to be used in research."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Research consent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentCategory"
+      }
+    },
+    {
       "@id": "ucm:ResidentRole",
       "@type": "owl:Class",
       "rdfs:label": "Resident Role",
@@ -1550,10 +5629,205 @@
       }
     },
     {
+      "@id": "ucm:RetentionArchive",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The information is archived with restricted access."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RetentionDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Archive"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RetentionDisposition"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDeidentify",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The information is de-identified and may be kept."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RetentionDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "De-identify"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RetentionDisposition"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDelete",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The information is deleted."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RetentionDisposition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Delete"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RetentionDisposition"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDisposition",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What happens to the data when its retention period ends?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Retention Disposition"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "What happens to information covered by a consent when its retention period ends."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:RetentionArchive"
+        },
+        {
+          "@id": "ucm:RetentionDeidentify"
+        },
+        {
+          "@id": "ucm:RetentionDelete"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Retention Disposition"
+      }
+    },
+    {
       "@id": "ucm:Role",
       "@type": "owl:Class",
       "rdfs:comment": "A contextual, anti-rigid classification assumed through participation.",
       "rdfs:label": "Role"
+    },
+    {
+      "@id": "ucm:SelfConsentCondition",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What condition lets a minor or youth consent for themselves?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Self-Consent Condition"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Conditions that, under a self-consent rule, let a minor or youth consent for themselves."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:AgeOfMajority"
+        },
+        {
+          "@id": "ucm:EmancipatedMinor"
+        },
+        {
+          "@id": "ucm:MarriedMinor"
+        },
+        {
+          "@id": "ucm:MatureMinor"
+        },
+        {
+          "@id": "ucm:MinorParent"
+        },
+        {
+          "@id": "ucm:PostsecondaryEnrollment"
+        },
+        {
+          "@id": "ucm:SelfSupporting"
+        },
+        {
+          "@id": "ucm:ServiceSpecificMinorConsent"
+        },
+        {
+          "@id": "ucm:UnaccompaniedYouthStatus"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Self-Consent Condition"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentRule",
+      "@type": "owl:Class",
+      "rdfs:comment": "A rule, in force in a jurisdiction, that sets when a minor or youth may consent for themselves: from what age, for which purposes, categories or sensitivities, and under what conditions.",
+      "rdfs:label": "Self-Consent Rule",
+      "rdfs:subClassOf": {
+        "@id": "ucm:ConsentPolicy"
+      }
+    },
+    {
+      "@id": "ucm:SelfSupporting",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person supports themselves financially."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Self-supporting"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
     },
     {
       "@id": "ucm:SemanticConstraint",
@@ -1570,11 +5844,185 @@
       "rdfs:label": "Semantic Context"
     },
     {
+      "@id": "ucm:SensitivityCategory",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:ConceptScheme"
+      ],
+      "dcterms:created": {
+        "@type": "xsd:date",
+        "@value": "2026-11-27"
+      },
+      "dcterms:description": {
+        "@language": "en",
+        "@value": "What sensitive topic does the information concern?"
+      },
+      "dcterms:publisher": {
+        "@language": "en",
+        "@value": "MDIX"
+      },
+      "dcterms:title": {
+        "@language": "en",
+        "@value": "UCM Sensitivity Category"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Sensitive topics that call for extra protection, aligned with HL7 ActCode sensitivity codes and SHIFT, plus topics HL7 does not code."
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "ucm:Adolescent"
+        },
+        {
+          "@id": "ucm:BehavioralHealth"
+        },
+        {
+          "@id": "ucm:GenderAndSexualOrientation"
+        },
+        {
+          "@id": "ucm:GeneticDisease"
+        },
+        {
+          "@id": "ucm:HIV"
+        },
+        {
+          "@id": "ucm:HumanTrafficking"
+        },
+        {
+          "@id": "ucm:Part2Protected"
+        },
+        {
+          "@id": "ucm:SexualAndReproductiveHealth"
+        },
+        {
+          "@id": "ucm:SexualAssaultAbuseDomesticViolence"
+        },
+        {
+          "@id": "ucm:SexuallyTransmittedDisease"
+        },
+        {
+          "@id": "ucm:SubstanceUseDisorder"
+        },
+        {
+          "@id": "ucm:UnaccompaniedYouth"
+        }
+      ],
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Sensitivity Category"
+      }
+    },
+    {
+      "@id": "ucm:ServiceSpecificMinorConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The law lets minors consent to this particular service, such as STI or substance use treatment."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Service-specific minor consent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:SexualAndReproductiveHealth",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about sexual and reproductive health."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Sexual and reproductive health"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:SexualAssaultAbuseDomesticViolence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information that a person experienced sexual assault, abuse or domestic violence."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Sexual assault, abuse or domestic violence"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:SexuallyTransmittedDisease",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about a sexually transmitted infection."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Sexually transmitted disease"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
       "@id": "ucm:SocialCareContext",
       "@type": "owl:Class",
       "rdfs:label": "Social Care Context",
       "rdfs:subClassOf": {
         "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:SocialCareCoordination",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:CareCoordination"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Coordinating social care services for a person or household across agencies and programs."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Social care coordination"
       }
     },
     {
@@ -1599,6 +6047,27 @@
       }
     },
     {
+      "@id": "ucm:SocialCaseManagement",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SocialCareCoordination"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Ongoing case management by a social care provider."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Social case management"
+      }
+    },
+    {
       "@id": "ucm:SocialGroupEntity",
       "@type": "owl:Class",
       "rdfs:comment": "A collective grouping of participating entities.",
@@ -1608,10 +6077,119 @@
       }
     },
     {
+      "@id": "ucm:SocialSecurityNumber",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A U.S. Social Security number."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Social Security number"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
+      "@id": "ucm:SocialServicesReferral",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:broader": {
+        "@id": "ucm:SocialCareCoordination"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Referring a person to a community-based or government service and tracking whether they were connected."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Social services referral"
+      }
+    },
+    {
+      "@id": "ucm:StateIDNumber",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A state-issued identification card number."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentifierType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "State ID number"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentifierType"
+      }
+    },
+    {
+      "@id": "ucm:StateLaw",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "A state, territorial or tribal law."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "State law"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
       "@id": "ucm:Statement",
       "@type": "owl:Class",
       "rdfs:comment": "An informational assertion, finding, determination, or conclusion.",
       "rdfs:label": "Statement"
+    },
+    {
+      "@id": "ucm:StrongEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Evidence of strong strength (NIST STRONG)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Strong"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "2"
+      }
     },
     {
       "@id": "ucm:SubjectRole",
@@ -1619,6 +6197,241 @@
       "rdfs:label": "Subject Role",
       "rdfs:subClassOf": {
         "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:SubstanceUseDisorder",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about a substance use disorder."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Substance use disorder"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:SuperiorEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Evidence of superior strength (NIST SUPERIOR)."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Superior"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:EvidenceStrength"
+      },
+      "ucm:assuranceRank": {
+        "@type": "xsd:integer",
+        "@value": "3"
+      }
+    },
+    {
+      "@id": "ucm:Treatment",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Providing health care or services to the person."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Treatment"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "ucm:TreatmentConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent to receive a treatment, procedure or service."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Treatment consent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentCategory"
+      }
+    },
+    {
+      "@id": "ucm:TrustFramework",
+      "@type": "owl:Class",
+      "rdfs:comment": "A set of rules, under a governing body, for identity proofing, authentication, federation and certification that participants agree to rely on, such as NIST SP 800-63-4, a Kantara assurance program, or the TEFCA Individual Access Services rules.",
+      "rdfs:label": "Trust Framework",
+      "rdfs:subClassOf": {
+        "@id": "ucm:PolicyDefinition"
+      }
+    },
+    {
+      "@id": "ucm:TrustedRefereeRole",
+      "@type": "owl:Class",
+      "rdfs:comment": "The role of a person authorized by a credential service provider to make risk-based identity decisions for applicants who cannot meet the normal evidence requirements (NIST SP 800-63A).",
+      "rdfs:label": "Trusted Referee Role",
+      "rdfs:subClassOf": {
+        "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:UnaccompaniedYouth",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information that a person is a youth without a parent or guardian, such as an unaccompanied homeless youth. A status, not a topic."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SensitivityCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Unaccompanied youth"
+      },
+      "skos:related": {
+        "@id": "ucm:Adolescent"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SensitivityCategory"
+      }
+    },
+    {
+      "@id": "ucm:UnaccompaniedYouthStatus",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The person is a youth living without a parent or guardian, such as an unaccompanied homeless youth."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:SelfConsentCondition"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Unaccompanied youth"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:SelfConsentCondition"
+      }
+    },
+    {
+      "@id": "ucm:VAWA",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "VAWA"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "ucm:VerbalConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent given orally and recorded by staff."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModality"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Verbal"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModality"
+      }
+    },
+    {
+      "@id": "ucm:VouchEvidence",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "An attestation by another party, such as an applicant reference."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:IdentityEvidenceType"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Vouch"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:IdentityEvidenceType"
+      }
+    },
+    {
+      "@id": "ucm:WrittenConsent",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Consent given in writing, on paper or electronically."
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentModality"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Written"
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentModality"
       }
     },
     {
@@ -1634,6 +6447,54 @@
       }
     },
     {
+      "@id": "ucm:achievedAAL",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an authentication to the authenticator assurance level it reached.",
+      "rdfs:domain": {
+        "@id": "ucm:Authentication"
+      },
+      "rdfs:label": "achieved AAL",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:achievedFAL",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity assertion to the federation assurance level it reached.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityAssertion"
+      },
+      "rdfs:label": "achieved FAL",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:achievedIAL",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity proofing process or identity to the identity assurance level it reached.",
+      "rdfs:domain": {
+        "@id": "_:c14n26"
+      },
+      "rdfs:label": "achieved IAL",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:acknowledgesNotice",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent interaction to a privacy notice the subject or grantor was given or shown.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "rdfs:label": "acknowledges notice",
+      "rdfs:range": {
+        "@id": "dpv:PrivacyNotice"
+      }
+    },
+    {
       "@id": "ucm:affiliatedWith",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -1645,6 +6506,30 @@
       }
     },
     {
+      "@id": "ucm:amendmentAppliesRetroactively",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "Whether an amendment to the privacy notice applies to information collected before the amendment.",
+      "rdfs:domain": {
+        "@id": "dpv:PrivacyNotice"
+      },
+      "rdfs:label": "amendment applies retroactively",
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "ucm:assertsIdentity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity assertion or credential to the identity it makes claims about.",
+      "rdfs:domain": {
+        "@id": "_:c14n27"
+      },
+      "rdfs:label": "asserts identity",
+      "rdfs:range": {
+        "@id": "ucm:Identity"
+      }
+    },
+    {
       "@id": "ucm:assumesRole",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -1653,6 +6538,222 @@
       "rdfs:label": "assumes role",
       "rdfs:range": {
         "@id": "ucm:Role"
+      }
+    },
+    {
+      "@id": "ucm:assuranceRank",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "An integer rank on an assurance or strength level, so levels in one scheme can be compared with >=.",
+      "rdfs:domain": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:label": "assurance rank",
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "ucm:authenticatedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent interaction to the authentication of the grantor, when consent is given electronically.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "rdfs:label": "authenticated by",
+      "rdfs:range": {
+        "@id": "ucm:Authentication"
+      }
+    },
+    {
+      "@id": "ucm:authorizedByConsent",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a process, such as a coordination request, handshake or disclosure, to the consent directive that permits it.",
+      "rdfs:domain": {
+        "@id": "ucm:Process"
+      },
+      "rdfs:label": "authorized by consent",
+      "rdfs:range": {
+        "@id": "ucm:ConsentDirective"
+      }
+    },
+    {
+      "@id": "ucm:birthDate",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "A person's date of birth, full (xsd:date) or partial (xsd:gYearMonth or xsd:gYear). Age is computed as of a given date and never stored.",
+      "rdfs:domain": {
+        "@id": "ucm:Person"
+      },
+      "rdfs:label": "birth date",
+      "rdfs:range": {
+        "@id": "_:c14n24"
+      }
+    },
+    {
+      "@id": "ucm:birthDateQuality",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a person to how reliable their recorded birth date is.",
+      "rdfs:domain": {
+        "@id": "ucm:Person"
+      },
+      "rdfs:label": "birth date quality",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:certifies",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an assurance certification to the provider it certifies.",
+      "rdfs:domain": {
+        "@id": "ucm:AssuranceCertification"
+      },
+      "rdfs:label": "certifies",
+      "rdfs:range": {
+        "@id": "ucm:Organization"
+      }
+    },
+    {
+      "@id": "ucm:consentOnBehalfOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent proxy's participation to a person it consents for. Needed when the consent subject is a group, such as a household, and the proxy acts for some of its members.",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "consent on behalf of",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
+      "@id": "ucm:consentSubject",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive to the participation of the person or group the consent concerns (FHIR Consent.subject).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "consent subject",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:coversAuthoredBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "The provision covers information authored by the referenced party (FHIR data.meaning authoredby).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers authored by",
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:coversInformation"
+      }
+    },
+    {
+      "@id": "ucm:coversConfidentiality",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to a confidentiality level of the information it covers (FHIR Consent.provision.securityLabel with a confidentiality code).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers confidentiality",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:coversDataCategory",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to a category of information it covers.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers data category",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:coversDependents",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "The provision covers the referenced information and information that depends on it (FHIR data.meaning dependents).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers dependents",
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:coversInformation"
+      }
+    },
+    {
+      "@id": "ucm:coversInformation",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to specific information it covers, an information artifact or a statement (FHIR Consent.provision.data).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers information"
+    },
+    {
+      "@id": "ucm:coversInstance",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "The provision covers exactly the referenced information (FHIR data.meaning instance).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers instance",
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:coversInformation"
+      }
+    },
+    {
+      "@id": "ucm:coversRelated",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "The provision covers the referenced information and information directly related to it (FHIR data.meaning related).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers related",
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:coversInformation"
+      }
+    },
+    {
+      "@id": "ucm:coversSensitivity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to a sensitivity category of the information it covers (FHIR Consent.provision.securityLabel).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "covers sensitivity",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:credentialTermsOfUse",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a credential to a policy that governs its use (W3C VC termsOfUse).",
+      "rdfs:domain": {
+        "@id": "ucm:Credential"
+      },
+      "rdfs:label": "credential terms of use",
+      "rdfs:range": {
+        "@id": "ucm:PolicyDefinition"
+      }
+    },
+    {
+      "@id": "ucm:dataPeriod",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to the time span of the data it covers, as distinct from the period the consent applies (FHIR Consent.provision.dataPeriod).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "data period",
+      "rdfs:range": {
+        "@id": "time:TemporalEntity"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "ucm:hasTemporalContext"
       }
     },
     {
@@ -1693,6 +6794,18 @@
       }
     },
     {
+      "@id": "ucm:establishesIdentity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity proofing process to the identity it establishes.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityProofing"
+      },
+      "rdfs:label": "establishes identity",
+      "rdfs:range": {
+        "@id": "ucm:Identity"
+      }
+    },
+    {
       "@id": "ucm:generatedByProcess",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -1701,6 +6814,30 @@
       "rdfs:label": "generated by process",
       "rdfs:range": {
         "@id": "ucm:Process"
+      }
+    },
+    {
+      "@id": "ucm:governedByPolicy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive, provision or program to the consent policy it relies on (FHIR Consent.policyBasis).",
+      "rdfs:domain": {
+        "@id": "_:c14n6"
+      },
+      "rdfs:label": "governed by policy",
+      "rdfs:range": {
+        "@id": "ucm:ConsentPolicy"
+      }
+    },
+    {
+      "@id": "ucm:governsAction",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to an action it permits or denies, such as collect, access, use or disclose.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "governs action",
+      "rdfs:range": {
+        "@id": "skos:Concept"
       }
     },
     {
@@ -1758,6 +6895,99 @@
       }
     },
     {
+      "@id": "ucm:hasConfidentialityLevel",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an information artifact or statement to its confidentiality level (HL7 v3 Confidentiality).",
+      "rdfs:label": "has confidentiality level",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasConsentCategory",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive to its kind, such as a privacy consent or release of information, a treatment consent or a research consent.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "has consent category",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasConsentDecision",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive or provision to its permit or deny decision. Every provision states its own decision, the opposite of its parent's.",
+      "rdfs:domain": {
+        "@id": "_:c14n1"
+      },
+      "rdfs:label": "has consent decision",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasConsentInteractionType",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent interaction to what it did: grant, refuse, amend, renew, revoke or verify.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "rdfs:label": "has consent interaction type",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasConsentModality",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent interaction to how consent was expressed: written, electronic, verbal or inferred.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "rdfs:label": "has consent modality",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasConsentModel",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a policy, program or notice to its consent model, such as opt-in or opt-out.",
+      "rdfs:domain": {
+        "@id": "_:c14n28"
+      },
+      "rdfs:label": "has consent model",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasEvidenceStrength",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates identity evidence to its NIST strength: fair, strong or superior.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityEvidence"
+      },
+      "rdfs:label": "has evidence strength",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasEvidenceType",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates identity evidence to its kind: document, electronic record, vouch or electronic signature.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityEvidence"
+      },
+      "rdfs:label": "has evidence type",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
       "@id": "ucm:hasHandoffStatus",
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a handshake to where responsibility for its agreed services stands between the sending and receiving parties.",
@@ -1779,6 +7009,42 @@
       "rdfs:label": "has handshake fulfillment",
       "rdfs:range": {
         "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasIdentifier",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity to an identifier that designates it.",
+      "rdfs:domain": {
+        "@id": "ucm:Identity"
+      },
+      "rdfs:label": "has identifier",
+      "rdfs:range": {
+        "@id": "ucm:Identifier"
+      }
+    },
+    {
+      "@id": "ucm:hasIdentifierType",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identifier to its kind, such as a medical record number or HMIS Personal ID.",
+      "rdfs:domain": {
+        "@id": "ucm:Identifier"
+      },
+      "rdfs:label": "has identifier type",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasIdentity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates any entity to an identity by which it is recognized. An entity can have many identities.",
+      "rdfs:domain": {
+        "@id": "ucm:Entity"
+      },
+      "rdfs:label": "has identity",
+      "rdfs:range": {
+        "@id": "ucm:Identity"
       }
     },
     {
@@ -1839,6 +7105,30 @@
       }
     },
     {
+      "@id": "ucm:hasProofingType",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity proofing process to how it was conducted: remote or on-site, attended or unattended.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityProofing"
+      },
+      "rdfs:label": "has proofing type",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasProvision",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive, or an enclosing provision, to a provision within it (FHIR Consent.provision).",
+      "rdfs:domain": {
+        "@id": "_:c14n2"
+      },
+      "rdfs:label": "has provision",
+      "rdfs:range": {
+        "@id": "ucm:ConsentProvision"
+      }
+    },
+    {
       "@id": "ucm:hasReferralDisposition",
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a care coordination request to the receiving party's decision on it.",
@@ -1863,6 +7153,27 @@
       }
     },
     {
+      "@id": "ucm:hasRetentionDisposition",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive or provision to what happens to the data when its retention period ends.",
+      "rdfs:domain": {
+        "@id": "_:c14n10"
+      },
+      "rdfs:label": "has retention disposition",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:hasSensitivityLabel",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an information artifact or statement to a sensitivity category, so provisions can match data without listing records (FHIR meta.security).",
+      "rdfs:label": "has sensitivity label",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
       "@id": "ucm:hasTemporalContext",
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a UCM semantic subject to a temporal entity that qualifies when that subject occurs, obtains, applies, participates, or is otherwise temporally situated.",
@@ -1872,9 +7183,72 @@
       }
     },
     {
+      "@id": "ucm:identifiedAs",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a participation to the identity under which the participant acted. This ties a consent's grantor and subject to identities.",
+      "rdfs:domain": {
+        "@id": "ucm:Participation"
+      },
+      "rdfs:label": "identified as",
+      "rdfs:range": {
+        "@id": "ucm:Identity"
+      }
+    },
+    {
+      "@id": "ucm:identifierSystem",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "The namespace in which an identifier value is unique. For an OpenID Connect subject, the issuer.",
+      "rdfs:domain": {
+        "@id": "ucm:Identifier"
+      },
+      "rdfs:label": "identifier system",
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "ucm:identifierValue",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "The value of an identifier.",
+      "rdfs:domain": {
+        "@id": "ucm:Identifier"
+      },
+      "rdfs:label": "identifier value",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "ucm:identityOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity to the entity it identifies.",
+      "rdfs:domain": {
+        "@id": "ucm:Identity"
+      },
+      "rdfs:label": "identity of",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
+      },
+      "owl:inverseOf": {
+        "@id": "ucm:hasIdentity"
+      }
+    },
+    {
+      "@id": "ucm:issuedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identifier, credential or certification to the entity that issued it.",
+      "rdfs:domain": {
+        "@id": "_:c14n5"
+      },
+      "rdfs:label": "issued by",
+      "rdfs:range": {
+        "@id": "ucm:Entity"
+      }
+    },
+    {
       "@id": "ucm:lifecycle",
       "@type": "owl:Ontology",
-      "rdfs:comment": "SKOS concept schemes for the care coordination lifecycle states, dispositions, and statuses used by the UCM core ontology.",
+      "rdfs:comment": "SKOS concept schemes used by the UCM core ontology: care coordination lifecycle states, dispositions and statuses, and the consent and identity vocabularies.",
       "rdfs:label": "UCM Lifecycle Vocabularies",
       "owl:versionIRI": {
         "@id": "ucm:lifecycle/0.0.1"
@@ -1904,6 +7278,18 @@
       }
     },
     {
+      "@id": "ucm:matchesIdentity",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a match claim to an identity it says co-refers with the others it names.",
+      "rdfs:domain": {
+        "@id": "ucm:MatchClaim"
+      },
+      "rdfs:label": "matches identity",
+      "rdfs:range": {
+        "@id": "ucm:Identity"
+      }
+    },
+    {
       "@id": "ucm:memberOf",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -1923,6 +7309,18 @@
       "rdfs:label": "membership in",
       "rdfs:range": {
         "@id": "ucm:SocialGroupEntity"
+      }
+    },
+    {
+      "@id": "ucm:minimumSelfConsentAge",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "The age in years from which a self-consent rule allows self-consent. Omitted when only a condition applies.",
+      "rdfs:domain": {
+        "@id": "ucm:SelfConsentRule"
+      },
+      "rdfs:label": "minimum self-consent age",
+      "rdfs:range": {
+        "@id": "xsd:nonNegativeInteger"
       }
     },
     {
@@ -1997,6 +7395,42 @@
       }
     },
     {
+      "@id": "ucm:postedAt",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a privacy notice to a location where it is posted, such as an intake desk.",
+      "rdfs:domain": {
+        "@id": "dpv:PrivacyNotice"
+      },
+      "rdfs:label": "posted at",
+      "rdfs:range": {
+        "@id": "ucm:Location"
+      }
+    },
+    {
+      "@id": "ucm:processingLocation",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive or provision to a jurisdiction where the data may be stored or processed. Several values mean any of them is allowed (ISO/IEC TS 27560 storage and processing locations).",
+      "rdfs:domain": {
+        "@id": "_:c14n8"
+      },
+      "rdfs:label": "processing location",
+      "rdfs:range": {
+        "@id": "ucm:JurisdictionContext"
+      }
+    },
+    {
+      "@id": "ucm:provisionActor",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a provision to the participation of a party it permits or denies (FHIR Consent.provision.actor).",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "rdfs:label": "provision actor",
+      "rdfs:range": {
+        "@id": "ucm:Participation"
+      }
+    },
+    {
       "@id": "ucm:qualifiesForMembership",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -2008,6 +7442,78 @@
       }
     },
     {
+      "@id": "ucm:recordLocked",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "Convenience flag that the subject's record is locked to other agencies. Prefer a sensitivity label plus a deny provision.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "record locked",
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "ucm:recordsConsentFrom",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive to the consent interaction that produced, amended or revoked it.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "records consent from",
+      "rdfs:range": {
+        "@id": "ucm:ConsentInteraction"
+      }
+    },
+    {
+      "@id": "ucm:requiresAAL",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent policy or trust framework to the minimum authenticator assurance level it requires.",
+      "rdfs:domain": {
+        "@id": "_:c14n21"
+      },
+      "rdfs:label": "requires AAL",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:requiresIAL",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent policy or trust framework to the minimum identity assurance level it requires.",
+      "rdfs:domain": {
+        "@id": "_:c14n7"
+      },
+      "rdfs:label": "requires IAL",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:retentionPeriod",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "How long data covered by the consent may be kept, as a duration such as P7Y (ISO/IEC TS 27560 retention period).",
+      "rdfs:domain": {
+        "@id": "_:c14n16"
+      },
+      "rdfs:label": "retention period",
+      "rdfs:range": {
+        "@id": "xsd:duration"
+      }
+    },
+    {
+      "@id": "ucm:revokedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive to the consent interaction that revoked it.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "revoked by",
+      "rdfs:range": {
+        "@id": "ucm:ConsentInteraction"
+      }
+    },
+    {
       "@id": "ucm:scopedBy",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -2016,6 +7522,42 @@
       "rdfs:label": "scoped by",
       "rdfs:range": {
         "@id": "ucm:SemanticContext"
+      }
+    },
+    {
+      "@id": "ucm:selfConsentCondition",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a self-consent rule to a condition that unlocks self-consent. Several values mean any one suffices.",
+      "rdfs:domain": {
+        "@id": "ucm:SelfConsentRule"
+      },
+      "rdfs:label": "self-consent condition",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:selfConsentScope",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a self-consent rule to a purpose, consent category, information category or sensitivity it covers. No value means all consents.",
+      "rdfs:domain": {
+        "@id": "ucm:SelfConsentRule"
+      },
+      "rdfs:label": "self-consent scope",
+      "rdfs:range": {
+        "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "ucm:sourceDocument",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive or privacy notice to its source, such as a scanned signed form or the policy text.",
+      "rdfs:domain": {
+        "@id": "_:c14n4"
+      },
+      "rdfs:label": "source document",
+      "rdfs:range": {
+        "@id": "ucm:InformationArtifact"
       }
     },
     {
@@ -2039,6 +7581,54 @@
       "rdfs:label": "statement subject",
       "rdfs:range": {
         "@id": "ucm:Participation"
+      }
+    },
+    {
+      "@id": "ucm:supersedes",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates a consent directive to an earlier directive it amends or renews.",
+      "rdfs:domain": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "rdfs:label": "supersedes",
+      "rdfs:range": {
+        "@id": "ucm:ConsentDirective"
+      }
+    },
+    {
+      "@id": "ucm:trustFrameworkIdentifier",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "The string that names a trust framework in identity claims, such as the OpenID Connect for Identity Assurance trust_framework value.",
+      "rdfs:domain": {
+        "@id": "ucm:TrustFramework"
+      },
+      "rdfs:label": "trust framework identifier",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "ucm:underTrustFramework",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity proofing, assertion, credential or certification to the trust framework whose rules it follows.",
+      "rdfs:domain": {
+        "@id": "_:c14n17"
+      },
+      "rdfs:label": "under trust framework",
+      "rdfs:range": {
+        "@id": "ucm:TrustFramework"
+      }
+    },
+    {
+      "@id": "ucm:usedEvidence",
+      "@type": "owl:ObjectProperty",
+      "rdfs:comment": "Relates an identity proofing process to evidence it used.",
+      "rdfs:domain": {
+        "@id": "ucm:IdentityProofing"
+      },
+      "rdfs:label": "used evidence",
+      "rdfs:range": {
+        "@id": "ucm:IdentityEvidence"
       }
     },
     {
@@ -2076,8 +7666,280 @@
       }
     },
     {
+      "@id": "ucm:withdrawalMethod",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:comment": "How the person can revoke the consent: a URL, phone number, form or written instructions, as text (ISO/IEC TS 27560 withdrawal method).",
+      "rdfs:domain": {
+        "@id": "_:c14n12"
+      },
+      "rdfs:label": "withdrawal method",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "ucm:withinJurisdiction",
+      "@type": [
+        "owl:ObjectProperty",
+        "owl:TransitiveProperty"
+      ],
+      "rdfs:comment": "Relates a jurisdiction to a larger jurisdiction that contains it, such as a county within a state or a Continuum of Care within a state.",
+      "rdfs:domain": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "rdfs:label": "within jurisdiction",
+      "rdfs:range": {
+        "@id": "ucm:JurisdictionContext"
+      }
+    },
+    {
       "@id": "xsd:date",
       "@type": "rdfs:Datatype"
+    },
+    {
+      "@id": "_:c14n1",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n10",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n12",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "dpv:PrivacyNotice"
+          },
+          {
+            "@id": "ucm:ConsentPolicy"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n16",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n17",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:IdentityProofing"
+          },
+          {
+            "@id": "ucm:IdentityAssertion"
+          },
+          {
+            "@id": "ucm:Credential"
+          },
+          {
+            "@id": "ucm:AssuranceCertification"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n2",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n21",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentPolicy"
+          },
+          {
+            "@id": "ucm:TrustFramework"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n24",
+      "@type": "rdfs:Datatype",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "xsd:date"
+          },
+          {
+            "@id": "xsd:gYearMonth"
+          },
+          {
+            "@id": "xsd:gYear"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n26",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:IdentityProofing"
+          },
+          {
+            "@id": "ucm:Identity"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n27",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:IdentityAssertion"
+          },
+          {
+            "@id": "ucm:Credential"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n28",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentPolicy"
+          },
+          {
+            "@id": "ucm:ProgramDefinition"
+          },
+          {
+            "@id": "dpv:PrivacyNotice"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n4",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "dpv:PrivacyNotice"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n5",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:Identifier"
+          },
+          {
+            "@id": "ucm:Credential"
+          },
+          {
+            "@id": "ucm:AssuranceCertification"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n6",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          },
+          {
+            "@id": "ucm:ProgramDefinition"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n7",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentPolicy"
+          },
+          {
+            "@id": "ucm:TrustFramework"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n8",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
     }
   ]
 }

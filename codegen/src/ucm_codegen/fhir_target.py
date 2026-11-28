@@ -43,7 +43,10 @@ Substance SupplyDelivery SupplyRequest Task TerminologyCapabilities TestReport T
 ValueSet VerificationResult VisionPrescription
 """.split())
 
-Transform = Literal["direct", "reference", "code", "concept-coding", "class-coding", "role-coding"]
+# R4 resources the adapter might emit that have no `identifier` element
+R4_NO_IDENTIFIER = ["AuditEvent", "Binary", "OperationOutcome", "Parameters", "Provenance"]
+
+Transform = Literal["direct", "reference", "code", "concept-coding", "class-coding", "role-coding", "iri"]
 
 
 class FhirMappingError(ValueError):
@@ -58,6 +61,7 @@ class FhirField(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
     property_: Optional[Union[str, List[str]]] = Field(None, alias="property")
+    via: Optional[Union[str, List[str]]] = None
     inverse: Optional[str] = None
     class_: Optional[str] = Field(None, alias="class")
     roles: List[str] = Field(default_factory=list)
@@ -68,12 +72,25 @@ class FhirField(BaseModel):
     each: Dict[str, "FhirField"] = Field(default_factory=dict)
     single: bool = False
     many: bool = Field(False, alias="list")
+    one_way: bool = Field(False, alias="one-way")
+    system: Optional[str] = None
+    coding: bool = False
+    resource_types: List[str] = Field(default_factory=list, alias="resource-types")
+    when: Dict[str, Any] = Field(default_factory=dict)
+    required: bool = False
+    marker: Optional[str] = None
 
     @property
     def path(self) -> List[str]:
         if self.property_ is None:
             return []
         return [self.property_] if isinstance(self.property_, str) else [*self.property_]
+
+    @property
+    def via_path(self) -> List[str]:
+        if self.via is None:
+            return []
+        return [self.via] if isinstance(self.via, str) else [*self.via]
 
 
 class FhirResourceMapping(BaseModel):
@@ -146,8 +163,23 @@ class FhirCompiler:
 
     # ---------- fields ----------
 
-    def _field(self, field: FhirField, current: Optional[str], where: str) -> Dict[str, Any]:
+    def _field(self, field: FhirField, current: Optional[str], where: str, shared: bool = False) -> Dict[str, Any]:
         item_class = current
+        if field.via_path and not field.inverse:
+            self.errors.append(f"{where}: via needs inverse (via hops lead to the node an inverse property points at)")
+        for hop in field.via_path:
+            current = self._hop(hop, current, where)
+        if field.class_ and not field.inverse:
+            self._class(field.class_, where)
+        if field.coding and field.transform != "concept-coding":
+            self.errors.append(f"{where}: coding applies only to transform concept-coding")
+        if field.system and field.transform != "code":
+            self.errors.append(f"{where}: system applies only to transform code")
+        if field.resource_types and field.transform != "reference":
+            self.errors.append(f"{where}: resource-types applies only to transform reference")
+        for resource in field.resource_types:
+            if resource not in R4_RESOURCES:
+                self.errors.append(f"{where}: {resource!r} is not a FHIR R4 resource type")
         if field.inverse:
             prop = self.properties.get(field.inverse)
             if prop is None or prop.kind != "object":
@@ -174,6 +206,15 @@ class FhirCompiler:
 
         compiled: Dict[str, Any] = {
             "property": field.path,
+            "via": field.via_path,
+            "one_way": field.one_way or bool(field.via_path),
+            "system": field.system,
+            "coding": field.coding,
+            "resource_types": field.resource_types,
+            "when": field.when,
+            "required": field.required,
+            "marker": field.marker,
+            "shared": shared,
             "inverse": field.inverse,
             "class": field.class_,
             "roles": field.roles,
@@ -183,8 +224,13 @@ class FhirCompiler:
         }
         if field.transform == "concept-coding":
             last = self.properties.get(field.path[-1]) if field.path else None
-            if self.api.scheme_for(last) is None:
+            scheme = self.api.scheme_for(last)
+            if scheme is None:
                 self.errors.append(f"{where}: transform concept-coding needs a property bound to a concept scheme")
+            else:
+                # the reverse direction claims only its own scheme's codes, so fields
+                # sharing one FHIR element (securityLabel#a, securityLabel#b) stay apart
+                compiled["concepts"] = sorted(c.term for c in scheme.concepts)
             if field.map or field.default is not None:
                 self.errors.append(f"{where}: transform concept-coding carries UCM codes as is; map and default do not apply")
         if field.transform == "code":
@@ -198,13 +244,26 @@ class FhirCompiler:
                 if unknown:
                     self.errors.append(f"{where}: {unknown} are not concepts of {scheme.term}")
                 compiled["map"] = {concepts[k]: v for k, v in field.map.items() if k in concepts}
-                compiled["reverse"] = {v: k for k, v in field.map.items() if k in concepts}
+                codes: Dict[str, List[str]] = {}
+                for k, v in field.map.items():
+                    if k in concepts:
+                        codes.setdefault(v, []).append(k)
+                # a FHIR code several concepts map to cannot be reversed on its own: the
+                # exact concept travels in the primitive's extension (_status, ...)
+                compiled["ambiguous"] = sorted(c for c, ks in codes.items() if len(ks) > 1)
+                compiled["reverse"] = {c: ks[0] for c, ks in codes.items() if len(ks) == 1}
                 compiled["default"] = field.default
         if field.each:
-            compiled["each"] = {
-                path: self._field(sub, reached, f"{where}.{path}") for path, sub in field.each.items()
-            }
+            compiled["each"] = self._fields(field.each, reached, where)
         return compiled
+
+    def _fields(self, fields: Dict[str, FhirField], current: Optional[str], where: str) -> Dict[str, Any]:
+        """Keys are FHIR paths; 'path#tag' lets several fields fill one repeating element"""
+        bases = [key.split("#", 1)[0] for key in fields]
+        return {
+            key: self._field(field, current, f"{where}.{key}", shared=bases.count(key.split("#", 1)[0]) > 1)
+            for key, field in fields.items()
+        }
 
     def compile(self) -> Dict[str, Any]:
         resources: Dict[str, Any] = {}
@@ -221,10 +280,7 @@ class FhirCompiler:
                 "profile": spec.profile,
                 "by_role": list(spec.by_role.items()),
                 "constants": spec.constants,
-                "fields": {
-                    path: self._field(field, class_iri, f"{where}.fields.{path}")
-                    for path, field in spec.fields.items()
-                },
+                "fields": self._fields(spec.fields, class_iri, f"{where}.fields"),
             }
         if self.errors:
             raise FhirMappingError(list(dict.fromkeys(self.errors)))
@@ -254,4 +310,5 @@ class FhirCompiler:
             "concepts": concepts,
             "concept_terms": {iri: term for term, iri in concepts.items()},
             "prefixes": dict(ir.prefixes),
+            "no_identifier": R4_NO_IDENTIFIER,
         }

@@ -62,7 +62,7 @@ def engine(project, models, tmp_path):
 
 def test_layout(compilation, schema):
     tables = {t.name: t for t in schema.tables}
-    assert len(tables) == 19
+    assert len(tables) == 20  # ConsentProvision is a root class of its own
     process = tables["process"]
     assert {"Handshake", "HousingAssessment", "ClinicalEncounter"} <= set(process.type_terms)
     participation = {c.term: c for c in tables["participation"].columns}
@@ -120,7 +120,7 @@ def test_examples_round_trip(engine, models, spec):
     assert any(isinstance(n["@type"], list) for n in nodes), "fixture drifted: no multi-typed example left"
 
     with Session(engine) as session:
-        assert models.load(session, nodes) == 29
+        assert models.load(session, nodes) == 130
         session.commit()
 
     def same(a, b):

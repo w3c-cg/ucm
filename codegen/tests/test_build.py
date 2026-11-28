@@ -83,7 +83,7 @@ def test_report_flags_a_regressed_spec(regressed_compilation):
     assert build_failed(regressed_compilation, outputs, strict=True) == [
         # namespace-drift, undeclared-term, range-mismatch
         "3 lint warnings (--strict), 1 of them namespace drift between spec files",
-        "6 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
+        "110 SHACL warnings in the examples (--strict) (likely caused by the namespace drift)",
     ]
 
 
@@ -115,7 +115,7 @@ def test_report_summarizes_the_vocabularies(compilation):
         assert f"<b>{scheme}</b>" in overview
     assert '<span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span>' in overview
     assert "No property uses this scheme" not in html
-    assert "<tr><th>Concepts</th><td>33</td></tr>" in html
+    assert "<tr><th>Concepts</th><td>182</td></tr>" in html
     vocabularies = html[html.index('id="vocabularies"'):html.index('id="openapi"')]
     assert vocabularies.index("<b>ClosedNotConnected</b>") < vocabularies.index("<b>OutOfArea</b>")  # parent first
     assert "2 levels" in vocabularies
@@ -129,7 +129,7 @@ def test_summary_for_ci(tmp_path):
     assert result.exit_code == 0, result.output
     text = summary.read_text(encoding="utf-8")
     assert text.startswith("earlier step\n### UCM reference build: passed")  # appended, like $GITHUB_STEP_SUMMARY
-    assert "| Concepts | 33 |" in text
+    assert "| Concepts | 182 |" in text
     assert "| ClosureReason | 10 | 2 | `hasClosureReason` on ucm:CoordinationRequest |" in text
     assert "#### Lint findings" not in text
 
@@ -149,7 +149,7 @@ def test_lint_names_a_missing_vocabulary(tmp_path):
     ontology, shapes, shapes_lint = export_ir(tmp_path, ONTOLOGY_TTL[:1])
     findings = compile_ir([ontology], [shapes], [shapes_lint]).findings
     (finding,) = [f for f in findings if f.code == "no-concept-schemes"]
-    assert finding.message.startswith("6 properties take skos:Concept values (hasClosureReason, ")
+    assert finding.message.startswith("33 properties take skos:Concept values (achievedAAL, ")
     assert "listed under ontology in ucm-build.yaml" in finding.message
 
 

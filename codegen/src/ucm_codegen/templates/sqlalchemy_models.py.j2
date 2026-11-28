@@ -318,8 +318,11 @@ def dump(session: Session, iri: str) -> Optional[Dict[str, Any]]:
         ).mappings().all()
         if rows:
             if kind == "reference":
-                node[term] = [r["object_iri"] if r["object_iri"] is not None else r["object_node"] for r in rows]
+                values = [r["object_iri"] if r["object_iri"] is not None else r["object_node"] for r in rows]
             else:
-                node[term] = [_to_json(r["value"], kind) for r in rows]
+                values = [_to_json(r["value"], kind) for r in rows]
+            # A single-valued property with no home class (a union domain) is stored
+            # here with a unique subject; the context term carries one value, not a set.
+            node[term] = values[0] if assoc.c.subject_iri.unique else values
     node.update(row.extra or {})
     return node

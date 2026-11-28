@@ -8,11 +8,14 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ucm-lifecycle: <https://www.w3.org/ns/ucm#lifecycle> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix pd: <https://w3id.org/dpv/pd#> .
+@prefix legal-eu: <https://w3id.org/dpv/legal/eu#> .
 @base <https://www.w3.org/ns/ucm#lifecycle> .
 
 <https://www.w3.org/ns/ucm#lifecycle> rdf:type owl:Ontology ;
                                        owl:versionIRI <https://www.w3.org/ns/ucm#lifecycle/0.0.1> ;
-                                       rdfs:comment "SKOS concept schemes for the care coordination lifecycle states, dispositions, and statuses used by the UCM core ontology." ;
+                                       rdfs:comment "SKOS concept schemes used by the UCM core ontology: care coordination lifecycle states, dispositions and statuses, and the consent and identity vocabularies." ;
                                        rdfs:label "UCM Lifecycle Vocabularies" ;
                                        owl:versionInfo "v0.0.1" .
 
@@ -501,6 +504,1767 @@ ucm:ReferralWithdrawn rdf:type owl:NamedIndividual ,
                       skos:inScheme ucm:ReferralDisposition ;
                       skos:prefLabel "Withdrawn"@en ;
                       skos:topConceptOf ucm:ReferralDisposition .
+
+
+#################################################################
+#    Consent and identity schemes (consent-concepts-plan, 2026-11-27)
+#    Concepts reused from DPV 2.3 keep DPV's label and definition; the UCM reading is a skos:scopeNote.
+#################################################################
+
+###  https://www.w3.org/ns/ucm#ConsentStatus
+ucm:ConsentStatus rdf:type owl:NamedIndividual ,
+                           skos:ConceptScheme ;
+                  dcterms:created "2026-11-27"^^xsd:date ;
+                  dcterms:description "Does this consent apply now?"@en ;
+                  dcterms:publisher "MDIX"@en ;
+                  dcterms:title "UCM Consent Status"@en ;
+                  skos:definition "Whether a consent directive is in force, from draft through active to inactive."@en ;
+                  skos:hasTopConcept ucm:ConsentDraft ,
+                                     ucm:ConsentActive ,
+                                     ucm:ConsentInactive ,
+                                     dpv:ConsentRefused ,
+                                     ucm:ConsentEnteredInError ,
+                                     dpv:ConsentUnknown ;
+                  skos:prefLabel "Consent Status"@en .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDraft
+ucm:ConsentDraft rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:definition "The directive is being prepared and is not yet in force."@en ;
+                 skos:inScheme ucm:ConsentStatus ;
+                 skos:prefLabel "Draft"@en ;
+                 skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ConsentActive
+ucm:ConsentActive rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "The directive is in force."@en ;
+                  skos:inScheme ucm:ConsentStatus ;
+                  skos:prefLabel "Active"@en ;
+                  skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ConsentInactive
+ucm:ConsentInactive rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "The directive was in force and no longer is. Record a narrower reason when known."@en ;
+                    skos:inScheme ucm:ConsentStatus ;
+                    skos:prefLabel "Inactive"@en ;
+                    skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://w3id.org/dpv#ConsentWithdrawn
+dpv:ConsentWithdrawn rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader ucm:ConsentInactive ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state"@en ;
+                     skos:inScheme ucm:ConsentStatus ;
+                     skos:prefLabel "Consent Withdrawn"@en ;
+                     skos:scopeNote "In UCM: the subject, or a grantor acting for them, withdrew the directive."@en .
+
+
+###  https://w3id.org/dpv#ConsentRevoked
+dpv:ConsentRevoked rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:broader ucm:ConsentInactive ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Revoked"@en ;
+                   skos:scopeNote "In UCM: a party other than the subject or their grantor, such as a court or the data controller, revoked the directive."@en .
+
+
+###  https://w3id.org/dpv#ConsentExpired
+dpv:ConsentExpired rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:broader ucm:ConsentInactive ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where the temporal or contextual validity of consent has 'expired'"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Expired"@en ;
+                   skos:scopeNote "In UCM: the directive's period of validity ended."@en .
+
+
+###  https://www.w3.org/ns/ucm#ConsentSuperseded
+ucm:ConsentSuperseded rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:broader ucm:ConsentInactive ;
+                      skos:definition "A newer directive amended or renewed this one."@en ;
+                      skos:inScheme ucm:ConsentStatus ;
+                      skos:prefLabel "Superseded"@en .
+
+
+###  https://w3id.org/dpv#ConsentRefused
+dpv:ConsentRefused rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where consent has been refused"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Refused"@en ;
+                   skos:scopeNote "In UCM: the subject or grantor declined to give consent, so the directive never came into force."@en ;
+                   skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ConsentEnteredInError
+ucm:ConsentEnteredInError rdf:type owl:NamedIndividual ,
+                                   skos:Concept ;
+                          skos:definition "The directive was recorded by mistake and should be disregarded."@en ;
+                          skos:inScheme ucm:ConsentStatus ;
+                          skos:prefLabel "Entered in error"@en ;
+                          skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://w3id.org/dpv#ConsentUnknown
+dpv:ConsentUnknown rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "State where information about consent is not available or is unknown"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Unknown"@en ;
+                   skos:scopeNote "In UCM: the status of the directive is not known."@en ;
+                   skos:topConceptOf ucm:ConsentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDecision
+ucm:ConsentDecision rdf:type owl:NamedIndividual ,
+                             skos:ConceptScheme ;
+                    dcterms:created "2026-11-27"^^xsd:date ;
+                    dcterms:description "Does this consent or provision permit or deny?"@en ;
+                    dcterms:publisher "MDIX"@en ;
+                    dcterms:title "UCM Consent Decision"@en ;
+                    skos:definition "The decision of a consent directive or provision. A nested provision's decision is the opposite of its parent's."@en ;
+                    skos:hasTopConcept ucm:Permit ,
+                                       ucm:Deny ;
+                    skos:prefLabel "Consent Decision"@en .
+
+
+###  https://www.w3.org/ns/ucm#Permit
+ucm:Permit rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "The actions in scope are permitted."@en ;
+           skos:inScheme ucm:ConsentDecision ;
+           skos:prefLabel "Permit"@en ;
+           skos:topConceptOf ucm:ConsentDecision .
+
+
+###  https://www.w3.org/ns/ucm#Deny
+ucm:Deny rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         skos:definition "The actions in scope are denied."@en ;
+         skos:inScheme ucm:ConsentDecision ;
+         skos:prefLabel "Deny"@en ;
+         skos:topConceptOf ucm:ConsentDecision .
+
+
+###  https://www.w3.org/ns/ucm#ConsentCategory
+ucm:ConsentCategory rdf:type owl:NamedIndividual ,
+                             skos:ConceptScheme ;
+                    dcterms:created "2026-11-27"^^xsd:date ;
+                    dcterms:description "What kind of consent is this?"@en ;
+                    dcterms:publisher "MDIX"@en ;
+                    dcterms:title "UCM Consent Category"@en ;
+                    skos:definition "The kind of consent a directive records."@en ;
+                    skos:hasTopConcept ucm:PrivacyConsent ,
+                                       ucm:TreatmentConsent ,
+                                       ucm:ResearchConsent ,
+                                       ucm:AdvanceDirective ;
+                    skos:prefLabel "Consent Category"@en .
+
+
+###  https://www.w3.org/ns/ucm#PrivacyConsent
+ucm:PrivacyConsent rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Consent concerning the collection, use or disclosure of information."@en ;
+                   skos:inScheme ucm:ConsentCategory ;
+                   skos:prefLabel "Privacy consent"@en ;
+                   skos:topConceptOf ucm:ConsentCategory .
+
+
+###  https://www.w3.org/ns/ucm#ReleaseOfInformation
+ucm:ReleaseOfInformation rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:broader ucm:PrivacyConsent ;
+                         skos:definition "Consent to release or share a person's information with named parties, such as an HMIS ROI."@en ;
+                         skos:inScheme ucm:ConsentCategory ;
+                         skos:prefLabel "Release of information"@en .
+
+
+###  https://www.w3.org/ns/ucm#ConsentToCollect
+ucm:ConsentToCollect rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader ucm:PrivacyConsent ;
+                     skos:definition "Consent for an organization to collect and record a person's information."@en ;
+                     skos:inScheme ucm:ConsentCategory ;
+                     skos:prefLabel "Consent to collect"@en .
+
+
+###  https://www.w3.org/ns/ucm#ConsentToShare
+ucm:ConsentToShare rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:broader ucm:PrivacyConsent ;
+                   skos:definition "Consent for information already held to be shared with other parties."@en ;
+                   skos:inScheme ucm:ConsentCategory ;
+                   skos:prefLabel "Consent to share"@en .
+
+
+###  https://www.w3.org/ns/ucm#TreatmentConsent
+ucm:TreatmentConsent rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Consent to receive a treatment, procedure or service."@en ;
+                     skos:inScheme ucm:ConsentCategory ;
+                     skos:prefLabel "Treatment consent"@en ;
+                     skos:topConceptOf ucm:ConsentCategory .
+
+
+###  https://www.w3.org/ns/ucm#ResearchConsent
+ucm:ResearchConsent rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "Consent to take part in research or for information to be used in research."@en ;
+                    skos:inScheme ucm:ConsentCategory ;
+                    skos:prefLabel "Research consent"@en ;
+                    skos:topConceptOf ucm:ConsentCategory .
+
+
+###  https://www.w3.org/ns/ucm#AdvanceDirective
+ucm:AdvanceDirective rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Instructions for future care if the person cannot decide for themselves. Placeholder."@en ;
+                     skos:inScheme ucm:ConsentCategory ;
+                     skos:prefLabel "Advance directive"@en ;
+                     skos:topConceptOf ucm:ConsentCategory .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModality
+ucm:ConsentModality rdf:type owl:NamedIndividual ,
+                             skos:ConceptScheme ;
+                    dcterms:created "2026-11-27"^^xsd:date ;
+                    dcterms:description "How was consent expressed?"@en ;
+                    dcterms:publisher "MDIX"@en ;
+                    dcterms:title "UCM Consent Modality"@en ;
+                    skos:definition "How a person expressed consent in a consent interaction (HUD HMIS FAQ 3310)."@en ;
+                    skos:hasTopConcept ucm:WrittenConsent ,
+                                       ucm:VerbalConsent ,
+                                       ucm:InferredConsent ;
+                    skos:prefLabel "Consent Modality"@en .
+
+
+###  https://www.w3.org/ns/ucm#WrittenConsent
+ucm:WrittenConsent rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Consent given in writing, on paper or electronically."@en ;
+                   skos:inScheme ucm:ConsentModality ;
+                   skos:prefLabel "Written"@en ;
+                   skos:topConceptOf ucm:ConsentModality .
+
+
+###  https://www.w3.org/ns/ucm#ElectronicConsent
+ucm:ElectronicConsent rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:broader ucm:WrittenConsent ;
+                      skos:definition "Written consent given through an electronic signature or form."@en ;
+                      skos:inScheme ucm:ConsentModality ;
+                      skos:prefLabel "Electronic"@en .
+
+
+###  https://www.w3.org/ns/ucm#VerbalConsent
+ucm:VerbalConsent rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "Consent given orally and recorded by staff."@en ;
+                  skos:inScheme ucm:ConsentModality ;
+                  skos:prefLabel "Verbal"@en ;
+                  skos:topConceptOf ucm:ConsentModality .
+
+
+###  https://www.w3.org/ns/ucm#InferredConsent
+ucm:InferredConsent rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "Consent inferred from a posted notice and the person's continued participation."@en ;
+                    skos:inScheme ucm:ConsentModality ;
+                    skos:prefLabel "Inferred"@en ;
+                    skos:topConceptOf ucm:ConsentModality .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModel
+ucm:ConsentModel rdf:type owl:NamedIndividual ,
+                          skos:ConceptScheme ;
+                 dcterms:created "2026-11-27"^^xsd:date ;
+                 dcterms:description "What is the default when no individual choice is recorded?"@en ;
+                 dcterms:publisher "MDIX"@en ;
+                 dcterms:title "UCM Consent Model"@en ;
+                 skos:definition "How a policy, program or notice treats consent by default."@en ;
+                 skos:hasTopConcept ucm:OptIn ,
+                                    ucm:OptInWithRestrictions ,
+                                    ucm:OptOut ,
+                                    ucm:OptOutWithExceptions ,
+                                    ucm:NoConsentRequired ;
+                 skos:prefLabel "Consent Model"@en .
+
+
+###  https://www.w3.org/ns/ucm#OptIn
+ucm:OptIn rdf:type owl:NamedIndividual ,
+                   skos:Concept ;
+          skos:definition "Information is not shared unless the person consents."@en ;
+          skos:inScheme ucm:ConsentModel ;
+          skos:prefLabel "Opt-in"@en ;
+          skos:topConceptOf ucm:ConsentModel .
+
+
+###  https://www.w3.org/ns/ucm#OptInWithRestrictions
+ucm:OptInWithRestrictions rdf:type owl:NamedIndividual ,
+                                   skos:Concept ;
+                          skos:definition "The person may opt in and restrict what is shared."@en ;
+                          skos:inScheme ucm:ConsentModel ;
+                          skos:prefLabel "Opt-in with restrictions"@en ;
+                          skos:topConceptOf ucm:ConsentModel .
+
+
+###  https://www.w3.org/ns/ucm#OptOut
+ucm:OptOut rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "Information is shared unless the person objects."@en ;
+           skos:inScheme ucm:ConsentModel ;
+           skos:prefLabel "Opt-out"@en ;
+           skos:topConceptOf ucm:ConsentModel .
+
+
+###  https://www.w3.org/ns/ucm#OptOutWithExceptions
+ucm:OptOutWithExceptions rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "Information is shared unless the person objects, and some information always needs explicit consent."@en ;
+                         skos:inScheme ucm:ConsentModel ;
+                         skos:prefLabel "Opt-out with exceptions"@en ;
+                         skos:topConceptOf ucm:ConsentModel .
+
+
+###  https://www.w3.org/ns/ucm#NoConsentRequired
+ucm:NoConsentRequired rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:definition "Another lawful basis applies, so individual consent is not needed."@en ;
+                      skos:inScheme ucm:ConsentModel ;
+                      skos:prefLabel "No consent required"@en ;
+                      skos:topConceptOf ucm:ConsentModel .
+
+
+###  https://www.w3.org/ns/ucm#ConsentInteractionType
+ucm:ConsentInteractionType rdf:type owl:NamedIndividual ,
+                                    skos:ConceptScheme ;
+                           dcterms:created "2026-11-27"^^xsd:date ;
+                           dcterms:description "What did this consent interaction do?"@en ;
+                           dcterms:publisher "MDIX"@en ;
+                           dcterms:title "UCM Consent Interaction Type"@en ;
+                           skos:definition "What a consent interaction did to a consent directive."@en ;
+                           skos:hasTopConcept ucm:ConsentGrant ,
+                                              ucm:ConsentRefusal ,
+                                              ucm:ConsentAmendment ,
+                                              ucm:ConsentRenewal ,
+                                              ucm:ConsentRevocation ,
+                                              ucm:ConsentVerification ;
+                           skos:prefLabel "Consent Interaction Type"@en .
+
+
+###  https://www.w3.org/ns/ucm#ConsentGrant
+ucm:ConsentGrant rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:definition "Consent was given."@en ;
+                 skos:inScheme ucm:ConsentInteractionType ;
+                 skos:prefLabel "Grant"@en ;
+                 skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentRefusal
+ucm:ConsentRefusal rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Consent was declined."@en ;
+                   skos:inScheme ucm:ConsentInteractionType ;
+                   skos:prefLabel "Refuse"@en ;
+                   skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentAmendment
+ucm:ConsentAmendment rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "An existing consent was changed."@en ;
+                     skos:inScheme ucm:ConsentInteractionType ;
+                     skos:prefLabel "Amend"@en ;
+                     skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentRenewal
+ucm:ConsentRenewal rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "An existing consent was confirmed for a further period."@en ;
+                   skos:inScheme ucm:ConsentInteractionType ;
+                   skos:prefLabel "Renew"@en ;
+                   skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentRevocation
+ucm:ConsentRevocation rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:definition "An existing consent was withdrawn."@en ;
+                      skos:inScheme ucm:ConsentInteractionType ;
+                      skos:prefLabel "Revoke"@en ;
+                      skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentVerification
+ucm:ConsentVerification rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        skos:definition "An existing consent was verified with the subject or grantor, or a self-consent condition was verified by a third party."@en ;
+                        skos:inScheme ucm:ConsentInteractionType ;
+                        skos:prefLabel "Verify"@en ;
+                        skos:topConceptOf ucm:ConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#ConsentAction
+ucm:ConsentAction rdf:type owl:NamedIndividual ,
+                           skos:ConceptScheme ;
+                  dcterms:created "2026-11-27"^^xsd:date ;
+                  dcterms:description "What action does this provision permit or deny?"@en ;
+                  dcterms:publisher "MDIX"@en ;
+                  dcterms:title "UCM Consent Action"@en ;
+                  skos:definition "Actions on information that a consent provision governs."@en ;
+                  skos:hasTopConcept dpv:Collect ,
+                                     dpv:Access ,
+                                     dpv:Use ,
+                                     dpv:Disclose ,
+                                     ucm:CorrectAction ;
+                  skos:prefLabel "Consent Action"@en .
+
+
+###  https://w3id.org/dpv#Collect
+dpv:Collect rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+            skos:definition "to gather data from someone"@en ;
+            skos:inScheme ucm:ConsentAction ;
+            skos:prefLabel "Collect"@en ;
+            skos:scopeNote "In UCM: gather and record information."@en ;
+            skos:topConceptOf ucm:ConsentAction .
+
+
+###  https://w3id.org/dpv#Access
+dpv:Access rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+           skos:definition "to access data"@en ;
+           skos:inScheme ucm:ConsentAction ;
+           skos:prefLabel "Access"@en ;
+           skos:scopeNote "In UCM: retrieve and view information."@en ;
+           skos:topConceptOf ucm:ConsentAction .
+
+
+###  https://w3id.org/dpv#Use
+dpv:Use rdf:type owl:NamedIndividual ,
+                 skos:Concept ;
+        rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+        skos:definition "to use data"@en ;
+        skos:inScheme ucm:ConsentAction ;
+        skos:prefLabel "Use"@en ;
+        skos:scopeNote "In UCM: use information for a purpose."@en ;
+        skos:topConceptOf ucm:ConsentAction .
+
+
+###  https://w3id.org/dpv#Disclose
+dpv:Disclose rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+             skos:definition "to make data known"@en ;
+             skos:inScheme ucm:ConsentAction ;
+             skos:prefLabel "Disclose"@en ;
+             skos:scopeNote "In UCM: release information to another party."@en ;
+             skos:topConceptOf ucm:ConsentAction .
+
+
+###  https://www.w3.org/ns/ucm#RediscloseAction
+ucm:RediscloseAction rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader dpv:Disclose ;
+                     skos:definition "A recipient releasing information it received to a further party."@en ;
+                     skos:inScheme ucm:ConsentAction ;
+                     skos:prefLabel "Redisclose"@en .
+
+
+###  https://www.w3.org/ns/ucm#CorrectAction
+ucm:CorrectAction rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "Access information in order to correct it."@en ;
+                  skos:inScheme ucm:ConsentAction ;
+                  skos:prefLabel "Access and correct"@en ;
+                  skos:topConceptOf ucm:ConsentAction .
+
+
+###  https://www.w3.org/ns/ucm#PurposeOfUse
+ucm:PurposeOfUse rdf:type owl:NamedIndividual ,
+                          skos:ConceptScheme ;
+                 dcterms:created "2026-11-27"^^xsd:date ;
+                 dcterms:description "For what purpose may the information be used?"@en ;
+                 dcterms:publisher "MDIX"@en ;
+                 dcterms:title "UCM Purpose of Use"@en ;
+                 skos:definition "Purposes for which information may be collected, used or disclosed, across health and social care."@en ;
+                 skos:hasTopConcept ucm:Treatment ,
+                                    ucm:CareCoordination ,
+                                    ucm:CareManagement ,
+                                    ucm:Payment ,
+                                    ucm:HealthcareOperations ,
+                                    ucm:EligibilityPurpose ,
+                                    dpv:ScientificResearch ,
+                                    ucm:PublicHealthPurpose ,
+                                    ucm:FamilyRequested ,
+                                    ucm:PatientRequested ,
+                                    ucm:ProgramReporting ;
+                 skos:prefLabel "Purpose of Use"@en .
+
+
+###  https://www.w3.org/ns/ucm#Treatment
+ucm:Treatment rdf:type owl:NamedIndividual ,
+                       skos:Concept ;
+              skos:definition "Providing health care or services to the person."@en ;
+              skos:inScheme ucm:PurposeOfUse ;
+              skos:prefLabel "Treatment"@en ;
+              skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#EmergencyTreatment
+ucm:EmergencyTreatment rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:broader ucm:Treatment ;
+                       skos:definition "Providing care in an emergency."@en ;
+                       skos:inScheme ucm:PurposeOfUse ;
+                       skos:prefLabel "Emergency treatment"@en .
+
+
+###  https://www.w3.org/ns/ucm#CareCoordination
+ucm:CareCoordination rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Coordinating care for the person across providers."@en ;
+                     skos:inScheme ucm:PurposeOfUse ;
+                     skos:prefLabel "Care coordination"@en ;
+                     skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#SocialCareCoordination
+ucm:SocialCareCoordination rdf:type owl:NamedIndividual ,
+                                    skos:Concept ;
+                           skos:broader ucm:CareCoordination ;
+                           skos:definition "Coordinating social care services for a person or household across agencies and programs."@en ;
+                           skos:inScheme ucm:PurposeOfUse ;
+                           skos:prefLabel "Social care coordination"@en .
+
+
+###  https://www.w3.org/ns/ucm#CoordinatedEntry
+ucm:CoordinatedEntry rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader ucm:SocialCareCoordination ;
+                     skos:definition "Assessing, prioritizing and referring people experiencing homelessness through a Continuum of Care's coordinated entry process."@en ;
+                     skos:inScheme ucm:PurposeOfUse ;
+                     skos:prefLabel "Coordinated entry"@en .
+
+
+###  https://www.w3.org/ns/ucm#HousingPlacement
+ucm:HousingPlacement rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader ucm:SocialCareCoordination ;
+                     skos:definition "Matching a person or household to a housing program or unit and moving them in."@en ;
+                     skos:inScheme ucm:PurposeOfUse ;
+                     skos:prefLabel "Housing placement"@en .
+
+
+###  https://www.w3.org/ns/ucm#SocialServicesReferral
+ucm:SocialServicesReferral rdf:type owl:NamedIndividual ,
+                                    skos:Concept ;
+                           skos:broader ucm:SocialCareCoordination ;
+                           skos:definition "Referring a person to a community-based or government service and tracking whether they were connected."@en ;
+                           skos:inScheme ucm:PurposeOfUse ;
+                           skos:prefLabel "Social services referral"@en .
+
+
+###  https://www.w3.org/ns/ucm#SocialCaseManagement
+ucm:SocialCaseManagement rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:broader ucm:SocialCareCoordination ;
+                         skos:definition "Ongoing case management by a social care provider."@en ;
+                         skos:inScheme ucm:PurposeOfUse ;
+                         skos:prefLabel "Social case management"@en .
+
+
+###  https://www.w3.org/ns/ucm#CareManagement
+ucm:CareManagement rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Managing a person's care over time."@en ;
+                   skos:inScheme ucm:PurposeOfUse ;
+                   skos:prefLabel "Care management"@en ;
+                   skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#Payment
+ucm:Payment rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            skos:definition "Payment for care or services."@en ;
+            skos:inScheme ucm:PurposeOfUse ;
+            skos:prefLabel "Payment"@en ;
+            skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#HealthcareOperations
+ucm:HealthcareOperations rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "Operating the organization that provides care or services."@en ;
+                         skos:inScheme ucm:PurposeOfUse ;
+                         skos:prefLabel "Operations"@en ;
+                         skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#EligibilityPurpose
+ucm:EligibilityPurpose rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:definition "Determining whether the person is eligible for a program or benefit."@en ;
+                       skos:inScheme ucm:PurposeOfUse ;
+                       skos:prefLabel "Eligibility determination"@en ;
+                       skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#BenefitsEnrollment
+ucm:BenefitsEnrollment rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:broader ucm:EligibilityPurpose ;
+                       skos:definition "Applying for, enrolling in or recertifying public benefits."@en ;
+                       skos:inScheme ucm:PurposeOfUse ;
+                       skos:prefLabel "Benefits enrollment"@en .
+
+
+###  https://w3id.org/dpv#ScientificResearch
+dpv:ScientificResearch rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                       skos:definition "Purposes associated with scientific research"@en ;
+                       skos:inScheme ucm:PurposeOfUse ;
+                       skos:prefLabel "Scientific Research"@en ;
+                       skos:scopeNote "In UCM: research."@en ;
+                       skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#PublicHealthPurpose
+ucm:PublicHealthPurpose rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        skos:definition "Public health activities and reporting."@en ;
+                        skos:inScheme ucm:PurposeOfUse ;
+                        skos:prefLabel "Public health"@en ;
+                        skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#FamilyRequested
+ucm:FamilyRequested rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "Disclosure requested by the person's family."@en ;
+                    skos:inScheme ucm:PurposeOfUse ;
+                    skos:prefLabel "Family requested"@en ;
+                    skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#PatientRequested
+ucm:PatientRequested rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Disclosure requested by the person themselves."@en ;
+                     skos:inScheme ucm:PurposeOfUse ;
+                     skos:prefLabel "Person requested"@en ;
+                     skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#ProgramReporting
+ucm:ProgramReporting rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Required reporting to funders or oversight bodies, such as HUD HMIS reports."@en ;
+                     skos:inScheme ucm:PurposeOfUse ;
+                     skos:prefLabel "Program reporting"@en ;
+                     skos:topConceptOf ucm:PurposeOfUse .
+
+
+###  https://www.w3.org/ns/ucm#InformationCategory
+ucm:InformationCategory rdf:type owl:NamedIndividual ,
+                                 skos:ConceptScheme ;
+                        dcterms:created "2026-11-27"^^xsd:date ;
+                        dcterms:description "What kind of information is covered?"@en ;
+                        dcterms:publisher "MDIX"@en ;
+                        dcterms:title "UCM Information Category"@en ;
+                        skos:definition "Cross-sector categories of information that a consent provision can cover."@en ;
+                        skos:hasTopConcept ucm:ClinicalInformation ,
+                                           ucm:BehavioralHealthInformation ,
+                                           ucm:HousingInformation ,
+                                           ucm:IncomeAndBenefitsInformation ,
+                                           pd:Education ,
+                                           ucm:ChildWelfareInformation ,
+                                           ucm:JusticeInformation ,
+                                           ucm:NutritionInformation ,
+                                           pd:Identifying ;
+                        skos:prefLabel "Information Category"@en .
+
+
+###  https://www.w3.org/ns/ucm#ClinicalInformation
+ucm:ClinicalInformation rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        rdfs:seeAlso ucm:ClinicalDomain ;
+                        skos:definition "Health and clinical care information."@en ;
+                        skos:inScheme ucm:InformationCategory ;
+                        skos:prefLabel "Clinical information"@en ;
+                        skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#BehavioralHealthInformation
+ucm:BehavioralHealthInformation rdf:type owl:NamedIndividual ,
+                                         skos:Concept ;
+                                rdfs:seeAlso ucm:BehavioralHealthDomain ;
+                                skos:definition "Mental health and substance use information."@en ;
+                                skos:inScheme ucm:InformationCategory ;
+                                skos:prefLabel "Behavioral health information"@en ;
+                                skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#HousingInformation
+ucm:HousingInformation rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       rdfs:seeAlso ucm:HousingDomain ;
+                       skos:definition "Housing status, history, assessments and placements."@en ;
+                       skos:inScheme ucm:InformationCategory ;
+                       skos:prefLabel "Housing information"@en ;
+                       skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#IncomeAndBenefitsInformation
+ucm:IncomeAndBenefitsInformation rdf:type owl:NamedIndividual ,
+                                          skos:Concept ;
+                                 skos:definition "Income, employment and public benefits information."@en ;
+                                 skos:inScheme ucm:InformationCategory ;
+                                 skos:prefLabel "Income and benefits information"@en ;
+                                 skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://w3id.org/dpv/pd#Education
+pd:Education rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             rdfs:isDefinedBy <https://w3id.org/dpv/pd#> ;
+             skos:definition "Information about education"@en ;
+             skos:inScheme ucm:InformationCategory ;
+             skos:prefLabel "Education"@en ;
+             skos:scopeNote "In UCM: education records."@en ;
+             skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#ChildWelfareInformation
+ucm:ChildWelfareInformation rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            skos:definition "Child welfare and family services information."@en ;
+                            skos:inScheme ucm:InformationCategory ;
+                            skos:prefLabel "Child welfare information"@en ;
+                            skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#JusticeInformation
+ucm:JusticeInformation rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:definition "Criminal and juvenile justice information."@en ;
+                       skos:inScheme ucm:InformationCategory ;
+                       skos:prefLabel "Justice information"@en ;
+                       skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#NutritionInformation
+ucm:NutritionInformation rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "Food security and nutrition information."@en ;
+                         skos:inScheme ucm:InformationCategory ;
+                         skos:prefLabel "Nutrition information"@en ;
+                         skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://w3id.org/dpv/pd#Identifying
+pd:Identifying rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               rdfs:isDefinedBy <https://w3id.org/dpv/pd#> ;
+               skos:definition "Information that uniquely or semi-uniquely identifies an individual or a group"@en ;
+               skos:inScheme ucm:InformationCategory ;
+               skos:prefLabel "Identifying"@en ;
+               skos:scopeNote "In UCM: information that identifies a person, such as name, birth date and identifiers."@en ;
+               skos:topConceptOf ucm:InformationCategory .
+
+
+###  https://www.w3.org/ns/ucm#SensitivityCategory
+ucm:SensitivityCategory rdf:type owl:NamedIndividual ,
+                                 skos:ConceptScheme ;
+                        dcterms:created "2026-11-27"^^xsd:date ;
+                        dcterms:description "What sensitive topic does the information concern?"@en ;
+                        dcterms:publisher "MDIX"@en ;
+                        dcterms:title "UCM Sensitivity Category"@en ;
+                        skos:definition "Sensitive topics that call for extra protection, aligned with HL7 ActCode sensitivity codes and SHIFT, plus topics HL7 does not code."@en ;
+                        skos:hasTopConcept ucm:SubstanceUseDisorder ,
+                                           ucm:BehavioralHealth ,
+                                           ucm:HIV ,
+                                           ucm:SexuallyTransmittedDisease ,
+                                           ucm:SexualAndReproductiveHealth ,
+                                           ucm:GenderAndSexualOrientation ,
+                                           ucm:GeneticDisease ,
+                                           ucm:SexualAssaultAbuseDomesticViolence ,
+                                           ucm:HumanTrafficking ,
+                                           ucm:Adolescent ,
+                                           ucm:UnaccompaniedYouth ,
+                                           ucm:Part2Protected ;
+                        skos:prefLabel "Sensitivity Category"@en .
+
+
+###  https://www.w3.org/ns/ucm#SubstanceUseDisorder
+ucm:SubstanceUseDisorder rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "Information about a substance use disorder."@en ;
+                         skos:inScheme ucm:SensitivityCategory ;
+                         skos:prefLabel "Substance use disorder"@en ;
+                         skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#AlcoholUseDisorder
+ucm:AlcoholUseDisorder rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:broader ucm:SubstanceUseDisorder ;
+                       skos:definition "Information about an alcohol use disorder."@en ;
+                       skos:inScheme ucm:SensitivityCategory ;
+                       skos:prefLabel "Alcohol use disorder"@en .
+
+
+###  https://www.w3.org/ns/ucm#OpioidUseDisorder
+ucm:OpioidUseDisorder rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:broader ucm:SubstanceUseDisorder ;
+                      skos:definition "Information about an opioid use disorder."@en ;
+                      skos:inScheme ucm:SensitivityCategory ;
+                      skos:prefLabel "Opioid use disorder"@en .
+
+
+###  https://www.w3.org/ns/ucm#BehavioralHealth
+ucm:BehavioralHealth rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "Information about behavioral health."@en ;
+                     skos:inScheme ucm:SensitivityCategory ;
+                     skos:prefLabel "Behavioral health"@en ;
+                     skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#MentalHealth
+ucm:MentalHealth rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:broader ucm:BehavioralHealth ;
+                 skos:definition "Information about mental health."@en ;
+                 skos:inScheme ucm:SensitivityCategory ;
+                 skos:prefLabel "Mental health"@en .
+
+
+###  https://www.w3.org/ns/ucm#PsychiatricDisorder
+ucm:PsychiatricDisorder rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        skos:broader ucm:BehavioralHealth ;
+                        skos:definition "Information about a psychiatric disorder."@en ;
+                        skos:inScheme ucm:SensitivityCategory ;
+                        skos:prefLabel "Psychiatric disorder"@en .
+
+
+###  https://www.w3.org/ns/ucm#PsychotherapyNote
+ucm:PsychotherapyNote rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:broader ucm:BehavioralHealth ;
+                      skos:definition "Psychotherapy notes."@en ;
+                      skos:inScheme ucm:SensitivityCategory ;
+                      skos:prefLabel "Psychotherapy note"@en .
+
+
+###  https://www.w3.org/ns/ucm#HIV
+ucm:HIV rdf:type owl:NamedIndividual ,
+                 skos:Concept ;
+        skos:definition "Information about HIV or AIDS."@en ;
+        skos:inScheme ucm:SensitivityCategory ;
+        skos:prefLabel "HIV/AIDS"@en ;
+        skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#SexuallyTransmittedDisease
+ucm:SexuallyTransmittedDisease rdf:type owl:NamedIndividual ,
+                                        skos:Concept ;
+                               skos:definition "Information about a sexually transmitted infection."@en ;
+                               skos:inScheme ucm:SensitivityCategory ;
+                               skos:prefLabel "Sexually transmitted disease"@en ;
+                               skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#SexualAndReproductiveHealth
+ucm:SexualAndReproductiveHealth rdf:type owl:NamedIndividual ,
+                                         skos:Concept ;
+                                skos:definition "Information about sexual and reproductive health."@en ;
+                                skos:inScheme ucm:SensitivityCategory ;
+                                skos:prefLabel "Sexual and reproductive health"@en ;
+                                skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#Abortion
+ucm:Abortion rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             skos:broader ucm:SexualAndReproductiveHealth ;
+             skos:definition "Information about seeking, obtaining, providing or facilitating abortion. Kept separate because its legal sensitivity varies by jurisdiction."@en ;
+             skos:inScheme ucm:SensitivityCategory ;
+             skos:prefLabel "Abortion"@en .
+
+
+###  https://www.w3.org/ns/ucm#GenderAndSexualOrientation
+ucm:GenderAndSexualOrientation rdf:type owl:NamedIndividual ,
+                                        skos:Concept ;
+                               skos:definition "Information about gender identity or sexual orientation."@en ;
+                               skos:inScheme ucm:SensitivityCategory ;
+                               skos:prefLabel "Gender and sexual orientation"@en ;
+                               skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#GeneticDisease
+ucm:GeneticDisease rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Information about a genetic condition."@en ;
+                   skos:inScheme ucm:SensitivityCategory ;
+                   skos:prefLabel "Genetic disease"@en ;
+                   skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#SexualAssaultAbuseDomesticViolence
+ucm:SexualAssaultAbuseDomesticViolence rdf:type owl:NamedIndividual ,
+                                                skos:Concept ;
+                                       skos:definition "Information that a person experienced sexual assault, abuse or domestic violence."@en ;
+                                       skos:inScheme ucm:SensitivityCategory ;
+                                       skos:prefLabel "Sexual assault, abuse or domestic violence"@en ;
+                                       skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#HumanTrafficking
+ucm:HumanTrafficking rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:related ucm:SexualAssaultAbuseDomesticViolence ;
+                     skos:definition "Information that a person is or was a victim of sex or labor trafficking, or is fleeing it."@en ;
+                     skos:inScheme ucm:SensitivityCategory ;
+                     skos:prefLabel "Human trafficking"@en ;
+                     skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#Adolescent
+ucm:Adolescent rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               skos:definition "Information about an adolescent's care that calls for extra protection."@en ;
+               skos:inScheme ucm:SensitivityCategory ;
+               skos:prefLabel "Adolescent"@en ;
+               skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#UnaccompaniedYouth
+ucm:UnaccompaniedYouth rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:related ucm:Adolescent ;
+                       skos:definition "Information that a person is a youth without a parent or guardian, such as an unaccompanied homeless youth. A status, not a topic."@en ;
+                       skos:inScheme ucm:SensitivityCategory ;
+                       skos:prefLabel "Unaccompanied youth"@en ;
+                       skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#Part2Protected
+ucm:Part2Protected rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "Substance use disorder records protected under 42 CFR Part 2."@en ;
+                   skos:inScheme ucm:SensitivityCategory ;
+                   skos:prefLabel "42 CFR Part 2 protected"@en ;
+                   skos:topConceptOf ucm:SensitivityCategory .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityLevel
+ucm:ConfidentialityLevel rdf:type owl:NamedIndividual ,
+                                  skos:ConceptScheme ;
+                         dcterms:created "2026-11-27"^^xsd:date ;
+                         dcterms:description "How confidential is the information?"@en ;
+                         dcterms:publisher "MDIX"@en ;
+                         dcterms:title "UCM Confidentiality Level"@en ;
+                         skos:definition "Confidentiality levels aligned with HL7 v3 Confidentiality."@en ;
+                         skos:hasTopConcept ucm:ConfidentialityUnrestricted ,
+                                            ucm:ConfidentialityLow ,
+                                            ucm:ConfidentialityModerate ,
+                                            ucm:ConfidentialityNormal ,
+                                            ucm:ConfidentialityRestricted ,
+                                            ucm:ConfidentialityVeryRestricted ;
+                         skos:prefLabel "Confidentiality Level"@en .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityUnrestricted
+ucm:ConfidentialityUnrestricted rdf:type owl:NamedIndividual ,
+                                         skos:Concept ;
+                                skos:definition "Not confidential; may be shared freely."@en ;
+                                skos:inScheme ucm:ConfidentialityLevel ;
+                                skos:prefLabel "Unrestricted"@en ;
+                                skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityLow
+ucm:ConfidentialityLow rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:definition "Low confidentiality; minimal harm if disclosed."@en ;
+                       skos:inScheme ucm:ConfidentialityLevel ;
+                       skos:prefLabel "Low"@en ;
+                       skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityModerate
+ucm:ConfidentialityModerate rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            skos:definition "Moderate confidentiality."@en ;
+                            skos:inScheme ucm:ConfidentialityLevel ;
+                            skos:prefLabel "Moderate"@en ;
+                            skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityNormal
+ucm:ConfidentialityNormal rdf:type owl:NamedIndividual ,
+                                   skos:Concept ;
+                          skos:definition "The usual level for health and social care information."@en ;
+                          skos:inScheme ucm:ConfidentialityLevel ;
+                          skos:prefLabel "Normal"@en ;
+                          skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityRestricted
+ucm:ConfidentialityRestricted rdf:type owl:NamedIndividual ,
+                                       skos:Concept ;
+                              skos:definition "Highly sensitive; restricted to a few parties."@en ;
+                              skos:inScheme ucm:ConfidentialityLevel ;
+                              skos:prefLabel "Restricted"@en ;
+                              skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityVeryRestricted
+ucm:ConfidentialityVeryRestricted rdf:type owl:NamedIndividual ,
+                                           skos:Concept ;
+                                  skos:definition "Extremely sensitive; very few parties may see it."@en ;
+                                  skos:inScheme ucm:ConfidentialityLevel ;
+                                  skos:prefLabel "Very restricted"@en ;
+                                  skos:topConceptOf ucm:ConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#RegulatoryBasis
+ucm:RegulatoryBasis rdf:type owl:NamedIndividual ,
+                             skos:ConceptScheme ;
+                    dcterms:created "2026-11-27"^^xsd:date ;
+                    dcterms:description "Which law or regulation does this consent rest on?"@en ;
+                    dcterms:publisher "MDIX"@en ;
+                    dcterms:title "UCM Regulatory Basis"@en ;
+                    skos:definition "Laws and regulations that govern consent. Adopters can add their own."@en ;
+                    skos:hasTopConcept ucm:HIPAA ,
+                                       ucm:CFR42Part2 ,
+                                       ucm:CommonRule ,
+                                       ucm:HMISDataStandards ,
+                                       ucm:FERPA ,
+                                       legal-eu:law-GDPR ,
+                                       ucm:VAWA ,
+                                       ucm:StateLaw ;
+                    skos:prefLabel "Regulatory Basis"@en .
+
+
+###  https://www.w3.org/ns/ucm#HIPAA
+ucm:HIPAA rdf:type owl:NamedIndividual ,
+                   skos:Concept ;
+          skos:definition "The HIPAA Privacy Rule (45 CFR Parts 160 and 164)."@en ;
+          skos:inScheme ucm:RegulatoryBasis ;
+          skos:prefLabel "HIPAA"@en ;
+          skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#HIPAAAuthorization
+ucm:HIPAAAuthorization rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       skos:broader ucm:HIPAA ;
+                       skos:definition "A HIPAA authorization for a use or disclosure."@en ;
+                       skos:inScheme ucm:RegulatoryBasis ;
+                       skos:prefLabel "HIPAA authorization"@en .
+
+
+###  https://www.w3.org/ns/ucm#HIPAANoticeOfPrivacyPractices
+ucm:HIPAANoticeOfPrivacyPractices rdf:type owl:NamedIndividual ,
+                                           skos:Concept ;
+                                  skos:broader ucm:HIPAA ;
+                                  skos:definition "A HIPAA notice of privacy practices."@en ;
+                                  skos:inScheme ucm:RegulatoryBasis ;
+                                  skos:prefLabel "HIPAA notice of privacy practices"@en .
+
+
+###  https://www.w3.org/ns/ucm#HIPAAResearch
+ucm:HIPAAResearch rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:broader ucm:HIPAA ;
+                  skos:definition "A HIPAA authorization for research."@en ;
+                  skos:inScheme ucm:RegulatoryBasis ;
+                  skos:prefLabel "HIPAA research"@en .
+
+
+###  https://www.w3.org/ns/ucm#CFR42Part2
+ucm:CFR42Part2 rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               skos:definition "Confidentiality of Substance Use Disorder Patient Records, 42 CFR Part 2."@en ;
+               skos:inScheme ucm:RegulatoryBasis ;
+               skos:prefLabel "42 CFR Part 2"@en ;
+               skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#CommonRule
+ucm:CommonRule rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               skos:definition "The Federal Policy for the Protection of Human Subjects (45 CFR 46)."@en ;
+               skos:inScheme ucm:RegulatoryBasis ;
+               skos:prefLabel "Common Rule"@en ;
+               skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#HMISDataStandards
+ucm:HMISDataStandards rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:definition "The HUD HMIS Data and Technical Standards, including the privacy and security standards, and the current HMIS Data Standards."@en ;
+                      skos:inScheme ucm:RegulatoryBasis ;
+                      skos:prefLabel "HMIS Data Standards"@en ;
+                      skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#FERPA
+ucm:FERPA rdf:type owl:NamedIndividual ,
+                   skos:Concept ;
+          skos:definition "The Family Educational Rights and Privacy Act (20 U.S.C. 1232g; 34 CFR Part 99)."@en ;
+          skos:inScheme ucm:RegulatoryBasis ;
+          skos:prefLabel "FERPA"@en ;
+          skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://w3id.org/dpv/legal/eu#law-GDPR
+legal-eu:law-GDPR rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  rdfs:isDefinedBy <https://w3id.org/dpv/legal/eu#> ;
+                  skos:inScheme ucm:RegulatoryBasis ;
+                  skos:prefLabel "General Data Protection Regulation (GDPR)"@en ;
+                  skos:scopeNote "In UCM: the EU General Data Protection Regulation (Regulation (EU) 2016/679)."@en ;
+                  skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#VAWA
+ucm:VAWA rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         skos:definition "The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS."@en ;
+         skos:inScheme ucm:RegulatoryBasis ;
+         skos:prefLabel "VAWA"@en ;
+         skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#StateLaw
+ucm:StateLaw rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             skos:definition "A state, territorial or tribal law."@en ;
+             skos:inScheme ucm:RegulatoryBasis ;
+             skos:prefLabel "State law"@en ;
+             skos:topConceptOf ucm:RegulatoryBasis .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentCondition
+ucm:SelfConsentCondition rdf:type owl:NamedIndividual ,
+                                  skos:ConceptScheme ;
+                         dcterms:created "2026-11-27"^^xsd:date ;
+                         dcterms:description "What condition lets a minor or youth consent for themselves?"@en ;
+                         dcterms:publisher "MDIX"@en ;
+                         dcterms:title "UCM Self-Consent Condition"@en ;
+                         skos:definition "Conditions that, under a self-consent rule, let a minor or youth consent for themselves."@en ;
+                         skos:hasTopConcept ucm:AgeOfMajority ,
+                                            ucm:EmancipatedMinor ,
+                                            ucm:MarriedMinor ,
+                                            ucm:MinorParent ,
+                                            ucm:UnaccompaniedYouthStatus ,
+                                            ucm:SelfSupporting ,
+                                            ucm:PostsecondaryEnrollment ,
+                                            ucm:MatureMinor ,
+                                            ucm:ServiceSpecificMinorConsent ;
+                         skos:prefLabel "Self-Consent Condition"@en .
+
+
+###  https://www.w3.org/ns/ucm#AgeOfMajority
+ucm:AgeOfMajority rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "The person has reached the age of majority in the jurisdiction."@en ;
+                  skos:inScheme ucm:SelfConsentCondition ;
+                  skos:prefLabel "Age of majority"@en ;
+                  skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#EmancipatedMinor
+ucm:EmancipatedMinor rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "The person is a legally emancipated minor."@en ;
+                     skos:inScheme ucm:SelfConsentCondition ;
+                     skos:prefLabel "Emancipated minor"@en ;
+                     skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#MarriedMinor
+ucm:MarriedMinor rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:definition "The person is a married minor."@en ;
+                 skos:inScheme ucm:SelfConsentCondition ;
+                 skos:prefLabel "Married minor"@en ;
+                 skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#MinorParent
+ucm:MinorParent rdf:type owl:NamedIndividual ,
+                         skos:Concept ;
+                skos:definition "The person is a minor who is a parent."@en ;
+                skos:inScheme ucm:SelfConsentCondition ;
+                skos:prefLabel "Minor parent"@en ;
+                skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#UnaccompaniedYouthStatus
+ucm:UnaccompaniedYouthStatus rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             skos:definition "The person is a youth living without a parent or guardian, such as an unaccompanied homeless youth."@en ;
+                             skos:inScheme ucm:SelfConsentCondition ;
+                             skos:prefLabel "Unaccompanied youth"@en ;
+                             skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#SelfSupporting
+ucm:SelfSupporting rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "The person supports themselves financially."@en ;
+                   skos:inScheme ucm:SelfConsentCondition ;
+                   skos:prefLabel "Self-supporting"@en ;
+                   skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#PostsecondaryEnrollment
+ucm:PostsecondaryEnrollment rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            skos:definition "The person attends a postsecondary institution."@en ;
+                            skos:inScheme ucm:SelfConsentCondition ;
+                            skos:prefLabel "Postsecondary enrollment"@en ;
+                            skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#MatureMinor
+ucm:MatureMinor rdf:type owl:NamedIndividual ,
+                         skos:Concept ;
+                skos:definition "A clinician judged the minor to have capacity to consent."@en ;
+                skos:inScheme ucm:SelfConsentCondition ;
+                skos:prefLabel "Mature minor"@en ;
+                skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#ServiceSpecificMinorConsent
+ucm:ServiceSpecificMinorConsent rdf:type owl:NamedIndividual ,
+                                         skos:Concept ;
+                                skos:definition "The law lets minors consent to this particular service, such as STI or substance use treatment."@en ;
+                                skos:inScheme ucm:SelfConsentCondition ;
+                                skos:prefLabel "Service-specific minor consent"@en ;
+                                skos:topConceptOf ucm:SelfConsentCondition .
+
+
+###  https://www.w3.org/ns/ucm#BirthDateQuality
+ucm:BirthDateQuality rdf:type owl:NamedIndividual ,
+                              skos:ConceptScheme ;
+                     dcterms:created "2026-11-27"^^xsd:date ;
+                     dcterms:description "How reliable is the recorded birth date?"@en ;
+                     dcterms:publisher "MDIX"@en ;
+                     dcterms:title "UCM Birth Date Quality"@en ;
+                     skos:definition "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2026 HMIS Data Dictionary, October 2025). skos:notation carries the HMIS response code."@en ;
+                     skos:hasTopConcept ucm:FullDateReported ,
+                                        ucm:ApproximateOrPartial ,
+                                        ucm:ClientDoesNotKnow ,
+                                        ucm:ClientPreferNotToAnswer ,
+                                        ucm:DataNotCollected ;
+                     skos:prefLabel "Birth Date Quality"@en .
+
+
+###  https://www.w3.org/ns/ucm#FullDateReported
+ucm:FullDateReported rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:notation "1" ;
+                     skos:definition "The full date of birth was reported (HMIS: Full DOB reported)."@en ;
+                     skos:inScheme ucm:BirthDateQuality ;
+                     skos:prefLabel "Full date reported"@en ;
+                     skos:topConceptOf ucm:BirthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#ApproximateOrPartial
+ucm:ApproximateOrPartial rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:notation "2" ;
+                         skos:definition "An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported)."@en ;
+                         skos:inScheme ucm:BirthDateQuality ;
+                         skos:prefLabel "Approximate or partial"@en ;
+                         skos:topConceptOf ucm:BirthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#ClientDoesNotKnow
+ucm:ClientDoesNotKnow rdf:type owl:NamedIndividual ,
+                               skos:Concept ;
+                      skos:notation "8" ;
+                      skos:definition "The person does not know their date of birth. HMIS allows this only with no birth date recorded."@en ;
+                      skos:inScheme ucm:BirthDateQuality ;
+                      skos:prefLabel "Client doesn't know"@en ;
+                      skos:topConceptOf ucm:BirthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#ClientPreferNotToAnswer
+ucm:ClientPreferNotToAnswer rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            skos:notation "9" ;
+                            skos:definition "The person declined to give their date of birth. HMIS allows this only with no birth date recorded."@en ;
+                            skos:inScheme ucm:BirthDateQuality ;
+                            skos:prefLabel "Client prefers not to answer"@en ;
+                            skos:topConceptOf ucm:BirthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#DataNotCollected
+ucm:DataNotCollected rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:notation "99" ;
+                     skos:definition "The date of birth was not collected. HMIS allows this only with no birth date recorded."@en ;
+                     skos:inScheme ucm:BirthDateQuality ;
+                     skos:prefLabel "Data not collected"@en ;
+                     skos:topConceptOf ucm:BirthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDisposition
+ucm:RetentionDisposition rdf:type owl:NamedIndividual ,
+                                  skos:ConceptScheme ;
+                         dcterms:created "2026-11-27"^^xsd:date ;
+                         dcterms:description "What happens to the data when its retention period ends?"@en ;
+                         dcterms:publisher "MDIX"@en ;
+                         dcterms:title "UCM Retention Disposition"@en ;
+                         skos:definition "What happens to information covered by a consent when its retention period ends."@en ;
+                         skos:hasTopConcept ucm:RetentionDelete ,
+                                            ucm:RetentionDeidentify ,
+                                            ucm:RetentionArchive ;
+                         skos:prefLabel "Retention Disposition"@en .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDelete
+ucm:RetentionDelete rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "The information is deleted."@en ;
+                    skos:inScheme ucm:RetentionDisposition ;
+                    skos:prefLabel "Delete"@en ;
+                    skos:topConceptOf ucm:RetentionDisposition .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDeidentify
+ucm:RetentionDeidentify rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        skos:definition "The information is de-identified and may be kept."@en ;
+                        skos:inScheme ucm:RetentionDisposition ;
+                        skos:prefLabel "De-identify"@en ;
+                        skos:topConceptOf ucm:RetentionDisposition .
+
+
+###  https://www.w3.org/ns/ucm#RetentionArchive
+ucm:RetentionArchive rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "The information is archived with restricted access."@en ;
+                     skos:inScheme ucm:RetentionDisposition ;
+                     skos:prefLabel "Archive"@en ;
+                     skos:topConceptOf ucm:RetentionDisposition .
+
+
+###  https://www.w3.org/ns/ucm#IdentityAssuranceLevel
+ucm:IdentityAssuranceLevel rdf:type owl:NamedIndividual ,
+                                    skos:ConceptScheme ;
+                           dcterms:created "2026-11-27"^^xsd:date ;
+                           dcterms:description "How strongly was this identity proofed?"@en ;
+                           dcterms:publisher "MDIX"@en ;
+                           dcterms:title "UCM Identity Assurance Level"@en ;
+                           skos:definition "NIST SP 800-63-4 identity assurance levels. Each level carries ucm:assuranceRank so levels can be compared."@en ;
+                           skos:editorialNote "NIST SP 800-63-4 names no IAL0; NoIdentityProofing covers the case it describes in words."@en ;
+                           skos:hasTopConcept ucm:NoIdentityProofing ,
+                                              ucm:IAL1 ,
+                                              ucm:IAL2 ,
+                                              ucm:IAL3 ;
+                           skos:prefLabel "Identity Assurance Level"@en .
+
+
+###  https://www.w3.org/ns/ucm#NoIdentityProofing
+ucm:NoIdentityProofing rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       ucm:assuranceRank "0"^^xsd:integer ;
+                       skos:definition "No identity proofing was performed; attributes are self-asserted."@en ;
+                       skos:inScheme ucm:IdentityAssuranceLevel ;
+                       skos:prefLabel "No identity proofing"@en ;
+                       skos:topConceptOf ucm:IdentityAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#IAL1
+ucm:IAL1 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "1"^^xsd:integer ;
+         skos:definition "Identity proofing that confirms the claimed identity exists and is likely the applicant's (NIST IAL1)."@en ;
+         skos:inScheme ucm:IdentityAssuranceLevel ;
+         skos:prefLabel "IAL1"@en ;
+         skos:topConceptOf ucm:IdentityAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#IAL2
+ucm:IAL2 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "2"^^xsd:integer ;
+         skos:definition "Identity proofing with stronger evidence and verification, remote or in person (NIST IAL2)."@en ;
+         skos:inScheme ucm:IdentityAssuranceLevel ;
+         skos:prefLabel "IAL2"@en ;
+         skos:topConceptOf ucm:IdentityAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#IAL3
+ucm:IAL3 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "3"^^xsd:integer ;
+         skos:definition "Identity proofing in person or supervised remote, with the strongest evidence (NIST IAL3)."@en ;
+         skos:inScheme ucm:IdentityAssuranceLevel ;
+         skos:prefLabel "IAL3"@en ;
+         skos:topConceptOf ucm:IdentityAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel
+ucm:AuthenticatorAssuranceLevel rdf:type owl:NamedIndividual ,
+                                         skos:ConceptScheme ;
+                                dcterms:created "2026-11-27"^^xsd:date ;
+                                dcterms:description "How strongly was the claimant authenticated?"@en ;
+                                dcterms:publisher "MDIX"@en ;
+                                dcterms:title "UCM Authenticator Assurance Level"@en ;
+                                skos:definition "NIST SP 800-63B-4 authenticator assurance levels (section 2)."@en ;
+                                skos:hasTopConcept ucm:AAL1 ,
+                                                   ucm:AAL2 ,
+                                                   ucm:AAL3 ;
+                                skos:prefLabel "Authenticator Assurance Level"@en .
+
+
+###  https://www.w3.org/ns/ucm#AAL1
+ucm:AAL1 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "1"^^xsd:integer ;
+         skos:definition "Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1)."@en ;
+         skos:inScheme ucm:AuthenticatorAssuranceLevel ;
+         skos:prefLabel "AAL1"@en ;
+         skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#AAL2
+ucm:AAL2 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "2"^^xsd:integer ;
+         skos:definition "High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2)."@en ;
+         skos:inScheme ucm:AuthenticatorAssuranceLevel ;
+         skos:prefLabel "AAL2"@en ;
+         skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#AAL3
+ucm:AAL3 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "3"^^xsd:integer ;
+         skos:definition "Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3)."@en ;
+         skos:inScheme ucm:AuthenticatorAssuranceLevel ;
+         skos:prefLabel "AAL3"@en ;
+         skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#FederationAssuranceLevel
+ucm:FederationAssuranceLevel rdf:type owl:NamedIndividual ,
+                                      skos:ConceptScheme ;
+                             dcterms:created "2026-11-27"^^xsd:date ;
+                             dcterms:description "How strongly was the identity assertion protected?"@en ;
+                             dcterms:publisher "MDIX"@en ;
+                             dcterms:title "UCM Federation Assurance Level"@en ;
+                             skos:definition "NIST SP 800-63C-4 federation assurance levels (section 2)."@en ;
+                             skos:hasTopConcept ucm:FAL1 ,
+                                                ucm:FAL2 ,
+                                                ucm:FAL3 ;
+                             skos:prefLabel "Federation Assurance Level"@en .
+
+
+###  https://www.w3.org/ns/ucm#FAL1
+ucm:FAL1 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "1"^^xsd:integer ;
+         skos:definition "Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1)."@en ;
+         skos:inScheme ucm:FederationAssuranceLevel ;
+         skos:prefLabel "FAL1"@en ;
+         skos:topConceptOf ucm:FederationAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#FAL2
+ucm:FAL2 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "2"^^xsd:integer ;
+         skos:definition "High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2)."@en ;
+         skos:inScheme ucm:FederationAssuranceLevel ;
+         skos:prefLabel "FAL2"@en ;
+         skos:topConceptOf ucm:FederationAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#FAL3
+ucm:FAL3 rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         ucm:assuranceRank "3"^^xsd:integer ;
+         skos:definition "Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3)."@en ;
+         skos:inScheme ucm:FederationAssuranceLevel ;
+         skos:prefLabel "FAL3"@en ;
+         skos:topConceptOf ucm:FederationAssuranceLevel .
+
+
+###  https://www.w3.org/ns/ucm#EvidenceStrength
+ucm:EvidenceStrength rdf:type owl:NamedIndividual ,
+                              skos:ConceptScheme ;
+                     dcterms:created "2026-11-27"^^xsd:date ;
+                     dcterms:description "How strong is this identity evidence?"@en ;
+                     dcterms:publisher "MDIX"@en ;
+                     dcterms:title "UCM Evidence Strength"@en ;
+                     skos:definition "NIST SP 800-63A-4 strengths of identity evidence."@en ;
+                     skos:hasTopConcept ucm:FairEvidence ,
+                                        ucm:StrongEvidence ,
+                                        ucm:SuperiorEvidence ;
+                     skos:prefLabel "Evidence Strength"@en .
+
+
+###  https://www.w3.org/ns/ucm#FairEvidence
+ucm:FairEvidence rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 ucm:assuranceRank "1"^^xsd:integer ;
+                 skos:definition "Evidence of fair strength (NIST FAIR)."@en ;
+                 skos:inScheme ucm:EvidenceStrength ;
+                 skos:prefLabel "Fair"@en ;
+                 skos:topConceptOf ucm:EvidenceStrength .
+
+
+###  https://www.w3.org/ns/ucm#StrongEvidence
+ucm:StrongEvidence rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   ucm:assuranceRank "2"^^xsd:integer ;
+                   skos:definition "Evidence of strong strength (NIST STRONG)."@en ;
+                   skos:inScheme ucm:EvidenceStrength ;
+                   skos:prefLabel "Strong"@en ;
+                   skos:topConceptOf ucm:EvidenceStrength .
+
+
+###  https://www.w3.org/ns/ucm#SuperiorEvidence
+ucm:SuperiorEvidence rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     ucm:assuranceRank "3"^^xsd:integer ;
+                     skos:definition "Evidence of superior strength (NIST SUPERIOR)."@en ;
+                     skos:inScheme ucm:EvidenceStrength ;
+                     skos:prefLabel "Superior"@en ;
+                     skos:topConceptOf ucm:EvidenceStrength .
+
+
+###  https://www.w3.org/ns/ucm#ProofingType
+ucm:ProofingType rdf:type owl:NamedIndividual ,
+                          skos:ConceptScheme ;
+                 dcterms:created "2026-11-27"^^xsd:date ;
+                 dcterms:description "How was identity proofing conducted?"@en ;
+                 dcterms:publisher "MDIX"@en ;
+                 dcterms:title "UCM Proofing Type"@en ;
+                 skos:definition "NIST SP 800-63A-4 types of identity proofing."@en ;
+                 skos:hasTopConcept ucm:RemoteUnattendedProofing ,
+                                    ucm:RemoteAttendedProofing ,
+                                    ucm:OnsiteUnattendedProofing ,
+                                    ucm:OnsiteAttendedProofing ;
+                 skos:prefLabel "Proofing Type"@en .
+
+
+###  https://www.w3.org/ns/ucm#RemoteUnattendedProofing
+ucm:RemoteUnattendedProofing rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             skos:definition "Remote proofing with no proofing agent present."@en ;
+                             skos:inScheme ucm:ProofingType ;
+                             skos:prefLabel "Remote unattended"@en ;
+                             skos:topConceptOf ucm:ProofingType .
+
+
+###  https://www.w3.org/ns/ucm#RemoteAttendedProofing
+ucm:RemoteAttendedProofing rdf:type owl:NamedIndividual ,
+                                    skos:Concept ;
+                           skos:definition "Remote proofing with a proofing agent over video."@en ;
+                           skos:inScheme ucm:ProofingType ;
+                           skos:prefLabel "Remote attended"@en ;
+                           skos:topConceptOf ucm:ProofingType .
+
+
+###  https://www.w3.org/ns/ucm#OnsiteUnattendedProofing
+ucm:OnsiteUnattendedProofing rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             skos:definition "On-site proofing at a kiosk or device with no agent."@en ;
+                             skos:inScheme ucm:ProofingType ;
+                             skos:prefLabel "On-site unattended"@en ;
+                             skos:topConceptOf ucm:ProofingType .
+
+
+###  https://www.w3.org/ns/ucm#OnsiteAttendedProofing
+ucm:OnsiteAttendedProofing rdf:type owl:NamedIndividual ,
+                                    skos:Concept ;
+                           skos:definition "On-site proofing with a proofing agent present."@en ;
+                           skos:inScheme ucm:ProofingType ;
+                           skos:prefLabel "On-site attended"@en ;
+                           skos:topConceptOf ucm:ProofingType .
+
+
+###  https://www.w3.org/ns/ucm#IdentityEvidenceType
+ucm:IdentityEvidenceType rdf:type owl:NamedIndividual ,
+                                  skos:ConceptScheme ;
+                         dcterms:created "2026-11-27"^^xsd:date ;
+                         dcterms:description "What kind of identity evidence is this?"@en ;
+                         dcterms:publisher "MDIX"@en ;
+                         dcterms:title "UCM Identity Evidence Type"@en ;
+                         skos:definition "Kinds of identity evidence, following OpenID Connect for Identity Assurance."@en ;
+                         skos:hasTopConcept ucm:DocumentEvidence ,
+                                            ucm:ElectronicRecordEvidence ,
+                                            ucm:VouchEvidence ,
+                                            ucm:ElectronicSignatureEvidence ;
+                         skos:prefLabel "Identity Evidence Type"@en .
+
+
+###  https://www.w3.org/ns/ucm#DocumentEvidence
+ucm:DocumentEvidence rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:definition "A physical or digital identity document."@en ;
+                     skos:inScheme ucm:IdentityEvidenceType ;
+                     skos:prefLabel "Document"@en ;
+                     skos:topConceptOf ucm:IdentityEvidenceType .
+
+
+###  https://www.w3.org/ns/ucm#ElectronicRecordEvidence
+ucm:ElectronicRecordEvidence rdf:type owl:NamedIndividual ,
+                                      skos:Concept ;
+                             skos:definition "An electronic record from an authoritative source."@en ;
+                             skos:inScheme ucm:IdentityEvidenceType ;
+                             skos:prefLabel "Electronic record"@en ;
+                             skos:topConceptOf ucm:IdentityEvidenceType .
+
+
+###  https://www.w3.org/ns/ucm#VouchEvidence
+ucm:VouchEvidence rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "An attestation by another party, such as an applicant reference."@en ;
+                  skos:inScheme ucm:IdentityEvidenceType ;
+                  skos:prefLabel "Vouch"@en ;
+                  skos:topConceptOf ucm:IdentityEvidenceType .
+
+
+###  https://www.w3.org/ns/ucm#ElectronicSignatureEvidence
+ucm:ElectronicSignatureEvidence rdf:type owl:NamedIndividual ,
+                                         skos:Concept ;
+                                skos:definition "An electronic signature tied to a verified identity."@en ;
+                                skos:inScheme ucm:IdentityEvidenceType ;
+                                skos:prefLabel "Electronic signature"@en ;
+                                skos:topConceptOf ucm:IdentityEvidenceType .
+
+
+###  https://www.w3.org/ns/ucm#IdentifierType
+ucm:IdentifierType rdf:type owl:NamedIndividual ,
+                            skos:ConceptScheme ;
+                   dcterms:created "2026-11-27"^^xsd:date ;
+                   dcterms:description "What kind of identifier is this?"@en ;
+                   dcterms:publisher "MDIX"@en ;
+                   dcterms:title "UCM Identifier Type"@en ;
+                   skos:definition "Kinds of identifiers. Seed list; adopters can add their own."@en ;
+                   skos:hasTopConcept ucm:MedicalRecordNumber ,
+                                      ucm:HMISPersonalID ,
+                                      ucm:MedicaidID ,
+                                      ucm:StateIDNumber ,
+                                      ucm:DriversLicenseNumber ,
+                                      ucm:SocialSecurityNumber ,
+                                      ucm:OIDCSubject ,
+                                      ucm:DecentralizedIdentifier ,
+                                      ucm:OtherIdentifier ;
+                   skos:prefLabel "Identifier Type"@en .
+
+
+###  https://www.w3.org/ns/ucm#MedicalRecordNumber
+ucm:MedicalRecordNumber rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        skos:definition "An identifier assigned by a health care organization."@en ;
+                        skos:inScheme ucm:IdentifierType ;
+                        skos:prefLabel "Medical record number"@en ;
+                        skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#HMISPersonalID
+ucm:HMISPersonalID rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:definition "The HMIS Personal ID."@en ;
+                   skos:inScheme ucm:IdentifierType ;
+                   skos:prefLabel "HMIS Personal ID"@en ;
+                   skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#MedicaidID
+ucm:MedicaidID rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               skos:definition "A Medicaid member identifier."@en ;
+               skos:inScheme ucm:IdentifierType ;
+               skos:prefLabel "Medicaid ID"@en ;
+               skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#StateIDNumber
+ucm:StateIDNumber rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  skos:definition "A state-issued identification card number."@en ;
+                  skos:inScheme ucm:IdentifierType ;
+                  skos:prefLabel "State ID number"@en ;
+                  skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#DriversLicenseNumber
+ucm:DriversLicenseNumber rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "A driver's license number."@en ;
+                         skos:inScheme ucm:IdentifierType ;
+                         skos:prefLabel "Driver's license number"@en ;
+                         skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#SocialSecurityNumber
+ucm:SocialSecurityNumber rdf:type owl:NamedIndividual ,
+                                  skos:Concept ;
+                         skos:definition "A U.S. Social Security number."@en ;
+                         skos:inScheme ucm:IdentifierType ;
+                         skos:prefLabel "Social Security number"@en ;
+                         skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#OIDCSubject
+ucm:OIDCSubject rdf:type owl:NamedIndividual ,
+                         skos:Concept ;
+                skos:definition "An OpenID Connect sub value, unique within its issuer."@en ;
+                skos:inScheme ucm:IdentifierType ;
+                skos:prefLabel "OpenID Connect subject"@en ;
+                skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#DecentralizedIdentifier
+ucm:DecentralizedIdentifier rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            skos:definition "A W3C decentralized identifier (DID)."@en ;
+                            skos:inScheme ucm:IdentifierType ;
+                            skos:prefLabel "Decentralized identifier"@en ;
+                            skos:topConceptOf ucm:IdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#OtherIdentifier
+ucm:OtherIdentifier rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "Another kind of identifier."@en ;
+                    skos:inScheme ucm:IdentifierType ;
+                    skos:prefLabel "Other identifier"@en ;
+                    skos:topConceptOf ucm:IdentifierType .
 
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

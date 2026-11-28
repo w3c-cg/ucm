@@ -148,6 +148,8 @@ class SpecBuilder:
         bound = self.profile.scheme_bindings.get(prop.term)
         if bound:
             if bound not in self.schemes_by_term:
+                if not self.schemes_by_term:
+                    return None  # no vocabulary compiled at all: the no-concept-schemes lint says why
                 raise SpecBuildError(f"scheme-bindings: {prop.term} → unknown scheme {bound}")
             return self.schemes_by_term[bound]
         if prop.range == SKOS_CONCEPT and prop.term.startswith("has"):
@@ -477,8 +479,15 @@ class SpecBuilder:
         for prop in sorted(ir.properties.values(), key=lambda p: p.term):
             entry: Dict[str, Any] = {"@id": ir.curie(prop.iri)}
             if prop.kind == "datatype":
-                if prop.range and prop.range.startswith(XSD):
-                    entry["@type"] = ir.curie(prop.range)
+                # No XSD range (a datatype union, say): coerce to the first
+                # datatype the shapes accept, as the datatype-coercion lint says.
+                target = prop.range if prop.range and prop.range.startswith(XSD) else next(
+                    (d for c in self.all_constraints(prop.iri) for d in c.datatypes), None
+                )
+                # xsd:string is RDF's plain literal: JSON-LD writes it as a bare
+                # string, which a term coerced to xsd:string would not match.
+                if target and target != XSD + "string":
+                    entry["@type"] = ir.curie(target)
             elif self.scheme_for(prop) is not None:
                 entry["@type"] = "@vocab"
             else:

@@ -15,6 +15,8 @@
 @prefix ucm-lifecycle: <https://www.w3.org/ns/ucm#lifecycle> .
 @prefix ucm-shapes-lint: <https://www.w3.org/ns/ucm#shapes-lint> .
 @prefix ucm-participation-membership: <https://www.w3.org/ns/ucm#participation-membership> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix dcam: <http://purl.org/dc/dcam/> .
 @base <https://www.w3.org/ns/ucm#> .
 
 <https://www.w3.org/ns/ucm#> rdf:type owl:Ontology ;
@@ -744,6 +746,825 @@ ucm:Statement rdf:type owl:Class ;
 ucm:SubjectRole rdf:type owl:Class ;
                 rdfs:subClassOf ucm:Role ;
                 rdfs:label "Subject Role" .
+
+
+#################################################################
+#    Consent and identity (consent-concepts-plan, 2026-11-27)
+#################################################################
+
+#    Terms reused from the W3C Data Privacy Vocabulary (DPV 2.3)
+#    Label and definition are DPV's own; UCM adds a scope note and how it uses the term.
+
+###  https://w3id.org/dpv#hasPurpose
+dpv:hasPurpose rdf:type owl:ObjectProperty ;
+               dcam:domainIncludes ucm:ConsentProvision ,
+                                   dpv:PrivacyNotice ;
+               dcam:rangeIncludes skos:Concept ;
+               rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+               skos:definition "Indicates association with Purpose"@en ;
+               skos:prefLabel "has purpose"@en ;
+               skos:scopeNote "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one."@en .
+
+
+###  https://w3id.org/dpv#hasConsentStatus
+dpv:hasConsentStatus rdf:type owl:ObjectProperty ;
+                     dcam:domainIncludes ucm:ConsentDirective ;
+                     dcam:rangeIncludes skos:Concept ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "Specifies the state or status of consent"@en ;
+                     skos:prefLabel "has consent status"@en ;
+                     skos:scopeNote "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus."@en .
+
+
+###  https://w3id.org/dpv#hasJurisdiction
+dpv:hasJurisdiction rdf:type owl:ObjectProperty ;
+                    dcam:domainIncludes ucm:ConsentDirective ,
+                                        ucm:ConsentInteraction ,
+                                        ucm:ConsentPolicy ,
+                                        ucm:Identifier ;
+                    dcam:rangeIncludes ucm:JurisdictionContext ;
+                    rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                    skos:definition "Indicates applicability of specified jurisdiction"@en ;
+                    skos:prefLabel "has jurisdiction"@en ;
+                    skos:scopeNote "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued."@en .
+
+
+###  https://w3id.org/dpv#hasApplicableLaw
+dpv:hasApplicableLaw rdf:type owl:ObjectProperty ;
+                     dcam:domainIncludes ucm:ConsentDirective ,
+                                         ucm:ConsentPolicy ;
+                     dcam:rangeIncludes skos:Concept ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "Indicates applicability of a Law"@en ;
+                     skos:prefLabel "has applicable law"@en ;
+                     skos:scopeNote "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis."@en .
+
+
+###  https://w3id.org/dpv#PrivacyNotice
+dpv:PrivacyNotice rdf:type owl:Class ;
+                  rdfs:subClassOf ucm:PolicyDefinition ;
+                  rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                  skos:definition "Represents a notice or document outlining information regarding privacy"@en ;
+                  skos:prefLabel "Privacy Notice"@en ;
+                  skos:scopeNote "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."@en .
+
+
+#    Object properties
+
+###  https://www.w3.org/ns/ucm#recordsConsentFrom
+ucm:recordsConsentFrom rdf:type owl:ObjectProperty ;
+                       rdfs:domain ucm:ConsentDirective ;
+                       rdfs:range ucm:ConsentInteraction ;
+                       rdfs:comment "Relates a consent directive to the consent interaction that produced, amended or revoked it." ;
+                       rdfs:label "records consent from" .
+
+
+###  https://www.w3.org/ns/ucm#consentSubject
+ucm:consentSubject rdf:type owl:ObjectProperty ;
+                   rdfs:domain ucm:ConsentDirective ;
+                   rdfs:range ucm:Participation ;
+                   rdfs:comment "Relates a consent directive to the participation of the person or group the consent concerns (FHIR Consent.subject)." ;
+                   rdfs:label "consent subject" .
+
+
+###  https://www.w3.org/ns/ucm#consentOnBehalfOf
+ucm:consentOnBehalfOf rdf:type owl:ObjectProperty ;
+                      rdfs:domain ucm:Participation ;
+                      rdfs:range ucm:Entity ;
+                      rdfs:comment "Relates a consent proxy's participation to a person it consents for. Needed when the consent subject is a group, such as a household, and the proxy acts for some of its members." ;
+                      rdfs:label "consent on behalf of" .
+
+
+###  https://www.w3.org/ns/ucm#hasConsentDecision
+ucm:hasConsentDecision rdf:type owl:ObjectProperty ;
+                       rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;
+                       rdfs:range skos:Concept ;
+                       rdfs:comment "Relates a consent directive or provision to its permit or deny decision. Every provision states its own decision, the opposite of its parent's." ;
+                       rdfs:label "has consent decision" .
+
+
+###  https://www.w3.org/ns/ucm#hasConsentCategory
+ucm:hasConsentCategory rdf:type owl:ObjectProperty ;
+                       rdfs:domain ucm:ConsentDirective ;
+                       rdfs:range skos:Concept ;
+                       rdfs:comment "Relates a consent directive to its kind, such as a privacy consent or release of information, a treatment consent or a research consent." ;
+                       rdfs:label "has consent category" .
+
+
+###  https://www.w3.org/ns/ucm#hasConsentModality
+ucm:hasConsentModality rdf:type owl:ObjectProperty ;
+                       rdfs:domain ucm:ConsentInteraction ;
+                       rdfs:range skos:Concept ;
+                       rdfs:comment "Relates a consent interaction to how consent was expressed: written, electronic, verbal or inferred." ;
+                       rdfs:label "has consent modality" .
+
+
+###  https://www.w3.org/ns/ucm#hasConsentInteractionType
+ucm:hasConsentInteractionType rdf:type owl:ObjectProperty ;
+                              rdfs:domain ucm:ConsentInteraction ;
+                              rdfs:range skos:Concept ;
+                              rdfs:comment "Relates a consent interaction to what it did: grant, refuse, amend, renew, revoke or verify." ;
+                              rdfs:label "has consent interaction type" .
+
+
+###  https://www.w3.org/ns/ucm#hasProvision
+ucm:hasProvision rdf:type owl:ObjectProperty ;
+                 rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;
+                 rdfs:range ucm:ConsentProvision ;
+                 rdfs:comment "Relates a consent directive, or an enclosing provision, to a provision within it (FHIR Consent.provision)." ;
+                 rdfs:label "has provision" .
+
+
+###  https://www.w3.org/ns/ucm#provisionActor
+ucm:provisionActor rdf:type owl:ObjectProperty ;
+                   rdfs:domain ucm:ConsentProvision ;
+                   rdfs:range ucm:Participation ;
+                   rdfs:comment "Relates a provision to the participation of a party it permits or denies (FHIR Consent.provision.actor)." ;
+                   rdfs:label "provision actor" .
+
+
+###  https://www.w3.org/ns/ucm#governsAction
+ucm:governsAction rdf:type owl:ObjectProperty ;
+                  rdfs:domain ucm:ConsentProvision ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Relates a provision to an action it permits or denies, such as collect, access, use or disclose." ;
+                  rdfs:label "governs action" .
+
+
+###  https://www.w3.org/ns/ucm#coversDataCategory
+ucm:coversDataCategory rdf:type owl:ObjectProperty ;
+                       rdfs:domain ucm:ConsentProvision ;
+                       rdfs:range skos:Concept ;
+                       rdfs:comment "Relates a provision to a category of information it covers." ;
+                       rdfs:label "covers data category" .
+
+
+###  https://www.w3.org/ns/ucm#coversSensitivity
+ucm:coversSensitivity rdf:type owl:ObjectProperty ;
+                      rdfs:domain ucm:ConsentProvision ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Relates a provision to a sensitivity category of the information it covers (FHIR Consent.provision.securityLabel)." ;
+                      rdfs:label "covers sensitivity" .
+
+
+###  https://www.w3.org/ns/ucm#coversInformation
+ucm:coversInformation rdf:type owl:ObjectProperty ;
+                      rdfs:domain ucm:ConsentProvision ;
+                      rdfs:comment "Relates a provision to specific information it covers, an information artifact or a statement (FHIR Consent.provision.data)." ;
+                      rdfs:label "covers information" .
+
+
+###  https://www.w3.org/ns/ucm#coversInstance
+ucm:coversInstance rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf ucm:coversInformation ;
+                   rdfs:domain ucm:ConsentProvision ;
+                   rdfs:comment "The provision covers exactly the referenced information (FHIR data.meaning instance)." ;
+                   rdfs:label "covers instance" .
+
+
+###  https://www.w3.org/ns/ucm#coversRelated
+ucm:coversRelated rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf ucm:coversInformation ;
+                  rdfs:domain ucm:ConsentProvision ;
+                  rdfs:comment "The provision covers the referenced information and information directly related to it (FHIR data.meaning related)." ;
+                  rdfs:label "covers related" .
+
+
+###  https://www.w3.org/ns/ucm#coversDependents
+ucm:coversDependents rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf ucm:coversInformation ;
+                     rdfs:domain ucm:ConsentProvision ;
+                     rdfs:comment "The provision covers the referenced information and information that depends on it (FHIR data.meaning dependents)." ;
+                     rdfs:label "covers dependents" .
+
+
+###  https://www.w3.org/ns/ucm#coversAuthoredBy
+ucm:coversAuthoredBy rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf ucm:coversInformation ;
+                     rdfs:domain ucm:ConsentProvision ;
+                     rdfs:comment "The provision covers information authored by the referenced party (FHIR data.meaning authoredby)." ;
+                     rdfs:label "covers authored by" .
+
+
+###  https://www.w3.org/ns/ucm#dataPeriod
+ucm:dataPeriod rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf ucm:hasTemporalContext ;
+               rdfs:domain ucm:ConsentProvision ;
+               rdfs:range time:TemporalEntity ;
+               rdfs:comment "Relates a provision to the time span of the data it covers, as distinct from the period the consent applies (FHIR Consent.provision.dataPeriod)." ;
+               rdfs:label "data period" .
+
+
+###  https://www.w3.org/ns/ucm#hasSensitivityLabel
+ucm:hasSensitivityLabel rdf:type owl:ObjectProperty ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Relates an information artifact or statement to a sensitivity category, so provisions can match data without listing records (FHIR meta.security)." ;
+                        rdfs:label "has sensitivity label" .
+
+
+###  https://www.w3.org/ns/ucm#hasConfidentialityLevel
+ucm:hasConfidentialityLevel rdf:type owl:ObjectProperty ;
+                            rdfs:range skos:Concept ;
+                            rdfs:comment "Relates an information artifact or statement to its confidentiality level (HL7 v3 Confidentiality)." ;
+                            rdfs:label "has confidentiality level" .
+
+
+###  https://www.w3.org/ns/ucm#coversConfidentiality
+ucm:coversConfidentiality rdf:type owl:ObjectProperty ;
+                          rdfs:domain ucm:ConsentProvision ;
+                          rdfs:range skos:Concept ;
+                          rdfs:comment "Relates a provision to a confidentiality level of the information it covers (FHIR Consent.provision.securityLabel with a confidentiality code)." ;
+                          rdfs:label "covers confidentiality" .
+
+
+###  https://www.w3.org/ns/ucm#governedByPolicy
+ucm:governedByPolicy rdf:type owl:ObjectProperty ;
+                     rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ucm:ProgramDefinition ) ] ;
+                     rdfs:range ucm:ConsentPolicy ;
+                     rdfs:comment "Relates a consent directive, provision or program to the consent policy it relies on (FHIR Consent.policyBasis)." ;
+                     rdfs:label "governed by policy" .
+
+
+###  https://www.w3.org/ns/ucm#withinJurisdiction
+ucm:withinJurisdiction rdf:type owl:ObjectProperty ,
+                                owl:TransitiveProperty ;
+                       rdfs:domain ucm:JurisdictionContext ;
+                       rdfs:range ucm:JurisdictionContext ;
+                       rdfs:comment "Relates a jurisdiction to a larger jurisdiction that contains it, such as a county within a state or a Continuum of Care within a state." ;
+                       rdfs:label "within jurisdiction" .
+
+
+###  https://www.w3.org/ns/ucm#selfConsentScope
+ucm:selfConsentScope rdf:type owl:ObjectProperty ;
+                     rdfs:domain ucm:SelfConsentRule ;
+                     rdfs:range skos:Concept ;
+                     rdfs:comment "Relates a self-consent rule to a purpose, consent category, information category or sensitivity it covers. No value means all consents." ;
+                     rdfs:label "self-consent scope" .
+
+
+###  https://www.w3.org/ns/ucm#selfConsentCondition
+ucm:selfConsentCondition rdf:type owl:ObjectProperty ;
+                         rdfs:domain ucm:SelfConsentRule ;
+                         rdfs:range skos:Concept ;
+                         rdfs:comment "Relates a self-consent rule to a condition that unlocks self-consent. Several values mean any one suffices." ;
+                         rdfs:label "self-consent condition" .
+
+
+###  https://www.w3.org/ns/ucm#hasConsentModel
+ucm:hasConsentModel rdf:type owl:ObjectProperty ;
+                    rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentPolicy ucm:ProgramDefinition dpv:PrivacyNotice ) ] ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "Relates a policy, program or notice to its consent model, such as opt-in or opt-out." ;
+                    rdfs:label "has consent model" .
+
+
+###  https://www.w3.org/ns/ucm#acknowledgesNotice
+ucm:acknowledgesNotice rdf:type owl:ObjectProperty ;
+                       rdfs:domain ucm:ConsentInteraction ;
+                       rdfs:range dpv:PrivacyNotice ;
+                       rdfs:comment "Relates a consent interaction to a privacy notice the subject or grantor was given or shown." ;
+                       rdfs:label "acknowledges notice" .
+
+
+###  https://www.w3.org/ns/ucm#postedAt
+ucm:postedAt rdf:type owl:ObjectProperty ;
+             rdfs:domain dpv:PrivacyNotice ;
+             rdfs:range ucm:Location ;
+             rdfs:comment "Relates a privacy notice to a location where it is posted, such as an intake desk." ;
+             rdfs:label "posted at" .
+
+
+###  https://www.w3.org/ns/ucm#supersedes
+ucm:supersedes rdf:type owl:ObjectProperty ;
+               rdfs:domain ucm:ConsentDirective ;
+               rdfs:range ucm:ConsentDirective ;
+               rdfs:comment "Relates a consent directive to an earlier directive it amends or renews." ;
+               rdfs:label "supersedes" .
+
+
+###  https://www.w3.org/ns/ucm#revokedBy
+ucm:revokedBy rdf:type owl:ObjectProperty ;
+              rdfs:domain ucm:ConsentDirective ;
+              rdfs:range ucm:ConsentInteraction ;
+              rdfs:comment "Relates a consent directive to the consent interaction that revoked it." ;
+              rdfs:label "revoked by" .
+
+
+###  https://www.w3.org/ns/ucm#sourceDocument
+ucm:sourceDocument rdf:type owl:ObjectProperty ;
+                   rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective dpv:PrivacyNotice ) ] ;
+                   rdfs:range ucm:InformationArtifact ;
+                   rdfs:comment "Relates a consent directive or privacy notice to its source, such as a scanned signed form or the policy text." ;
+                   rdfs:label "source document" .
+
+
+###  https://www.w3.org/ns/ucm#authorizedByConsent
+ucm:authorizedByConsent rdf:type owl:ObjectProperty ;
+                        rdfs:domain ucm:Process ;
+                        rdfs:range ucm:ConsentDirective ;
+                        rdfs:comment "Relates a process, such as a coordination request, handshake or disclosure, to the consent directive that permits it." ;
+                        rdfs:label "authorized by consent" .
+
+
+###  https://www.w3.org/ns/ucm#birthDateQuality
+ucm:birthDateQuality rdf:type owl:ObjectProperty ;
+                     rdfs:domain ucm:Person ;
+                     rdfs:range skos:Concept ;
+                     rdfs:comment "Relates a person to how reliable their recorded birth date is." ;
+                     rdfs:label "birth date quality" .
+
+
+###  https://www.w3.org/ns/ucm#hasRetentionDisposition
+ucm:hasRetentionDisposition rdf:type owl:ObjectProperty ;
+                            rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;
+                            rdfs:range skos:Concept ;
+                            rdfs:comment "Relates a consent directive or provision to what happens to the data when its retention period ends." ;
+                            rdfs:label "has retention disposition" .
+
+
+###  https://www.w3.org/ns/ucm#processingLocation
+ucm:processingLocation rdf:type owl:ObjectProperty ;
+                       rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;
+                       rdfs:range ucm:JurisdictionContext ;
+                       rdfs:comment "Relates a consent directive or provision to a jurisdiction where the data may be stored or processed. Several values mean any of them is allowed (ISO/IEC TS 27560 storage and processing locations)." ;
+                       rdfs:label "processing location" .
+
+
+###  https://www.w3.org/ns/ucm#hasIdentity
+ucm:hasIdentity rdf:type owl:ObjectProperty ;
+                rdfs:domain ucm:Entity ;
+                rdfs:range ucm:Identity ;
+                rdfs:comment "Relates any entity to an identity by which it is recognized. An entity can have many identities." ;
+                rdfs:label "has identity" .
+
+
+###  https://www.w3.org/ns/ucm#identityOf
+ucm:identityOf rdf:type owl:ObjectProperty ;
+               owl:inverseOf ucm:hasIdentity ;
+               rdfs:domain ucm:Identity ;
+               rdfs:range ucm:Entity ;
+               rdfs:comment "Relates an identity to the entity it identifies." ;
+               rdfs:label "identity of" .
+
+
+###  https://www.w3.org/ns/ucm#hasIdentifier
+ucm:hasIdentifier rdf:type owl:ObjectProperty ;
+                  rdfs:domain ucm:Identity ;
+                  rdfs:range ucm:Identifier ;
+                  rdfs:comment "Relates an identity to an identifier that designates it." ;
+                  rdfs:label "has identifier" .
+
+
+###  https://www.w3.org/ns/ucm#hasIdentifierType
+ucm:hasIdentifierType rdf:type owl:ObjectProperty ;
+                      rdfs:domain ucm:Identifier ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Relates an identifier to its kind, such as a medical record number or HMIS Personal ID." ;
+                      rdfs:label "has identifier type" .
+
+
+###  https://www.w3.org/ns/ucm#issuedBy
+ucm:issuedBy rdf:type owl:ObjectProperty ;
+             rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:Identifier ucm:Credential ucm:AssuranceCertification ) ] ;
+             rdfs:range ucm:Entity ;
+             rdfs:comment "Relates an identifier, credential or certification to the entity that issued it." ;
+             rdfs:label "issued by" .
+
+
+###  https://www.w3.org/ns/ucm#identifiedAs
+ucm:identifiedAs rdf:type owl:ObjectProperty ;
+                 rdfs:domain ucm:Participation ;
+                 rdfs:range ucm:Identity ;
+                 rdfs:comment "Relates a participation to the identity under which the participant acted. This ties a consent's grantor and subject to identities." ;
+                 rdfs:label "identified as" .
+
+
+###  https://www.w3.org/ns/ucm#establishesIdentity
+ucm:establishesIdentity rdf:type owl:ObjectProperty ;
+                        rdfs:domain ucm:IdentityProofing ;
+                        rdfs:range ucm:Identity ;
+                        rdfs:comment "Relates an identity proofing process to the identity it establishes." ;
+                        rdfs:label "establishes identity" .
+
+
+###  https://www.w3.org/ns/ucm#usedEvidence
+ucm:usedEvidence rdf:type owl:ObjectProperty ;
+                 rdfs:domain ucm:IdentityProofing ;
+                 rdfs:range ucm:IdentityEvidence ;
+                 rdfs:comment "Relates an identity proofing process to evidence it used." ;
+                 rdfs:label "used evidence" .
+
+
+###  https://www.w3.org/ns/ucm#hasEvidenceType
+ucm:hasEvidenceType rdf:type owl:ObjectProperty ;
+                    rdfs:domain ucm:IdentityEvidence ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "Relates identity evidence to its kind: document, electronic record, vouch or electronic signature." ;
+                    rdfs:label "has evidence type" .
+
+
+###  https://www.w3.org/ns/ucm#hasEvidenceStrength
+ucm:hasEvidenceStrength rdf:type owl:ObjectProperty ;
+                        rdfs:domain ucm:IdentityEvidence ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Relates identity evidence to its NIST strength: fair, strong or superior." ;
+                        rdfs:label "has evidence strength" .
+
+
+###  https://www.w3.org/ns/ucm#hasProofingType
+ucm:hasProofingType rdf:type owl:ObjectProperty ;
+                    rdfs:domain ucm:IdentityProofing ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "Relates an identity proofing process to how it was conducted: remote or on-site, attended or unattended." ;
+                    rdfs:label "has proofing type" .
+
+
+###  https://www.w3.org/ns/ucm#achievedIAL
+ucm:achievedIAL rdf:type owl:ObjectProperty ;
+                rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:IdentityProofing ucm:Identity ) ] ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Relates an identity proofing process or identity to the identity assurance level it reached." ;
+                rdfs:label "achieved IAL" .
+
+
+###  https://www.w3.org/ns/ucm#achievedAAL
+ucm:achievedAAL rdf:type owl:ObjectProperty ;
+                rdfs:domain ucm:Authentication ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Relates an authentication to the authenticator assurance level it reached." ;
+                rdfs:label "achieved AAL" .
+
+
+###  https://www.w3.org/ns/ucm#achievedFAL
+ucm:achievedFAL rdf:type owl:ObjectProperty ;
+                rdfs:domain ucm:IdentityAssertion ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Relates an identity assertion to the federation assurance level it reached." ;
+                rdfs:label "achieved FAL" .
+
+
+###  https://www.w3.org/ns/ucm#assertsIdentity
+ucm:assertsIdentity rdf:type owl:ObjectProperty ;
+                    rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:IdentityAssertion ucm:Credential ) ] ;
+                    rdfs:range ucm:Identity ;
+                    rdfs:comment "Relates an identity assertion or credential to the identity it makes claims about." ;
+                    rdfs:label "asserts identity" .
+
+
+###  https://www.w3.org/ns/ucm#authenticatedBy
+ucm:authenticatedBy rdf:type owl:ObjectProperty ;
+                    rdfs:domain ucm:ConsentInteraction ;
+                    rdfs:range ucm:Authentication ;
+                    rdfs:comment "Relates a consent interaction to the authentication of the grantor, when consent is given electronically." ;
+                    rdfs:label "authenticated by" .
+
+
+###  https://www.w3.org/ns/ucm#underTrustFramework
+ucm:underTrustFramework rdf:type owl:ObjectProperty ;
+                        rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:IdentityProofing ucm:IdentityAssertion ucm:Credential ucm:AssuranceCertification ) ] ;
+                        rdfs:range ucm:TrustFramework ;
+                        rdfs:comment "Relates an identity proofing, assertion, credential or certification to the trust framework whose rules it follows." ;
+                        rdfs:label "under trust framework" .
+
+
+###  https://www.w3.org/ns/ucm#certifies
+ucm:certifies rdf:type owl:ObjectProperty ;
+              rdfs:domain ucm:AssuranceCertification ;
+              rdfs:range ucm:Organization ;
+              rdfs:comment "Relates an assurance certification to the provider it certifies." ;
+              rdfs:label "certifies" .
+
+
+###  https://www.w3.org/ns/ucm#requiresIAL
+ucm:requiresIAL rdf:type owl:ObjectProperty ;
+                rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentPolicy ucm:TrustFramework ) ] ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Relates a consent policy or trust framework to the minimum identity assurance level it requires." ;
+                rdfs:label "requires IAL" .
+
+
+###  https://www.w3.org/ns/ucm#requiresAAL
+ucm:requiresAAL rdf:type owl:ObjectProperty ;
+                rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentPolicy ucm:TrustFramework ) ] ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Relates a consent policy or trust framework to the minimum authenticator assurance level it requires." ;
+                rdfs:label "requires AAL" .
+
+
+###  https://www.w3.org/ns/ucm#credentialTermsOfUse
+ucm:credentialTermsOfUse rdf:type owl:ObjectProperty ;
+                         rdfs:domain ucm:Credential ;
+                         rdfs:range ucm:PolicyDefinition ;
+                         rdfs:comment "Relates a credential to a policy that governs its use (W3C VC termsOfUse)." ;
+                         rdfs:label "credential terms of use" .
+
+
+###  https://www.w3.org/ns/ucm#matchesIdentity
+ucm:matchesIdentity rdf:type owl:ObjectProperty ;
+                    rdfs:domain ucm:MatchClaim ;
+                    rdfs:range ucm:Identity ;
+                    rdfs:comment "Relates a match claim to an identity it says co-refers with the others it names." ;
+                    rdfs:label "matches identity" .
+
+
+#    Data properties
+
+###  https://www.w3.org/ns/ucm#assuranceRank
+ucm:assuranceRank rdf:type owl:DatatypeProperty ;
+                  rdfs:domain skos:Concept ;
+                  rdfs:range xsd:integer ;
+                  rdfs:comment "An integer rank on an assurance or strength level, so levels in one scheme can be compared with >=." ;
+                  rdfs:label "assurance rank" .
+
+
+###  https://www.w3.org/ns/ucm#amendmentAppliesRetroactively
+ucm:amendmentAppliesRetroactively rdf:type owl:DatatypeProperty ;
+                                  rdfs:domain dpv:PrivacyNotice ;
+                                  rdfs:range xsd:boolean ;
+                                  rdfs:comment "Whether an amendment to the privacy notice applies to information collected before the amendment." ;
+                                  rdfs:label "amendment applies retroactively" .
+
+
+###  https://www.w3.org/ns/ucm#minimumSelfConsentAge
+ucm:minimumSelfConsentAge rdf:type owl:DatatypeProperty ;
+                          rdfs:domain ucm:SelfConsentRule ;
+                          rdfs:range xsd:nonNegativeInteger ;
+                          rdfs:comment "The age in years from which a self-consent rule allows self-consent. Omitted when only a condition applies." ;
+                          rdfs:label "minimum self-consent age" .
+
+
+###  https://www.w3.org/ns/ucm#birthDate
+ucm:birthDate rdf:type owl:DatatypeProperty ;
+              rdfs:domain ucm:Person ;
+              rdfs:range [ rdf:type rdfs:Datatype ; owl:unionOf ( xsd:date xsd:gYearMonth xsd:gYear ) ] ;
+              rdfs:comment "A person's date of birth, full (xsd:date) or partial (xsd:gYearMonth or xsd:gYear). Age is computed as of a given date and never stored." ;
+              rdfs:label "birth date" .
+
+
+###  https://www.w3.org/ns/ucm#recordLocked
+ucm:recordLocked rdf:type owl:DatatypeProperty ;
+                 rdfs:domain ucm:ConsentDirective ;
+                 rdfs:range xsd:boolean ;
+                 rdfs:comment "Convenience flag that the subject's record is locked to other agencies. Prefer a sensitivity label plus a deny provision." ;
+                 rdfs:label "record locked" .
+
+
+###  https://www.w3.org/ns/ucm#identifierValue
+ucm:identifierValue rdf:type owl:DatatypeProperty ;
+                    rdfs:domain ucm:Identifier ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "The value of an identifier." ;
+                    rdfs:label "identifier value" .
+
+
+###  https://www.w3.org/ns/ucm#identifierSystem
+ucm:identifierSystem rdf:type owl:DatatypeProperty ;
+                     rdfs:domain ucm:Identifier ;
+                     rdfs:range xsd:anyURI ;
+                     rdfs:comment "The namespace in which an identifier value is unique. For an OpenID Connect subject, the issuer." ;
+                     rdfs:label "identifier system" .
+
+
+###  https://www.w3.org/ns/ucm#trustFrameworkIdentifier
+ucm:trustFrameworkIdentifier rdf:type owl:DatatypeProperty ;
+                             rdfs:domain ucm:TrustFramework ;
+                             rdfs:range xsd:string ;
+                             rdfs:comment "The string that names a trust framework in identity claims, such as the OpenID Connect for Identity Assurance trust_framework value." ;
+                             rdfs:label "trust framework identifier" .
+
+
+###  https://www.w3.org/ns/ucm#withdrawalMethod
+ucm:withdrawalMethod rdf:type owl:DatatypeProperty ;
+                     rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective dpv:PrivacyNotice ucm:ConsentPolicy ) ] ;
+                     rdfs:range xsd:string ;
+                     rdfs:comment "How the person can revoke the consent: a URL, phone number, form or written instructions, as text (ISO/IEC TS 27560 withdrawal method)." ;
+                     rdfs:label "withdrawal method" .
+
+
+###  https://www.w3.org/ns/ucm#retentionPeriod
+ucm:retentionPeriod rdf:type owl:DatatypeProperty ;
+                    rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentProvision ) ] ;
+                    rdfs:range xsd:duration ;
+                    rdfs:comment "How long data covered by the consent may be kept, as a duration such as P7Y (ISO/IEC TS 27560 retention period)." ;
+                    rdfs:label "retention period" .
+
+
+#    Classes
+
+###  https://www.w3.org/ns/ucm#ConsentInteraction
+ucm:ConsentInteraction rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:Process ;
+                       rdfs:comment "A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them." ;
+                       rdfs:label "Consent Interaction" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDirective
+ucm:ConsentDirective rdf:type owl:Class ;
+                     rdfs:subClassOf ucm:InformationArtifact ;
+                     rdfs:comment "A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. Corresponds to an FHIR Consent and an HMIS release of information. It is an information artifact, not a statement." ;
+                     rdfs:label "Consent Directive" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentProvision
+ucm:ConsentProvision rdf:type owl:Class ;
+                     rdfs:comment "A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's." ;
+                     rdfs:label "Consent Provision" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentPolicy
+ucm:ConsentPolicy rdf:type owl:Class ;
+                  rdfs:subClassOf ucm:PolicyDefinition ;
+                  rdfs:comment "A policy, regulation or program rule that sets the consent model, the default decision and the conditions under which consent is required, allowed or not needed." ;
+                  rdfs:label "Consent Policy" .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentRule
+ucm:SelfConsentRule rdf:type owl:Class ;
+                    rdfs:subClassOf ucm:ConsentPolicy ;
+                    rdfs:comment "A rule, in force in a jurisdiction, that sets when a minor or youth may consent for themselves: from what age, for which purposes, categories or sensitivities, and under what conditions." ;
+                    rdfs:label "Self-Consent Rule" .
+
+
+###  https://www.w3.org/ns/ucm#JurisdictionContext
+ucm:JurisdictionContext rdf:type owl:Class ;
+                        rdfs:subClassOf ucm:SemanticContext ;
+                        rdfs:comment "A legal or administrative region whose rules govern consent or identity, such as a country, state, county, tribal nation or HUD Continuum of Care. Jurisdictions can nest." ;
+                        rdfs:label "Jurisdiction Context" .
+
+
+###  https://www.w3.org/ns/ucm#Identity
+ucm:Identity rdf:type owl:Class ;
+             rdfs:subClassOf ucm:InformationArtifact ;
+             rdfs:comment "A set of identifiers, attributes and characteristics by which one entity is recognized within a context, such as a system, program, jurisdiction or trust framework. An entity can have many identities." ;
+             rdfs:label "Identity" .
+
+
+###  https://www.w3.org/ns/ucm#Identifier
+ucm:Identifier rdf:type owl:Class ;
+               rdfs:subClassOf ucm:InformationArtifact ;
+               rdfs:comment "A value, unique within a stated system or issuer, that designates an identity, such as a medical record number, HMIS Personal ID, Medicaid ID, state ID number, OpenID Connect subject or decentralized identifier." ;
+               rdfs:label "Identifier" .
+
+
+###  https://www.w3.org/ns/ucm#IdentityProofing
+ucm:IdentityProofing rdf:type owl:Class ;
+                     rdfs:subClassOf ucm:Process ;
+                     rdfs:comment "A process that establishes, to a stated assurance level, that an identity corresponds to a specific real-life entity (NIST SP 800-63A)." ;
+                     rdfs:label "Identity Proofing" .
+
+
+###  https://www.w3.org/ns/ucm#IdentityEvidence
+ucm:IdentityEvidence rdf:type owl:Class ;
+                     rdfs:subClassOf ucm:InformationArtifact ;
+                     rdfs:comment "Evidence used in identity proofing: a document, an electronic record, a vouch by another party, or an electronic signature." ;
+                     rdfs:label "Identity Evidence" .
+
+
+###  https://www.w3.org/ns/ucm#Authentication
+ucm:Authentication rdf:type owl:Class ;
+                   rdfs:subClassOf ucm:Process ;
+                   rdfs:comment "A process in which a claimant proves control of one or more authenticators bound to an identity (NIST SP 800-63B)." ;
+                   rdfs:label "Authentication" .
+
+
+###  https://www.w3.org/ns/ucm#IdentityAssertion
+ucm:IdentityAssertion rdf:type owl:Class ;
+                      rdfs:subClassOf ucm:InformationArtifact ;
+                      rdfs:comment "A statement from an identity provider to a relying party about an authenticated identity, at a stated federation assurance level, such as an OpenID Connect ID Token or a SAML assertion (NIST SP 800-63C)." ;
+                      rdfs:label "Identity Assertion" .
+
+
+###  https://www.w3.org/ns/ucm#Credential
+ucm:Credential rdf:type owl:Class ;
+               rdfs:subClassOf ucm:InformationArtifact ;
+               rdfs:comment "A set of claims about an identity, issued and signed by an issuer, and held by the subject or a holder, such as a W3C Verifiable Credential." ;
+               rdfs:label "Credential" .
+
+
+###  https://www.w3.org/ns/ucm#TrustFramework
+ucm:TrustFramework rdf:type owl:Class ;
+                   rdfs:subClassOf ucm:PolicyDefinition ;
+                   rdfs:comment "A set of rules, under a governing body, for identity proofing, authentication, federation and certification that participants agree to rely on, such as NIST SP 800-63-4, a Kantara assurance program, or the TEFCA Individual Access Services rules." ;
+                   rdfs:label "Trust Framework" .
+
+
+###  https://www.w3.org/ns/ucm#AssuranceCertification
+ucm:AssuranceCertification rdf:type owl:Class ;
+                           rdfs:subClassOf ucm:InformationArtifact ;
+                           rdfs:comment "A record that an assessor has found a provider conformant to a trust framework at stated assurance levels, for a period." ;
+                           rdfs:label "Assurance Certification" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentSubjectRole
+ucm:ConsentSubjectRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:SubjectRole ;
+                       rdfs:comment "The role of the person or group whose information or care a consent concerns." ;
+                       rdfs:label "Consent Subject Role" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentGrantorRole
+ucm:ConsentGrantorRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:Role ;
+                       rdfs:comment "The role of the party who makes a consent choice. Often the same entity as the subject." ;
+                       rdfs:label "Consent Grantor Role" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentProxyRole
+ucm:ConsentProxyRole rdf:type owl:Class ;
+                     rdfs:subClassOf ucm:ConsentGrantorRole ;
+                     rdfs:comment "The role of a grantor acting for the subject, such as a parent, guardian, legal representative or authorized caregiver." ;
+                     rdfs:label "Consent Proxy Role" .
+
+
+###  https://www.w3.org/ns/ucm#InformationRecipientRole
+ucm:InformationRecipientRole rdf:type owl:Class ;
+                             rdfs:subClassOf ucm:Role ;
+                             rdfs:comment "The role of a party that a consent provision permits or denies to collect, access, use or disclose information." ;
+                             rdfs:label "Information Recipient Role" .
+
+
+###  https://www.w3.org/ns/ucm#InformationCustodianRole
+ucm:InformationCustodianRole rdf:type owl:Class ;
+                             rdfs:subClassOf ucm:Role ;
+                             rdfs:comment "The role of a party responsible for holding, managing or enforcing a consent or the data it covers." ;
+                             rdfs:label "Information Custodian Role" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentManagerRole
+ucm:ConsentManagerRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:InformationCustodianRole ;
+                       rdfs:comment "The role of a custodian that maintains the consent record (FHIR Consent.manager)." ;
+                       rdfs:label "Consent Manager Role" .
+
+
+###  https://www.w3.org/ns/ucm#DataControllerRole
+ucm:DataControllerRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:InformationCustodianRole ;
+                       rdfs:comment "The role of a custodian that determines the purposes and means of processing and enforces the consent (FHIR Consent.controller; GDPR controller)." ;
+                       rdfs:label "Data Controller Role" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentWitnessRole
+ucm:ConsentWitnessRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:Role ;
+                       rdfs:comment "The role of a party who witnessed a consent interaction." ;
+                       rdfs:label "Consent Witness Role" .
+
+
+###  https://www.w3.org/ns/ucm#ConsentVerifierRole
+ucm:ConsentVerifierRole rdf:type owl:Class ;
+                        rdfs:subClassOf ucm:Role ;
+                        rdfs:comment "The role of a party who verified a consent with the subject or grantor." ;
+                        rdfs:label "Consent Verifier Role" .
+
+
+###  https://www.w3.org/ns/ucm#IdentityApplicantRole
+ucm:IdentityApplicantRole rdf:type owl:Class ;
+                          rdfs:subClassOf ucm:SubjectRole ;
+                          rdfs:comment "The role of the entity whose identity is being proofed." ;
+                          rdfs:label "Identity Applicant Role" .
+
+
+###  https://www.w3.org/ns/ucm#CredentialServiceProviderRole
+ucm:CredentialServiceProviderRole rdf:type owl:Class ;
+                                  rdfs:subClassOf ucm:Role ;
+                                  rdfs:comment "The role of a party that proofs identities and issues or binds authenticators (NIST CSP)." ;
+                                  rdfs:label "Credential Service Provider Role" .
+
+
+###  https://www.w3.org/ns/ucm#IdentityProviderRole
+ucm:IdentityProviderRole rdf:type owl:Class ;
+                         rdfs:subClassOf ucm:Role ;
+                         rdfs:comment "The role of a party that authenticates a subscriber and issues identity assertions to relying parties." ;
+                         rdfs:label "Identity Provider Role" .
+
+
+###  https://www.w3.org/ns/ucm#RelyingPartyRole
+ucm:RelyingPartyRole rdf:type owl:Class ;
+                     rdfs:subClassOf ucm:Role ;
+                     rdfs:comment "The role of a party that relies on an identity assertion or credential." ;
+                     rdfs:label "Relying Party Role" .
+
+
+###  https://www.w3.org/ns/ucm#ProofingAgentRole
+ucm:ProofingAgentRole rdf:type owl:Class ;
+                      rdfs:subClassOf ucm:Role ;
+                      rdfs:comment "The role of a person who conducts attended identity proofing for a credential service provider." ;
+                      rdfs:label "Proofing Agent Role" .
+
+
+###  https://www.w3.org/ns/ucm#TrustedRefereeRole
+ucm:TrustedRefereeRole rdf:type owl:Class ;
+                       rdfs:subClassOf ucm:Role ;
+                       rdfs:comment "The role of a person authorized by a credential service provider to make risk-based identity decisions for applicants who cannot meet the normal evidence requirements (NIST SP 800-63A)." ;
+                       rdfs:label "Trusted Referee Role" .
+
+
+###  https://www.w3.org/ns/ucm#ApplicantReferenceRole
+ucm:ApplicantReferenceRole rdf:type owl:Class ;
+                           rdfs:subClassOf ucm:Role ;
+                           rdfs:comment "The role of a person who vouches for an applicant's identity or circumstances, such as homelessness, without acting on the applicant's behalf (NIST SP 800-63A)." ;
+                           rdfs:label "Applicant Reference Role" .
 
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
