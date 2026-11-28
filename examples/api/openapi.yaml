@@ -15,11 +15,11 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:a713a4085c0c1c7ff568062211c8e5dbb150efdf6198b296ca3330a1e91903f2"
-        triples: 694
+        digest: "sha256:a941532b4247c6ecdf2bbcf44baccda131a137cf926802e03b69ec394932ddbb"
+        triples: 2513
       - file: "ucm-shapes.jsonld"
-        digest: "sha256:4b0748714ef584d8e0441eb8b612b1438dbc0abb1894a75b6b9c7ec3bd54bb75"
-        triples: 471
+        digest: "sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f"
+        triples: 1264
 
 servers:
   - url: "http://localhost:8000/ucm/v1"
@@ -40,6 +40,8 @@ tags:
     description: "A position or extent defined relative to the progression of a care process, state trajectory, or coordinated activity, which does not require anchoring to clock or calendar time."
   - name: "ClinicalDomain"
     description: "Clinical Domain"
+  - name: "ConsentProvision"
+    description: "A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's."
   - name: "DefinitionArtifact"
     description: "A ruleset, policy definition, constraint, or governance artifact."
   - name: "Entity"
@@ -752,12 +754,110 @@ paths:
           description: "No content"
         '404':
           $ref: '#/components/responses/NotFound'
+  "/consent-provisions":
+    get:
+      operationId: "listConsentProvisions"
+      tags: ["ConsentProvision"]
+      summary: "List Consent Provision nodes"
+      description: "Returns Consent Provision nodes as a JSON-LD @graph."
+      responses:
+        '200':
+          description: "JSON-LD ConsentProvision collection"
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties:
+                  '@context':
+                    $ref: '#/components/schemas/JsonLdContext'
+                  '@graph':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsentProvision'
+                required: ['@graph']
+    post:
+      operationId: "createConsentProvision"
+      tags: ["ConsentProvision"]
+      summary: "Create a Consent Provision"
+      description: "Create a Consent Provision or subclass node. The request graph is validated against the UCM core shapes: Definitional (sh:Violation) results reject it with 422."
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/ConsentProvision'
+      responses:
+        '201':
+          description: "JSON-LD ConsentProvision node"
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConsentProvision'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/ShapeViolation'
+  "/consent-provisions/{id}":
+    get:
+      operationId: "getConsentProvision"
+      tags: ["ConsentProvision"]
+      summary: "Get a Consent Provision"
+      description: "Fetch one Consent Provision node."
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: "JSON-LD ConsentProvision node"
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConsentProvision'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: "replaceConsentProvision"
+      tags: ["ConsentProvision"]
+      summary: "Replace a Consent Provision"
+      description: "Replace the node's description. The request graph is validated against the UCM core shapes: Definitional (sh:Violation) results reject it with 422."
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/ConsentProvision'
+      responses:
+        '200':
+          description: "JSON-LD ConsentProvision node"
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConsentProvision'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ShapeViolation'
+    delete:
+      operationId: "deleteConsentProvision"
+      tags: ["ConsentProvision"]
+      summary: "Delete a Consent Provision"
+      description: "Delete one Consent Provision node."
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: "No content"
+        '404':
+          $ref: '#/components/responses/NotFound'
   "/definition-artifacts":
     get:
       operationId: "listDefinitionArtifacts"
       tags: ["DefinitionArtifact"]
       summary: "List Definition Artifact nodes"
-      description: "Returns Definition Artifact nodes as a JSON-LD @graph. Subclasses: EligibilityRuleset, PolicyDefinition, ProgramDefinition, SemanticConstraint."
+      description: "Returns Definition Artifact nodes as a JSON-LD @graph. Subclasses: ConsentPolicy, EligibilityRuleset, PolicyDefinition, PrivacyNotice, ProgramDefinition, SelfConsentRule, SemanticConstraint, TrustFramework."
       parameters:
         - name: type
           in: query
@@ -765,7 +865,7 @@ paths:
           description: Restrict results to one class of the hierarchy.
           schema:
             type: string
-            enum: ["DefinitionArtifact", "EligibilityRuleset", "PolicyDefinition", "ProgramDefinition", "SemanticConstraint"]
+            enum: ["DefinitionArtifact", "ConsentPolicy", "EligibilityRuleset", "PolicyDefinition", "PrivacyNotice", "ProgramDefinition", "SelfConsentRule", "SemanticConstraint", "TrustFramework"]
       responses:
         '200':
           description: "JSON-LD DefinitionArtifact collection"
@@ -863,7 +963,7 @@ paths:
       operationId: "listEntities"
       tags: ["Entity"]
       summary: "List Entity nodes"
-      description: "Returns Entity nodes as a JSON-LD @graph. Subclasses: CareTeam, CommunityGroup, Device, Household, InformationArtifact, Location, Organization, Person, SocialGroupEntity."
+      description: "Returns Entity nodes as a JSON-LD @graph. Subclasses: AssuranceCertification, CareTeam, CommunityGroup, ConsentDirective, Credential, Device, Household, Identifier, Identity, IdentityAssertion, IdentityEvidence, InformationArtifact, Location, Organization, Person, SocialGroupEntity."
       parameters:
         - name: type
           in: query
@@ -871,7 +971,7 @@ paths:
           description: Restrict results to one class of the hierarchy.
           schema:
             type: string
-            enum: ["Entity", "CareTeam", "CommunityGroup", "Device", "Household", "InformationArtifact", "Location", "Organization", "Person", "SocialGroupEntity"]
+            enum: ["Entity", "AssuranceCertification", "CareTeam", "CommunityGroup", "ConsentDirective", "Credential", "Device", "Household", "Identifier", "Identity", "IdentityAssertion", "IdentityEvidence", "InformationArtifact", "Location", "Organization", "Person", "SocialGroupEntity"]
       responses:
         '200':
           description: "JSON-LD Entity collection"
@@ -1361,7 +1461,7 @@ paths:
       operationId: "listProcesses"
       tags: ["Process"]
       summary: "List Process nodes"
-      description: "Returns Process nodes as a JSON-LD @graph. Subclasses: CareCoordinationInteraction, ClinicalEncounter, CoordinationRequest, CoordinativeActivity, EligibilityDetermination, Encounter, Handshake, HousingAssessment, SocialCareInteraction."
+      description: "Returns Process nodes as a JSON-LD @graph. Subclasses: Authentication, CareCoordinationInteraction, ClinicalEncounter, ConsentInteraction, CoordinationRequest, CoordinativeActivity, EligibilityDetermination, Encounter, Handshake, HousingAssessment, IdentityProofing, SocialCareInteraction."
       parameters:
         - name: type
           in: query
@@ -1369,7 +1469,7 @@ paths:
           description: Restrict results to one class of the hierarchy.
           schema:
             type: string
-            enum: ["Process", "CareCoordinationInteraction", "ClinicalEncounter", "CoordinationRequest", "CoordinativeActivity", "EligibilityDetermination", "Encounter", "Handshake", "HousingAssessment", "SocialCareInteraction"]
+            enum: ["Process", "Authentication", "CareCoordinationInteraction", "ClinicalEncounter", "ConsentInteraction", "CoordinationRequest", "CoordinativeActivity", "EligibilityDetermination", "Encounter", "Handshake", "HousingAssessment", "IdentityProofing", "SocialCareInteraction"]
       responses:
         '200':
           description: "JSON-LD Process collection"
@@ -1565,7 +1665,7 @@ paths:
       operationId: "listRoles"
       tags: ["Role"]
       summary: "List Role nodes"
-      description: "Returns Role nodes as a JSON-LD @graph. Subclasses: BeneficiaryRole, CaregiverRole, ClientRole, CoordinatorRole, PatientRole, ProviderRole, ResidentRole, SubjectRole."
+      description: "Returns Role nodes as a JSON-LD @graph. Subclasses: ApplicantReferenceRole, BeneficiaryRole, CaregiverRole, ClientRole, ConsentGrantorRole, ConsentManagerRole, ConsentProxyRole, ConsentSubjectRole, ConsentVerifierRole, ConsentWitnessRole, CoordinatorRole, CredentialServiceProviderRole, DataControllerRole, IdentityApplicantRole, IdentityProviderRole, InformationCustodianRole, InformationRecipientRole, PatientRole, ProofingAgentRole, ProviderRole, RelyingPartyRole, ResidentRole, SubjectRole, TrustedRefereeRole."
       parameters:
         - name: type
           in: query
@@ -1573,7 +1673,7 @@ paths:
           description: Restrict results to one class of the hierarchy.
           schema:
             type: string
-            enum: ["Role", "BeneficiaryRole", "CaregiverRole", "ClientRole", "CoordinatorRole", "PatientRole", "ProviderRole", "ResidentRole", "SubjectRole"]
+            enum: ["Role", "ApplicantReferenceRole", "BeneficiaryRole", "CaregiverRole", "ClientRole", "ConsentGrantorRole", "ConsentManagerRole", "ConsentProxyRole", "ConsentSubjectRole", "ConsentVerifierRole", "ConsentWitnessRole", "CoordinatorRole", "CredentialServiceProviderRole", "DataControllerRole", "IdentityApplicantRole", "IdentityProviderRole", "InformationCustodianRole", "InformationRecipientRole", "PatientRole", "ProofingAgentRole", "ProviderRole", "RelyingPartyRole", "ResidentRole", "SubjectRole", "TrustedRefereeRole"]
       responses:
         '200':
           description: "JSON-LD Role collection"
@@ -1671,7 +1771,7 @@ paths:
       operationId: "listSemanticContexts"
       tags: ["SemanticContext"]
       summary: "List Semantic Context nodes"
-      description: "Returns Semantic Context nodes as a JSON-LD @graph. Subclasses: BehavioralHealthContext, ClinicalCareContext, HousingContext, HousingEligibilityContext, PublicHealthContext, SocialCareContext."
+      description: "Returns Semantic Context nodes as a JSON-LD @graph. Subclasses: BehavioralHealthContext, ClinicalCareContext, HousingContext, HousingEligibilityContext, JurisdictionContext, PublicHealthContext, SocialCareContext."
       parameters:
         - name: type
           in: query
@@ -1679,7 +1779,7 @@ paths:
           description: Restrict results to one class of the hierarchy.
           schema:
             type: string
-            enum: ["SemanticContext", "BehavioralHealthContext", "ClinicalCareContext", "HousingContext", "HousingEligibilityContext", "PublicHealthContext", "SocialCareContext"]
+            enum: ["SemanticContext", "BehavioralHealthContext", "ClinicalCareContext", "HousingContext", "HousingEligibilityContext", "JurisdictionContext", "PublicHealthContext", "SocialCareContext"]
       responses:
         '200':
           description: "JSON-LD SemanticContext collection"
@@ -2132,6 +2232,58 @@ components:
       type: object
 
     # ===== Concept schemes (open vocabularies) =====
+    "AuthenticatorAssuranceLevel":
+      description: "Authenticator Assurance Level. How strongly was the claimant authenticated? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["achievedAAL", "requiresAAL"]
+      x-ucm-concepts:
+        AAL1:
+          iri: https://www.w3.org/ns/ucm#AAL1
+          label: AAL1
+          definition: Single-factor or multi-factor authentication with basic assurance (NIST AAL1).
+        AAL2:
+          iri: https://www.w3.org/ns/ucm#AAL2
+          label: AAL2
+          definition: Multi-factor authentication with high confidence (NIST AAL2).
+        AAL3:
+          iri: https://www.w3.org/ns/ucm#AAL3
+          label: AAL3
+          definition: Multi-factor authentication with a hardware-based, phishing-resistant authenticator (NIST AAL3).
+      anyOf:
+        - type: string
+          enum: ["AAL1", "AAL2", "AAL3"]
+        - $ref: '#/components/schemas/IRI'
+    "BirthDateQuality":
+      description: "Birth Date Quality. How reliable is the recorded birth date? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#BirthDateQuality"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["birthDateQuality"]
+      x-ucm-concepts:
+        ApproximateOrPartial:
+          iri: https://www.w3.org/ns/ucm#ApproximateOrPartial
+          label: Approximate or partial
+          definition: An approximate or partial date of birth was reported.
+        ClientDoesNotKnow:
+          iri: https://www.w3.org/ns/ucm#ClientDoesNotKnow
+          label: Client doesn't know
+          definition: The person does not know their date of birth.
+        ClientPreferNotToAnswer:
+          iri: https://www.w3.org/ns/ucm#ClientPreferNotToAnswer
+          label: Client prefers not to answer
+          definition: The person declined to give their date of birth.
+        DataNotCollected:
+          iri: https://www.w3.org/ns/ucm#DataNotCollected
+          label: Data not collected
+          definition: The date of birth was not collected.
+        FullDateReported:
+          iri: https://www.w3.org/ns/ucm#FullDateReported
+          label: Full date reported
+          definition: The full date of birth was reported.
+      anyOf:
+        - type: string
+          enum: ["ApproximateOrPartial", "ClientDoesNotKnow", "ClientPreferNotToAnswer", "DataNotCollected", "FullDateReported"]
+        - $ref: '#/components/schemas/IRI'
     "ClosureReason":
       description: "Closure Reason. Why did the care coordination episode end? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#ClosureReason"
@@ -2226,6 +2378,326 @@ components:
         - type: string
           enum: ["CommitmentInForce", "CommitmentLapsed", "CommitmentProposed", "CommitmentReleased", "CommitmentSuspended"]
         - $ref: '#/components/schemas/IRI'
+    "ConfidentialityLevel":
+      description: "Confidentiality Level. How confidential is the information? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConfidentialityLevel"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["coversConfidentiality", "hasConfidentialityLevel"]
+      x-ucm-concepts:
+        ConfidentialityLow:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityLow
+          label: Low
+          definition: Low confidentiality; minimal harm if disclosed.
+        ConfidentialityModerate:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityModerate
+          label: Moderate
+          definition: Moderate confidentiality.
+        ConfidentialityNormal:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityNormal
+          label: Normal
+          definition: The usual level for health and social care information.
+        ConfidentialityRestricted:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityRestricted
+          label: Restricted
+          definition: Highly sensitive; restricted to a few parties.
+        ConfidentialityUnrestricted:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityUnrestricted
+          label: Unrestricted
+          definition: Not confidential; may be shared freely.
+        ConfidentialityVeryRestricted:
+          iri: https://www.w3.org/ns/ucm#ConfidentialityVeryRestricted
+          label: Very restricted
+          definition: Extremely sensitive; very few parties may see it.
+      anyOf:
+        - type: string
+          enum: ["ConfidentialityLow", "ConfidentialityModerate", "ConfidentialityNormal", "ConfidentialityRestricted", "ConfidentialityUnrestricted", "ConfidentialityVeryRestricted"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentAction":
+      description: "Consent Action. What action does this provision permit or deny? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentAction"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["governsAction"]
+      x-ucm-concepts:
+        AccessAction:
+          iri: https://www.w3.org/ns/ucm#AccessAction
+          label: Access
+          definition: Retrieve and view information.
+        CollectAction:
+          iri: https://www.w3.org/ns/ucm#CollectAction
+          label: Collect
+          definition: Gather and record information.
+        CorrectAction:
+          iri: https://www.w3.org/ns/ucm#CorrectAction
+          label: Access and correct
+          definition: Access information in order to correct it.
+        DiscloseAction:
+          iri: https://www.w3.org/ns/ucm#DiscloseAction
+          label: Disclose
+          definition: Release information to another party.
+        RediscloseAction:
+          iri: https://www.w3.org/ns/ucm#RediscloseAction
+          label: Redisclose
+          definition: A recipient releasing information it received to a further party.
+          broader:
+          - DiscloseAction
+        UseAction:
+          iri: https://www.w3.org/ns/ucm#UseAction
+          label: Use
+          definition: Use information for a purpose.
+      anyOf:
+        - type: string
+          enum: ["AccessAction", "CollectAction", "CorrectAction", "DiscloseAction", "RediscloseAction", "UseAction"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentCategory":
+      description: "Consent Category. What kind of consent is this? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentCategory"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentCategory"]
+      x-ucm-concepts:
+        AdvanceDirective:
+          iri: https://www.w3.org/ns/ucm#AdvanceDirective
+          label: Advance directive
+          definition: Instructions for future care if the person cannot decide for themselves. Placeholder.
+        ConsentToCollect:
+          iri: https://www.w3.org/ns/ucm#ConsentToCollect
+          label: Consent to collect
+          definition: Consent for an organization to collect and record a person's information.
+          broader:
+          - PrivacyConsent
+        ConsentToShare:
+          iri: https://www.w3.org/ns/ucm#ConsentToShare
+          label: Consent to share
+          definition: Consent for information already held to be shared with other parties.
+          broader:
+          - PrivacyConsent
+        PrivacyConsent:
+          iri: https://www.w3.org/ns/ucm#PrivacyConsent
+          label: Privacy consent
+          definition: Consent concerning the collection, use or disclosure of information.
+        ReleaseOfInformation:
+          iri: https://www.w3.org/ns/ucm#ReleaseOfInformation
+          label: Release of information
+          definition: Consent to release or share a person's information with named parties, such as an HMIS ROI.
+          broader:
+          - PrivacyConsent
+        ResearchConsent:
+          iri: https://www.w3.org/ns/ucm#ResearchConsent
+          label: Research consent
+          definition: Consent to take part in research or for information to be used in research.
+        TreatmentConsent:
+          iri: https://www.w3.org/ns/ucm#TreatmentConsent
+          label: Treatment consent
+          definition: Consent to receive a treatment, procedure or service.
+      anyOf:
+        - type: string
+          enum: ["AdvanceDirective", "ConsentToCollect", "ConsentToShare", "PrivacyConsent", "ReleaseOfInformation", "ResearchConsent", "TreatmentConsent"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentDecision":
+      description: "Consent Decision. Does this consent or provision permit or deny? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentDecision"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentDecision"]
+      x-ucm-concepts:
+        Deny:
+          iri: https://www.w3.org/ns/ucm#Deny
+          label: Deny
+          definition: The actions in scope are denied.
+        Permit:
+          iri: https://www.w3.org/ns/ucm#Permit
+          label: Permit
+          definition: The actions in scope are permitted.
+      anyOf:
+        - type: string
+          enum: ["Deny", "Permit"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentInteractionType":
+      description: "Consent Interaction Type. What did this consent interaction do? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentInteractionType"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentInteractionType"]
+      x-ucm-concepts:
+        ConsentAmendment:
+          iri: https://www.w3.org/ns/ucm#ConsentAmendment
+          label: Amend
+          definition: An existing consent was changed.
+        ConsentGrant:
+          iri: https://www.w3.org/ns/ucm#ConsentGrant
+          label: Grant
+          definition: Consent was given.
+        ConsentRefusal:
+          iri: https://www.w3.org/ns/ucm#ConsentRefusal
+          label: Refuse
+          definition: Consent was declined.
+        ConsentRenewal:
+          iri: https://www.w3.org/ns/ucm#ConsentRenewal
+          label: Renew
+          definition: An existing consent was confirmed for a further period.
+        ConsentRevocation:
+          iri: https://www.w3.org/ns/ucm#ConsentRevocation
+          label: Revoke
+          definition: An existing consent was withdrawn.
+        ConsentVerification:
+          iri: https://www.w3.org/ns/ucm#ConsentVerification
+          label: Verify
+          definition: An existing consent was verified with the subject or grantor, or a self-consent condition was verified by a third party.
+      anyOf:
+        - type: string
+          enum: ["ConsentAmendment", "ConsentGrant", "ConsentRefusal", "ConsentRenewal", "ConsentRevocation", "ConsentVerification"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentModality":
+      description: "Consent Modality. How was consent expressed? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentModality"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentModality"]
+      x-ucm-concepts:
+        ElectronicConsent:
+          iri: https://www.w3.org/ns/ucm#ElectronicConsent
+          label: Electronic
+          definition: Written consent given through an electronic signature or form.
+          broader:
+          - WrittenConsent
+        InferredConsent:
+          iri: https://www.w3.org/ns/ucm#InferredConsent
+          label: Inferred
+          definition: Consent inferred from a posted notice and the person's continued participation.
+        VerbalConsent:
+          iri: https://www.w3.org/ns/ucm#VerbalConsent
+          label: Verbal
+          definition: Consent given orally and recorded by staff.
+        WrittenConsent:
+          iri: https://www.w3.org/ns/ucm#WrittenConsent
+          label: Written
+          definition: Consent given in writing, on paper or electronically.
+      anyOf:
+        - type: string
+          enum: ["ElectronicConsent", "InferredConsent", "VerbalConsent", "WrittenConsent"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentModel":
+      description: "Consent Model. What is the default when no individual choice is recorded? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentModel"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentModel"]
+      x-ucm-concepts:
+        NoConsentRequired:
+          iri: https://www.w3.org/ns/ucm#NoConsentRequired
+          label: No consent required
+          definition: Another lawful basis applies, so individual consent is not needed.
+        OptIn:
+          iri: https://www.w3.org/ns/ucm#OptIn
+          label: Opt-in
+          definition: Information is not shared unless the person consents.
+        OptInWithRestrictions:
+          iri: https://www.w3.org/ns/ucm#OptInWithRestrictions
+          label: Opt-in with restrictions
+          definition: The person may opt in and restrict what is shared.
+        OptOut:
+          iri: https://www.w3.org/ns/ucm#OptOut
+          label: Opt-out
+          definition: Information is shared unless the person objects.
+        OptOutWithExceptions:
+          iri: https://www.w3.org/ns/ucm#OptOutWithExceptions
+          label: Opt-out with exceptions
+          definition: Information is shared unless the person objects, and some information always needs explicit consent.
+      anyOf:
+        - type: string
+          enum: ["NoConsentRequired", "OptIn", "OptInWithRestrictions", "OptOut", "OptOutWithExceptions"]
+        - $ref: '#/components/schemas/IRI'
+    "ConsentStatus":
+      description: "Consent Status. Does this consent apply now? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentStatus"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasConsentStatus"]
+      x-ucm-concepts:
+        ConsentActive:
+          iri: https://www.w3.org/ns/ucm#ConsentActive
+          label: Active
+          definition: The directive is in force.
+        ConsentDraft:
+          iri: https://www.w3.org/ns/ucm#ConsentDraft
+          label: Draft
+          definition: The directive is being prepared and is not yet in force.
+        ConsentEnteredInError:
+          iri: https://www.w3.org/ns/ucm#ConsentEnteredInError
+          label: Entered in error
+          definition: The directive was recorded by mistake and should be disregarded.
+        ConsentExpired:
+          iri: https://www.w3.org/ns/ucm#ConsentExpired
+          label: Expired
+          definition: The directive's period of validity ended.
+          broader:
+          - ConsentInactive
+        ConsentInactive:
+          iri: https://www.w3.org/ns/ucm#ConsentInactive
+          label: Inactive
+          definition: The directive was in force and no longer is. Record a narrower reason when known.
+        ConsentRefused:
+          iri: https://www.w3.org/ns/ucm#ConsentRefused
+          label: Refused
+          definition: The subject or grantor declined to give consent, so the directive never came into force.
+        ConsentRevoked:
+          iri: https://www.w3.org/ns/ucm#ConsentRevoked
+          label: Revoked
+          definition: The subject or grantor withdrew the directive.
+          broader:
+          - ConsentInactive
+        ConsentStatusUnknown:
+          iri: https://www.w3.org/ns/ucm#ConsentStatusUnknown
+          label: Unknown
+          definition: The status of the directive is not known.
+        ConsentSuperseded:
+          iri: https://www.w3.org/ns/ucm#ConsentSuperseded
+          label: Superseded
+          definition: A newer directive amended or renewed this one.
+          broader:
+          - ConsentInactive
+      anyOf:
+        - type: string
+          enum: ["ConsentActive", "ConsentDraft", "ConsentEnteredInError", "ConsentExpired", "ConsentInactive", "ConsentRefused", "ConsentRevoked", "ConsentStatusUnknown", "ConsentSuperseded"]
+        - $ref: '#/components/schemas/IRI'
+    "EvidenceStrength":
+      description: "Evidence Strength. How strong is this identity evidence? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#EvidenceStrength"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasEvidenceStrength"]
+      x-ucm-concepts:
+        FairEvidence:
+          iri: https://www.w3.org/ns/ucm#FairEvidence
+          label: Fair
+          definition: Evidence of fair strength (NIST FAIR).
+        StrongEvidence:
+          iri: https://www.w3.org/ns/ucm#StrongEvidence
+          label: Strong
+          definition: Evidence of strong strength (NIST STRONG).
+        SuperiorEvidence:
+          iri: https://www.w3.org/ns/ucm#SuperiorEvidence
+          label: Superior
+          definition: Evidence of superior strength (NIST SUPERIOR).
+      anyOf:
+        - type: string
+          enum: ["FairEvidence", "StrongEvidence", "SuperiorEvidence"]
+        - $ref: '#/components/schemas/IRI'
+    "FederationAssuranceLevel":
+      description: "Federation Assurance Level. How strongly was the identity assertion protected? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#FederationAssuranceLevel"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["achievedFAL"]
+      x-ucm-concepts:
+        FAL1:
+          iri: https://www.w3.org/ns/ucm#FAL1
+          label: FAL1
+          definition: A signed assertion from the identity provider (NIST FAL1).
+        FAL2:
+          iri: https://www.w3.org/ns/ucm#FAL2
+          label: FAL2
+          definition: An assertion protected against injection and bound to the relying party (NIST FAL2).
+        FAL3:
+          iri: https://www.w3.org/ns/ucm#FAL3
+          label: FAL3
+          definition: An assertion bound to an authenticator the subscriber holds (NIST FAL3).
+      anyOf:
+        - type: string
+          enum: ["FAL1", "FAL2", "FAL3"]
+        - $ref: '#/components/schemas/IRI'
     "HandoffStatus":
       description: "Handoff Status. Where does responsibility for the agreed services stand between the sending and receiving parties? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#HandoffStatus"
@@ -2286,6 +2758,150 @@ components:
         - type: string
           enum: ["FulfillmentConfirmed", "FulfillmentNotStarted", "FulfillmentPartial", "FulfillmentReported"]
         - $ref: '#/components/schemas/IRI'
+    "IdentifierType":
+      description: "Identifier Type. What kind of identifier is this? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentifierType"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasIdentifierType"]
+      x-ucm-concepts:
+        DecentralizedIdentifier:
+          iri: https://www.w3.org/ns/ucm#DecentralizedIdentifier
+          label: Decentralized identifier
+          definition: A W3C decentralized identifier (DID).
+        DriversLicenseNumber:
+          iri: https://www.w3.org/ns/ucm#DriversLicenseNumber
+          label: Driver's license number
+          definition: A driver's license number.
+        HMISPersonalID:
+          iri: https://www.w3.org/ns/ucm#HMISPersonalID
+          label: HMIS Personal ID
+          definition: The HMIS Personal ID.
+        MedicaidID:
+          iri: https://www.w3.org/ns/ucm#MedicaidID
+          label: Medicaid ID
+          definition: A Medicaid member identifier.
+        MedicalRecordNumber:
+          iri: https://www.w3.org/ns/ucm#MedicalRecordNumber
+          label: Medical record number
+          definition: An identifier assigned by a health care organization.
+        OIDCSubject:
+          iri: https://www.w3.org/ns/ucm#OIDCSubject
+          label: OpenID Connect subject
+          definition: An OpenID Connect sub value, unique within its issuer.
+        OtherIdentifier:
+          iri: https://www.w3.org/ns/ucm#OtherIdentifier
+          label: Other identifier
+          definition: Another kind of identifier.
+        SocialSecurityNumber:
+          iri: https://www.w3.org/ns/ucm#SocialSecurityNumber
+          label: Social Security number
+          definition: A U.S. Social Security number.
+        StateIDNumber:
+          iri: https://www.w3.org/ns/ucm#StateIDNumber
+          label: State ID number
+          definition: A state-issued identification card number.
+      anyOf:
+        - type: string
+          enum: ["DecentralizedIdentifier", "DriversLicenseNumber", "HMISPersonalID", "MedicaidID", "MedicalRecordNumber", "OIDCSubject", "OtherIdentifier", "SocialSecurityNumber", "StateIDNumber"]
+        - $ref: '#/components/schemas/IRI'
+    "IdentityAssuranceLevel":
+      description: "Identity Assurance Level. How strongly was this identity proofed? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityAssuranceLevel"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["achievedIAL", "requiresIAL"]
+      x-ucm-concepts:
+        IAL1:
+          iri: https://www.w3.org/ns/ucm#IAL1
+          label: IAL1
+          definition: Identity proofing that confirms the claimed identity exists and is likely the applicant's (NIST IAL1).
+        IAL2:
+          iri: https://www.w3.org/ns/ucm#IAL2
+          label: IAL2
+          definition: Identity proofing with stronger evidence and verification, remote or in person (NIST IAL2).
+        IAL3:
+          iri: https://www.w3.org/ns/ucm#IAL3
+          label: IAL3
+          definition: Identity proofing in person or supervised remote, with the strongest evidence (NIST IAL3).
+        NoIdentityProofing:
+          iri: https://www.w3.org/ns/ucm#NoIdentityProofing
+          label: No identity proofing
+          definition: No identity proofing was performed; attributes are self-asserted.
+      anyOf:
+        - type: string
+          enum: ["IAL1", "IAL2", "IAL3", "NoIdentityProofing"]
+        - $ref: '#/components/schemas/IRI'
+    "IdentityEvidenceType":
+      description: "Identity Evidence Type. What kind of identity evidence is this? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityEvidenceType"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasEvidenceType"]
+      x-ucm-concepts:
+        DocumentEvidence:
+          iri: https://www.w3.org/ns/ucm#DocumentEvidence
+          label: Document
+          definition: A physical or digital identity document.
+        ElectronicRecordEvidence:
+          iri: https://www.w3.org/ns/ucm#ElectronicRecordEvidence
+          label: Electronic record
+          definition: An electronic record from an authoritative source.
+        ElectronicSignatureEvidence:
+          iri: https://www.w3.org/ns/ucm#ElectronicSignatureEvidence
+          label: Electronic signature
+          definition: An electronic signature tied to a verified identity.
+        VouchEvidence:
+          iri: https://www.w3.org/ns/ucm#VouchEvidence
+          label: Vouch
+          definition: An attestation by another party, such as an applicant reference.
+      anyOf:
+        - type: string
+          enum: ["DocumentEvidence", "ElectronicRecordEvidence", "ElectronicSignatureEvidence", "VouchEvidence"]
+        - $ref: '#/components/schemas/IRI'
+    "InformationCategory":
+      description: "Information Category. What kind of information is covered? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#InformationCategory"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["coversDataCategory"]
+      x-ucm-concepts:
+        BehavioralHealthInformation:
+          iri: https://www.w3.org/ns/ucm#BehavioralHealthInformation
+          label: Behavioral health information
+          definition: Mental health and substance use information.
+        ChildWelfareInformation:
+          iri: https://www.w3.org/ns/ucm#ChildWelfareInformation
+          label: Child welfare information
+          definition: Child welfare and family services information.
+        ClinicalInformation:
+          iri: https://www.w3.org/ns/ucm#ClinicalInformation
+          label: Clinical information
+          definition: Health and clinical care information.
+        EducationInformation:
+          iri: https://www.w3.org/ns/ucm#EducationInformation
+          label: Education information
+          definition: Education records.
+        HousingInformation:
+          iri: https://www.w3.org/ns/ucm#HousingInformation
+          label: Housing information
+          definition: Housing status, history, assessments and placements.
+        IdentifyingInformation:
+          iri: https://www.w3.org/ns/ucm#IdentifyingInformation
+          label: Identifying information
+          definition: Information that identifies a person, such as name, birth date and identifiers.
+        IncomeAndBenefitsInformation:
+          iri: https://www.w3.org/ns/ucm#IncomeAndBenefitsInformation
+          label: Income and benefits information
+          definition: Income, employment and public benefits information.
+        JusticeInformation:
+          iri: https://www.w3.org/ns/ucm#JusticeInformation
+          label: Justice information
+          definition: Criminal and juvenile justice information.
+        NutritionInformation:
+          iri: https://www.w3.org/ns/ucm#NutritionInformation
+          label: Nutrition information
+          definition: Food security and nutrition information.
+      anyOf:
+        - type: string
+          enum: ["BehavioralHealthInformation", "ChildWelfareInformation", "ClinicalInformation", "EducationInformation", "HousingInformation", "IdentifyingInformation", "IncomeAndBenefitsInformation", "JusticeInformation", "NutritionInformation"]
+        - $ref: '#/components/schemas/IRI'
     "LifecycleState":
       description: "Lifecycle State. A state associated with a process during a portion of its lifecycle. Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#LifecycleState"
@@ -2307,6 +2923,128 @@ components:
       anyOf:
         - type: string
           enum: ["Accepted", "Declined", "Pending"]
+        - $ref: '#/components/schemas/IRI'
+    "ProofingType":
+      description: "Proofing Type. How was identity proofing conducted? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ProofingType"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasProofingType"]
+      x-ucm-concepts:
+        OnsiteAttendedProofing:
+          iri: https://www.w3.org/ns/ucm#OnsiteAttendedProofing
+          label: On-site attended
+          definition: On-site proofing with a proofing agent present.
+        OnsiteUnattendedProofing:
+          iri: https://www.w3.org/ns/ucm#OnsiteUnattendedProofing
+          label: On-site unattended
+          definition: On-site proofing at a kiosk or device with no agent.
+        RemoteAttendedProofing:
+          iri: https://www.w3.org/ns/ucm#RemoteAttendedProofing
+          label: Remote attended
+          definition: Remote proofing with a proofing agent over video.
+        RemoteUnattendedProofing:
+          iri: https://www.w3.org/ns/ucm#RemoteUnattendedProofing
+          label: Remote unattended
+          definition: Remote proofing with no proofing agent present.
+      anyOf:
+        - type: string
+          enum: ["OnsiteAttendedProofing", "OnsiteUnattendedProofing", "RemoteAttendedProofing", "RemoteUnattendedProofing"]
+        - $ref: '#/components/schemas/IRI'
+    "PurposeOfUse":
+      description: "Purpose of Use. For what purpose may the information be used? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#PurposeOfUse"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["forPurpose"]
+      x-ucm-concepts:
+        BenefitsEnrollment:
+          iri: https://www.w3.org/ns/ucm#BenefitsEnrollment
+          label: Benefits enrollment
+          definition: Applying for, enrolling in or recertifying public benefits.
+          broader:
+          - EligibilityPurpose
+        CareCoordination:
+          iri: https://www.w3.org/ns/ucm#CareCoordination
+          label: Care coordination
+          definition: Coordinating care for the person across providers.
+        CareManagement:
+          iri: https://www.w3.org/ns/ucm#CareManagement
+          label: Care management
+          definition: Managing a person's care over time.
+        CoordinatedEntry:
+          iri: https://www.w3.org/ns/ucm#CoordinatedEntry
+          label: Coordinated entry
+          definition: Assessing, prioritizing and referring people experiencing homelessness through a Continuum of Care's coordinated entry process.
+          broader:
+          - SocialCareCoordination
+        EligibilityPurpose:
+          iri: https://www.w3.org/ns/ucm#EligibilityPurpose
+          label: Eligibility determination
+          definition: Determining whether the person is eligible for a program or benefit.
+        EmergencyTreatment:
+          iri: https://www.w3.org/ns/ucm#EmergencyTreatment
+          label: Emergency treatment
+          definition: Providing care in an emergency.
+          broader:
+          - Treatment
+        FamilyRequested:
+          iri: https://www.w3.org/ns/ucm#FamilyRequested
+          label: Family requested
+          definition: Disclosure requested by the person's family.
+        HealthcareOperations:
+          iri: https://www.w3.org/ns/ucm#HealthcareOperations
+          label: Operations
+          definition: Operating the organization that provides care or services.
+        HousingPlacement:
+          iri: https://www.w3.org/ns/ucm#HousingPlacement
+          label: Housing placement
+          definition: Matching a person or household to a housing program or unit and moving them in.
+          broader:
+          - SocialCareCoordination
+        PatientRequested:
+          iri: https://www.w3.org/ns/ucm#PatientRequested
+          label: Person requested
+          definition: Disclosure requested by the person themselves.
+        Payment:
+          iri: https://www.w3.org/ns/ucm#Payment
+          label: Payment
+          definition: Payment for care or services.
+        ProgramReporting:
+          iri: https://www.w3.org/ns/ucm#ProgramReporting
+          label: Program reporting
+          definition: Required reporting to funders or oversight bodies, such as HUD HMIS reports.
+        PublicHealthPurpose:
+          iri: https://www.w3.org/ns/ucm#PublicHealthPurpose
+          label: Public health
+          definition: Public health activities and reporting.
+        ResearchPurpose:
+          iri: https://www.w3.org/ns/ucm#ResearchPurpose
+          label: Research
+          definition: Research.
+        SocialCareCoordination:
+          iri: https://www.w3.org/ns/ucm#SocialCareCoordination
+          label: Social care coordination
+          definition: Coordinating social care services for a person or household across agencies and programs.
+          broader:
+          - CareCoordination
+        SocialCaseManagement:
+          iri: https://www.w3.org/ns/ucm#SocialCaseManagement
+          label: Social case management
+          definition: Ongoing case management by a social care provider.
+          broader:
+          - SocialCareCoordination
+        SocialServicesReferral:
+          iri: https://www.w3.org/ns/ucm#SocialServicesReferral
+          label: Social services referral
+          definition: Referring a person to a community-based or government service and tracking whether they were connected.
+          broader:
+          - SocialCareCoordination
+        Treatment:
+          iri: https://www.w3.org/ns/ucm#Treatment
+          label: Treatment
+          definition: Providing health care or services to the person.
+      anyOf:
+        - type: string
+          enum: ["BenefitsEnrollment", "CareCoordination", "CareManagement", "CoordinatedEntry", "EligibilityPurpose", "EmergencyTreatment", "FamilyRequested", "HealthcareOperations", "HousingPlacement", "PatientRequested", "Payment", "ProgramReporting", "PublicHealthPurpose", "ResearchPurpose", "SocialCareCoordination", "SocialCaseManagement", "SocialServicesReferral", "Treatment"]
         - $ref: '#/components/schemas/IRI'
     "ReferralDisposition":
       description: "Referral Disposition. What has the receiving party decided about a care coordination request? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -2344,6 +3082,228 @@ components:
         - type: string
           enum: ["ReferralAccepted", "ReferralDeclined", "ReferralExpired", "ReferralPending", "ReferralWithdrawn"]
         - $ref: '#/components/schemas/IRI'
+    "RegulatoryBasis":
+      description: "Regulatory Basis. Which law or regulation does this consent rest on? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#RegulatoryBasis"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasRegulatoryBasis"]
+      x-ucm-concepts:
+        CFR42Part2:
+          iri: https://www.w3.org/ns/ucm#CFR42Part2
+          label: 42 CFR Part 2
+          definition: Confidentiality of Substance Use Disorder Patient Records, 42 CFR Part 2.
+        CommonRule:
+          iri: https://www.w3.org/ns/ucm#CommonRule
+          label: Common Rule
+          definition: The Federal Policy for the Protection of Human Subjects (45 CFR 46).
+        FERPA:
+          iri: https://www.w3.org/ns/ucm#FERPA
+          label: FERPA
+          definition: The Family Educational Rights and Privacy Act (20 U.S.C. 1232g; 34 CFR Part 99).
+        GDPR:
+          iri: https://www.w3.org/ns/ucm#GDPR
+          label: GDPR
+          definition: The EU General Data Protection Regulation (Regulation (EU) 2016/679).
+        HIPAA:
+          iri: https://www.w3.org/ns/ucm#HIPAA
+          label: HIPAA
+          definition: The HIPAA Privacy Rule (45 CFR Parts 160 and 164).
+        HIPAAAuthorization:
+          iri: https://www.w3.org/ns/ucm#HIPAAAuthorization
+          label: HIPAA authorization
+          definition: A HIPAA authorization for a use or disclosure.
+          broader:
+          - HIPAA
+        HIPAANoticeOfPrivacyPractices:
+          iri: https://www.w3.org/ns/ucm#HIPAANoticeOfPrivacyPractices
+          label: HIPAA notice of privacy practices
+          definition: A HIPAA notice of privacy practices.
+          broader:
+          - HIPAA
+        HIPAAResearch:
+          iri: https://www.w3.org/ns/ucm#HIPAAResearch
+          label: HIPAA research
+          definition: A HIPAA authorization for research.
+          broader:
+          - HIPAA
+        HMISDataStandards:
+          iri: https://www.w3.org/ns/ucm#HMISDataStandards
+          label: HMIS Data Standards
+          definition: The HUD HMIS Data and Technical Standards, including the privacy and security standards, and the current HMIS Data Standards.
+        StateLaw:
+          iri: https://www.w3.org/ns/ucm#StateLaw
+          label: State law
+          definition: A state, territorial or tribal law.
+        VAWA:
+          iri: https://www.w3.org/ns/ucm#VAWA
+          label: VAWA
+          definition: The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS.
+      anyOf:
+        - type: string
+          enum: ["CFR42Part2", "CommonRule", "FERPA", "GDPR", "HIPAA", "HIPAAAuthorization", "HIPAANoticeOfPrivacyPractices", "HIPAAResearch", "HMISDataStandards", "StateLaw", "VAWA"]
+        - $ref: '#/components/schemas/IRI'
+    "RetentionDisposition":
+      description: "Retention Disposition. What happens to the data when its retention period ends? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#RetentionDisposition"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["hasRetentionDisposition"]
+      x-ucm-concepts:
+        RetentionArchive:
+          iri: https://www.w3.org/ns/ucm#RetentionArchive
+          label: Archive
+          definition: The information is archived with restricted access.
+        RetentionDeidentify:
+          iri: https://www.w3.org/ns/ucm#RetentionDeidentify
+          label: De-identify
+          definition: The information is de-identified and may be kept.
+        RetentionDelete:
+          iri: https://www.w3.org/ns/ucm#RetentionDelete
+          label: Delete
+          definition: The information is deleted.
+      anyOf:
+        - type: string
+          enum: ["RetentionArchive", "RetentionDeidentify", "RetentionDelete"]
+        - $ref: '#/components/schemas/IRI'
+    "SelfConsentCondition":
+      description: "Self-Consent Condition. What condition lets a minor or youth consent for themselves? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#SelfConsentCondition"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["selfConsentCondition"]
+      x-ucm-concepts:
+        AgeOfMajority:
+          iri: https://www.w3.org/ns/ucm#AgeOfMajority
+          label: Age of majority
+          definition: The person has reached the age of majority in the jurisdiction.
+        EmancipatedMinor:
+          iri: https://www.w3.org/ns/ucm#EmancipatedMinor
+          label: Emancipated minor
+          definition: The person is a legally emancipated minor.
+        MarriedMinor:
+          iri: https://www.w3.org/ns/ucm#MarriedMinor
+          label: Married minor
+          definition: The person is a married minor.
+        MatureMinor:
+          iri: https://www.w3.org/ns/ucm#MatureMinor
+          label: Mature minor
+          definition: A clinician judged the minor to have capacity to consent.
+        MinorParent:
+          iri: https://www.w3.org/ns/ucm#MinorParent
+          label: Minor parent
+          definition: The person is a minor who is a parent.
+        PostsecondaryEnrollment:
+          iri: https://www.w3.org/ns/ucm#PostsecondaryEnrollment
+          label: Postsecondary enrollment
+          definition: The person attends a postsecondary institution.
+        SelfSupporting:
+          iri: https://www.w3.org/ns/ucm#SelfSupporting
+          label: Self-supporting
+          definition: The person supports themselves financially.
+        ServiceSpecificMinorConsent:
+          iri: https://www.w3.org/ns/ucm#ServiceSpecificMinorConsent
+          label: Service-specific minor consent
+          definition: The law lets minors consent to this particular service, such as STI or substance use treatment.
+        UnaccompaniedYouthStatus:
+          iri: https://www.w3.org/ns/ucm#UnaccompaniedYouthStatus
+          label: Unaccompanied youth
+          definition: The person is a youth living without a parent or guardian, such as an unaccompanied homeless youth.
+      anyOf:
+        - type: string
+          enum: ["AgeOfMajority", "EmancipatedMinor", "MarriedMinor", "MatureMinor", "MinorParent", "PostsecondaryEnrollment", "SelfSupporting", "ServiceSpecificMinorConsent", "UnaccompaniedYouthStatus"]
+        - $ref: '#/components/schemas/IRI'
+    "SensitivityCategory":
+      description: "Sensitivity Category. What sensitive topic does the information concern? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
+      x-semantic-uri: "https://www.w3.org/ns/ucm#SensitivityCategory"
+      x-ucm-open-vocabulary: true
+      x-ucm-properties: ["coversSensitivity", "hasSensitivityLabel"]
+      x-ucm-concepts:
+        Abortion:
+          iri: https://www.w3.org/ns/ucm#Abortion
+          label: Abortion
+          definition: Information about seeking, obtaining, providing or facilitating abortion. Kept separate because its legal sensitivity varies by jurisdiction.
+          broader:
+          - SexualAndReproductiveHealth
+        Adolescent:
+          iri: https://www.w3.org/ns/ucm#Adolescent
+          label: Adolescent
+          definition: Information about an adolescent's care that calls for extra protection.
+        AlcoholUseDisorder:
+          iri: https://www.w3.org/ns/ucm#AlcoholUseDisorder
+          label: Alcohol use disorder
+          definition: Information about an alcohol use disorder.
+          broader:
+          - SubstanceUseDisorder
+        BehavioralHealth:
+          iri: https://www.w3.org/ns/ucm#BehavioralHealth
+          label: Behavioral health
+          definition: Information about behavioral health.
+        GenderAndSexualOrientation:
+          iri: https://www.w3.org/ns/ucm#GenderAndSexualOrientation
+          label: Gender and sexual orientation
+          definition: Information about gender identity or sexual orientation.
+        GeneticDisease:
+          iri: https://www.w3.org/ns/ucm#GeneticDisease
+          label: Genetic disease
+          definition: Information about a genetic condition.
+        HIV:
+          iri: https://www.w3.org/ns/ucm#HIV
+          label: HIV/AIDS
+          definition: Information about HIV or AIDS.
+        HumanTrafficking:
+          iri: https://www.w3.org/ns/ucm#HumanTrafficking
+          label: Human trafficking
+          definition: Information that a person is or was a victim of sex or labor trafficking, or is fleeing it.
+        MentalHealth:
+          iri: https://www.w3.org/ns/ucm#MentalHealth
+          label: Mental health
+          definition: Information about mental health.
+          broader:
+          - BehavioralHealth
+        OpioidUseDisorder:
+          iri: https://www.w3.org/ns/ucm#OpioidUseDisorder
+          label: Opioid use disorder
+          definition: Information about an opioid use disorder.
+          broader:
+          - SubstanceUseDisorder
+        Part2Protected:
+          iri: https://www.w3.org/ns/ucm#Part2Protected
+          label: 42 CFR Part 2 protected
+          definition: Substance use disorder records protected under 42 CFR Part 2.
+        PsychiatricDisorder:
+          iri: https://www.w3.org/ns/ucm#PsychiatricDisorder
+          label: Psychiatric disorder
+          definition: Information about a psychiatric disorder.
+          broader:
+          - BehavioralHealth
+        PsychotherapyNote:
+          iri: https://www.w3.org/ns/ucm#PsychotherapyNote
+          label: Psychotherapy note
+          definition: Psychotherapy notes.
+          broader:
+          - BehavioralHealth
+        SexualAndReproductiveHealth:
+          iri: https://www.w3.org/ns/ucm#SexualAndReproductiveHealth
+          label: Sexual and reproductive health
+          definition: Information about sexual and reproductive health.
+        SexualAssaultAbuseDomesticViolence:
+          iri: https://www.w3.org/ns/ucm#SexualAssaultAbuseDomesticViolence
+          label: Sexual assault, abuse or domestic violence
+          definition: Information that a person experienced sexual assault, abuse or domestic violence.
+        SexuallyTransmittedDisease:
+          iri: https://www.w3.org/ns/ucm#SexuallyTransmittedDisease
+          label: Sexually transmitted disease
+          definition: Information about a sexually transmitted infection.
+        SubstanceUseDisorder:
+          iri: https://www.w3.org/ns/ucm#SubstanceUseDisorder
+          label: Substance use disorder
+          definition: Information about a substance use disorder.
+        UnaccompaniedYouth:
+          iri: https://www.w3.org/ns/ucm#UnaccompaniedYouth
+          label: Unaccompanied youth
+          definition: Information that a person is a youth without a parent or guardian, such as an unaccompanied homeless youth. A status, not a topic.
+      anyOf:
+        - type: string
+          enum: ["Abortion", "Adolescent", "AlcoholUseDisorder", "BehavioralHealth", "GenderAndSexualOrientation", "GeneticDisease", "HIV", "HumanTrafficking", "MentalHealth", "OpioidUseDisorder", "Part2Protected", "PsychiatricDisorder", "PsychotherapyNote", "SexualAndReproductiveHealth", "SexualAssaultAbuseDomesticViolence", "SexuallyTransmittedDisease", "SubstanceUseDisorder", "UnaccompaniedYouth"]
+        - $ref: '#/components/schemas/IRI'
 
     # ===== Ontology classes =====
     "UcmNode":
@@ -2365,6 +3325,56 @@ components:
               type: string
             minItems: 1
           description: "Class of the node, as a context term, or an array of terms (e.g. every OWL individual is also owl:NamedIndividual)."
+        "achievedIAL":
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityAssuranceLevel'
+          uniqueItems: true
+          description: "Relates an identity proofing process or identity to the identity assurance level it reached."
+          x-semantic-uri: https://www.w3.org/ns/ucm#achievedIAL
+          x-ucm-concept-scheme: IdentityAssuranceLevel
+          x-ucm-range: skos:Concept
+        "assertsIdentity":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity assertion or credential to the identity it makes claims about."
+          x-semantic-uri: https://www.w3.org/ns/ucm#assertsIdentity
+          x-ucm-range: ucm:Identity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: assertsIdentity target is not typed as ucm:Identity.
+        "assuranceRank":
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+          description: "An integer rank on an assurance or strength level, so levels in one scheme can be compared with >=."
+          x-semantic-uri: https://www.w3.org/ns/ucm#assuranceRank
+          x-ucm-datatype: xsd:integer
+        "forPurpose":
+          type: array
+          items:
+            $ref: '#/components/schemas/PurposeOfUse'
+          uniqueItems: true
+          description: "Relates a provision or privacy notice to a purpose of use it covers."
+          x-semantic-uri: https://www.w3.org/ns/ucm#forPurpose
+          x-ucm-concept-scheme: PurposeOfUse
+          x-ucm-range: skos:Concept
+        "governedByPolicy":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive, provision or program to the consent policy it relies on (FHIR Consent.policyBasis)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#governedByPolicy
+          x-ucm-range: ucm:ConsentPolicy
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: governedByPolicy target is not typed as ucm:ConsentPolicy.
         "hasCareTrajectoryContext":
           type: array
           items:
@@ -2377,6 +3387,77 @@ components:
           - severity: Warning
             tier: Recommended
             message: Care trajectory context is not typed as ucm:CareTrajectoryContext.
+        "hasConfidentialityLevel":
+          $ref: '#/components/schemas/ConfidentialityLevel'
+          description: "Relates an information artifact or statement to its confidentiality level (HL7 v3 Confidentiality)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConfidentialityLevel
+          x-ucm-concept-scheme: ConfidentialityLevel
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: Information holds at most one confidentiality level, identified by IRI.
+        "hasConsentDecision":
+          $ref: '#/components/schemas/ConsentDecision'
+          description: "Relates a consent directive or provision to its permit or deny decision. Every provision states its own decision, the opposite of its parent's."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentDecision
+          x-ucm-concept-scheme: ConsentDecision
+          x-ucm-range: skos:Concept
+        "hasConsentModel":
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentModel'
+          uniqueItems: true
+          description: "Relates a policy, program or notice to its consent model, such as opt-in or opt-out."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentModel
+          x-ucm-concept-scheme: ConsentModel
+          x-ucm-range: skos:Concept
+        "hasProvision":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive, or an enclosing provision, to a provision within it (FHIR Consent.provision)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasProvision
+          x-ucm-range: ucm:ConsentProvision
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: hasProvision target is not typed as ucm:ConsentProvision.
+          - severity: Violation
+            tier: Definitional
+            message: Provision contains itself, directly or through nested provisions.
+          - severity: Violation
+            tier: Definitional
+            message: A provision's decision must be the opposite of its parent's (the directive for a top-level provision, or the enclosing provision).
+        "hasRegulatoryBasis":
+          type: array
+          items:
+            $ref: '#/components/schemas/RegulatoryBasis'
+          uniqueItems: true
+          description: "Relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasRegulatoryBasis
+          x-ucm-concept-scheme: RegulatoryBasis
+          x-ucm-range: skos:Concept
+        "hasRetentionDisposition":
+          $ref: '#/components/schemas/RetentionDisposition'
+          description: "Relates a consent directive or provision to what happens to the data when its retention period ends."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasRetentionDisposition
+          x-ucm-concept-scheme: RetentionDisposition
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent directive or provision holds at most one retention disposition, identified by IRI.
+        "hasSensitivityLabel":
+          type: array
+          items:
+            $ref: '#/components/schemas/SensitivityCategory'
+          uniqueItems: true
+          description: "Relates an information artifact or statement to a sensitivity category, so provisions can match data without listing records (FHIR meta.security)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasSensitivityLabel
+          x-ucm-concept-scheme: SensitivityCategory
+          x-ucm-range: skos:Concept
         "hasTemporalContext":
           type: array
           items:
@@ -2392,6 +3473,94 @@ components:
           - severity: Violation
             tier: Definitional
             message: Interval ends before it begins.
+        "inJurisdiction":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent, consent interaction, policy or identifier to the jurisdiction where it was given, is in force or was issued."
+          x-semantic-uri: https://www.w3.org/ns/ucm#inJurisdiction
+          x-ucm-range: ucm:JurisdictionContext
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: inJurisdiction target is not typed as ucm:JurisdictionContext.
+        "issuedBy":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identifier, credential or certification to the entity that issued it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#issuedBy
+          x-ucm-range: ucm:Entity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: issuedBy target is not typed as ucm:Entity.
+        "processingLocation":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive or provision to a jurisdiction where the data may be stored or processed. Several values mean any of them is allowed (ISO/IEC TS 27560 storage and processing locations)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#processingLocation
+          x-ucm-range: ucm:JurisdictionContext
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: processingLocation target is not typed as ucm:JurisdictionContext.
+        "requiresAAL":
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorAssuranceLevel'
+          uniqueItems: true
+          description: "Relates a consent policy or trust framework to the minimum authenticator assurance level it requires."
+          x-semantic-uri: https://www.w3.org/ns/ucm#requiresAAL
+          x-ucm-concept-scheme: AuthenticatorAssuranceLevel
+          x-ucm-range: skos:Concept
+        "requiresIAL":
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityAssuranceLevel'
+          uniqueItems: true
+          description: "Relates a consent policy or trust framework to the minimum identity assurance level it requires."
+          x-semantic-uri: https://www.w3.org/ns/ucm#requiresIAL
+          x-ucm-concept-scheme: IdentityAssuranceLevel
+          x-ucm-range: skos:Concept
+        "retentionPeriod":
+          type: string
+          format: duration
+          description: "How long data covered by the consent may be kept, as a duration such as P7Y (ISO/IEC TS 27560 retention period)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#retentionPeriod
+          x-ucm-datatype: xsd:duration
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: Retention period is single-valued and must be an xsd:duration, such as P7Y.
+        "sourceDocument":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive or privacy notice to its source, such as a scanned signed form or the policy text."
+          x-semantic-uri: https://www.w3.org/ns/ucm#sourceDocument
+          x-ucm-range: ucm:InformationArtifact
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: sourceDocument target is not typed as ucm:InformationArtifact.
+        "underTrustFramework":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity proofing, assertion, credential or certification to the trust framework whose rules it follows."
+          x-semantic-uri: https://www.w3.org/ns/ucm#underTrustFramework
+          x-ucm-range: ucm:TrustFramework
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: underTrustFramework target is not typed as ucm:TrustFramework.
         "validDuring":
           type: array
           items:
@@ -2408,6 +3577,18 @@ components:
           - severity: Violation
             tier: Definitional
             message: Interval ends before it begins.
+        "withdrawalMethod":
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          description: "How the person can revoke the consent: a URL, phone number, form or written instructions, as text (ISO/IEC TS 27560 withdrawal method)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#withdrawalMethod
+          x-ucm-datatype: xsd:string
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: Withdrawal method must be text (xsd:string); a link is written as text.
 
     "ActivityFocus":
       type: object
@@ -2437,6 +3618,119 @@ components:
           - ActivityFocus
           - http://www.w3.org/2002/07/owl#NamedIndividual
           rdfs:label: Tenancy preservation
+
+    "ApplicantReferenceRole":
+      type: object
+      description: "The role of a person who vouches for an applicant's identity or circumstances, such as homelessness, without acting on the applicant's behalf (NIST SP 800-63A)."
+      x-jsonld-type: "ucm:ApplicantReferenceRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ApplicantReferenceRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ApplicantReferenceRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ApplicantReferenceRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-reference
+          '@type': ApplicantReferenceRole
+
+    "AssuranceCertification":
+      type: object
+      description: "A record that an assessor has found a provider conformant to a trust framework at stated assurance levels, for a period."
+      x-jsonld-type: "ucm:AssuranceCertification"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#AssuranceCertification"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - AssuranceCertification
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - AssuranceCertification
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "certifies":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an assurance certification to the provider it certifies."
+          x-semantic-uri: https://www.w3.org/ns/ucm#certifies
+          x-ucm-range: ucm:Organization
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: certifies target is not typed as ucm:Organization.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/cert-csp
+          '@type': AssuranceCertification
+          achievedIAL:
+          - IAL2
+          certifies:
+          - http://example.org/ucm/org-csp
+          issuedBy:
+          - http://example.org/ucm/org-assessor
+          underTrustFramework:
+          - http://example.org/ucm/tf-nist
+          validDuring:
+          - http://example.org/ucm/t-cert
+
+    "Authentication":
+      type: object
+      description: "A process in which a claimant proves control of one or more authenticators bound to an identity (NIST SP 800-63B)."
+      x-jsonld-type: "ucm:Authentication"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#Authentication"
+      allOf:
+        - $ref: '#/components/schemas/Process'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - Authentication
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Authentication
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "achievedAAL":
+          $ref: '#/components/schemas/AuthenticatorAssuranceLevel'
+          description: "Relates an authentication to the authenticator assurance level it reached."
+          x-semantic-uri: https://www.w3.org/ns/ucm#achievedAAL
+          x-ucm-concept-scheme: AuthenticatorAssuranceLevel
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An authentication reaches at most one authenticator assurance level, identified by IRI.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/auth-ruth
+          '@type': Authentication
+          achievedAAL: AAL2
+          occursDuring:
+          - http://example.org/ucm/t-ci-thomson
 
     "BehavioralHealthContext":
       type: object
@@ -2880,6 +4174,725 @@ components:
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
+    "ConsentDirective":
+      type: object
+      description: "A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. Corresponds to an FHIR Consent and an HMIS release of information. It is an information artifact, not a statement."
+      x-jsonld-type: "ucm:ConsentDirective"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentDirective"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentDirective
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentDirective
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "consentSubject":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          minItems: 1
+          description: "Relates a consent directive to the participation of the person or group the consent concerns (FHIR Consent.subject)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#consentSubject
+          x-ucm-range: ucm:Participation
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent directive names at least one subject participation, which must be a node, not a literal.
+          - severity: Warning
+            tier: Recommended
+            message: consentSubject target is not typed as ucm:Participation.
+        "hasConsentCategory":
+          $ref: '#/components/schemas/ConsentCategory'
+          description: "Relates a consent directive to its kind, such as a privacy consent or release of information, a treatment consent or a research consent."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentCategory
+          x-ucm-concept-scheme: ConsentCategory
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent directive holds at most one consent category, identified by IRI.
+        "hasConsentStatus":
+          $ref: '#/components/schemas/ConsentStatus'
+          description: "Relates a consent directive to whether it applies now (FHIR Consent.status)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentStatus
+          x-ucm-concept-scheme: ConsentStatus
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent directive holds at most one consent status, identified by IRI.
+        "recordLocked":
+          type: array
+          items:
+            type: boolean
+          uniqueItems: true
+          description: "Convenience flag that the subject's record is locked to other agencies. Prefer a sensitivity label plus a deny provision."
+          x-semantic-uri: https://www.w3.org/ns/ucm#recordLocked
+          x-ucm-datatype: xsd:boolean
+        "recordsConsentFrom":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive to the consent interaction that produced, amended or revoked it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#recordsConsentFrom
+          x-ucm-range: ucm:ConsentInteraction
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: recordsConsentFrom target is not typed as ucm:ConsentInteraction.
+        "revokedBy":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive to the consent interaction that revoked it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#revokedBy
+          x-ucm-range: ucm:ConsentInteraction
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: revokedBy target is not typed as ucm:ConsentInteraction.
+        "supersedes":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent directive to an earlier directive it amends or renews."
+          x-semantic-uri: https://www.w3.org/ns/ucm#supersedes
+          x-ucm-range: ucm:ConsentDirective
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: supersedes target is not typed as ucm:ConsentDirective.
+      required: ["@type", "consentSubject"]
+      x-ucm-inherited-required:
+      - hasConsentDecision
+      x-ucm-constraints:
+      - severity: Warning
+        tier: Recommended
+        message: Consent directive is marked active but its period of validity has ended.
+      - severity: Warning
+        tier: Recommended
+        message: 'Consent directive has no grantor: its recording consent interaction has no participation in a ConsentGrantorRole.'
+      - severity: Warning
+        tier: Recommended
+        message: The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach.
+      - severity: Warning
+        tier: Recommended
+        message: Grantor is not the subject, so the grantor's role should be ucm:ConsentProxyRole (or a subclass).
+      - severity: Warning
+        tier: Recommended
+        message: 'Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.'
+      - severity: Warning
+        tier: Recommended
+        message: A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.
+      examples:
+        - '@id': http://example.org/ucm/cd-a-2025
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-a-subj-2025
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentRevoked
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-a-2025
+          revokedBy:
+          - http://example.org/ucm/ci-a-revoke
+          validDuring:
+          - http://example.org/ucm/t-roi-2025
+        - '@id': http://example.org/ucm/cd-a-verbal
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-a-subj
+          hasConsentCategory: ConsentToShare
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-a-verbal
+          validDuring:
+          - http://example.org/ucm/t-roi
+        - '@id': http://example.org/ucm/cd-jameson
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-jameson-subj
+          governedByPolicy:
+          - http://example.org/ucm/policy-coc-e
+          hasConsentCategory: ReleaseOfInformation
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          hasRegulatoryBasis:
+          - HMISDataStandards
+          hasRetentionDisposition: RetentionDeidentify
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          processingLocation:
+          - http://example.org/ucm/jur-us
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-thomson
+          retentionPeriod: P7Y
+          supersedes:
+          - http://example.org/ucm/cd-jameson-2023
+          validDuring:
+          - http://example.org/ucm/t-roi
+          withdrawalMethod:
+          - Tell any participating agency in writing, or call the CoC HMIS help desk.
+        - '@id': http://example.org/ucm/cd-jameson-2023
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-jameson-subj-2023
+          hasConsentCategory: ReleaseOfInformation
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentSuperseded
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-thomson-2023
+          validDuring:
+          - http://example.org/ucm/t-roi-2023
+        - '@id': http://example.org/ucm/cd-madison
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-madison-subj
+          governedByPolicy:
+          - http://example.org/ucm/policy-coc-e
+          hasConsentCategory: ReleaseOfInformation
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-thomson
+          validDuring:
+          - http://example.org/ucm/t-roi
+        - '@id': http://example.org/ucm/cd-sarah
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-sarah-subj
+          hasConsentCategory: ReleaseOfInformation
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          hasProvision:
+          - http://example.org/ucm/prov-sarah-part2
+          hasRegulatoryBasis:
+          - CFR42Part2
+          - HMISDataStandards
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-sarah
+          validDuring:
+          - http://example.org/ucm/t-roi
+        - '@id': http://example.org/ucm/cd-youth
+          '@type': ConsentDirective
+          consentSubject:
+          - http://example.org/ucm/p-youth-subj
+          governedByPolicy:
+          - http://example.org/ucm/rule-state-d-housing
+          hasConsentCategory: ConsentToShare
+          hasConsentDecision: Permit
+          hasConsentStatus: ConsentActive
+          hasProvision:
+          - http://example.org/ucm/prov-youth-ut
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCountyD
+          recordsConsentFrom:
+          - http://example.org/ucm/ci-youth
+          - http://example.org/ucm/ci-youth-verify
+          validDuring:
+          - http://example.org/ucm/t-roi
+
+    "ConsentGrantorRole":
+      type: object
+      description: "The role of the party who makes a consent choice. Often the same entity as the subject."
+      x-jsonld-type: "ucm:ConsentGrantorRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentGrantorRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentGrantorRole
+            - ConsentProxyRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentGrantorRole
+              - ConsentProxyRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      x-ucm-subclasses:
+      - ConsentProxyRole
+      examples:
+        - '@id': http://example.org/ucm/role-grantor
+          '@type': ConsentGrantorRole
+
+    "ConsentInteraction":
+      type: object
+      description: "A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them."
+      x-jsonld-type: "ucm:ConsentInteraction"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentInteraction"
+      allOf:
+        - $ref: '#/components/schemas/Process'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentInteraction
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentInteraction
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "acknowledgesNotice":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent interaction to a privacy notice the subject or grantor was given or shown."
+          x-semantic-uri: https://www.w3.org/ns/ucm#acknowledgesNotice
+          x-ucm-range: ucm:PrivacyNotice
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: acknowledgesNotice target is not typed as ucm:PrivacyNotice.
+        "authenticatedBy":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a consent interaction to the authentication of the grantor, when consent is given electronically."
+          x-semantic-uri: https://www.w3.org/ns/ucm#authenticatedBy
+          x-ucm-range: ucm:Authentication
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: authenticatedBy target is not typed as ucm:Authentication.
+        "hasConsentInteractionType":
+          $ref: '#/components/schemas/ConsentInteractionType'
+          description: "Relates a consent interaction to what it did: grant, refuse, amend, renew, revoke or verify."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentInteractionType
+          x-ucm-concept-scheme: ConsentInteractionType
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent interaction holds at most one interaction type, identified by IRI.
+        "hasConsentModality":
+          $ref: '#/components/schemas/ConsentModality'
+          description: "Relates a consent interaction to how consent was expressed: written, electronic, verbal or inferred."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentModality
+          x-ucm-concept-scheme: ConsentModality
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A consent interaction holds at most one modality, identified by IRI.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/ci-a-2025
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: WrittenConsent
+          occursDuring:
+          - http://example.org/ucm/t-ci-2025
+        - '@id': http://example.org/ucm/ci-a-revoke
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentRevocation
+          hasConsentModality: VerbalConsent
+          occursDuring:
+          - http://example.org/ucm/t-ci-revoke
+        - '@id': http://example.org/ucm/ci-a-verbal
+          '@type': ConsentInteraction
+          acknowledgesNotice:
+          - http://example.org/ucm/notice-coc-e
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: VerbalConsent
+          occursDuring:
+          - http://example.org/ucm/t-ci-verbal
+        - '@id': http://example.org/ucm/ci-sarah
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: WrittenConsent
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          occursDuring:
+          - http://example.org/ucm/t-ci-thomson
+        - '@id': http://example.org/ucm/ci-thomson
+          '@type': ConsentInteraction
+          acknowledgesNotice:
+          - http://example.org/ucm/notice-coc-e
+          authenticatedBy:
+          - http://example.org/ucm/auth-ruth
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: ElectronicConsent
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          occursDuring:
+          - http://example.org/ucm/t-ci-thomson
+        - '@id': http://example.org/ucm/ci-thomson-2023
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: WrittenConsent
+          occursDuring:
+          - http://example.org/ucm/t-ci-2023
+        - '@id': http://example.org/ucm/ci-youth
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentGrant
+          hasConsentModality: WrittenConsent
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCountyD
+          occursDuring:
+          - http://example.org/ucm/t-ci-youth
+        - '@id': http://example.org/ucm/ci-youth-verify
+          '@type': ConsentInteraction
+          hasConsentInteractionType: ConsentVerification
+          hasConsentModality: WrittenConsent
+          occursDuring:
+          - http://example.org/ucm/t-ci-youth
+
+    "ConsentManagerRole":
+      type: object
+      description: "The role of a custodian that maintains the consent record (FHIR Consent.manager)."
+      x-jsonld-type: "ucm:ConsentManagerRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentManagerRole"
+      allOf:
+        - $ref: '#/components/schemas/InformationCustodianRole'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentManagerRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentManagerRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+
+    "ConsentPolicy":
+      type: object
+      description: "A policy, regulation or program rule that sets the consent model, the default decision and the conditions under which consent is required, allowed or not needed."
+      x-jsonld-type: "ucm:ConsentPolicy"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentPolicy"
+      allOf:
+        - $ref: '#/components/schemas/PolicyDefinition'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentPolicy
+            - SelfConsentRule
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentPolicy
+              - SelfConsentRule
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      x-ucm-subclasses:
+      - SelfConsentRule
+      examples:
+        - '@id': http://example.org/ucm/policy-coc-e
+          '@type': ConsentPolicy
+          rdfs:label: Example CoC E HMIS consent policy
+          hasConsentModel:
+          - OptIn
+          hasRegulatoryBasis:
+          - HMISDataStandards
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          requiresIAL:
+          - IAL1
+          withdrawalMethod:
+          - Tell any participating agency in writing, or call the CoC HMIS help desk.
+
+    "ConsentProvision":
+      type: object
+      description: "A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's."
+      x-jsonld-type: "ucm:ConsentProvision"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentProvision"
+      allOf:
+        - $ref: '#/components/schemas/UcmNode'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentProvision
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentProvision
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "coversAuthoredBy":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "The provision covers information authored by the referenced party (FHIR data.meaning authoredby)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversAuthoredBy
+          x-ucm-subproperty-of: ucm:coversInformation
+        "coversConfidentiality":
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfidentialityLevel'
+          uniqueItems: true
+          description: "Relates a provision to a confidentiality level of the information it covers (FHIR Consent.provision.securityLabel with a confidentiality code)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversConfidentiality
+          x-ucm-concept-scheme: ConfidentialityLevel
+          x-ucm-range: skos:Concept
+        "coversDataCategory":
+          type: array
+          items:
+            $ref: '#/components/schemas/InformationCategory'
+          uniqueItems: true
+          description: "Relates a provision to a category of information it covers."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversDataCategory
+          x-ucm-concept-scheme: InformationCategory
+          x-ucm-range: skos:Concept
+        "coversDependents":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "The provision covers the referenced information and information that depends on it (FHIR data.meaning dependents)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversDependents
+          x-ucm-subproperty-of: ucm:coversInformation
+        "coversInformation":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a provision to specific information it covers, an information artifact or a statement (FHIR Consent.provision.data)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversInformation
+        "coversInstance":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "The provision covers exactly the referenced information (FHIR data.meaning instance)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversInstance
+          x-ucm-subproperty-of: ucm:coversInformation
+        "coversRelated":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "The provision covers the referenced information and information directly related to it (FHIR data.meaning related)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversRelated
+          x-ucm-subproperty-of: ucm:coversInformation
+        "coversSensitivity":
+          type: array
+          items:
+            $ref: '#/components/schemas/SensitivityCategory'
+          uniqueItems: true
+          description: "Relates a provision to a sensitivity category of the information it covers (FHIR Consent.provision.securityLabel)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#coversSensitivity
+          x-ucm-concept-scheme: SensitivityCategory
+          x-ucm-range: skos:Concept
+        "dataPeriod":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a provision to the time span of the data it covers, as distinct from the period the consent applies (FHIR Consent.provision.dataPeriod)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#dataPeriod
+          x-ucm-range: time:TemporalEntity
+          x-ucm-subproperty-of: ucm:hasTemporalContext
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant.
+          - severity: Violation
+            tier: Definitional
+            message: Interval ends before it begins.
+        "governsAction":
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentAction'
+          uniqueItems: true
+          description: "Relates a provision to an action it permits or denies, such as collect, access, use or disclose."
+          x-semantic-uri: https://www.w3.org/ns/ucm#governsAction
+          x-ucm-concept-scheme: ConsentAction
+          x-ucm-range: skos:Concept
+        "provisionActor":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a provision to the participation of a party it permits or denies (FHIR Consent.provision.actor)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#provisionActor
+          x-ucm-range: ucm:Participation
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: provisionActor target is not typed as ucm:Participation.
+      required: ["@type"]
+      x-ucm-inherited-required:
+      - hasConsentDecision
+      examples:
+        - '@id': http://example.org/ucm/prov-sarah-part2
+          '@type': ConsentProvision
+          coversInstance:
+          - http://example.org/ucm/doc-sud-note
+          coversSensitivity:
+          - Part2Protected
+          governsAction:
+          - DiscloseAction
+          - RediscloseAction
+          hasConsentDecision: Deny
+          hasProvision:
+          - http://example.org/ucm/prov-sarah-part2-tx
+        - '@id': http://example.org/ucm/prov-sarah-part2-tx
+          '@type': ConsentProvision
+          coversDataCategory:
+          - BehavioralHealthInformation
+          dataPeriod:
+          - http://example.org/ucm/t-data
+          forPurpose:
+          - Treatment
+          governsAction:
+          - DiscloseAction
+          hasConsentDecision: Permit
+          provisionActor:
+          - http://example.org/ucm/p-clinic-recipient
+        - '@id': http://example.org/ucm/prov-youth-ut
+          '@type': ConsentProvision
+          coversSensitivity:
+          - UnaccompaniedYouth
+          governsAction:
+          - DiscloseAction
+          hasConsentDecision: Deny
+
+    "ConsentProxyRole":
+      type: object
+      description: "The role of a grantor acting for the subject, such as a parent, guardian, legal representative or authorized caregiver."
+      x-jsonld-type: "ucm:ConsentProxyRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentProxyRole"
+      allOf:
+        - $ref: '#/components/schemas/ConsentGrantorRole'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentProxyRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentProxyRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-proxy
+          '@type': ConsentProxyRole
+
+    "ConsentSubjectRole":
+      type: object
+      description: "The role of the person or group whose information or care a consent concerns."
+      x-jsonld-type: "ucm:ConsentSubjectRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentSubjectRole"
+      allOf:
+        - $ref: '#/components/schemas/SubjectRole'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentSubjectRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentSubjectRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-csubject
+          '@type': ConsentSubjectRole
+
+    "ConsentVerifierRole":
+      type: object
+      description: "The role of a party who verified a consent with the subject or grantor."
+      x-jsonld-type: "ucm:ConsentVerifierRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentVerifierRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentVerifierRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentVerifierRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-verifier
+          '@type': ConsentVerifierRole
+
+    "ConsentWitnessRole":
+      type: object
+      description: "The role of a party who witnessed a consent interaction."
+      x-jsonld-type: "ucm:ConsentWitnessRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ConsentWitnessRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ConsentWitnessRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ConsentWitnessRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+
     "CoordinationRequest":
       type: object
       description: "A process in which coordination is requested between participating entities."
@@ -2931,6 +4944,8 @@ components:
           '@type':
           - CoordinationRequest
           - http://www.w3.org/2002/07/owl#NamedIndividual
+          authorizedByConsent:
+          - http://example.org/ucm/cd-a-verbal
           hasActivityFocus:
           - http://example.org/ucm/focus-1
           hasClosureReason: ClosedConnected
@@ -2996,6 +5011,103 @@ components:
           - CoordinatorRole
           - http://www.w3.org/2002/07/owl#NamedIndividual
 
+    "Credential":
+      type: object
+      description: "A set of claims about an identity, issued and signed by an issuer, and held by the subject or a holder, such as a W3C Verifiable Credential."
+      x-jsonld-type: "ucm:Credential"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#Credential"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - Credential
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Credential
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "credentialTermsOfUse":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a credential to a policy that governs its use (W3C VC termsOfUse)."
+          x-semantic-uri: https://www.w3.org/ns/ucm#credentialTermsOfUse
+          x-ucm-range: ucm:PolicyDefinition
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: credentialTermsOfUse target is not typed as ucm:PolicyDefinition.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/cred-ruth
+          '@type': Credential
+          assertsIdentity:
+          - http://example.org/ucm/id-ruth
+          credentialTermsOfUse:
+          - http://example.org/ucm/policy-coc-e
+          issuedBy:
+          - http://example.org/ucm/org-csp
+          underTrustFramework:
+          - http://example.org/ucm/tf-nist
+          validDuring:
+          - http://example.org/ucm/t-cred
+
+    "CredentialServiceProviderRole":
+      type: object
+      description: "The role of a party that proofs identities and issues or binds authenticators (NIST CSP)."
+      x-jsonld-type: "ucm:CredentialServiceProviderRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#CredentialServiceProviderRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - CredentialServiceProviderRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - CredentialServiceProviderRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+
+    "DataControllerRole":
+      type: object
+      description: "The role of a custodian that determines the purposes and means of processing and enforces the consent (FHIR Consent.controller; GDPR controller)."
+      x-jsonld-type: "ucm:DataControllerRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#DataControllerRole"
+      allOf:
+        - $ref: '#/components/schemas/InformationCustodianRole'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - DataControllerRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - DataControllerRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-controller
+          '@type': DataControllerRole
+
     "DefinitionArtifact":
       type: object
       description: "A ruleset, policy definition, constraint, or governance artifact."
@@ -3009,10 +5121,14 @@ components:
           - type: string
             enum:
             - DefinitionArtifact
+            - ConsentPolicy
             - EligibilityRuleset
             - PolicyDefinition
+            - PrivacyNotice
             - ProgramDefinition
+            - SelfConsentRule
             - SemanticConstraint
+            - TrustFramework
           - type: array
             items:
               type: string
@@ -3020,10 +5136,14 @@ components:
             contains:
               enum:
               - DefinitionArtifact
+              - ConsentPolicy
               - EligibilityRuleset
               - PolicyDefinition
+              - PrivacyNotice
               - ProgramDefinition
+              - SelfConsentRule
               - SemanticConstraint
+              - TrustFramework
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
@@ -3169,10 +5289,17 @@ components:
           - type: string
             enum:
             - Entity
+            - AssuranceCertification
             - CareTeam
             - CommunityGroup
+            - ConsentDirective
+            - Credential
             - Device
             - Household
+            - Identifier
+            - Identity
+            - IdentityAssertion
+            - IdentityEvidence
             - InformationArtifact
             - Location
             - Organization
@@ -3185,10 +5312,17 @@ components:
             contains:
               enum:
               - Entity
+              - AssuranceCertification
               - CareTeam
               - CommunityGroup
+              - ConsentDirective
+              - Credential
               - Device
               - Household
+              - Identifier
+              - Identity
+              - IdentityAssertion
+              - IdentityEvidence
               - InformationArtifact
               - Location
               - Organization
@@ -3207,6 +5341,18 @@ components:
           - severity: Warning
             tier: Recommended
             message: acceptsRequest target is not typed as ucm:Participation.
+        "hasIdentity":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates any entity to an identity by which it is recognized. An entity can have many identities."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasIdentity
+          x-ucm-range: ucm:Identity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: hasIdentity target is not typed as ucm:Identity.
         "hasMembership":
           type: array
           items:
@@ -3354,6 +5500,9 @@ components:
           - http://www.w3.org/2002/07/owl#NamedIndividual
           definedByCriteria:
           - http://example.org/ucm/hh-criteria
+        - '@id': http://example.org/ucm/hh-thomson
+          '@type': Household
+          rdfs:label: Thomson household
 
     "HousingAssessment":
       type: object
@@ -3550,6 +5699,352 @@ components:
       x-ucm-subclasses:
       - HousingEligibilityStatement
 
+    "Identifier":
+      type: object
+      description: "A value, unique within a stated system or issuer, that designates an identity, such as a medical record number, HMIS Personal ID, Medicaid ID, state ID number, OpenID Connect subject or decentralized identifier."
+      x-jsonld-type: "ucm:Identifier"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#Identifier"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - Identifier
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Identifier
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "hasIdentifierType":
+          $ref: '#/components/schemas/IdentifierType'
+          description: "Relates an identifier to its kind, such as a medical record number or HMIS Personal ID."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasIdentifierType
+          x-ucm-concept-scheme: IdentifierType
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An identifier has at most one identifier type, identified by IRI.
+        "identifierSystem":
+          type: string
+          format: uri
+          description: "The namespace in which an identifier value is unique. For an OpenID Connect subject, the issuer."
+          x-semantic-uri: https://www.w3.org/ns/ucm#identifierSystem
+          x-ucm-datatype: xsd:anyURI
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An identifier has at most one system, an xsd:anyURI.
+        "identifierValue":
+          type: string
+          description: "The value of an identifier."
+          x-semantic-uri: https://www.w3.org/ns/ucm#identifierValue
+          x-ucm-datatype: xsd:string
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An identifier has exactly one value, an xsd:string.
+      required: ["@type", "identifierValue"]
+      examples:
+        - '@id': http://example.org/ucm/idf-ruth-dl
+          '@type': Identifier
+          hasIdentifierType: DriversLicenseNumber
+          identifierSystem: https://example.org/state-e/drivers-licenses
+          identifierValue: E1234567
+          inJurisdiction:
+          - http://example.org/ucm/ExampleStateE
+          issuedBy:
+          - http://example.org/ucm/org-state-e
+        - '@id': http://example.org/ucm/idf-youth-pid
+          '@type': Identifier
+          hasIdentifierType: HMISPersonalID
+          identifierSystem: https://example.org/state-d/client-ids
+          identifierValue: P-12345
+          issuedBy:
+          - http://example.org/ucm/org-lead-agency
+
+    "Identity":
+      type: object
+      description: "A set of identifiers, attributes and characteristics by which one entity is recognized within a context, such as a system, program, jurisdiction or trust framework. An entity can have many identities."
+      x-jsonld-type: "ucm:Identity"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#Identity"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - Identity
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - Identity
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "hasIdentifier":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity to an identifier that designates it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasIdentifier
+          x-ucm-range: ucm:Identifier
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: hasIdentifier target is not typed as ucm:Identifier.
+        "identityOf":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity to the entity it identifies."
+          x-semantic-uri: https://www.w3.org/ns/ucm#identityOf
+          x-ucm-range: ucm:Entity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: identityOf target is not typed as ucm:Entity.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/id-ruth
+          '@type': Identity
+          achievedIAL:
+          - IAL2
+          hasIdentifier:
+          - http://example.org/ucm/idf-ruth-dl
+          identityOf:
+          - http://example.org/ucm/ruth
+        - '@id': http://example.org/ucm/id-youth
+          '@type': Identity
+          achievedIAL:
+          - IAL1
+          hasIdentifier:
+          - http://example.org/ucm/idf-youth-pid
+          identityOf:
+          - http://example.org/ucm/youth
+
+    "IdentityApplicantRole":
+      type: object
+      description: "The role of the entity whose identity is being proofed."
+      x-jsonld-type: "ucm:IdentityApplicantRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityApplicantRole"
+      allOf:
+        - $ref: '#/components/schemas/SubjectRole'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - IdentityApplicantRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - IdentityApplicantRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-applicant
+          '@type': IdentityApplicantRole
+
+    "IdentityAssertion":
+      type: object
+      description: "A statement from an identity provider to a relying party about an authenticated identity, at a stated federation assurance level, such as an OpenID Connect ID Token or a SAML assertion (NIST SP 800-63C)."
+      x-jsonld-type: "ucm:IdentityAssertion"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityAssertion"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - IdentityAssertion
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - IdentityAssertion
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "achievedFAL":
+          $ref: '#/components/schemas/FederationAssuranceLevel'
+          description: "Relates an identity assertion to the federation assurance level it reached."
+          x-semantic-uri: https://www.w3.org/ns/ucm#achievedFAL
+          x-ucm-concept-scheme: FederationAssuranceLevel
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An identity assertion reaches at most one federation assurance level, identified by IRI.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/assert-ruth
+          '@type': IdentityAssertion
+          achievedFAL: FAL2
+          assertsIdentity:
+          - http://example.org/ucm/id-ruth
+          underTrustFramework:
+          - http://example.org/ucm/tf-nist
+
+    "IdentityEvidence":
+      type: object
+      description: "Evidence used in identity proofing: a document, an electronic record, a vouch by another party, or an electronic signature."
+      x-jsonld-type: "ucm:IdentityEvidence"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityEvidence"
+      allOf:
+        - $ref: '#/components/schemas/InformationArtifact'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - IdentityEvidence
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - IdentityEvidence
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "hasEvidenceStrength":
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceStrength'
+          uniqueItems: true
+          description: "Relates identity evidence to its NIST strength: fair, strong or superior."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasEvidenceStrength
+          x-ucm-concept-scheme: EvidenceStrength
+          x-ucm-range: skos:Concept
+        "hasEvidenceType":
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityEvidenceType'
+          uniqueItems: true
+          description: "Relates identity evidence to its kind: document, electronic record, vouch or electronic signature."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasEvidenceType
+          x-ucm-concept-scheme: IdentityEvidenceType
+          x-ucm-range: skos:Concept
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/ev-vouch
+          '@type': IdentityEvidence
+          hasEvidenceStrength:
+          - FairEvidence
+          hasEvidenceType:
+          - VouchEvidence
+
+    "IdentityProofing":
+      type: object
+      description: "A process that establishes, to a stated assurance level, that an identity corresponds to a specific real-life entity (NIST SP 800-63A)."
+      x-jsonld-type: "ucm:IdentityProofing"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityProofing"
+      allOf:
+        - $ref: '#/components/schemas/Process'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - IdentityProofing
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - IdentityProofing
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "establishesIdentity":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity proofing process to the identity it establishes."
+          x-semantic-uri: https://www.w3.org/ns/ucm#establishesIdentity
+          x-ucm-range: ucm:Identity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: establishesIdentity target is not typed as ucm:Identity.
+        "hasProofingType":
+          $ref: '#/components/schemas/ProofingType'
+          description: "Relates an identity proofing process to how it was conducted: remote or on-site, attended or unattended."
+          x-semantic-uri: https://www.w3.org/ns/ucm#hasProofingType
+          x-ucm-concept-scheme: ProofingType
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: An identity proofing has at most one proofing type, identified by IRI.
+        "usedEvidence":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates an identity proofing process to evidence it used."
+          x-semantic-uri: https://www.w3.org/ns/ucm#usedEvidence
+          x-ucm-range: ucm:IdentityEvidence
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: usedEvidence target is not typed as ucm:IdentityEvidence.
+      required: ["@type"]
+      x-ucm-constraints:
+      - severity: Warning
+        tier: Recommended
+        message: 'An applicant reference does not act on the applicant''s behalf (NIST SP 800-63A): the same entity is the applicant, or is the applicant''s consent proxy.'
+      examples:
+        - '@id': http://example.org/ucm/proof-youth
+          '@type': IdentityProofing
+          achievedIAL:
+          - IAL1
+          establishesIdentity:
+          - http://example.org/ucm/id-youth
+          hasProofingType: OnsiteAttendedProofing
+          occursDuring:
+          - http://example.org/ucm/t-ci-youth
+          underTrustFramework:
+          - http://example.org/ucm/tf-nist
+          usedEvidence:
+          - http://example.org/ucm/ev-vouch
+
+    "IdentityProviderRole":
+      type: object
+      description: "The role of a party that authenticates a subscriber and issues identity assertions to relying parties."
+      x-jsonld-type: "ucm:IdentityProviderRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#IdentityProviderRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - IdentityProviderRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - IdentityProviderRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+
     "InformationArtifact":
       type: object
       description: "A logical information abstraction or computable information object."
@@ -3563,6 +6058,13 @@ components:
           - type: string
             enum:
             - InformationArtifact
+            - AssuranceCertification
+            - ConsentDirective
+            - Credential
+            - Identifier
+            - Identity
+            - IdentityAssertion
+            - IdentityEvidence
           - type: array
             items:
               type: string
@@ -3570,8 +6072,169 @@ components:
             contains:
               enum:
               - InformationArtifact
+              - AssuranceCertification
+              - ConsentDirective
+              - Credential
+              - Identifier
+              - Identity
+              - IdentityAssertion
+              - IdentityEvidence
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
+      x-ucm-subclasses:
+      - AssuranceCertification
+      - ConsentDirective
+      - Credential
+      - Identifier
+      - Identity
+      - IdentityAssertion
+      - IdentityEvidence
+      examples:
+        - '@id': http://example.org/ucm/doc-notice-text
+          '@type': InformationArtifact
+          rdfs:label: Privacy notice text
+        - '@id': http://example.org/ucm/doc-sud-note
+          '@type': InformationArtifact
+          rdfs:label: Substance use treatment note
+          hasConfidentialityLevel: ConfidentialityRestricted
+          hasSensitivityLabel:
+          - Part2Protected
+
+    "InformationCustodianRole":
+      type: object
+      description: "The role of a party responsible for holding, managing or enforcing a consent or the data it covers."
+      x-jsonld-type: "ucm:InformationCustodianRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#InformationCustodianRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - InformationCustodianRole
+            - ConsentManagerRole
+            - DataControllerRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - InformationCustodianRole
+              - ConsentManagerRole
+              - DataControllerRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      x-ucm-subclasses:
+      - ConsentManagerRole
+      - DataControllerRole
+
+    "InformationRecipientRole":
+      type: object
+      description: "The role of a party that a consent provision permits or denies to collect, access, use or disclose information."
+      x-jsonld-type: "ucm:InformationRecipientRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#InformationRecipientRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - InformationRecipientRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - InformationRecipientRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-recipient
+          '@type': InformationRecipientRole
+
+    "JurisdictionContext":
+      type: object
+      description: "A legal or administrative region whose rules govern consent or identity, such as a country, state, county, tribal nation or HUD Continuum of Care. Jurisdictions can nest."
+      x-jsonld-type: "ucm:JurisdictionContext"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#JurisdictionContext"
+      allOf:
+        - $ref: '#/components/schemas/SemanticContext'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - JurisdictionContext
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - JurisdictionContext
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "withinJurisdiction":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a jurisdiction to a larger jurisdiction that contains it, such as a county within a state or a Continuum of Care within a state."
+          x-semantic-uri: https://www.w3.org/ns/ucm#withinJurisdiction
+          x-ucm-range: ucm:JurisdictionContext
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: withinJurisdiction target is not typed as ucm:JurisdictionContext.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/ExampleCoCE
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized HUD Continuum of Care. Actual CoC policies vary; not legal guidance.
+          rdfs:label: Example CoC E
+          withinJurisdiction:
+          - http://example.org/ucm/ExampleStateE
+        - '@id': http://example.org/ucm/ExampleCountyD
+          '@type': JurisdictionContext
+          rdfs:label: Example County in State D
+          withinJurisdiction:
+          - http://example.org/ucm/ExampleStateD
+        - '@id': http://example.org/ucm/ExampleStateA
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized US state. Actual state rules vary; not legal guidance.
+          rdfs:label: Example State A
+          withinJurisdiction:
+          - http://example.org/ucm/jur-us
+        - '@id': http://example.org/ucm/ExampleStateB
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized US state. Actual state rules vary; not legal guidance.
+          rdfs:label: Example State B
+          withinJurisdiction:
+          - http://example.org/ucm/jur-us
+        - '@id': http://example.org/ucm/ExampleStateC
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized US state. Actual state rules vary; not legal guidance.
+          rdfs:label: Example State C
+          withinJurisdiction:
+          - http://example.org/ucm/jur-us
+        - '@id': http://example.org/ucm/ExampleStateD
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized US state. Actual state rules vary; not legal guidance.
+          rdfs:label: Example State D
+          withinJurisdiction:
+          - http://example.org/ucm/jur-us
+        - '@id': http://example.org/ucm/ExampleStateE
+          '@type': JurisdictionContext
+          rdfs:comment: Anonymized US state. Actual state rules vary; not legal guidance.
+          rdfs:label: Example State E
+          withinJurisdiction:
+          - http://example.org/ucm/jur-us
+        - '@id': http://example.org/ucm/jur-us
+          '@type': JurisdictionContext
+          rdfs:label: United States
 
     "Location":
       type: object
@@ -3595,6 +6258,10 @@ components:
               - Location
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/loc-intake
+          '@type': Location
+          rdfs:label: Intake desk
 
     "MatchClaim":
       type: object
@@ -3617,6 +6284,18 @@ components:
               enum:
               - MatchClaim
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "matchesIdentity":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a match claim to an identity it says co-refers with the others it names."
+          x-semantic-uri: https://www.w3.org/ns/ucm#matchesIdentity
+          x-ucm-range: ucm:Identity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: matchesIdentity target is not typed as ucm:Identity.
       required: ["@type"]
       examples:
         - '@id': http://example.org/ucm/mc-1
@@ -3625,6 +6304,8 @@ components:
           - http://www.w3.org/2002/07/owl#NamedIndividual
           madeWithinContext:
           - http://example.org/ucm/ctx-housing
+          matchesIdentity:
+          - http://example.org/ucm/id-ruth
           statementDate: '2026-09-03T12:00:00-07:00'
 
     "Membership":
@@ -3746,6 +6427,15 @@ components:
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       examples:
+        - '@id': http://example.org/ucm/org-assessor
+          '@type': Organization
+          rdfs:label: Example accredited assessor
+        - '@id': http://example.org/ucm/org-clinic
+          '@type': Organization
+          rdfs:label: Example community clinic
+        - '@id': http://example.org/ucm/org-csp
+          '@type': Organization
+          rdfs:label: Example credential service provider
         - '@id': http://example.org/ucm/org-ecm
           '@type':
           - Organization
@@ -3756,6 +6446,12 @@ components:
           - http://www.w3.org/2002/07/owl#NamedIndividual
           acceptsRequest:
           - http://example.org/ucm/p-fund
+        - '@id': http://example.org/ucm/org-lead-agency
+          '@type': Organization
+          rdfs:label: Example CoC E HMIS lead agency
+        - '@id': http://example.org/ucm/org-state-e
+          '@type': Organization
+          rdfs:label: Example State E motor vehicles agency
 
     "Participation":
       type: object
@@ -3806,6 +6502,18 @@ components:
           - severity: Violation
             tier: Definitional
             message: Interval ends before it begins.
+        "identifiedAs":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a participation to the identity under which the participant acted. This ties a consent's grantor and subject to identities."
+          x-semantic-uri: https://www.w3.org/ns/ucm#identifiedAs
+          x-ucm-range: ucm:Identity
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: identifiedAs target is not typed as ucm:Identity.
         "occursWithin":
           $ref: '#/components/schemas/NodeRef'
           description: "occurs within"
@@ -3893,6 +6601,42 @@ components:
         tier: Definitional
         message: Participation validTo precedes validFrom.
       examples:
+        - '@id': http://example.org/ucm/p-a-grantor
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-a-verbal
+          participatingEntity: http://example.org/ucm/person-a
+        - '@id': http://example.org/ucm/p-a-grantor-2025
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-a-2025
+          participatingEntity: http://example.org/ucm/person-a
+        - '@id': http://example.org/ucm/p-a-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-a-verbal
+          participatingEntity: http://example.org/ucm/person-a
+        - '@id': http://example.org/ucm/p-a-subj-2025
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-a-2025
+          participatingEntity: http://example.org/ucm/person-a
+        - '@id': http://example.org/ucm/p-agency-controller
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-controller
+          occursWithin: http://example.org/ucm/ci-thomson
+          participatingEntity: http://example.org/ucm/org-lead-agency
+        - '@id': http://example.org/ucm/p-clinic-recipient
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-recipient
+          occursWithin: http://example.org/ucm/ci-sarah
+          participatingEntity: http://example.org/ucm/org-clinic
         - '@id': http://example.org/ucm/p-cm
           '@type':
           - Participation
@@ -3911,6 +6655,36 @@ components:
           - http://example.org/ucm/role-prov
           occursWithin: http://example.org/ucm/req-1
           participatingEntity: http://example.org/ucm/org-fund
+        - '@id': http://example.org/ucm/p-jameson-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-thomson
+          participatingEntity: http://example.org/ucm/jameson
+        - '@id': http://example.org/ucm/p-jameson-subj-2023
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-thomson-2023
+          participatingEntity: http://example.org/ucm/jameson
+        - '@id': http://example.org/ucm/p-liaison-reference
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-reference
+          occursWithin: http://example.org/ucm/proof-youth
+          participatingEntity: http://example.org/ucm/liaison
+        - '@id': http://example.org/ucm/p-liaison-verifier
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-verifier
+          occursWithin: http://example.org/ucm/ci-youth-verify
+          participatingEntity: http://example.org/ucm/liaison
+        - '@id': http://example.org/ucm/p-madison-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-thomson
+          participatingEntity: http://example.org/ucm/madison
         - '@id': http://example.org/ucm/p-pat
           '@type':
           - Participation
@@ -3921,6 +6695,12 @@ components:
           participatingEntity: http://example.org/ucm/person-a
           scopedBy:
           - http://example.org/ucm/ctx-clin
+        - '@id': http://example.org/ucm/p-proofer-agent
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-agent
+          occursWithin: http://example.org/ucm/proof-youth
+          participatingEntity: http://example.org/ucm/proofer
         - '@id': http://example.org/ucm/p-res
           '@type':
           - Participation
@@ -3933,6 +6713,52 @@ components:
           participatingEntity: http://example.org/ucm/person-a
           participationContext:
           - http://example.org/ucm/ctx-housing
+        - '@id': http://example.org/ucm/p-ruth-proxy
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-proxy
+          identifiedAs:
+          - http://example.org/ucm/id-ruth
+          occursWithin: http://example.org/ucm/ci-thomson
+          participatingEntity: http://example.org/ucm/ruth
+        - '@id': http://example.org/ucm/p-ruth-proxy-2023
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-proxy
+          occursWithin: http://example.org/ucm/ci-thomson-2023
+          participatingEntity: http://example.org/ucm/ruth
+        - '@id': http://example.org/ucm/p-sarah-grantor
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          occursWithin: http://example.org/ucm/ci-sarah
+          participatingEntity: http://example.org/ucm/sarah
+        - '@id': http://example.org/ucm/p-sarah-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-sarah
+          participatingEntity: http://example.org/ucm/sarah
+        - '@id': http://example.org/ucm/p-youth-applicant
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-applicant
+          occursWithin: http://example.org/ucm/proof-youth
+          participatingEntity: http://example.org/ucm/youth
+        - '@id': http://example.org/ucm/p-youth-grantor
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-grantor
+          identifiedAs:
+          - http://example.org/ucm/id-youth
+          occursWithin: http://example.org/ucm/ci-youth
+          participatingEntity: http://example.org/ucm/youth
+        - '@id': http://example.org/ucm/p-youth-subj
+          '@type': Participation
+          assumesRole:
+          - http://example.org/ucm/role-csubject
+          occursWithin: http://example.org/ucm/ci-youth
+          participatingEntity: http://example.org/ucm/youth
 
     "PatientRole":
       type: object
@@ -3995,6 +6821,33 @@ components:
           - severity: Warning
             tier: Recommended
             message: Affiliation target is not typed as ucm:Organization.
+        "birthDate":
+          anyOf:
+          - type: string
+            format: date
+          - type: string
+          - type: string
+            pattern: ^-?\d{4,}(Z|[+-]\d{2}:\d{2})?$
+          description: "A person's date of birth, full (xsd:date) or partial (xsd:gYearMonth or xsd:gYear). Age is computed as of a given date and never stored."
+          x-semantic-uri: https://www.w3.org/ns/ucm#birthDate
+          x-ucm-datatype:
+          - xsd:date
+          - xsd:gYearMonth
+          - xsd:gYear
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A person has at most one birth date, typed xsd:date, xsd:gYearMonth or xsd:gYear.
+        "birthDateQuality":
+          $ref: '#/components/schemas/BirthDateQuality'
+          description: "Relates a person to how reliable their recorded birth date is."
+          x-semantic-uri: https://www.w3.org/ns/ucm#birthDateQuality
+          x-ucm-concept-scheme: BirthDateQuality
+          x-ucm-range: skos:Concept
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A person holds at most one birth date quality, identified by IRI.
       required: ["@type"]
       x-ucm-equivalent-classes:
       - http://purl.bioontology.org/ontology/SNOMEDCT#337915000
@@ -4007,12 +6860,46 @@ components:
           - http://www.w3.org/2002/07/owl#NamedIndividual
           affiliatedWith:
           - http://example.org/ucm/org-ecm
+        - '@id': http://example.org/ucm/jameson
+          '@type': Person
+          rdfs:label: Jameson Thomson
+          birthDate: '2014-06-10'
+        - '@id': http://example.org/ucm/liaison
+          '@type': Person
+          rdfs:label: School district homeless liaison
+        - '@id': http://example.org/ucm/madison
+          '@type': Person
+          rdfs:label: Madison Thomson
+          birthDate: '2017-02-20'
         - '@id': http://example.org/ucm/person-a
           '@type':
           - Person
           - http://www.w3.org/2002/07/owl#NamedIndividual
           hasMembership:
           - http://example.org/ucm/mem-a
+        - '@id': http://example.org/ucm/proofer
+          '@type': Person
+          rdfs:label: Intake proofing agent
+        - '@id': http://example.org/ucm/ruth
+          '@type': Person
+          rdfs:label: Ruth Thomson
+          birthDate: '1985-04-02'
+          birthDateQuality: FullDateReported
+          hasIdentity:
+          - http://example.org/ucm/id-ruth
+        - '@id': http://example.org/ucm/sarah
+          '@type': Person
+          rdfs:label: Sarah Thomson
+          birthDate: '1996-09-15'
+        - '@id': http://example.org/ucm/youth
+          '@type': Person
+          rdfs:label: Youth (fictitious)
+          ucm:birthDate:
+            '@type': xsd:gYearMonth
+            '@value': 2009-03
+          birthDateQuality: ApproximateOrPartial
+          hasIdentity:
+          - http://example.org/ucm/id-youth
 
     "PolicyDefinition":
       type: object
@@ -4027,6 +6914,10 @@ components:
           - type: string
             enum:
             - PolicyDefinition
+            - ConsentPolicy
+            - PrivacyNotice
+            - SelfConsentRule
+            - TrustFramework
           - type: array
             items:
               type: string
@@ -4034,8 +6925,76 @@ components:
             contains:
               enum:
               - PolicyDefinition
+              - ConsentPolicy
+              - PrivacyNotice
+              - SelfConsentRule
+              - TrustFramework
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
+      x-ucm-subclasses:
+      - ConsentPolicy
+      - PrivacyNotice
+      - TrustFramework
+
+    "PrivacyNotice":
+      type: object
+      description: "A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."
+      x-jsonld-type: "ucm:PrivacyNotice"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#PrivacyNotice"
+      allOf:
+        - $ref: '#/components/schemas/PolicyDefinition'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - PrivacyNotice
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - PrivacyNotice
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "amendmentAppliesRetroactively":
+          type: array
+          items:
+            type: boolean
+          uniqueItems: true
+          description: "Whether an amendment to the privacy notice applies to information collected before the amendment."
+          x-semantic-uri: https://www.w3.org/ns/ucm#amendmentAppliesRetroactively
+          x-ucm-datatype: xsd:boolean
+        "postedAt":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a privacy notice to a location where it is posted, such as an intake desk."
+          x-semantic-uri: https://www.w3.org/ns/ucm#postedAt
+          x-ucm-range: ucm:Location
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: postedAt target is not typed as ucm:Location.
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/notice-coc-e
+          '@type': PrivacyNotice
+          rdfs:label: Example CoC E posted HMIS privacy notice
+          amendmentAppliesRetroactively:
+          - false
+          forPurpose:
+          - CoordinatedEntry
+          - ProgramReporting
+          hasConsentModel:
+          - OptOutWithExceptions
+          postedAt:
+          - http://example.org/ucm/loc-intake
+          sourceDocument:
+          - http://example.org/ucm/doc-notice-text
+          withdrawalMethod:
+          - https://example.org/coc-e/privacy
 
     "Process":
       type: object
@@ -4050,14 +7009,17 @@ components:
           - type: string
             enum:
             - Process
+            - Authentication
             - CareCoordinationInteraction
             - ClinicalEncounter
+            - ConsentInteraction
             - CoordinationRequest
             - CoordinativeActivity
             - EligibilityDetermination
             - Encounter
             - Handshake
             - HousingAssessment
+            - IdentityProofing
             - SocialCareInteraction
           - type: array
             items:
@@ -4066,16 +7028,31 @@ components:
             contains:
               enum:
               - Process
+              - Authentication
               - CareCoordinationInteraction
               - ClinicalEncounter
+              - ConsentInteraction
               - CoordinationRequest
               - CoordinativeActivity
               - EligibilityDetermination
               - Encounter
               - Handshake
               - HousingAssessment
+              - IdentityProofing
               - SocialCareInteraction
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "authorizedByConsent":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a process, such as a coordination request, handshake or disclosure, to the consent directive that permits it."
+          x-semantic-uri: https://www.w3.org/ns/ucm#authorizedByConsent
+          x-ucm-range: ucm:ConsentDirective
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: authorizedByConsent target is not typed as ucm:ConsentDirective.
         "hasActivityFocus":
           type: array
           items:
@@ -4124,12 +7101,15 @@ components:
             message: Interval ends before it begins.
       required: ["@type"]
       x-ucm-subclasses:
+      - Authentication
       - CareCoordinationInteraction
+      - ConsentInteraction
       - CoordinationRequest
       - CoordinativeActivity
       - EligibilityDetermination
       - Encounter
       - HousingAssessment
+      - IdentityProofing
       - SocialCareInteraction
 
     "ProgramDefinition":
@@ -4159,6 +7139,32 @@ components:
           '@type':
           - ProgramDefinition
           - http://www.w3.org/2002/07/owl#NamedIndividual
+
+    "ProofingAgentRole":
+      type: object
+      description: "The role of a person who conducts attended identity proofing for a credential service provider."
+      x-jsonld-type: "ucm:ProofingAgentRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#ProofingAgentRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - ProofingAgentRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - ProofingAgentRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/role-agent
+          '@type': ProofingAgentRole
 
     "ProviderRole":
       type: object
@@ -4234,6 +7240,29 @@ components:
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
 
+    "RelyingPartyRole":
+      type: object
+      description: "The role of a party that relies on an identity assertion or credential."
+      x-jsonld-type: "ucm:RelyingPartyRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#RelyingPartyRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - RelyingPartyRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - RelyingPartyRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
+
     "ResidentRole":
       type: object
       description: "Resident Role"
@@ -4275,14 +7304,30 @@ components:
           - type: string
             enum:
             - Role
+            - ApplicantReferenceRole
             - BeneficiaryRole
             - CaregiverRole
             - ClientRole
+            - ConsentGrantorRole
+            - ConsentManagerRole
+            - ConsentProxyRole
+            - ConsentSubjectRole
+            - ConsentVerifierRole
+            - ConsentWitnessRole
             - CoordinatorRole
+            - CredentialServiceProviderRole
+            - DataControllerRole
+            - IdentityApplicantRole
+            - IdentityProviderRole
+            - InformationCustodianRole
+            - InformationRecipientRole
             - PatientRole
+            - ProofingAgentRole
             - ProviderRole
+            - RelyingPartyRole
             - ResidentRole
             - SubjectRole
+            - TrustedRefereeRole
           - type: array
             items:
               type: string
@@ -4290,21 +7335,189 @@ components:
             contains:
               enum:
               - Role
+              - ApplicantReferenceRole
               - BeneficiaryRole
               - CaregiverRole
               - ClientRole
+              - ConsentGrantorRole
+              - ConsentManagerRole
+              - ConsentProxyRole
+              - ConsentSubjectRole
+              - ConsentVerifierRole
+              - ConsentWitnessRole
               - CoordinatorRole
+              - CredentialServiceProviderRole
+              - DataControllerRole
+              - IdentityApplicantRole
+              - IdentityProviderRole
+              - InformationCustodianRole
+              - InformationRecipientRole
               - PatientRole
+              - ProofingAgentRole
               - ProviderRole
+              - RelyingPartyRole
               - ResidentRole
               - SubjectRole
+              - TrustedRefereeRole
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
       required: ["@type"]
       x-ucm-subclasses:
+      - ApplicantReferenceRole
       - CaregiverRole
+      - ConsentGrantorRole
+      - ConsentVerifierRole
+      - ConsentWitnessRole
       - CoordinatorRole
+      - CredentialServiceProviderRole
+      - IdentityProviderRole
+      - InformationCustodianRole
+      - InformationRecipientRole
+      - ProofingAgentRole
       - ProviderRole
+      - RelyingPartyRole
       - SubjectRole
+      - TrustedRefereeRole
+
+    "SelfConsentRule":
+      type: object
+      description: "A rule, in force in a jurisdiction, that sets when a minor or youth may consent for themselves: from what age, for which purposes, categories or sensitivities, and under what conditions."
+      x-jsonld-type: "ucm:SelfConsentRule"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#SelfConsentRule"
+      allOf:
+        - $ref: '#/components/schemas/ConsentPolicy'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - SelfConsentRule
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - SelfConsentRule
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "minimumSelfConsentAge":
+          type: integer
+          minimum: 0
+          description: "The age in years from which a self-consent rule allows self-consent. Omitted when only a condition applies."
+          x-semantic-uri: https://www.w3.org/ns/ucm#minimumSelfConsentAge
+          x-ucm-datatype: xsd:nonNegativeInteger
+          x-ucm-constraints:
+          - severity: Violation
+            tier: Definitional
+            message: A self-consent rule states at most one minimum age, a non-negative integer.
+        "selfConsentCondition":
+          type: array
+          items:
+            $ref: '#/components/schemas/SelfConsentCondition'
+          uniqueItems: true
+          description: "Relates a self-consent rule to a condition that unlocks self-consent. Several values mean any one suffices."
+          x-semantic-uri: https://www.w3.org/ns/ucm#selfConsentCondition
+          x-ucm-concept-scheme: SelfConsentCondition
+          x-ucm-range: skos:Concept
+        "selfConsentScope":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "Relates a self-consent rule to a purpose, consent category, information category or sensitivity it covers. No value means all consents."
+          x-semantic-uri: https://www.w3.org/ns/ucm#selfConsentScope
+          x-ucm-range: skos:Concept
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/rule-coc-e-roi
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: All Chicago HMIS, 'Documenting Client Consent in HMIS (ROI)'.
+          rdfs:comment: Clients 18 and over sign their own ROI. For each child under 18, a parent or legal guardian chooses the sharing option and signs a separate consent. Illustration only; actual CoC policies vary; not legal guidance.
+          rdfs:label: 'Example CoC E: HMIS release of information'
+          hasRegulatoryBasis:
+          - HMISDataStandards
+          inJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
+          minimumSelfConsentAge: 18
+          selfConsentCondition:
+          - AgeOfMajority
+          selfConsentScope:
+          - ucm:ReleaseOfInformation
+        - '@id': http://example.org/ucm/rule-ferpa
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: U.S. Department of Education, Student Privacy Policy Office, 'Eligible Student' (studentprivacy.ed.gov); 34 CFR 99.3; 20 U.S.C. 1232g(d).
+          rdfs:comment: Rights over education records pass from parents to the student at 18, or at any age once the student attends a postsecondary institution. Illustration only; not legal guidance.
+          rdfs:label: 'Federal: education records'
+          hasRegulatoryBasis:
+          - FERPA
+          inJurisdiction:
+          - http://example.org/ucm/jur-us
+          minimumSelfConsentAge: 18
+          selfConsentCondition:
+          - AgeOfMajority
+          - PostsecondaryEnrollment
+          selfConsentScope:
+          - ucm:EducationInformation
+        - '@id': http://example.org/ucm/rule-state-a-sti
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
+          rdfs:comment: Minors 12 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance.
+          rdfs:label: 'Example State A: STI care from 12'
+          hasRegulatoryBasis:
+          - StateLaw
+          inJurisdiction:
+          - http://example.org/ucm/ExampleStateA
+          minimumSelfConsentAge: 12
+          selfConsentCondition:
+          - ServiceSpecificMinorConsent
+          selfConsentScope:
+          - ucm:SexuallyTransmittedDisease
+          - ucm:Treatment
+        - '@id': http://example.org/ucm/rule-state-b-sti
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
+          rdfs:comment: Minors 14 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance.
+          rdfs:label: 'Example State B: STI care from 14'
+          hasRegulatoryBasis:
+          - StateLaw
+          inJurisdiction:
+          - http://example.org/ucm/ExampleStateB
+          minimumSelfConsentAge: 14
+          selfConsentCondition:
+          - ServiceSpecificMinorConsent
+          selfConsentScope:
+          - ucm:SexuallyTransmittedDisease
+        - '@id': http://example.org/ucm/rule-state-c-hiv
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
+          rdfs:comment: Minors 13 and older may consent to HIV testing and treatment. Illustration only; actual state rules vary; not legal guidance.
+          rdfs:label: 'Example State C: HIV care from 13'
+          hasRegulatoryBasis:
+          - StateLaw
+          inJurisdiction:
+          - http://example.org/ucm/ExampleStateC
+          minimumSelfConsentAge: 13
+          selfConsentCondition:
+          - ServiceSpecificMinorConsent
+          selfConsentScope:
+          - ucm:HIV
+          - ucm:Treatment
+        - '@id': http://example.org/ucm/rule-state-d-housing
+          '@type': SelfConsentRule
+          http://purl.org/dc/terms/source: SchoolHouse Connection, 'State Laws on Minor Consent for Housing and Related Services' (June 2026). Secondary summary; check the statute.
+          rdfs:comment: A youth aged 16 or 17 who is homeless, or a victim of domestic violence, and is self-supporting may consent to housing, shelter, medical and mental health care and related services. A homeless service provider or school district homeless liaison verifies the status in a letter. Illustration only; actual state rules vary; not legal guidance.
+          rdfs:label: 'Example State D: housing for homeless youth'
+          hasRegulatoryBasis:
+          - StateLaw
+          inJurisdiction:
+          - http://example.org/ucm/ExampleStateD
+          minimumSelfConsentAge: 16
+          selfConsentCondition:
+          - SelfSupporting
+          - UnaccompaniedYouthStatus
+          selfConsentScope:
+          - ucm:HousingPlacement
+          - ucm:SocialCareCoordination
+          - ucm:Treatment
 
     "SemanticConstraint":
       type: object
@@ -4346,6 +7559,7 @@ components:
             - ClinicalCareContext
             - HousingContext
             - HousingEligibilityContext
+            - JurisdictionContext
             - PublicHealthContext
             - SocialCareContext
           - type: array
@@ -4359,6 +7573,7 @@ components:
               - ClinicalCareContext
               - HousingContext
               - HousingEligibilityContext
+              - JurisdictionContext
               - PublicHealthContext
               - SocialCareContext
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
@@ -4379,6 +7594,7 @@ components:
       - BehavioralHealthContext
       - ClinicalCareContext
       - HousingContext
+      - JurisdictionContext
       - PublicHealthContext
       - SocialCareContext
 
@@ -4640,6 +7856,8 @@ components:
             - SubjectRole
             - BeneficiaryRole
             - ClientRole
+            - ConsentSubjectRole
+            - IdentityApplicantRole
             - PatientRole
             - ResidentRole
           - type: array
@@ -4651,6 +7869,8 @@ components:
               - SubjectRole
               - BeneficiaryRole
               - ClientRole
+              - ConsentSubjectRole
+              - IdentityApplicantRole
               - PatientRole
               - ResidentRole
           description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
@@ -4658,6 +7878,75 @@ components:
       x-ucm-subclasses:
       - BeneficiaryRole
       - ClientRole
+      - ConsentSubjectRole
+      - IdentityApplicantRole
       - PatientRole
       - ResidentRole
+
+    "TrustFramework":
+      type: object
+      description: "A set of rules, under a governing body, for identity proofing, authentication, federation and certification that participants agree to rely on, such as NIST SP 800-63-4, a Kantara assurance program, or the TEFCA Individual Access Services rules."
+      x-jsonld-type: "ucm:TrustFramework"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#TrustFramework"
+      allOf:
+        - $ref: '#/components/schemas/PolicyDefinition'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - TrustFramework
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - TrustFramework
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+        "trustFrameworkIdentifier":
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          description: "The string that names a trust framework in identity claims, such as the OpenID Connect for Identity Assurance trust_framework value."
+          x-semantic-uri: https://www.w3.org/ns/ucm#trustFrameworkIdentifier
+          x-ucm-datatype: xsd:string
+      required: ["@type"]
+      examples:
+        - '@id': http://example.org/ucm/tf-nist
+          '@type': TrustFramework
+          rdfs:label: NIST SP 800-63-4
+          trustFrameworkIdentifier:
+          - nist_800_63A
+        - '@id': http://example.org/ucm/tf-tefca-ias
+          '@type': TrustFramework
+          rdfs:label: TEFCA Individual Access Services SOP
+          requiresAAL:
+          - AAL2
+          requiresIAL:
+          - IAL2
+
+    "TrustedRefereeRole":
+      type: object
+      description: "The role of a person authorized by a credential service provider to make risk-based identity decisions for applicants who cannot meet the normal evidence requirements (NIST SP 800-63A)."
+      x-jsonld-type: "ucm:TrustedRefereeRole"
+      x-semantic-uri: "https://www.w3.org/ns/ucm#TrustedRefereeRole"
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      properties:
+        "@type":
+          oneOf:
+          - type: string
+            enum:
+            - TrustedRefereeRole
+          - type: array
+            items:
+              type: string
+            minItems: 1
+            contains:
+              enum:
+              - TrustedRefereeRole
+          description: "Class of the node: this class or one of its subclasses. A real JSON-LD producer may type a node with more than one class (e.g. every OWL individual is also owl:NamedIndividual), so an array that merely contains one of these terms is accepted too."
+      required: ["@type"]
 

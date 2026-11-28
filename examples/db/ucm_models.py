@@ -30,9 +30,9 @@ from sqlalchemy.types import TypeDecorator
 
 ONTOLOGY_IRI = 'https://www.w3.org/ns/ucm#'
 ONTOLOGY_VERSION = 'v0.0.1'
-REVISION = 'ucm_a70bfb3a0625'
-SOURCES = ['sha256:a713a4085c0c1c7ff568062211c8e5dbb150efdf6198b296ca3330a1e91903f2',
- 'sha256:4b0748714ef584d8e0441eb8b612b1438dbc0abb1894a75b6b9c7ec3bd54bb75']
+REVISION = 'ucm_47d15426eae9'
+SOURCES = ['sha256:a941532b4247c6ecdf2bbcf44baccda131a137cf926802e03b69ec394932ddbb',
+ 'sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f']
 
 JSONType = sa.JSON().with_variant(postgresql.JSONB(), "postgresql")
 SurrogateKey = sa.BigInteger().with_variant(sa.Integer(), "sqlite")
@@ -210,19 +210,43 @@ class ClinicalDomain(Base):
     )
 
 
+class ConsentProvision(Base):
+    """ucm:ConsentProvision: A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's."""
+
+    __tablename__ = 'consent_provision'
+    __table_args__ = (
+        sa.CheckConstraint("type IN ('ConsentProvision')", name='type'),
+        {"comment": ('ucm:ConsentProvision: A rule within a consent directive that permits or denies specific actions '
+ 'by specific actors, for specific purposes, on specific information, within a period. Provisions '
+ "nest as exceptions: each provision's decision is the opposite of its parent's.")},
+    )
+    __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'ConsentProvision'}
+
+    iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
+    type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    extra: Mapped[Dict[str, Any]] = mapped_column(
+        JSONType, nullable=False, default=dict, server_default=sa.text("'{}'"),
+        comment="Predicates outside UCM, as compacted JSON-LD",
+    )
+
+
 class DefinitionArtifact(Base):
     """ucm:DefinitionArtifact: A ruleset, policy definition, constraint, or governance artifact."""
 
     __tablename__ = 'definition_artifact'
     __table_args__ = (
         sa.CheckConstraint(("type IN ('DefinitionArtifact', 'EligibilityRuleset', 'PolicyDefinition', 'ProgramDefinition', "
- "'SemanticConstraint')"), name='type'),
+ "'SemanticConstraint', 'ConsentPolicy', 'PrivacyNotice', 'TrustFramework', 'SelfConsentRule')"), name='type'),
         {"comment": 'ucm:DefinitionArtifact: A ruleset, policy definition, constraint, or governance artifact.'},
     )
     __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'DefinitionArtifact'}
 
     iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
     type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    minimum_self_consent_age: Mapped[Optional[int]] = mapped_column(
+        sa.BigInteger(), nullable=True, index=False, comment=('ucm:minimumSelfConsentAge: The age in years from which a self-consent rule allows self-consent. '
+ 'Omitted when only a condition applies.')
+    )
     extra: Mapped[Dict[str, Any]] = mapped_column(
         JSONType, nullable=False, default=dict, server_default=sa.text("'{}'"),
         comment="Predicates outside UCM, as compacted JSON-LD",
@@ -253,19 +277,73 @@ class SemanticConstraint(DefinitionArtifact):
     __mapper_args__ = {"polymorphic_identity": 'SemanticConstraint'}
 
 
+class ConsentPolicy(PolicyDefinition):
+    """A policy, regulation or program rule that sets the consent model, the default decision and the conditions under which consent is required, allowed or not needed."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentPolicy'}
+
+
+class PrivacyNotice(PolicyDefinition):
+    """A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."""
+
+    __mapper_args__ = {"polymorphic_identity": 'PrivacyNotice'}
+
+
+class TrustFramework(PolicyDefinition):
+    """A set of rules, under a governing body, for identity proofing, authentication, federation and certification that participants agree to rely on, such as NIST SP 800-63-4, a Kantara assurance program, or the TEFCA Individual Access Services rules."""
+
+    __mapper_args__ = {"polymorphic_identity": 'TrustFramework'}
+
+
+class SelfConsentRule(ConsentPolicy):
+    """A rule, in force in a jurisdiction, that sets when a minor or youth may consent for themselves: from what age, for which purposes, categories or sensitivities, and under what conditions."""
+
+    __mapper_args__ = {"polymorphic_identity": 'SelfConsentRule'}
+
+
 class Entity(Base):
     """ucm:Entity: A stable independently identifiable semantic thing."""
 
     __tablename__ = 'entity'
     __table_args__ = (
         sa.CheckConstraint(("type IN ('Entity', 'Device', 'InformationArtifact', 'Location', 'Organization', 'Person', "
- "'SocialGroupEntity', 'CareTeam', 'CommunityGroup', 'Household')"), name='type'),
+ "'SocialGroupEntity', 'AssuranceCertification', 'CareTeam', 'CommunityGroup', 'ConsentDirective', "
+ "'Credential', 'Household', 'Identifier', 'Identity', 'IdentityAssertion', 'IdentityEvidence')"), name='type'),
+        sa.CheckConstraint("type NOT IN ('Identifier') OR identifier_value IS NOT NULL", name='identifier_value_identifier'),
         {"comment": 'ucm:Entity: A stable independently identifiable semantic thing.'},
     )
     __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'Entity'}
 
     iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
     type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    achieved_fal: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:achievedFAL: Relates an identity assertion to the federation assurance level it reached.'
+    )
+    birth_date: Mapped[Optional[datetime.date]] = mapped_column(
+        sa.Date(), nullable=True, index=False, comment=("ucm:birthDate: A person's date of birth, full (xsd:date) or partial (xsd:gYearMonth or "
+ 'xsd:gYear). Age is computed as of a given date and never stored.')
+    )
+    birth_date_quality: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:birthDateQuality: Relates a person to how reliable their recorded birth date is.'
+    )
+    has_consent_category: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasConsentCategory: Relates a consent directive to its kind, such as a privacy consent or '
+ 'release of information, a treatment consent or a research consent.')
+    )
+    has_consent_status: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:hasConsentStatus: Relates a consent directive to whether it applies now (FHIR Consent.status).'
+    )
+    has_identifier_type: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasIdentifierType: Relates an identifier to its kind, such as a medical record number or '
+ 'HMIS Personal ID.')
+    )
+    identifier_system: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=False, comment=('ucm:identifierSystem: The namespace in which an identifier value is unique. For an OpenID '
+ 'Connect subject, the issuer.')
+    )
+    identifier_value: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=False, comment='ucm:identifierValue: The value of an identifier.'
+    )
     extra: Mapped[Dict[str, Any]] = mapped_column(
         JSONType, nullable=False, default=dict, server_default=sa.text("'{}'"),
         comment="Predicates outside UCM, as compacted JSON-LD",
@@ -308,6 +386,12 @@ class SocialGroupEntity(Entity):
     __mapper_args__ = {"polymorphic_identity": 'SocialGroupEntity'}
 
 
+class AssuranceCertification(InformationArtifact):
+    """A record that an assessor has found a provider conformant to a trust framework at stated assurance levels, for a period."""
+
+    __mapper_args__ = {"polymorphic_identity": 'AssuranceCertification'}
+
+
 class CareTeam(SocialGroupEntity):
     """Care Team"""
 
@@ -320,10 +404,46 @@ class CommunityGroup(SocialGroupEntity):
     __mapper_args__ = {"polymorphic_identity": 'CommunityGroup'}
 
 
+class ConsentDirective(InformationArtifact):
+    """A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. Corresponds to an FHIR Consent and an HMIS release of information. It is an information artifact, not a statement."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentDirective'}
+
+
+class Credential(InformationArtifact):
+    """A set of claims about an identity, issued and signed by an issuer, and held by the subject or a holder, such as a W3C Verifiable Credential."""
+
+    __mapper_args__ = {"polymorphic_identity": 'Credential'}
+
+
 class Household(SocialGroupEntity):
     """Household"""
 
     __mapper_args__ = {"polymorphic_identity": 'Household'}
+
+
+class Identifier(InformationArtifact):
+    """A value, unique within a stated system or issuer, that designates an identity, such as a medical record number, HMIS Personal ID, Medicaid ID, state ID number, OpenID Connect subject or decentralized identifier."""
+
+    __mapper_args__ = {"polymorphic_identity": 'Identifier'}
+
+
+class Identity(InformationArtifact):
+    """A set of identifiers, attributes and characteristics by which one entity is recognized within a context, such as a system, program, jurisdiction or trust framework. An entity can have many identities."""
+
+    __mapper_args__ = {"polymorphic_identity": 'Identity'}
+
+
+class IdentityAssertion(InformationArtifact):
+    """A statement from an identity provider to a relying party about an authenticated identity, at a stated federation assurance level, such as an OpenID Connect ID Token or a SAML assertion (NIST SP 800-63C)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'IdentityAssertion'}
+
+
+class IdentityEvidence(InformationArtifact):
+    """Evidence used in identity proofing: a document, an electronic record, a vouch by another party, or an electronic signature."""
+
+    __mapper_args__ = {"polymorphic_identity": 'IdentityEvidence'}
 
 
 class HousingDomain(Base):
@@ -418,17 +538,29 @@ class Process(Base):
 
     __tablename__ = 'process'
     __table_args__ = (
-        sa.CheckConstraint(("type IN ('Process', 'CareCoordinationInteraction', 'CoordinationRequest', "
- "'CoordinativeActivity', 'EligibilityDetermination', 'Encounter', 'HousingAssessment', "
- "'SocialCareInteraction', 'ClinicalEncounter', 'Handshake')"), name='type'),
+        sa.CheckConstraint(("type IN ('Process', 'Authentication', 'CareCoordinationInteraction', 'ConsentInteraction', "
+ "'CoordinationRequest', 'CoordinativeActivity', 'EligibilityDetermination', 'Encounter', "
+ "'HousingAssessment', 'IdentityProofing', 'SocialCareInteraction', 'ClinicalEncounter', "
+ "'Handshake')"), name='type'),
         {"comment": 'ucm:Process: A bounded interaction or activity occurring over time.'},
     )
     __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'Process'}
 
     iri: Mapped[str] = mapped_column(sa.Text(), primary_key=True)
     type: Mapped[str] = mapped_column(sa.Text(), nullable=False, index=True)
+    achieved_aal: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment='ucm:achievedAAL: Relates an authentication to the authenticator assurance level it reached.'
+    )
     has_closure_reason: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment='ucm:hasClosureReason: Relates a closed care coordination request to the reason it was closed.'
+    )
+    has_consent_interaction_type: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasConsentInteractionType: Relates a consent interaction to what it did: grant, refuse, '
+ 'amend, renew, revoke or verify.')
+    )
+    has_consent_modality: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasConsentModality: Relates a consent interaction to how consent was expressed: written, '
+ 'electronic, verbal or inferred.')
     )
     has_handoff_status: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment=('ucm:hasHandoffStatus: Relates a handshake to where responsibility for its agreed services stands '
@@ -441,6 +573,10 @@ class Process(Base):
     has_lifecycle_state: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment='ucm:hasLifecycleState: Relates a process to a lifecycle state.'
     )
+    has_proofing_type: Mapped[Optional[str]] = mapped_column(
+        sa.Text(), nullable=True, index=True, comment=('ucm:hasProofingType: Relates an identity proofing process to how it was conducted: remote or '
+ 'on-site, attended or unattended.')
+    )
     has_referral_disposition: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment=("ucm:hasReferralDisposition: Relates a care coordination request to the receiving party's "
  'decision on it.')
@@ -451,10 +587,22 @@ class Process(Base):
     )
 
 
+class Authentication(Process):
+    """A process in which a claimant proves control of one or more authenticators bound to an identity (NIST SP 800-63B)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'Authentication'}
+
+
 class CareCoordinationInteraction(Process):
     """Care Coordination Interaction"""
 
     __mapper_args__ = {"polymorphic_identity": 'CareCoordinationInteraction'}
+
+
+class ConsentInteraction(Process):
+    """A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews, verifies or revokes permission for the collection, use or disclosure of information, or for an action concerning them."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentInteraction'}
 
 
 class CoordinationRequest(Process):
@@ -485,6 +633,12 @@ class HousingAssessment(Process):
     """Housing Assessment"""
 
     __mapper_args__ = {"polymorphic_identity": 'HousingAssessment'}
+
+
+class IdentityProofing(Process):
+    """A process that establishes, to a stated assurance level, that an identity corresponds to a specific real-life entity (NIST SP 800-63A)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'IdentityProofing'}
 
 
 class SocialCareInteraction(Process):
@@ -528,8 +682,12 @@ class Role(Base):
 
     __tablename__ = 'role'
     __table_args__ = (
-        sa.CheckConstraint(("type IN ('Role', 'CaregiverRole', 'CoordinatorRole', 'ProviderRole', 'SubjectRole', "
- "'BeneficiaryRole', 'ClientRole', 'PatientRole', 'ResidentRole')"), name='type'),
+        sa.CheckConstraint(("type IN ('Role', 'ApplicantReferenceRole', 'CaregiverRole', 'ConsentGrantorRole', "
+ "'ConsentVerifierRole', 'ConsentWitnessRole', 'CoordinatorRole', 'CredentialServiceProviderRole', "
+ "'IdentityProviderRole', 'InformationCustodianRole', 'InformationRecipientRole', "
+ "'ProofingAgentRole', 'ProviderRole', 'RelyingPartyRole', 'SubjectRole', 'TrustedRefereeRole', "
+ "'BeneficiaryRole', 'ClientRole', 'ConsentManagerRole', 'ConsentProxyRole', 'ConsentSubjectRole', "
+ "'DataControllerRole', 'IdentityApplicantRole', 'PatientRole', 'ResidentRole')"), name='type'),
         {"comment": 'ucm:Role: A contextual, anti-rigid classification assumed through participation.'},
     )
     __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'Role'}
@@ -542,10 +700,34 @@ class Role(Base):
     )
 
 
+class ApplicantReferenceRole(Role):
+    """The role of a person who vouches for an applicant's identity or circumstances, such as homelessness, without acting on the applicant's behalf (NIST SP 800-63A)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ApplicantReferenceRole'}
+
+
 class CaregiverRole(Role):
     """Caregiver Role"""
 
     __mapper_args__ = {"polymorphic_identity": 'CaregiverRole'}
+
+
+class ConsentGrantorRole(Role):
+    """The role of the party who makes a consent choice. Often the same entity as the subject."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentGrantorRole'}
+
+
+class ConsentVerifierRole(Role):
+    """The role of a party who verified a consent with the subject or grantor."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentVerifierRole'}
+
+
+class ConsentWitnessRole(Role):
+    """The role of a party who witnessed a consent interaction."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentWitnessRole'}
 
 
 class CoordinatorRole(Role):
@@ -554,16 +736,58 @@ class CoordinatorRole(Role):
     __mapper_args__ = {"polymorphic_identity": 'CoordinatorRole'}
 
 
+class CredentialServiceProviderRole(Role):
+    """The role of a party that proofs identities and issues or binds authenticators (NIST CSP)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'CredentialServiceProviderRole'}
+
+
+class IdentityProviderRole(Role):
+    """The role of a party that authenticates a subscriber and issues identity assertions to relying parties."""
+
+    __mapper_args__ = {"polymorphic_identity": 'IdentityProviderRole'}
+
+
+class InformationCustodianRole(Role):
+    """The role of a party responsible for holding, managing or enforcing a consent or the data it covers."""
+
+    __mapper_args__ = {"polymorphic_identity": 'InformationCustodianRole'}
+
+
+class InformationRecipientRole(Role):
+    """The role of a party that a consent provision permits or denies to collect, access, use or disclose information."""
+
+    __mapper_args__ = {"polymorphic_identity": 'InformationRecipientRole'}
+
+
+class ProofingAgentRole(Role):
+    """The role of a person who conducts attended identity proofing for a credential service provider."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ProofingAgentRole'}
+
+
 class ProviderRole(Role):
     """Provider Role"""
 
     __mapper_args__ = {"polymorphic_identity": 'ProviderRole'}
 
 
+class RelyingPartyRole(Role):
+    """The role of a party that relies on an identity assertion or credential."""
+
+    __mapper_args__ = {"polymorphic_identity": 'RelyingPartyRole'}
+
+
 class SubjectRole(Role):
     """Subject Role"""
 
     __mapper_args__ = {"polymorphic_identity": 'SubjectRole'}
+
+
+class TrustedRefereeRole(Role):
+    """The role of a person authorized by a credential service provider to make risk-based identity decisions for applicants who cannot meet the normal evidence requirements (NIST SP 800-63A)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'TrustedRefereeRole'}
 
 
 class BeneficiaryRole(SubjectRole):
@@ -576,6 +800,36 @@ class ClientRole(SubjectRole):
     """Client Role"""
 
     __mapper_args__ = {"polymorphic_identity": 'ClientRole'}
+
+
+class ConsentManagerRole(InformationCustodianRole):
+    """The role of a custodian that maintains the consent record (FHIR Consent.manager)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentManagerRole'}
+
+
+class ConsentProxyRole(ConsentGrantorRole):
+    """The role of a grantor acting for the subject, such as a parent, guardian, legal representative or authorized caregiver."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentProxyRole'}
+
+
+class ConsentSubjectRole(SubjectRole):
+    """The role of the person or group whose information or care a consent concerns."""
+
+    __mapper_args__ = {"polymorphic_identity": 'ConsentSubjectRole'}
+
+
+class DataControllerRole(InformationCustodianRole):
+    """The role of a custodian that determines the purposes and means of processing and enforces the consent (FHIR Consent.controller; GDPR controller)."""
+
+    __mapper_args__ = {"polymorphic_identity": 'DataControllerRole'}
+
+
+class IdentityApplicantRole(SubjectRole):
+    """The role of the entity whose identity is being proofed."""
+
+    __mapper_args__ = {"polymorphic_identity": 'IdentityApplicantRole'}
 
 
 class PatientRole(SubjectRole):
@@ -596,7 +850,7 @@ class SemanticContext(Base):
     __tablename__ = 'semantic_context'
     __table_args__ = (
         sa.CheckConstraint(("type IN ('SemanticContext', 'BehavioralHealthContext', 'ClinicalCareContext', 'HousingContext', "
- "'PublicHealthContext', 'SocialCareContext', 'HousingEligibilityContext')"), name='type'),
+ "'JurisdictionContext', 'PublicHealthContext', 'SocialCareContext', 'HousingEligibilityContext')"), name='type'),
         {"comment": 'ucm:SemanticContext: An interpretive environment, governance scope, or applicability boundary.'},
     )
     __mapper_args__ = {"polymorphic_on": "type", "polymorphic_identity": 'SemanticContext'}
@@ -625,6 +879,12 @@ class HousingContext(SemanticContext):
     """Housing Context"""
 
     __mapper_args__ = {"polymorphic_identity": 'HousingContext'}
+
+
+class JurisdictionContext(SemanticContext):
+    """A legal or administrative region whose rules govern consent or identity, such as a country, state, county, tribal nation or HUD Continuum of Care. Jurisdictions can nest."""
+
+    __mapper_args__ = {"polymorphic_identity": 'JurisdictionContext'}
 
 
 class PublicHealthContext(SemanticContext):
@@ -749,6 +1009,30 @@ entity__accepts_request = sa.Table(
     comment='ucm:acceptsRequest: A participating entity accepts a care coordination request.',
 )
 
+node__achieved_ial = sa.Table(
+    'node__achieved_ial',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:achievedIAL: Relates an identity proofing process or identity to the identity assurance '
+ 'level it reached.'),
+)
+
+process__acknowledges_notice = sa.Table(
+    'process__acknowledges_notice',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('process.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:acknowledgesNotice: Relates a consent interaction to a privacy notice the subject or grantor '
+ 'was given or shown.'),
+)
+
 entity__affiliated_with = sa.Table(
     'entity__affiliated_with',
     Base.metadata,
@@ -760,6 +1044,28 @@ entity__affiliated_with = sa.Table(
     comment='ucm:affiliatedWith: affiliated with',
 )
 
+definition_artifact__amendment_applies_retroactively = sa.Table(
+    'definition_artifact__amendment_applies_retroactively',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('definition_artifact.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("value", sa.Boolean(), nullable=False),
+    comment=('ucm:amendmentAppliesRetroactively: Whether an amendment to the privacy notice applies to '
+ 'information collected before the amendment.'),
+)
+
+node__asserts_identity = sa.Table(
+    'node__asserts_identity',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:assertsIdentity: Relates an identity assertion or credential to the identity it makes claims '
+ 'about.'),
+)
+
 participation__assumes_role = sa.Table(
     'participation__assumes_role',
     Base.metadata,
@@ -769,6 +1075,182 @@ participation__assumes_role = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:assumesRole: assumes role',
+)
+
+node__assurance_rank = sa.Table(
+    'node__assurance_rank',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("value", sa.BigInteger(), nullable=False),
+    comment=('ucm:assuranceRank: An integer rank on an assurance or strength level, so levels in one scheme '
+ 'can be compared with >=.'),
+)
+
+process__authenticated_by = sa.Table(
+    'process__authenticated_by',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('process.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:authenticatedBy: Relates a consent interaction to the authentication of the grantor, when '
+ 'consent is given electronically.'),
+)
+
+process__authorized_by_consent = sa.Table(
+    'process__authorized_by_consent',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('process.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:authorizedByConsent: Relates a process, such as a coordination request, handshake or '
+ 'disclosure, to the consent directive that permits it.'),
+)
+
+entity__certifies = sa.Table(
+    'entity__certifies',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:certifies: Relates an assurance certification to the provider it certifies.',
+)
+
+entity__consent_subject = sa.Table(
+    'entity__consent_subject',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:consentSubject: Relates a consent directive to the participation of the person or group the '
+ 'consent concerns (FHIR Consent.subject).'),
+)
+
+consent_provision__covers_authored_by = sa.Table(
+    'consent_provision__covers_authored_by',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversAuthoredBy: The provision covers information authored by the referenced party (FHIR '
+ 'data.meaning authoredby).'),
+)
+
+consent_provision__covers_confidentiality = sa.Table(
+    'consent_provision__covers_confidentiality',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversConfidentiality: Relates a provision to a confidentiality level of the information it '
+ 'covers (FHIR Consent.provision.securityLabel with a confidentiality code).'),
+)
+
+consent_provision__covers_data_category = sa.Table(
+    'consent_provision__covers_data_category',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:coversDataCategory: Relates a provision to a category of information it covers.',
+)
+
+consent_provision__covers_dependents = sa.Table(
+    'consent_provision__covers_dependents',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversDependents: The provision covers the referenced information and information that '
+ 'depends on it (FHIR data.meaning dependents).'),
+)
+
+consent_provision__covers_information = sa.Table(
+    'consent_provision__covers_information',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversInformation: Relates a provision to specific information it covers, an information '
+ 'artifact or a statement (FHIR Consent.provision.data).'),
+)
+
+consent_provision__covers_instance = sa.Table(
+    'consent_provision__covers_instance',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversInstance: The provision covers exactly the referenced information (FHIR data.meaning '
+ 'instance).'),
+)
+
+consent_provision__covers_related = sa.Table(
+    'consent_provision__covers_related',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversRelated: The provision covers the referenced information and information directly '
+ 'related to it (FHIR data.meaning related).'),
+)
+
+consent_provision__covers_sensitivity = sa.Table(
+    'consent_provision__covers_sensitivity',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:coversSensitivity: Relates a provision to a sensitivity category of the information it '
+ 'covers (FHIR Consent.provision.securityLabel).'),
+)
+
+entity__credential_terms_of_use = sa.Table(
+    'entity__credential_terms_of_use',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:credentialTermsOfUse: Relates a credential to a policy that governs its use (W3C VC '
+ 'termsOfUse).'),
+)
+
+consent_provision__data_period = sa.Table(
+    'consent_provision__data_period',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:dataPeriod: Relates a provision to the time span of the data it covers, as distinct from the '
+ 'period the consent applies (FHIR Consent.provision.dataPeriod).'),
 )
 
 semantic_context__defined_by_artifact = sa.Table(
@@ -805,6 +1287,28 @@ participation__enactive_during = sa.Table(
  'participation is enactive.'),
 )
 
+process__establishes_identity = sa.Table(
+    'process__establishes_identity',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('process.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:establishesIdentity: Relates an identity proofing process to the identity it establishes.',
+)
+
+node__for_purpose = sa.Table(
+    'node__for_purpose',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:forPurpose: Relates a provision or privacy notice to a purpose of use it covers.',
+)
+
 statement__generated_by_process = sa.Table(
     'statement__generated_by_process',
     Base.metadata,
@@ -814,6 +1318,30 @@ statement__generated_by_process = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:generatedByProcess: generated by process',
+)
+
+node__governed_by_policy = sa.Table(
+    'node__governed_by_policy',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:governedByPolicy: Relates a consent directive, provision or program to the consent policy it '
+ 'relies on (FHIR Consent.policyBasis).'),
+)
+
+consent_provision__governs_action = sa.Table(
+    'consent_provision__governs_action',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:governsAction: Relates a provision to an action it permits or denies, such as collect, '
+ 'access, use or disclose.'),
 )
 
 process__has_activity_focus = sa.Table(
@@ -849,6 +1377,88 @@ process__has_client = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:hasClient: Convenience projection derived from participation semantics.',
+)
+
+node__has_confidentiality_level = sa.Table(
+    'node__has_confidentiality_level',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=True),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasConfidentialityLevel: Relates an information artifact or statement to its confidentiality '
+ 'level (HL7 v3 Confidentiality).'),
+)
+
+node__has_consent_decision = sa.Table(
+    'node__has_consent_decision',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=True),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasConsentDecision: Relates a consent directive or provision to its permit or deny decision. '
+ "Every provision states its own decision, the opposite of its parent's."),
+)
+
+node__has_consent_model = sa.Table(
+    'node__has_consent_model',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasConsentModel: Relates a policy, program or notice to its consent model, such as opt-in or '
+ 'opt-out.'),
+)
+
+entity__has_evidence_strength = sa.Table(
+    'entity__has_evidence_strength',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:hasEvidenceStrength: Relates identity evidence to its NIST strength: fair, strong or superior.',
+)
+
+entity__has_evidence_type = sa.Table(
+    'entity__has_evidence_type',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasEvidenceType: Relates identity evidence to its kind: document, electronic record, vouch '
+ 'or electronic signature.'),
+)
+
+entity__has_identifier = sa.Table(
+    'entity__has_identifier',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:hasIdentifier: Relates an identity to an identifier that designates it.',
+)
+
+entity__has_identity = sa.Table(
+    'entity__has_identity',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasIdentity: Relates any entity to an identity by which it is recognized. An entity can have '
+ 'many identities.'),
 )
 
 entity__has_member = sa.Table(
@@ -895,6 +1505,30 @@ process__has_patient = sa.Table(
     comment='ucm:hasPatient: Convenience projection derived from participation semantics.',
 )
 
+node__has_provision = sa.Table(
+    'node__has_provision',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasProvision: Relates a consent directive, or an enclosing provision, to a provision within '
+ 'it (FHIR Consent.provision).'),
+)
+
+node__has_regulatory_basis = sa.Table(
+    'node__has_regulatory_basis',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasRegulatoryBasis: Relates a consent directive or policy to the law or regulation it rests '
+ 'on (FHIR Consent.regulatoryBasis).'),
+)
+
 process__has_resident = sa.Table(
     'process__has_resident',
     Base.metadata,
@@ -904,6 +1538,30 @@ process__has_resident = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:hasResident: Convenience projection derived from participation semantics.',
+)
+
+node__has_retention_disposition = sa.Table(
+    'node__has_retention_disposition',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=True),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasRetentionDisposition: Relates a consent directive or provision to what happens to the '
+ 'data when its retention period ends.'),
+)
+
+node__has_sensitivity_label = sa.Table(
+    'node__has_sensitivity_label',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:hasSensitivityLabel: Relates an information artifact or statement to a sensitivity category, '
+ 'so provisions can match data without listing records (FHIR meta.security).'),
 )
 
 node__has_temporal_context = sa.Table(
@@ -916,6 +1574,52 @@ node__has_temporal_context = sa.Table(
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment=('ucm:hasTemporalContext: Relates a UCM semantic subject to a temporal entity that qualifies when '
  'that subject occurs, obtains, applies, participates, or is otherwise temporally situated.'),
+)
+
+participation__identified_as = sa.Table(
+    'participation__identified_as',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('participation.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:identifiedAs: Relates a participation to the identity under which the participant acted. '
+ "This ties a consent's grantor and subject to identities."),
+)
+
+entity__identity_of = sa.Table(
+    'entity__identity_of',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:identityOf: Relates an identity to the entity it identifies.',
+)
+
+node__in_jurisdiction = sa.Table(
+    'node__in_jurisdiction',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:inJurisdiction: Relates a consent, consent interaction, policy or identifier to the '
+ 'jurisdiction where it was given, is in force or was issued.'),
+)
+
+node__issued_by = sa.Table(
+    'node__issued_by',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:issuedBy: Relates an identifier, credential or certification to the entity that issued it.',
 )
 
 entity__located_at = sa.Table(
@@ -938,6 +1642,18 @@ statement__made_within_context = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:madeWithinContext: made within context',
+)
+
+statement__matches_identity = sa.Table(
+    'statement__matches_identity',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('statement.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:matchesIdentity: Relates a match claim to an identity it says co-refers with the others it '
+ 'names.'),
 )
 
 entity__member_of = sa.Table(
@@ -996,6 +1712,42 @@ participation__participation_context = sa.Table(
     comment='ucm:participationContext: participation context',
 )
 
+definition_artifact__posted_at = sa.Table(
+    'definition_artifact__posted_at',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('definition_artifact.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:postedAt: Relates a privacy notice to a location where it is posted, such as an intake desk.',
+)
+
+node__processing_location = sa.Table(
+    'node__processing_location',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:processingLocation: Relates a consent directive or provision to a jurisdiction where the '
+ 'data may be stored or processed. Several values mean any of them is allowed (ISO/IEC TS 27560 '
+ 'storage and processing locations).'),
+)
+
+consent_provision__provision_actor = sa.Table(
+    'consent_provision__provision_actor',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('consent_provision.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:provisionActor: Relates a provision to the participation of a party it permits or denies '
+ '(FHIR Consent.provision.actor).'),
+)
+
 entity__qualifies_for_membership = sa.Table(
     'entity__qualifies_for_membership',
     Base.metadata,
@@ -1005,6 +1757,73 @@ entity__qualifies_for_membership = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:qualifiesForMembership: qualifies for membership',
+)
+
+entity__record_locked = sa.Table(
+    'entity__record_locked',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("value", sa.Boolean(), nullable=False),
+    comment=("ucm:recordLocked: Convenience flag that the subject's record is locked to other agencies. Prefer "
+ 'a sensitivity label plus a deny provision.'),
+)
+
+entity__records_consent_from = sa.Table(
+    'entity__records_consent_from',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:recordsConsentFrom: Relates a consent directive to the consent interaction that produced, '
+ 'amended or revoked it.'),
+)
+
+node__requires_aal = sa.Table(
+    'node__requires_aal',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:requiresAAL: Relates a consent policy or trust framework to the minimum authenticator '
+ 'assurance level it requires.'),
+)
+
+node__requires_ial = sa.Table(
+    'node__requires_ial',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:requiresIAL: Relates a consent policy or trust framework to the minimum identity assurance '
+ 'level it requires.'),
+)
+
+node__retention_period = sa.Table(
+    'node__retention_period',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=True),
+    sa.Column("value", sa.Text(), nullable=False),
+    comment=('ucm:retentionPeriod: How long data covered by the consent may be kept, as a duration such as P7Y '
+ '(ISO/IEC TS 27560 retention period).'),
+)
+
+entity__revoked_by = sa.Table(
+    'entity__revoked_by',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:revokedBy: Relates a consent directive to the consent interaction that revoked it.',
 )
 
 participation__scoped_by = sa.Table(
@@ -1018,6 +1837,42 @@ participation__scoped_by = sa.Table(
     comment='ucm:scopedBy: scoped by',
 )
 
+definition_artifact__self_consent_condition = sa.Table(
+    'definition_artifact__self_consent_condition',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('definition_artifact.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:selfConsentCondition: Relates a self-consent rule to a condition that unlocks self-consent. '
+ 'Several values mean any one suffices.'),
+)
+
+definition_artifact__self_consent_scope = sa.Table(
+    'definition_artifact__self_consent_scope',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('definition_artifact.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:selfConsentScope: Relates a self-consent rule to a purpose, consent category, information '
+ 'category or sensitivity it covers. No value means all consents.'),
+)
+
+node__source_document = sa.Table(
+    'node__source_document',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:sourceDocument: Relates a consent directive or privacy notice to its source, such as a '
+ 'scanned signed form or the policy text.'),
+)
+
 statement__statement_subject = sa.Table(
     'statement__statement_subject',
     Base.metadata,
@@ -1027,6 +1882,50 @@ statement__statement_subject = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:statementSubject: Relates a statement to the contextual participation it is about.',
+)
+
+entity__supersedes = sa.Table(
+    'entity__supersedes',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('entity.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:supersedes: Relates a consent directive to an earlier directive it amends or renews.',
+)
+
+definition_artifact__trust_framework_identifier = sa.Table(
+    'definition_artifact__trust_framework_identifier',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('definition_artifact.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("value", sa.Text(), nullable=False),
+    comment=('ucm:trustFrameworkIdentifier: The string that names a trust framework in identity claims, such '
+ 'as the OpenID Connect for Identity Assurance trust_framework value.'),
+)
+
+node__under_trust_framework = sa.Table(
+    'node__under_trust_framework',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:underTrustFramework: Relates an identity proofing, assertion, credential or certification to '
+ 'the trust framework whose rules it follows.'),
+)
+
+process__used_evidence = sa.Table(
+    'process__used_evidence',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('process.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment='ucm:usedEvidence: Relates an identity proofing process to evidence it used.',
 )
 
 node__valid_during = sa.Table(
@@ -1039,6 +1938,28 @@ node__valid_during = sa.Table(
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment=('ucm:validDuring: Relates a semantic subject or statement to the temporal extent during which its '
  'described condition, state, relationship, participation, or other semantics apply.'),
+)
+
+node__withdrawal_method = sa.Table(
+    'node__withdrawal_method',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("value", sa.Text(), nullable=False),
+    comment=('ucm:withdrawalMethod: How the person can revoke the consent: a URL, phone number, form or '
+ 'written instructions, as text (ISO/IEC TS 27560 withdrawal method).'),
+)
+
+semantic_context__within_jurisdiction = sa.Table(
+    'semantic_context__within_jurisdiction',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), sa.ForeignKey('semantic_context.iri', ondelete="CASCADE"), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('ucm:withinJurisdiction: Relates a jurisdiction to a larger jurisdiction that contains it, such '
+ 'as a county within a state or a Continuum of Care within a state.'),
 )
 
 
@@ -1058,7 +1979,47 @@ concept = sa.Table(
     comment="SKOS concepts from the UCM concept schemes",
 )
 
-CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#ClientDeclined',
+CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AAL1',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel',
+  'term': 'AAL1',
+  'label': 'AAL1',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AAL2',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel',
+  'term': 'AAL2',
+  'label': 'AAL2',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AAL3',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel',
+  'term': 'AAL3',
+  'label': 'AAL3',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ApproximateOrPartial',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#BirthDateQuality',
+  'term': 'ApproximateOrPartial',
+  'label': 'Approximate or partial',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClientDoesNotKnow',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#BirthDateQuality',
+  'term': 'ClientDoesNotKnow',
+  'label': "Client doesn't know",
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClientPreferNotToAnswer',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#BirthDateQuality',
+  'term': 'ClientPreferNotToAnswer',
+  'label': 'Client prefers not to answer',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#DataNotCollected',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#BirthDateQuality',
+  'term': 'DataNotCollected',
+  'label': 'Data not collected',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FullDateReported',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#BirthDateQuality',
+  'term': 'FullDateReported',
+  'label': 'Full date reported',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClientDeclined',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ClosureReason',
   'term': 'ClientDeclined',
   'label': 'Declined by the person',
@@ -1133,6 +2094,261 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#Cl
   'term': 'CommitmentSuspended',
   'label': 'Suspended',
   'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityLow',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityLow',
+  'label': 'Low',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityModerate',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityModerate',
+  'label': 'Moderate',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityNormal',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityNormal',
+  'label': 'Normal',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityRestricted',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityRestricted',
+  'label': 'Restricted',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityUnrestricted',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityUnrestricted',
+  'label': 'Unrestricted',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConfidentialityVeryRestricted',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConfidentialityLevel',
+  'term': 'ConfidentialityVeryRestricted',
+  'label': 'Very restricted',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AccessAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'AccessAction',
+  'label': 'Access',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CollectAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'CollectAction',
+  'label': 'Collect',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CorrectAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'CorrectAction',
+  'label': 'Access and correct',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#DiscloseAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'DiscloseAction',
+  'label': 'Disclose',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RediscloseAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'RediscloseAction',
+  'label': 'Redisclose',
+  'broader_iri': 'https://www.w3.org/ns/ucm#DiscloseAction'},
+ {'iri': 'https://www.w3.org/ns/ucm#UseAction',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
+  'term': 'UseAction',
+  'label': 'Use',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AdvanceDirective',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'AdvanceDirective',
+  'label': 'Advance directive',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentToCollect',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'ConsentToCollect',
+  'label': 'Consent to collect',
+  'broader_iri': 'https://www.w3.org/ns/ucm#PrivacyConsent'},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentToShare',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'ConsentToShare',
+  'label': 'Consent to share',
+  'broader_iri': 'https://www.w3.org/ns/ucm#PrivacyConsent'},
+ {'iri': 'https://www.w3.org/ns/ucm#PrivacyConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'PrivacyConsent',
+  'label': 'Privacy consent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ReleaseOfInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'ReleaseOfInformation',
+  'label': 'Release of information',
+  'broader_iri': 'https://www.w3.org/ns/ucm#PrivacyConsent'},
+ {'iri': 'https://www.w3.org/ns/ucm#ResearchConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'ResearchConsent',
+  'label': 'Research consent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#TreatmentConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentCategory',
+  'term': 'TreatmentConsent',
+  'label': 'Treatment consent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Deny',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentDecision',
+  'term': 'Deny',
+  'label': 'Deny',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Permit',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentDecision',
+  'term': 'Permit',
+  'label': 'Permit',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentAmendment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentAmendment',
+  'label': 'Amend',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentGrant',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentGrant',
+  'label': 'Grant',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentRefusal',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentRefusal',
+  'label': 'Refuse',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentRenewal',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentRenewal',
+  'label': 'Renew',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentRevocation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentRevocation',
+  'label': 'Revoke',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentVerification',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentInteractionType',
+  'term': 'ConsentVerification',
+  'label': 'Verify',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ElectronicConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModality',
+  'term': 'ElectronicConsent',
+  'label': 'Electronic',
+  'broader_iri': 'https://www.w3.org/ns/ucm#WrittenConsent'},
+ {'iri': 'https://www.w3.org/ns/ucm#InferredConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModality',
+  'term': 'InferredConsent',
+  'label': 'Inferred',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#VerbalConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModality',
+  'term': 'VerbalConsent',
+  'label': 'Verbal',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#WrittenConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModality',
+  'term': 'WrittenConsent',
+  'label': 'Written',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#NoConsentRequired',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModel',
+  'term': 'NoConsentRequired',
+  'label': 'No consent required',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OptIn',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModel',
+  'term': 'OptIn',
+  'label': 'Opt-in',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OptInWithRestrictions',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModel',
+  'term': 'OptInWithRestrictions',
+  'label': 'Opt-in with restrictions',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OptOut',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModel',
+  'term': 'OptOut',
+  'label': 'Opt-out',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OptOutWithExceptions',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentModel',
+  'term': 'OptOutWithExceptions',
+  'label': 'Opt-out with exceptions',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentActive',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentActive',
+  'label': 'Active',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentDraft',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentDraft',
+  'label': 'Draft',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentEnteredInError',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentEnteredInError',
+  'label': 'Entered in error',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentExpired',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentExpired',
+  'label': 'Expired',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentInactive',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentInactive',
+  'label': 'Inactive',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentRefused',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentRefused',
+  'label': 'Refused',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentRevoked',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentRevoked',
+  'label': 'Revoked',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentStatusUnknown',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentStatusUnknown',
+  'label': 'Unknown',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ConsentSuperseded',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentSuperseded',
+  'label': 'Superseded',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
+ {'iri': 'https://www.w3.org/ns/ucm#FairEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#EvidenceStrength',
+  'term': 'FairEvidence',
+  'label': 'Fair',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#StrongEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#EvidenceStrength',
+  'term': 'StrongEvidence',
+  'label': 'Strong',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SuperiorEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#EvidenceStrength',
+  'term': 'SuperiorEvidence',
+  'label': 'Superior',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FAL1',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#FederationAssuranceLevel',
+  'term': 'FAL1',
+  'label': 'FAL1',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FAL2',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#FederationAssuranceLevel',
+  'term': 'FAL2',
+  'label': 'FAL2',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FAL3',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#FederationAssuranceLevel',
+  'term': 'FAL3',
+  'label': 'FAL3',
+  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#HandoffAcknowledged',
   'scheme_iri': 'https://www.w3.org/ns/ucm#HandoffStatus',
   'term': 'HandoffAcknowledged',
@@ -1183,6 +2399,136 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#Cl
   'term': 'FulfillmentReported',
   'label': 'Reported delivered',
   'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#DecentralizedIdentifier',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'DecentralizedIdentifier',
+  'label': 'Decentralized identifier',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#DriversLicenseNumber',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'DriversLicenseNumber',
+  'label': "Driver's license number",
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HMISPersonalID',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'HMISPersonalID',
+  'label': 'HMIS Personal ID',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MedicaidID',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'MedicaidID',
+  'label': 'Medicaid ID',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MedicalRecordNumber',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'MedicalRecordNumber',
+  'label': 'Medical record number',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OIDCSubject',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'OIDCSubject',
+  'label': 'OpenID Connect subject',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OtherIdentifier',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'OtherIdentifier',
+  'label': 'Other identifier',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SocialSecurityNumber',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'SocialSecurityNumber',
+  'label': 'Social Security number',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#StateIDNumber',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentifierType',
+  'term': 'StateIDNumber',
+  'label': 'State ID number',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#IAL1',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityAssuranceLevel',
+  'term': 'IAL1',
+  'label': 'IAL1',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#IAL2',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityAssuranceLevel',
+  'term': 'IAL2',
+  'label': 'IAL2',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#IAL3',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityAssuranceLevel',
+  'term': 'IAL3',
+  'label': 'IAL3',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#NoIdentityProofing',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityAssuranceLevel',
+  'term': 'NoIdentityProofing',
+  'label': 'No identity proofing',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#DocumentEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityEvidenceType',
+  'term': 'DocumentEvidence',
+  'label': 'Document',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ElectronicRecordEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityEvidenceType',
+  'term': 'ElectronicRecordEvidence',
+  'label': 'Electronic record',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ElectronicSignatureEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityEvidenceType',
+  'term': 'ElectronicSignatureEvidence',
+  'label': 'Electronic signature',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#VouchEvidence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#IdentityEvidenceType',
+  'term': 'VouchEvidence',
+  'label': 'Vouch',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#BehavioralHealthInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'BehavioralHealthInformation',
+  'label': 'Behavioral health information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ChildWelfareInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'ChildWelfareInformation',
+  'label': 'Child welfare information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ClinicalInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'ClinicalInformation',
+  'label': 'Clinical information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#EducationInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'EducationInformation',
+  'label': 'Education information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HousingInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'HousingInformation',
+  'label': 'Housing information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#IdentifyingInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'IdentifyingInformation',
+  'label': 'Identifying information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#IncomeAndBenefitsInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'IncomeAndBenefitsInformation',
+  'label': 'Income and benefits information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#JusticeInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'JusticeInformation',
+  'label': 'Justice information',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#NutritionInformation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
+  'term': 'NutritionInformation',
+  'label': 'Nutrition information',
+  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#Accepted',
   'scheme_iri': 'https://www.w3.org/ns/ucm#LifecycleState',
   'term': 'Accepted',
@@ -1197,6 +2543,116 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#Cl
   'scheme_iri': 'https://www.w3.org/ns/ucm#LifecycleState',
   'term': 'Pending',
   'label': 'Pending Care Coordination Lifecycle',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OnsiteAttendedProofing',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ProofingType',
+  'term': 'OnsiteAttendedProofing',
+  'label': 'On-site attended',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#OnsiteUnattendedProofing',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ProofingType',
+  'term': 'OnsiteUnattendedProofing',
+  'label': 'On-site unattended',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RemoteAttendedProofing',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ProofingType',
+  'term': 'RemoteAttendedProofing',
+  'label': 'Remote attended',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RemoteUnattendedProofing',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ProofingType',
+  'term': 'RemoteUnattendedProofing',
+  'label': 'Remote unattended',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#BenefitsEnrollment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'BenefitsEnrollment',
+  'label': 'Benefits enrollment',
+  'broader_iri': 'https://www.w3.org/ns/ucm#EligibilityPurpose'},
+ {'iri': 'https://www.w3.org/ns/ucm#CareCoordination',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'CareCoordination',
+  'label': 'Care coordination',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CareManagement',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'CareManagement',
+  'label': 'Care management',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CoordinatedEntry',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'CoordinatedEntry',
+  'label': 'Coordinated entry',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination'},
+ {'iri': 'https://www.w3.org/ns/ucm#EligibilityPurpose',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'EligibilityPurpose',
+  'label': 'Eligibility determination',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#EmergencyTreatment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'EmergencyTreatment',
+  'label': 'Emergency treatment',
+  'broader_iri': 'https://www.w3.org/ns/ucm#Treatment'},
+ {'iri': 'https://www.w3.org/ns/ucm#FamilyRequested',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'FamilyRequested',
+  'label': 'Family requested',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HealthcareOperations',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'HealthcareOperations',
+  'label': 'Operations',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HousingPlacement',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'HousingPlacement',
+  'label': 'Housing placement',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination'},
+ {'iri': 'https://www.w3.org/ns/ucm#PatientRequested',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'PatientRequested',
+  'label': 'Person requested',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Payment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'Payment',
+  'label': 'Payment',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ProgramReporting',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'ProgramReporting',
+  'label': 'Program reporting',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#PublicHealthPurpose',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'PublicHealthPurpose',
+  'label': 'Public health',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ResearchPurpose',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'ResearchPurpose',
+  'label': 'Research',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'SocialCareCoordination',
+  'label': 'Social care coordination',
+  'broader_iri': 'https://www.w3.org/ns/ucm#CareCoordination'},
+ {'iri': 'https://www.w3.org/ns/ucm#SocialCaseManagement',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'SocialCaseManagement',
+  'label': 'Social case management',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination'},
+ {'iri': 'https://www.w3.org/ns/ucm#SocialServicesReferral',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'SocialServicesReferral',
+  'label': 'Social services referral',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination'},
+ {'iri': 'https://www.w3.org/ns/ucm#Treatment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
+  'term': 'Treatment',
+  'label': 'Treatment',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#ReferralAccepted',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
@@ -1222,6 +2678,211 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#Cl
   'scheme_iri': 'https://www.w3.org/ns/ucm#ReferralDisposition',
   'term': 'ReferralWithdrawn',
   'label': 'Withdrawn',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CFR42Part2',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'CFR42Part2',
+  'label': '42 CFR Part 2',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#CommonRule',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'CommonRule',
+  'label': 'Common Rule',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#FERPA',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'FERPA',
+  'label': 'FERPA',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#GDPR',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'GDPR',
+  'label': 'GDPR',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HIPAA',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'HIPAA',
+  'label': 'HIPAA',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HIPAAAuthorization',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'HIPAAAuthorization',
+  'label': 'HIPAA authorization',
+  'broader_iri': 'https://www.w3.org/ns/ucm#HIPAA'},
+ {'iri': 'https://www.w3.org/ns/ucm#HIPAANoticeOfPrivacyPractices',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'HIPAANoticeOfPrivacyPractices',
+  'label': 'HIPAA notice of privacy practices',
+  'broader_iri': 'https://www.w3.org/ns/ucm#HIPAA'},
+ {'iri': 'https://www.w3.org/ns/ucm#HIPAAResearch',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'HIPAAResearch',
+  'label': 'HIPAA research',
+  'broader_iri': 'https://www.w3.org/ns/ucm#HIPAA'},
+ {'iri': 'https://www.w3.org/ns/ucm#HMISDataStandards',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'HMISDataStandards',
+  'label': 'HMIS Data Standards',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#StateLaw',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'StateLaw',
+  'label': 'State law',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#VAWA',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'VAWA',
+  'label': 'VAWA',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RetentionArchive',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RetentionDisposition',
+  'term': 'RetentionArchive',
+  'label': 'Archive',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RetentionDeidentify',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RetentionDisposition',
+  'term': 'RetentionDeidentify',
+  'label': 'De-identify',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#RetentionDelete',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RetentionDisposition',
+  'term': 'RetentionDelete',
+  'label': 'Delete',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AgeOfMajority',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'AgeOfMajority',
+  'label': 'Age of majority',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#EmancipatedMinor',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'EmancipatedMinor',
+  'label': 'Emancipated minor',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MarriedMinor',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'MarriedMinor',
+  'label': 'Married minor',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MatureMinor',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'MatureMinor',
+  'label': 'Mature minor',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MinorParent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'MinorParent',
+  'label': 'Minor parent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#PostsecondaryEnrollment',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'PostsecondaryEnrollment',
+  'label': 'Postsecondary enrollment',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SelfSupporting',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'SelfSupporting',
+  'label': 'Self-supporting',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#ServiceSpecificMinorConsent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'ServiceSpecificMinorConsent',
+  'label': 'Service-specific minor consent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#UnaccompaniedYouthStatus',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SelfConsentCondition',
+  'term': 'UnaccompaniedYouthStatus',
+  'label': 'Unaccompanied youth',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#Abortion',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'Abortion',
+  'label': 'Abortion',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SexualAndReproductiveHealth'},
+ {'iri': 'https://www.w3.org/ns/ucm#Adolescent',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'Adolescent',
+  'label': 'Adolescent',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#AlcoholUseDisorder',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'AlcoholUseDisorder',
+  'label': 'Alcohol use disorder',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SubstanceUseDisorder'},
+ {'iri': 'https://www.w3.org/ns/ucm#BehavioralHealth',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'BehavioralHealth',
+  'label': 'Behavioral health',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#GenderAndSexualOrientation',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'GenderAndSexualOrientation',
+  'label': 'Gender and sexual orientation',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#GeneticDisease',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'GeneticDisease',
+  'label': 'Genetic disease',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HIV',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'HIV',
+  'label': 'HIV/AIDS',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#HumanTrafficking',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'HumanTrafficking',
+  'label': 'Human trafficking',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#MentalHealth',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'MentalHealth',
+  'label': 'Mental health',
+  'broader_iri': 'https://www.w3.org/ns/ucm#BehavioralHealth'},
+ {'iri': 'https://www.w3.org/ns/ucm#OpioidUseDisorder',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'OpioidUseDisorder',
+  'label': 'Opioid use disorder',
+  'broader_iri': 'https://www.w3.org/ns/ucm#SubstanceUseDisorder'},
+ {'iri': 'https://www.w3.org/ns/ucm#Part2Protected',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'Part2Protected',
+  'label': '42 CFR Part 2 protected',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#PsychiatricDisorder',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'PsychiatricDisorder',
+  'label': 'Psychiatric disorder',
+  'broader_iri': 'https://www.w3.org/ns/ucm#BehavioralHealth'},
+ {'iri': 'https://www.w3.org/ns/ucm#PsychotherapyNote',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'PsychotherapyNote',
+  'label': 'Psychotherapy note',
+  'broader_iri': 'https://www.w3.org/ns/ucm#BehavioralHealth'},
+ {'iri': 'https://www.w3.org/ns/ucm#SexualAndReproductiveHealth',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'SexualAndReproductiveHealth',
+  'label': 'Sexual and reproductive health',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SexualAssaultAbuseDomesticViolence',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'SexualAssaultAbuseDomesticViolence',
+  'label': 'Sexual assault, abuse or domestic violence',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SexuallyTransmittedDisease',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'SexuallyTransmittedDisease',
+  'label': 'Sexually transmitted disease',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#SubstanceUseDisorder',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'SubstanceUseDisorder',
+  'label': 'Substance use disorder',
+  'broader_iri': None},
+ {'iri': 'https://www.w3.org/ns/ucm#UnaccompaniedYouth',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#SensitivityCategory',
+  'term': 'UnaccompaniedYouth',
+  'label': 'Unaccompanied youth',
   'broader_iri': None}]
 
 
@@ -1229,7 +2890,7 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#Cl
 # JSON-LD node <-> rows
 # ============================================================================
 
-ROOT_CLASSES: List[Type[Base]] = [ActivityFocus, BehavioralHealthDomain, CareCommitment, CareCoverageGap, CareCoverageRequirement, CareTrajectoryContext, ClinicalDomain, DefinitionArtifact, Entity, HousingDomain, Membership, MembershipCriteria, Participation, Process, PublicHealthDomain, Role, SemanticContext, SocialCareDomain, Statement]
+ROOT_CLASSES: List[Type[Base]] = [ActivityFocus, BehavioralHealthDomain, CareCommitment, CareCoverageGap, CareCoverageRequirement, CareTrajectoryContext, ClinicalDomain, ConsentProvision, DefinitionArtifact, Entity, HousingDomain, Membership, MembershipCriteria, Participation, Process, PublicHealthDomain, Role, SemanticContext, SocialCareDomain, Statement]
 
 CLASSES: Dict[str, Type[Base]] = {
     'ActivityFocus': ActivityFocus,
@@ -1239,11 +2900,16 @@ CLASSES: Dict[str, Type[Base]] = {
     'CareCoverageRequirement': CareCoverageRequirement,
     'CareTrajectoryContext': CareTrajectoryContext,
     'ClinicalDomain': ClinicalDomain,
+    'ConsentProvision': ConsentProvision,
     'DefinitionArtifact': DefinitionArtifact,
     'EligibilityRuleset': EligibilityRuleset,
     'PolicyDefinition': PolicyDefinition,
     'ProgramDefinition': ProgramDefinition,
     'SemanticConstraint': SemanticConstraint,
+    'ConsentPolicy': ConsentPolicy,
+    'PrivacyNotice': PrivacyNotice,
+    'TrustFramework': TrustFramework,
+    'SelfConsentRule': SelfConsentRule,
     'Entity': Entity,
     'Device': Device,
     'InformationArtifact': InformationArtifact,
@@ -1251,37 +2917,64 @@ CLASSES: Dict[str, Type[Base]] = {
     'Organization': Organization,
     'Person': Person,
     'SocialGroupEntity': SocialGroupEntity,
+    'AssuranceCertification': AssuranceCertification,
     'CareTeam': CareTeam,
     'CommunityGroup': CommunityGroup,
+    'ConsentDirective': ConsentDirective,
+    'Credential': Credential,
     'Household': Household,
+    'Identifier': Identifier,
+    'Identity': Identity,
+    'IdentityAssertion': IdentityAssertion,
+    'IdentityEvidence': IdentityEvidence,
     'HousingDomain': HousingDomain,
     'Membership': Membership,
     'MembershipCriteria': MembershipCriteria,
     'Participation': Participation,
     'Process': Process,
+    'Authentication': Authentication,
     'CareCoordinationInteraction': CareCoordinationInteraction,
+    'ConsentInteraction': ConsentInteraction,
     'CoordinationRequest': CoordinationRequest,
     'CoordinativeActivity': CoordinativeActivity,
     'EligibilityDetermination': EligibilityDetermination,
     'Encounter': Encounter,
     'HousingAssessment': HousingAssessment,
+    'IdentityProofing': IdentityProofing,
     'SocialCareInteraction': SocialCareInteraction,
     'ClinicalEncounter': ClinicalEncounter,
     'Handshake': Handshake,
     'PublicHealthDomain': PublicHealthDomain,
     'Role': Role,
+    'ApplicantReferenceRole': ApplicantReferenceRole,
     'CaregiverRole': CaregiverRole,
+    'ConsentGrantorRole': ConsentGrantorRole,
+    'ConsentVerifierRole': ConsentVerifierRole,
+    'ConsentWitnessRole': ConsentWitnessRole,
     'CoordinatorRole': CoordinatorRole,
+    'CredentialServiceProviderRole': CredentialServiceProviderRole,
+    'IdentityProviderRole': IdentityProviderRole,
+    'InformationCustodianRole': InformationCustodianRole,
+    'InformationRecipientRole': InformationRecipientRole,
+    'ProofingAgentRole': ProofingAgentRole,
     'ProviderRole': ProviderRole,
+    'RelyingPartyRole': RelyingPartyRole,
     'SubjectRole': SubjectRole,
+    'TrustedRefereeRole': TrustedRefereeRole,
     'BeneficiaryRole': BeneficiaryRole,
     'ClientRole': ClientRole,
+    'ConsentManagerRole': ConsentManagerRole,
+    'ConsentProxyRole': ConsentProxyRole,
+    'ConsentSubjectRole': ConsentSubjectRole,
+    'DataControllerRole': DataControllerRole,
+    'IdentityApplicantRole': IdentityApplicantRole,
     'PatientRole': PatientRole,
     'ResidentRole': ResidentRole,
     'SemanticContext': SemanticContext,
     'BehavioralHealthContext': BehavioralHealthContext,
     'ClinicalCareContext': ClinicalCareContext,
     'HousingContext': HousingContext,
+    'JurisdictionContext': JurisdictionContext,
     'PublicHealthContext': PublicHealthContext,
     'SocialCareContext': SocialCareContext,
     'HousingEligibilityContext': HousingEligibilityContext,
@@ -1300,15 +2993,28 @@ CLASSES: Dict[str, Type[Base]] = {
 # property term -> (table, attribute, conversion)
 COLUMNS: Dict[str, Tuple[str, str, str]] = {
     'hasCommitmentStatus': ('care_commitment', 'has_commitment_status', 'reference'),
+    'minimumSelfConsentAge': ('definition_artifact', 'minimum_self_consent_age', 'int'),
+    'achievedFAL': ('entity', 'achieved_fal', 'reference'),
+    'birthDate': ('entity', 'birth_date', 'date'),
+    'birthDateQuality': ('entity', 'birth_date_quality', 'reference'),
+    'hasConsentCategory': ('entity', 'has_consent_category', 'reference'),
+    'hasConsentStatus': ('entity', 'has_consent_status', 'reference'),
+    'hasIdentifierType': ('entity', 'has_identifier_type', 'reference'),
+    'identifierSystem': ('entity', 'identifier_system', 'str'),
+    'identifierValue': ('entity', 'identifier_value', 'str'),
     'membershipIn': ('membership', 'membership_in', 'reference'),
     'occursWithin': ('participation', 'occurs_within', 'reference'),
     'participatingEntity': ('participation', 'participating_entity', 'reference'),
     'validFrom': ('participation', 'valid_from', 'datetime'),
     'validTo': ('participation', 'valid_to', 'datetime'),
+    'achievedAAL': ('process', 'achieved_aal', 'reference'),
     'hasClosureReason': ('process', 'has_closure_reason', 'reference'),
+    'hasConsentInteractionType': ('process', 'has_consent_interaction_type', 'reference'),
+    'hasConsentModality': ('process', 'has_consent_modality', 'reference'),
     'hasHandoffStatus': ('process', 'has_handoff_status', 'reference'),
     'hasHandshakeFulfillment': ('process', 'has_handshake_fulfillment', 'reference'),
     'hasLifecycleState': ('process', 'has_lifecycle_state', 'reference'),
+    'hasProofingType': ('process', 'has_proofing_type', 'reference'),
     'hasReferralDisposition': ('process', 'has_referral_disposition', 'reference'),
     'statementDate': ('statement', 'statement_date', 'datetime'),
 }
@@ -1316,32 +3022,89 @@ COLUMNS: Dict[str, Tuple[str, str, str]] = {
 # property term -> (association table, owner table or None, conversion)
 ASSOCIATIONS: Dict[str, Tuple[sa.Table, Optional[str], str]] = {
     'acceptsRequest': (entity__accepts_request, 'entity', 'reference'),
+    'achievedIAL': (node__achieved_ial, None, 'reference'),
+    'acknowledgesNotice': (process__acknowledges_notice, 'process', 'reference'),
     'affiliatedWith': (entity__affiliated_with, 'entity', 'reference'),
+    'amendmentAppliesRetroactively': (definition_artifact__amendment_applies_retroactively, 'definition_artifact', 'bool'),
+    'assertsIdentity': (node__asserts_identity, None, 'reference'),
     'assumesRole': (participation__assumes_role, 'participation', 'reference'),
+    'assuranceRank': (node__assurance_rank, None, 'int'),
+    'authenticatedBy': (process__authenticated_by, 'process', 'reference'),
+    'authorizedByConsent': (process__authorized_by_consent, 'process', 'reference'),
+    'certifies': (entity__certifies, 'entity', 'reference'),
+    'consentSubject': (entity__consent_subject, 'entity', 'reference'),
+    'coversAuthoredBy': (consent_provision__covers_authored_by, 'consent_provision', 'reference'),
+    'coversConfidentiality': (consent_provision__covers_confidentiality, 'consent_provision', 'reference'),
+    'coversDataCategory': (consent_provision__covers_data_category, 'consent_provision', 'reference'),
+    'coversDependents': (consent_provision__covers_dependents, 'consent_provision', 'reference'),
+    'coversInformation': (consent_provision__covers_information, 'consent_provision', 'reference'),
+    'coversInstance': (consent_provision__covers_instance, 'consent_provision', 'reference'),
+    'coversRelated': (consent_provision__covers_related, 'consent_provision', 'reference'),
+    'coversSensitivity': (consent_provision__covers_sensitivity, 'consent_provision', 'reference'),
+    'credentialTermsOfUse': (entity__credential_terms_of_use, 'entity', 'reference'),
+    'dataPeriod': (consent_provision__data_period, 'consent_provision', 'reference'),
     'definedByArtifact': (semantic_context__defined_by_artifact, 'semantic_context', 'reference'),
     'definedByCriteria': (entity__defined_by_criteria, 'entity', 'reference'),
     'enactiveDuring': (participation__enactive_during, 'participation', 'reference'),
+    'establishesIdentity': (process__establishes_identity, 'process', 'reference'),
+    'forPurpose': (node__for_purpose, None, 'reference'),
     'generatedByProcess': (statement__generated_by_process, 'statement', 'reference'),
+    'governedByPolicy': (node__governed_by_policy, None, 'reference'),
+    'governsAction': (consent_provision__governs_action, 'consent_provision', 'reference'),
     'hasActivityFocus': (process__has_activity_focus, 'process', 'reference'),
     'hasCareTrajectoryContext': (node__has_care_trajectory_context, None, 'reference'),
     'hasClient': (process__has_client, 'process', 'reference'),
+    'hasConfidentialityLevel': (node__has_confidentiality_level, None, 'reference'),
+    'hasConsentDecision': (node__has_consent_decision, None, 'reference'),
+    'hasConsentModel': (node__has_consent_model, None, 'reference'),
+    'hasEvidenceStrength': (entity__has_evidence_strength, 'entity', 'reference'),
+    'hasEvidenceType': (entity__has_evidence_type, 'entity', 'reference'),
+    'hasIdentifier': (entity__has_identifier, 'entity', 'reference'),
+    'hasIdentity': (entity__has_identity, 'entity', 'reference'),
     'hasMember': (entity__has_member, 'entity', 'reference'),
     'hasMembership': (entity__has_membership, 'entity', 'reference'),
     'hasParticipant': (process__has_participant, 'process', 'reference'),
     'hasPatient': (process__has_patient, 'process', 'reference'),
+    'hasProvision': (node__has_provision, None, 'reference'),
+    'hasRegulatoryBasis': (node__has_regulatory_basis, None, 'reference'),
     'hasResident': (process__has_resident, 'process', 'reference'),
+    'hasRetentionDisposition': (node__has_retention_disposition, None, 'reference'),
+    'hasSensitivityLabel': (node__has_sensitivity_label, None, 'reference'),
     'hasTemporalContext': (node__has_temporal_context, None, 'reference'),
+    'identifiedAs': (participation__identified_as, 'participation', 'reference'),
+    'identityOf': (entity__identity_of, 'entity', 'reference'),
+    'inJurisdiction': (node__in_jurisdiction, None, 'reference'),
+    'issuedBy': (node__issued_by, None, 'reference'),
     'locatedAt': (entity__located_at, 'entity', 'reference'),
     'madeWithinContext': (statement__made_within_context, 'statement', 'reference'),
+    'matchesIdentity': (statement__matches_identity, 'statement', 'reference'),
     'memberOf': (entity__member_of, 'entity', 'reference'),
     'negotiates': (process__negotiates, 'process', 'reference'),
     'occursDuring': (process__occurs_during, 'process', 'reference'),
     'participatesThrough': (entity__participates_through, 'entity', 'reference'),
     'participationContext': (participation__participation_context, 'participation', 'reference'),
+    'postedAt': (definition_artifact__posted_at, 'definition_artifact', 'reference'),
+    'processingLocation': (node__processing_location, None, 'reference'),
+    'provisionActor': (consent_provision__provision_actor, 'consent_provision', 'reference'),
     'qualifiesForMembership': (entity__qualifies_for_membership, 'entity', 'reference'),
+    'recordLocked': (entity__record_locked, 'entity', 'bool'),
+    'recordsConsentFrom': (entity__records_consent_from, 'entity', 'reference'),
+    'requiresAAL': (node__requires_aal, None, 'reference'),
+    'requiresIAL': (node__requires_ial, None, 'reference'),
+    'retentionPeriod': (node__retention_period, None, 'str'),
+    'revokedBy': (entity__revoked_by, 'entity', 'reference'),
     'scopedBy': (participation__scoped_by, 'participation', 'reference'),
+    'selfConsentCondition': (definition_artifact__self_consent_condition, 'definition_artifact', 'reference'),
+    'selfConsentScope': (definition_artifact__self_consent_scope, 'definition_artifact', 'reference'),
+    'sourceDocument': (node__source_document, None, 'reference'),
     'statementSubject': (statement__statement_subject, 'statement', 'reference'),
+    'supersedes': (entity__supersedes, 'entity', 'reference'),
+    'trustFrameworkIdentifier': (definition_artifact__trust_framework_identifier, 'definition_artifact', 'str'),
+    'underTrustFramework': (node__under_trust_framework, None, 'reference'),
+    'usedEvidence': (process__used_evidence, 'process', 'reference'),
     'validDuring': (node__valid_during, None, 'reference'),
+    'withdrawalMethod': (node__withdrawal_method, None, 'str'),
+    'withinJurisdiction': (semantic_context__within_jurisdiction, 'semantic_context', 'reference'),
 }
 
 KEYWORDS = {"@id", "@type", "@context"}
@@ -1478,8 +3241,11 @@ def dump(session: Session, iri: str) -> Optional[Dict[str, Any]]:
         ).mappings().all()
         if rows:
             if kind == "reference":
-                node[term] = [r["object_iri"] if r["object_iri"] is not None else r["object_node"] for r in rows]
+                values = [r["object_iri"] if r["object_iri"] is not None else r["object_node"] for r in rows]
             else:
-                node[term] = [_to_json(r["value"], kind) for r in rows]
+                values = [_to_json(r["value"], kind) for r in rows]
+            # A single-valued property with no home class (a union domain) is stored
+            # here with a unique subject; the context term carries one value, not a set.
+            node[term] = values[0] if assoc.c.subject_iri.unique else values
     node.update(row.extra or {})
     return node

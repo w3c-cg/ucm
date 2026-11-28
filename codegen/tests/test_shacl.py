@@ -28,7 +28,8 @@ def test_namespace_drift_breaks_the_baseline(regressed_compilation, example_grap
     """With the vocabulary in another namespace, every concept value in the baseline loses its anchor"""
     report = run(regressed_compilation, example_graph)
     assert all(r.severity == Severity.WARNING and r.tier == Tier.RECOMMENDED for r in report.results)
-    assert {(r.focus_node, r.value, r.source_shape) for r in report.results} == {
+    baseline_nodes = {str(EX["req-1"]), str(EX["hs-1"]), str(EX["commit-1"])}
+    assert {(r.focus_node, r.value, r.source_shape) for r in report.results if r.focus_node in baseline_nodes} == {
         (str(EX[node]), str(UCM[concept]), f"https://www.w3.org/ns/ucm#{scheme}-anchored")
         for node, concept, scheme in [
             ("req-1", "Accepted", "LifecycleState"),

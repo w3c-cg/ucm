@@ -33,8 +33,8 @@ def test_lifecycle_namespace_drift(regressed_compilation):
     assert drift.subject == "https://www.w3.org/ns/ucm#"
     assert "declared only under <http://mdixinc.com/ucm#>" in drift.message
     # every scheme the shapes anchor to, plus the concepts the cross-scheme checks name
-    assert drift.message.startswith("11 terms (ClosureReason, CommitmentStatus, ")
-    assert "LifecycleState" in drift.message
+    assert drift.message.startswith("37 terms (AuthenticatorAssuranceLevel, BirthDateQuality, ")
+    assert "and 31 more" in drift.message  # LifecycleState is among the names not listed
 
 
 def test_accepts_request_range(regressed_compilation):
@@ -72,7 +72,7 @@ def test_spec_lint_catches_untiered_shape(compilation, tmp_path):
 
 def test_informational_findings(compilation):
     coercions = {f.subject for f in by_code(compilation, "datatype-coercion")}
-    assert coercions == {"ucm:statementDate", "ucm:validFrom", "ucm:validTo"}
+    assert coercions == {"ucm:birthDate", "ucm:statementDate", "ucm:validFrom", "ucm:validTo"}
     orphans = {f.subject for f in by_code(compilation, "orphan-class")}
     assert {"ucm:CareCoverageGap", "ucm:CareCoverageRequirement", "ucm:HousingDomain"} <= orphans
     assert "ucm:CareCommitment" not in orphans  # hasCommitmentStatus connects it
@@ -104,7 +104,7 @@ def test_namespace_split_is_one_clear_finding(split_compilation):
     (drift,) = by_code(split_compilation, "namespace-drift")
     assert drift.subject == "https://www.w3.org/ns/ucm#"
     assert f"declared only under <{MOVED_NAMESPACE}>" in drift.message
-    assert drift.message.startswith("63 terms (ActivityFocus, ")  # every UCM term the shapes use
+    assert drift.message.startswith("172 terms (ActivityFocus, ")  # every UCM term the shapes use
     assert "Align the @prefix" in drift.message
     assert not by_code(split_compilation, "undeclared-term")  # no per-term flood
 

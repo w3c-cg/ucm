@@ -90,6 +90,12 @@ def test_resource_types_and_identity(bundle):
         "enc-1": "Encounter",
         "req-1": "Task",
         "stmt-1": "Observation",   # HousingEligibilityStatement via HousingStatement
+        # consent and identity examples: people, households, organizations, a location
+        # (no FHIR Consent mapping yet, so directives are not in the bundle)
+        **{p: "Patient" for p in ("ruth", "jameson", "madison", "sarah", "youth", "liaison", "proofer")},
+        **{o: "Organization" for o in ("org-assessor", "org-clinic", "org-csp", "org-lead-agency", "org-state-e")},
+        "hh-thomson": "Group",
+        "loc-intake": "Location",
     }
     assert found["req-1"]["meta"]["tag"] == [{"system": "https://www.w3.org/ns/ucm#", "code": "CoordinationRequest"}]
 
@@ -223,3 +229,4 @@ def test_concept_coding_is_checked(compilation, field, message):
         FhirCompiler(compilation.ir, mapping_with({"CoordinationRequest": {"resource": "Task", "fields": {
             "statusReason": field}}})).compile()
     assert any(message in e for e in error.value.errors), error.value.errors
+

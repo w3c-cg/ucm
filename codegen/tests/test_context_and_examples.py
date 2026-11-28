@@ -64,7 +64,7 @@ def test_every_example_validates_against_its_schema(spec, validators):
             errors = [e.message for e in validators(schema.name).iter_errors(example)]
             assert errors == [], f"{schema.name} {example['@id']}: {errors}"
             checked += 1
-    assert checked == 29
+    assert checked == 119
 
 
 def test_schemas_reject_definitional_defects(spec, validators):
@@ -94,7 +94,10 @@ def test_date_time_stamp_does_not_compact(compilation, spec, example_graph):
     _, warnings = build_examples(example_graph, compilation.ir, spec.context)
     assert warnings == [
         "http://example.org/ucm/stmt-1: ucm:statementDate did not compact to a context term "
-        "(value datatype differs from the term's coercion)"
+        "(value datatype differs from the term's coercion)",
+        # birthDate coerces to xsd:date; a partial date (xsd:gYearMonth) stays under the full IRI
+        "http://example.org/ucm/youth: ucm:birthDate did not compact to a context term "
+        "(value datatype differs from the term's coercion)",
     ]
 
 

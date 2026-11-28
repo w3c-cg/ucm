@@ -1,0 +1,102 @@
+@prefix ucm:     <https://www.w3.org/ns/ucm#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix act:     <http://terminology.hl7.org/CodeSystem/v3-ActCode#> .
+@prefix conf:    <http://terminology.hl7.org/CodeSystem/v3-Confidentiality#> .
+@prefix reason:  <http://terminology.hl7.org/CodeSystem/v3-ActReason#> .
+@prefix cact:    <http://terminology.hl7.org/CodeSystem/consentaction#> .
+@prefix ccat:    <http://terminology.hl7.org/CodeSystem/consentcategorycodes#> .
+@prefix cpol:    <http://terminology.hl7.org/CodeSystem/consentpolicycodes#> .
+@prefix cstate:  <http://hl7.org/fhir/consent-state-codes#> .
+@prefix cprov:   <http://hl7.org/fhir/consent-provision-type#> .
+
+# SKOS links from the UCM consent vocabularies to HL7 code systems (plan Q12:
+# every external match lives here, so the core stays free of external IRIs).
+#
+# Code IRIs are written as <code system URL>#<code>. FHIR identifies a code by
+# (system, code) and defines no IRI for it; this is the common convention.
+# Codes were checked on 2026-11-27 against HL7/UTG input/sourceOfTruth and
+# HL7/fhir source/consent (see doc/design/consent-concepts-plan.md, Appendix A).
+#
+# UCM-defined concepts with no HL7 code use only closeMatch, broadMatch or
+# related (plan section 6.1). Not linked here:
+#   - Abortion: SHIFT's SLS value sets use a local placeholder,
+#     ExtraSensitiveCodes#ABORTION, marked TODO in its source. Add a closeMatch
+#     once SHIFT publishes a stable code.
+#   - HMISDataStandards, FERPA, GDPR, VAWA, StateLaw: consentpolicycodes has
+#     no code for them.
+
+<https://www.w3.org/ns/ucm#consent-mappings> a owl:Ontology ;
+    rdfs:label "UCM consent vocabulary mappings to HL7" ;
+    dcterms:created "2026-11-27" ;
+    rdfs:comment "Non-normative SKOS mapping links. Load alongside the core to let HL7-coded data validate against the -anchored shapes." .
+
+ucm:ConsentDraft skos:exactMatch cstate:draft .
+ucm:ConsentActive skos:exactMatch cstate:active .
+ucm:ConsentInactive skos:exactMatch cstate:inactive .
+ucm:ConsentRevoked skos:broadMatch cstate:inactive .
+ucm:ConsentExpired skos:broadMatch cstate:inactive .
+ucm:ConsentSuperseded skos:broadMatch cstate:inactive .
+ucm:ConsentRefused skos:closeMatch cstate:not-done .
+ucm:ConsentEnteredInError skos:exactMatch cstate:entered-in-error .
+ucm:ConsentStatusUnknown skos:exactMatch cstate:unknown .
+ucm:Permit skos:exactMatch cprov:permit .
+ucm:Deny skos:exactMatch cprov:deny .
+ucm:ResearchConsent skos:closeMatch ccat:research .
+ucm:AdvanceDirective skos:closeMatch ccat:acd .
+ucm:TreatmentConsent skos:closeMatch ccat:hcd .
+ucm:CollectAction skos:exactMatch cact:collect .
+ucm:AccessAction skos:exactMatch cact:access .
+ucm:UseAction skos:exactMatch cact:use .
+ucm:DiscloseAction skos:exactMatch cact:disclose .
+ucm:CorrectAction skos:exactMatch cact:correct .
+ucm:Treatment skos:exactMatch reason:TREAT .
+ucm:EmergencyTreatment skos:exactMatch reason:ETREAT .
+ucm:CareCoordination skos:exactMatch reason:COC .
+ucm:CareManagement skos:exactMatch reason:CAREMGT .
+ucm:Payment skos:exactMatch reason:HPAYMT .
+ucm:HealthcareOperations skos:exactMatch reason:HOPERAT .
+ucm:EligibilityPurpose skos:exactMatch reason:ELIGDTRM .
+ucm:ResearchPurpose skos:exactMatch reason:HRESCH .
+ucm:PublicHealthPurpose skos:exactMatch reason:PUBHLTH .
+ucm:FamilyRequested skos:exactMatch reason:FAMRQT .
+ucm:PatientRequested skos:exactMatch reason:PATRQT .
+ucm:SocialCareCoordination skos:broadMatch reason:COC .
+ucm:SocialCaseManagement skos:closeMatch reason:CAREMGT .
+ucm:BenefitsEnrollment skos:broadMatch reason:ELIGDTRM .
+ucm:ProgramReporting skos:broadMatch reason:HOPERAT .
+ucm:IdentifyingInformation skos:closeMatch act:IDS ;
+    skos:closeMatch act:DEMO .
+ucm:SubstanceUseDisorder skos:exactMatch act:SUD ;
+    skos:closeMatch act:ETH .
+ucm:AlcoholUseDisorder skos:exactMatch act:ETHUD .
+ucm:OpioidUseDisorder skos:exactMatch act:OPIOIDUD .
+ucm:BehavioralHealth skos:exactMatch act:BH .
+ucm:MentalHealth skos:exactMatch act:MH .
+ucm:PsychiatricDisorder skos:exactMatch act:PSY .
+ucm:PsychotherapyNote skos:exactMatch act:PSYTHPN .
+ucm:HIV skos:exactMatch act:HIV .
+ucm:SexuallyTransmittedDisease skos:exactMatch act:STD .
+ucm:SexualAndReproductiveHealth skos:exactMatch act:SEX .
+ucm:GenderAndSexualOrientation skos:exactMatch act:GENDER .
+ucm:GeneticDisease skos:exactMatch act:GDIS .
+ucm:SexualAssaultAbuseDomesticViolence skos:exactMatch act:SDV .
+ucm:Adolescent skos:exactMatch act:ADOL .
+ucm:Part2Protected skos:exactMatch act:42CFRPart2 .
+ucm:Abortion skos:broadMatch act:SEX .
+ucm:HumanTrafficking skos:related act:SDV .
+ucm:UnaccompaniedYouth skos:related act:ADOL .
+ucm:ConfidentialityUnrestricted skos:exactMatch conf:U .
+ucm:ConfidentialityLow skos:exactMatch conf:L .
+ucm:ConfidentialityModerate skos:exactMatch conf:M .
+ucm:ConfidentialityNormal skos:exactMatch conf:N .
+ucm:ConfidentialityRestricted skos:exactMatch conf:R .
+ucm:ConfidentialityVeryRestricted skos:exactMatch conf:V .
+ucm:HIPAAAuthorization skos:exactMatch cpol:hipaa-auth .
+ucm:HIPAANoticeOfPrivacyPractices skos:exactMatch cpol:hipaa-npp .
+ucm:HIPAAResearch skos:exactMatch cpol:hipaa-research .
+ucm:CommonRule skos:closeMatch cpol:cric .
+ucm:CFR42Part2 skos:closeMatch act:42CFRPart2 .
+ucm:ServiceSpecificMinorConsent skos:closeMatch cpol:illinois-minor-procedure .

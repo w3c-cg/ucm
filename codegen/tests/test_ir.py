@@ -23,9 +23,9 @@ def test_ontology_header(compilation):
 
 def test_classes_and_properties(compilation):
     ir = compilation.ir
-    assert len(ir.classes) == 63
-    assert len(ir.properties) == 39
-    assert sum(p.kind == "datatype" for p in ir.properties.values()) == 3
+    assert len(ir.classes) == 95
+    assert len(ir.properties) == 109
+    assert sum(p.kind == "datatype" for p in ir.properties.values()) == 13
     # External equivalents are annotations on Person, not classes of their own
     assert all(iri.startswith(UCM) for iri in ir.classes)
 
@@ -56,6 +56,13 @@ def test_properties(compilation):
     assert ir.properties[UCM + "validDuring"].superproperties == [UCM + "hasTemporalContext"]
     assert {p.term for p in ir.domainless_properties()} == {
         "hasCareTrajectoryContext", "hasTemporalContext", "validDuring",
+        # consent and identity properties whose domain is an owl:unionOf, or that
+        # apply to any information (sensitivity and confidentiality labels)
+        "achievedIAL", "assertsIdentity", "forPurpose", "governedByPolicy",
+        "hasConfidentialityLevel", "hasConsentDecision", "hasConsentModel", "hasProvision",
+        "hasRegulatoryBasis", "hasRetentionDisposition", "hasSensitivityLabel", "inJurisdiction",
+        "issuedBy", "processingLocation", "requiresAAL", "requiresIAL", "retentionPeriod",
+        "sourceDocument", "underTrustFramework", "withdrawalMethod",
     }
 
 

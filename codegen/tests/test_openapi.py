@@ -5,7 +5,7 @@ from collections import Counter
 
 from openapi_spec_validator import validate
 
-from .conftest import PROJECT
+from .conftest import ONTOLOGY_TTL, PROJECT
 
 
 def schema(doc, name):
@@ -130,9 +130,17 @@ def test_equivalent_classes_are_annotated(openapi_doc):
 
 
 def test_no_hmis_terminology(openapi_text):
-    """The refurbished toolchain and its output speak UCM only"""
+    """The refurbished toolchain and its output speak UCM only.
+
+    HMIS or HUD may reach the output only where the ontology itself names
+    them (the HMISDataStandards regulatory basis, the HMISPersonalID
+    identifier type and their definitions), never from the toolchain.
+    """
     pattern = re.compile(r"hmis|\bhud\b", re.IGNORECASE)
-    assert not pattern.search(openapi_text)
+    ontology_text = "\n".join(p.read_text(encoding="utf-8") for p in ONTOLOGY_TTL)
+    for match in pattern.finditer(openapi_text):
+        word = re.search(r"\w*$", openapi_text[:match.start()]).group() + re.match(r"\w*", openapi_text[match.start():]).group()
+        assert word in ontology_text, f"{word!r} in the OpenAPI output is not ontology content"
     sources = list((PROJECT / "src").rglob("*.py")) + list((PROJECT / "src").rglob("*.j2"))
     sources += list((PROJECT / "profiles").glob("*.yaml"))
     offenders = [p.name for p in sources if pattern.search(p.read_text(encoding="utf-8"))]

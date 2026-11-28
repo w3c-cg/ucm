@@ -835,7 +835,8 @@ ucm:TemporalEntityShape rdf:type owl:NamedIndividual ,
                         sh:message "Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant." ;
                         sh:nodeKind sh:BlankNodeOrIRI ;
                         sh:severity sh:Violation ;
-                        sh:targetObjectsOf ucm:enactiveDuring ,
+                        sh:targetObjectsOf ucm:dataPeriod ,
+                                           ucm:enactiveDuring ,
                                            ucm:hasTemporalContext ,
                                            ucm:occursDuring ,
                                            ucm:validDuring ;
@@ -856,11 +857,1471 @@ ucm:TemporalOrderShape rdf:type owl:NamedIndividual ,
                 FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))
             }"""
                                  ] ;
-                       sh:targetObjectsOf ucm:enactiveDuring ,
+                       sh:targetObjectsOf ucm:dataPeriod ,
+                                          ucm:enactiveDuring ,
                                           ucm:hasTemporalContext ,
                                           ucm:occursDuring ,
                                           ucm:validDuring ;
                        ucm:tier ucm:Definitional .
+
+
+#################################################################
+#    Consent and identity shapes (consent-concepts-plan, 2026-11-27)
+#################################################################
+
+###  https://www.w3.org/ns/ucm#ConsentDirective-decision
+ucm:ConsentDirective-decision rdf:type owl:NamedIndividual ,
+                                       sh:PropertyShape ;
+                              sh:maxCount 1 ;
+                              sh:minCount 1 ;
+                              sh:nodeKind sh:IRI ;
+                              sh:message "A consent directive has exactly one decision, permit or deny, identified by IRI." ;
+                              sh:path ucm:hasConsentDecision ;
+                              sh:severity sh:Violation ;
+                              ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDirective-subject
+ucm:ConsentDirective-subject rdf:type owl:NamedIndividual ,
+                                      sh:PropertyShape ;
+                             sh:minCount 1 ;
+                             sh:nodeKind sh:BlankNodeOrIRI ;
+                             sh:message "A consent directive names at least one subject participation, which must be a node, not a literal." ;
+                             sh:path ucm:consentSubject ;
+                             sh:severity sh:Violation ;
+                             ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDirective-validity
+ucm:ConsentDirective-validity rdf:type owl:NamedIndividual ,
+                                       sh:PropertyShape ;
+                              sh:minCount 1 ;
+                              sh:message "Consent directive states no period of validity. Open-ended consent is allowed but should be deliberate." ;
+                              sh:path ucm:validDuring ;
+                              sh:severity sh:Warning ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDirectiveShape
+ucm:ConsentDirectiveShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property ucm:ConsentDirective-decision ,
+                                      ucm:ConsentDirective-subject ,
+                                      ucm:ConsentDirective-validity ;
+                          sh:targetClass ucm:ConsentDirective .
+
+
+###  https://www.w3.org/ns/ucm#ConsentProvision-decision
+ucm:ConsentProvision-decision rdf:type owl:NamedIndividual ,
+                                       sh:PropertyShape ;
+                              sh:maxCount 1 ;
+                              sh:minCount 1 ;
+                              sh:nodeKind sh:IRI ;
+                              sh:message "Every consent provision states exactly one decision, permit or deny, identified by IRI." ;
+                              sh:path ucm:hasConsentDecision ;
+                              sh:severity sh:Violation ;
+                              ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentProvisionShape
+ucm:ConsentProvisionShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property ucm:ConsentProvision-decision ;
+                          sh:targetClass ucm:ConsentProvision .
+
+
+###  https://www.w3.org/ns/ucm#ConsentStatus-single
+ucm:ConsentStatus-single rdf:type owl:NamedIndividual ,
+                                  sh:PropertyShape ;
+                         sh:maxCount 1 ;
+                         sh:nodeKind sh:IRI ;
+                         sh:message "A consent directive holds at most one consent status, identified by IRI." ;
+                         sh:path ucm:hasConsentStatus ;
+                         sh:severity sh:Violation ;
+                         ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentStatusShape
+ucm:ConsentStatusShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property ucm:ConsentStatus-single ;
+                       sh:targetSubjectsOf ucm:hasConsentStatus .
+
+
+###  https://www.w3.org/ns/ucm#ConsentCategory-single
+ucm:ConsentCategory-single rdf:type owl:NamedIndividual ,
+                                    sh:PropertyShape ;
+                           sh:maxCount 1 ;
+                           sh:nodeKind sh:IRI ;
+                           sh:message "A consent directive holds at most one consent category, identified by IRI." ;
+                           sh:path ucm:hasConsentCategory ;
+                           sh:severity sh:Violation ;
+                           ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentCategoryShape
+ucm:ConsentCategoryShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property ucm:ConsentCategory-single ;
+                         sh:targetSubjectsOf ucm:hasConsentCategory .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModality-single
+ucm:ConsentModality-single rdf:type owl:NamedIndividual ,
+                                    sh:PropertyShape ;
+                           sh:maxCount 1 ;
+                           sh:nodeKind sh:IRI ;
+                           sh:message "A consent interaction holds at most one modality, identified by IRI." ;
+                           sh:path ucm:hasConsentModality ;
+                           sh:severity sh:Violation ;
+                           ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModalityShape
+ucm:ConsentModalityShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property ucm:ConsentModality-single ;
+                         sh:targetSubjectsOf ucm:hasConsentModality .
+
+
+###  https://www.w3.org/ns/ucm#ConsentInteractionType-single
+ucm:ConsentInteractionType-single rdf:type owl:NamedIndividual ,
+                                           sh:PropertyShape ;
+                                  sh:maxCount 1 ;
+                                  sh:nodeKind sh:IRI ;
+                                  sh:message "A consent interaction holds at most one interaction type, identified by IRI." ;
+                                  sh:path ucm:hasConsentInteractionType ;
+                                  sh:severity sh:Violation ;
+                                  ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentInteractionTypeShape
+ucm:ConsentInteractionTypeShape rdf:type owl:NamedIndividual ,
+                                         sh:NodeShape ;
+                                sh:property ucm:ConsentInteractionType-single ;
+                                sh:targetSubjectsOf ucm:hasConsentInteractionType .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDisposition-single
+ucm:RetentionDisposition-single rdf:type owl:NamedIndividual ,
+                                         sh:PropertyShape ;
+                                sh:maxCount 1 ;
+                                sh:nodeKind sh:IRI ;
+                                sh:message "A consent directive or provision holds at most one retention disposition, identified by IRI." ;
+                                sh:path ucm:hasRetentionDisposition ;
+                                sh:severity sh:Violation ;
+                                ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDispositionShape
+ucm:RetentionDispositionShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:property ucm:RetentionDisposition-single ;
+                              sh:targetSubjectsOf ucm:hasRetentionDisposition .
+
+
+###  https://www.w3.org/ns/ucm#BirthDateQuality-single
+ucm:BirthDateQuality-single rdf:type owl:NamedIndividual ,
+                                     sh:PropertyShape ;
+                            sh:maxCount 1 ;
+                            sh:nodeKind sh:IRI ;
+                            sh:message "A person holds at most one birth date quality, identified by IRI." ;
+                            sh:path ucm:birthDateQuality ;
+                            sh:severity sh:Violation ;
+                            ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#BirthDateQualityShape
+ucm:BirthDateQualityShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property ucm:BirthDateQuality-single ;
+                          sh:targetSubjectsOf ucm:birthDateQuality .
+
+
+###  https://www.w3.org/ns/ucm#AchievedAAL-single
+ucm:AchievedAAL-single rdf:type owl:NamedIndividual ,
+                                sh:PropertyShape ;
+                       sh:maxCount 1 ;
+                       sh:nodeKind sh:IRI ;
+                       sh:message "An authentication reaches at most one authenticator assurance level, identified by IRI." ;
+                       sh:path ucm:achievedAAL ;
+                       sh:severity sh:Violation ;
+                       ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#AchievedAALShape
+ucm:AchievedAALShape rdf:type owl:NamedIndividual ,
+                              sh:NodeShape ;
+                     sh:property ucm:AchievedAAL-single ;
+                     sh:targetSubjectsOf ucm:achievedAAL .
+
+
+###  https://www.w3.org/ns/ucm#AchievedFAL-single
+ucm:AchievedFAL-single rdf:type owl:NamedIndividual ,
+                                sh:PropertyShape ;
+                       sh:maxCount 1 ;
+                       sh:nodeKind sh:IRI ;
+                       sh:message "An identity assertion reaches at most one federation assurance level, identified by IRI." ;
+                       sh:path ucm:achievedFAL ;
+                       sh:severity sh:Violation ;
+                       ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#AchievedFALShape
+ucm:AchievedFALShape rdf:type owl:NamedIndividual ,
+                              sh:NodeShape ;
+                     sh:property ucm:AchievedFAL-single ;
+                     sh:targetSubjectsOf ucm:achievedFAL .
+
+
+###  https://www.w3.org/ns/ucm#ProofingType-single
+ucm:ProofingType-single rdf:type owl:NamedIndividual ,
+                                 sh:PropertyShape ;
+                        sh:maxCount 1 ;
+                        sh:nodeKind sh:IRI ;
+                        sh:message "An identity proofing has at most one proofing type, identified by IRI." ;
+                        sh:path ucm:hasProofingType ;
+                        sh:severity sh:Violation ;
+                        ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ProofingTypeShape
+ucm:ProofingTypeShape rdf:type owl:NamedIndividual ,
+                               sh:NodeShape ;
+                      sh:property ucm:ProofingType-single ;
+                      sh:targetSubjectsOf ucm:hasProofingType .
+
+
+###  https://www.w3.org/ns/ucm#IdentifierType-single
+ucm:IdentifierType-single rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:maxCount 1 ;
+                          sh:nodeKind sh:IRI ;
+                          sh:message "An identifier has at most one identifier type, identified by IRI." ;
+                          sh:path ucm:hasIdentifierType ;
+                          sh:severity sh:Violation ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#IdentifierTypeShape
+ucm:IdentifierTypeShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property ucm:IdentifierType-single ;
+                        sh:targetSubjectsOf ucm:hasIdentifierType .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityLevel-single
+ucm:ConfidentialityLevel-single rdf:type owl:NamedIndividual ,
+                                         sh:PropertyShape ;
+                                sh:maxCount 1 ;
+                                sh:nodeKind sh:IRI ;
+                                sh:message "Information holds at most one confidentiality level, identified by IRI." ;
+                                sh:path ucm:hasConfidentialityLevel ;
+                                sh:severity sh:Violation ;
+                                ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityLevelShape
+ucm:ConfidentialityLevelShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:property ucm:ConfidentialityLevel-single ;
+                              sh:targetSubjectsOf ucm:hasConfidentialityLevel .
+
+
+###  https://www.w3.org/ns/ucm#Person-birthDate
+ucm:Person-birthDate rdf:type owl:NamedIndividual ,
+                              sh:PropertyShape ;
+                     sh:maxCount 1 ;
+                     sh:message "A person has at most one birth date, typed xsd:date, xsd:gYearMonth or xsd:gYear." ;
+                     sh:or ( [ sh:datatype xsd:date ] [ sh:datatype xsd:gYearMonth ] [ sh:datatype xsd:gYear ] ) ;
+                     sh:path ucm:birthDate ;
+                     sh:severity sh:Violation ;
+                     ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#PersonBirthDateShape
+ucm:PersonBirthDateShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property ucm:Person-birthDate ;
+                         sh:targetSubjectsOf ucm:birthDate .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentRule-age
+ucm:SelfConsentRule-age rdf:type owl:NamedIndividual ,
+                                 sh:PropertyShape ;
+                        sh:datatype xsd:nonNegativeInteger ;
+                        sh:maxCount 1 ;
+                        sh:message "A self-consent rule states at most one minimum age, a non-negative integer." ;
+                        sh:path ucm:minimumSelfConsentAge ;
+                        sh:severity sh:Violation ;
+                        ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentRuleAgeShape
+ucm:SelfConsentRuleAgeShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:property ucm:SelfConsentRule-age ;
+                            sh:targetSubjectsOf ucm:minimumSelfConsentAge .
+
+
+###  https://www.w3.org/ns/ucm#RetentionPeriod-value
+ucm:RetentionPeriod-value rdf:type owl:NamedIndividual ,
+                                   sh:PropertyShape ;
+                          sh:datatype xsd:duration ;
+                          sh:maxCount 1 ;
+                          sh:message "Retention period is single-valued and must be an xsd:duration, such as P7Y." ;
+                          sh:path ucm:retentionPeriod ;
+                          sh:severity sh:Violation ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#RetentionPeriodShape
+ucm:RetentionPeriodShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property ucm:RetentionPeriod-value ;
+                         sh:targetSubjectsOf ucm:retentionPeriod .
+
+
+###  https://www.w3.org/ns/ucm#WithdrawalMethod-value
+ucm:WithdrawalMethod-value rdf:type owl:NamedIndividual ,
+                                    sh:PropertyShape ;
+                           sh:datatype xsd:string ;
+                           sh:message "Withdrawal method must be text (xsd:string); a link is written as text." ;
+                           sh:path ucm:withdrawalMethod ;
+                           sh:severity sh:Violation ;
+                           ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#WithdrawalMethodShape
+ucm:WithdrawalMethodShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property ucm:WithdrawalMethod-value ;
+                          sh:targetSubjectsOf ucm:withdrawalMethod .
+
+
+###  https://www.w3.org/ns/ucm#Identifier-value
+ucm:Identifier-value rdf:type owl:NamedIndividual ,
+                              sh:PropertyShape ;
+                     sh:datatype xsd:string ;
+                     sh:maxCount 1 ;
+                     sh:minCount 1 ;
+                     sh:message "An identifier has exactly one value, an xsd:string." ;
+                     sh:path ucm:identifierValue ;
+                     sh:severity sh:Violation ;
+                     ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#Identifier-system
+ucm:Identifier-system rdf:type owl:NamedIndividual ,
+                               sh:PropertyShape ;
+                      sh:datatype xsd:anyURI ;
+                      sh:maxCount 1 ;
+                      sh:message "An identifier has at most one system, an xsd:anyURI." ;
+                      sh:path ucm:identifierSystem ;
+                      sh:severity sh:Violation ;
+                      ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#IdentifierShape
+ucm:IdentifierShape rdf:type owl:NamedIndividual ,
+                             sh:NodeShape ;
+                    sh:property ucm:Identifier-system ,
+                                ucm:Identifier-value ;
+                    sh:targetClass ucm:Identifier .
+
+
+###  https://www.w3.org/ns/ucm#Credential-validity
+ucm:Credential-validity rdf:type owl:NamedIndividual ,
+                                 sh:PropertyShape ;
+                        sh:minCount 1 ;
+                        sh:message "Credential states no period of validity (W3C VC validFrom and validUntil)." ;
+                        sh:path ucm:validDuring ;
+                        sh:severity sh:Warning ;
+                        ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#CredentialShape
+ucm:CredentialShape rdf:type owl:NamedIndividual ,
+                             sh:NodeShape ;
+                    sh:property ucm:Credential-validity ;
+                    sh:targetClass ucm:Credential .
+
+
+###  https://www.w3.org/ns/ucm#ProvisionAlternationShape
+ucm:ProvisionAlternationShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Violation ;
+                              sh:sparql [ sh:message "A provision's decision must be the opposite of its parent's (the directive for a top-level provision, or the enclosing provision)." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                ?parent ucm:hasProvision $this ;
+                        ucm:hasConsentDecision ?pd .
+                $this ucm:hasConsentDecision ?value .
+                ?pd    (skos:exactMatch|^skos:exactMatch)* ?pn .
+                ?value (skos:exactMatch|^skos:exactMatch)* ?vn .
+                FILTER (?pn IN (ucm:Permit, ucm:Deny) && ?pn = ?vn)
+            }"""
+              ] ;
+                              sh:targetObjectsOf ucm:hasProvision ;
+                              ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ProvisionAcyclicShape
+ucm:ProvisionAcyclicShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Violation ;
+                          sh:sparql [ sh:message "Provision contains itself, directly or through nested provisions." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE { $this ucm:hasProvision+ $this }"""
+              ] ;
+                          sh:targetObjectsOf ucm:hasProvision ;
+                          ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#SupersedesAcyclicShape
+ucm:SupersedesAcyclicShape rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Violation ;
+                           sh:sparql [ sh:message "Consent directive supersedes itself, directly or through a chain." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE { $this ucm:supersedes+ $this }"""
+              ] ;
+                           sh:targetSubjectsOf ucm:supersedes ;
+                           ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#JurisdictionAcyclicShape
+ucm:JurisdictionAcyclicShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Violation ;
+                             sh:sparql [ sh:message "Jurisdiction lies within itself, directly or through a chain." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            SELECT $this WHERE { $this ucm:withinJurisdiction+ $this }"""
+              ] ;
+                             sh:targetSubjectsOf ucm:withinJurisdiction ;
+                             ucm:tier ucm:Definitional .
+
+
+###  https://www.w3.org/ns/ucm#ConsentStatus-anchored
+ucm:ConsentStatus-anchored rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Warning ;
+                           sh:sparql [ sh:message "Consent status is neither in ucm:ConsentStatus nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentStatus ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentStatus))
+                }
+            }"""
+              ] ;
+                           sh:targetSubjectsOf ucm:hasConsentStatus ;
+                           ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentDecision-anchored
+ucm:ConsentDecision-anchored rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Warning ;
+                             sh:sparql [ sh:message "Consent decision is neither in ucm:ConsentDecision nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentDecision ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentDecision)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentDecision))
+                }
+            }"""
+              ] ;
+                             sh:targetSubjectsOf ucm:hasConsentDecision ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentCategory-anchored
+ucm:ConsentCategory-anchored rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Warning ;
+                             sh:sparql [ sh:message "Consent category is neither in ucm:ConsentCategory nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentCategory ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentCategory)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentCategory))
+                }
+            }"""
+              ] ;
+                             sh:targetSubjectsOf ucm:hasConsentCategory ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModality-anchored
+ucm:ConsentModality-anchored rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Warning ;
+                             sh:sparql [ sh:message "Consent modality is neither in ucm:ConsentModality nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentModality ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModality)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentModality))
+                }
+            }"""
+              ] ;
+                             sh:targetSubjectsOf ucm:hasConsentModality ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentInteractionType-anchored
+ucm:ConsentInteractionType-anchored rdf:type owl:NamedIndividual ,
+                                             sh:NodeShape ;
+                                    sh:severity sh:Warning ;
+                                    sh:sparql [ sh:message "Consent interaction type is neither in ucm:ConsentInteractionType nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentInteractionType ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentInteractionType)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentInteractionType))
+                }
+            }"""
+              ] ;
+                                    sh:targetSubjectsOf ucm:hasConsentInteractionType ;
+                                    ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentAction-anchored
+ucm:ConsentAction-anchored rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:severity sh:Warning ;
+                           sh:sparql [ sh:message "Governed action is neither in ucm:ConsentAction nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:governsAction ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentAction)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentAction))
+                }
+            }"""
+              ] ;
+                           sh:targetSubjectsOf ucm:governsAction ;
+                           ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#PurposeOfUse-anchored
+ucm:PurposeOfUse-anchored rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Warning ;
+                          sh:sparql [ sh:message "Purpose of use is neither in ucm:PurposeOfUse nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:forPurpose ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:PurposeOfUse))
+                }
+            }"""
+              ] ;
+                          sh:targetSubjectsOf ucm:forPurpose ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#InformationCategory-anchored
+ucm:InformationCategory-anchored rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:severity sh:Warning ;
+                                 sh:sparql [ sh:message "Data category is neither in ucm:InformationCategory nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:coversDataCategory ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:InformationCategory)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:InformationCategory))
+                }
+            }"""
+              ] ;
+                                 sh:targetSubjectsOf ucm:coversDataCategory ;
+                                 ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#SensitivityCategory-anchored
+ucm:SensitivityCategory-anchored rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:severity sh:Warning ;
+                                 sh:sparql [ sh:message "Sensitivity category is neither in ucm:SensitivityCategory nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:coversSensitivity|ucm:hasSensitivityLabel ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SensitivityCategory)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:SensitivityCategory))
+                }
+            }"""
+              ] ;
+                                 sh:targetSubjectsOf ucm:coversSensitivity ,
+                                                     ucm:hasSensitivityLabel ;
+                                 ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConfidentialityLevel-anchored
+ucm:ConfidentialityLevel-anchored rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "Confidentiality level is neither in ucm:ConfidentialityLevel nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:coversConfidentiality|ucm:hasConfidentialityLevel ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConfidentialityLevel)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConfidentialityLevel))
+                }
+            }"""
+              ] ;
+                                  sh:targetSubjectsOf ucm:coversConfidentiality ,
+                                                      ucm:hasConfidentialityLevel ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#RegulatoryBasis-anchored
+ucm:RegulatoryBasis-anchored rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:severity sh:Warning ;
+                             sh:sparql [ sh:message "Regulatory basis is neither in ucm:RegulatoryBasis nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasRegulatoryBasis ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:RegulatoryBasis))
+                }
+            }"""
+              ] ;
+                             sh:targetSubjectsOf ucm:hasRegulatoryBasis ;
+                             ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentModel-anchored
+ucm:ConsentModel-anchored rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Warning ;
+                          sh:sparql [ sh:message "Consent model is neither in ucm:ConsentModel nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasConsentModel ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModel)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ConsentModel))
+                }
+            }"""
+              ] ;
+                          sh:targetSubjectsOf ucm:hasConsentModel ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentCondition-anchored
+ucm:SelfConsentCondition-anchored rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "Self-consent condition is neither in ucm:SelfConsentCondition nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:selfConsentCondition ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SelfConsentCondition)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:SelfConsentCondition))
+                }
+            }"""
+              ] ;
+                                  sh:targetSubjectsOf ucm:selfConsentCondition ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentScope-anchored
+ucm:SelfConsentScope-anchored rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Self-consent scope is neither in ucm:PurposeOfUse or ucm:ConsentCategory or ucm:InformationCategory or ucm:SensitivityCategory nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:selfConsentScope ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory))
+                }
+            }"""
+              ] ;
+                              sh:targetSubjectsOf ucm:selfConsentScope ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#BirthDateQuality-anchored
+ucm:BirthDateQuality-anchored rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Birth date quality is neither in ucm:BirthDateQuality nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:birthDateQuality ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:BirthDateQuality)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:BirthDateQuality))
+                }
+            }"""
+              ] ;
+                              sh:targetSubjectsOf ucm:birthDateQuality ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#RetentionDisposition-anchored
+ucm:RetentionDisposition-anchored rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "Retention disposition is neither in ucm:RetentionDisposition nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasRetentionDisposition ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RetentionDisposition)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:RetentionDisposition))
+                }
+            }"""
+              ] ;
+                                  sh:targetSubjectsOf ucm:hasRetentionDisposition ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#IdentityAssuranceLevel-anchored
+ucm:IdentityAssuranceLevel-anchored rdf:type owl:NamedIndividual ,
+                                             sh:NodeShape ;
+                                    sh:severity sh:Warning ;
+                                    sh:sparql [ sh:message "Identity assurance level is neither in ucm:IdentityAssuranceLevel nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:achievedIAL|ucm:requiresIAL ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityAssuranceLevel)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:IdentityAssuranceLevel))
+                }
+            }"""
+              ] ;
+                                    sh:targetSubjectsOf ucm:achievedIAL ,
+                                                        ucm:requiresIAL ;
+                                    ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#AuthenticatorAssuranceLevel-anchored
+ucm:AuthenticatorAssuranceLevel-anchored rdf:type owl:NamedIndividual ,
+                                                  sh:NodeShape ;
+                                         sh:severity sh:Warning ;
+                                         sh:sparql [ sh:message "Authenticator assurance level is neither in ucm:AuthenticatorAssuranceLevel nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:achievedAAL|ucm:requiresAAL ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:AuthenticatorAssuranceLevel)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:AuthenticatorAssuranceLevel))
+                }
+            }"""
+              ] ;
+                                         sh:targetSubjectsOf ucm:achievedAAL ,
+                                                             ucm:requiresAAL ;
+                                         ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#FederationAssuranceLevel-anchored
+ucm:FederationAssuranceLevel-anchored rdf:type owl:NamedIndividual ,
+                                               sh:NodeShape ;
+                                      sh:severity sh:Warning ;
+                                      sh:sparql [ sh:message "Federation assurance level is neither in ucm:FederationAssuranceLevel nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:achievedFAL ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:FederationAssuranceLevel)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:FederationAssuranceLevel))
+                }
+            }"""
+              ] ;
+                                      sh:targetSubjectsOf ucm:achievedFAL ;
+                                      ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#EvidenceStrength-anchored
+ucm:EvidenceStrength-anchored rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Evidence strength is neither in ucm:EvidenceStrength nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasEvidenceStrength ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:EvidenceStrength)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:EvidenceStrength))
+                }
+            }"""
+              ] ;
+                              sh:targetSubjectsOf ucm:hasEvidenceStrength ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#IdentityEvidenceType-anchored
+ucm:IdentityEvidenceType-anchored rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "Evidence type is neither in ucm:IdentityEvidenceType nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasEvidenceType ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityEvidenceType)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:IdentityEvidenceType))
+                }
+            }"""
+              ] ;
+                                  sh:targetSubjectsOf ucm:hasEvidenceType ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ProofingType-anchored
+ucm:ProofingType-anchored rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Warning ;
+                          sh:sparql [ sh:message "Proofing type is neither in ucm:ProofingType nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasProofingType ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ProofingType)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:ProofingType))
+                }
+            }"""
+              ] ;
+                          sh:targetSubjectsOf ucm:hasProofingType ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#IdentifierType-anchored
+ucm:IdentifierType-anchored rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:severity sh:Warning ;
+                            sh:sparql [ sh:message "Identifier type is neither in ucm:IdentifierType nor SKOS-mapped to a concept that is." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:hasIdentifierType ?value .
+                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentifierType)) }
+                FILTER NOT EXISTS {
+                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .
+                    FILTER (?m IN (ucm:IdentifierType))
+                }
+            }"""
+              ] ;
+                            sh:targetSubjectsOf ucm:hasIdentifierType ;
+                            ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#RecordsConsentFromTypeShape
+ucm:RecordsConsentFromTypeShape rdf:type owl:NamedIndividual ,
+                                         sh:NodeShape ;
+                                sh:property [ sh:class ucm:ConsentInteraction ;
+                sh:message "recordsConsentFrom target is not typed as ucm:ConsentInteraction." ;
+                sh:path ucm:recordsConsentFrom ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                sh:targetSubjectsOf ucm:recordsConsentFrom .
+
+
+###  https://www.w3.org/ns/ucm#ConsentSubjectTypeShape
+ucm:ConsentSubjectTypeShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:property [ sh:class ucm:Participation ;
+                sh:message "consentSubject target is not typed as ucm:Participation." ;
+                sh:path ucm:consentSubject ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                            sh:targetSubjectsOf ucm:consentSubject .
+
+
+###  https://www.w3.org/ns/ucm#HasProvisionTypeShape
+ucm:HasProvisionTypeShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property [ sh:class ucm:ConsentProvision ;
+                sh:message "hasProvision target is not typed as ucm:ConsentProvision." ;
+                sh:path ucm:hasProvision ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                          sh:targetSubjectsOf ucm:hasProvision .
+
+
+###  https://www.w3.org/ns/ucm#ProvisionActorTypeShape
+ucm:ProvisionActorTypeShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:property [ sh:class ucm:Participation ;
+                sh:message "provisionActor target is not typed as ucm:Participation." ;
+                sh:path ucm:provisionActor ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                            sh:targetSubjectsOf ucm:provisionActor .
+
+
+###  https://www.w3.org/ns/ucm#GovernedByPolicyTypeShape
+ucm:GovernedByPolicyTypeShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:property [ sh:class ucm:ConsentPolicy ;
+                sh:message "governedByPolicy target is not typed as ucm:ConsentPolicy." ;
+                sh:path ucm:governedByPolicy ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                              sh:targetSubjectsOf ucm:governedByPolicy .
+
+
+###  https://www.w3.org/ns/ucm#InJurisdictionTypeShape
+ucm:InJurisdictionTypeShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:property [ sh:class ucm:JurisdictionContext ;
+                sh:message "inJurisdiction target is not typed as ucm:JurisdictionContext." ;
+                sh:path ucm:inJurisdiction ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                            sh:targetSubjectsOf ucm:inJurisdiction .
+
+
+###  https://www.w3.org/ns/ucm#WithinJurisdictionTypeShape
+ucm:WithinJurisdictionTypeShape rdf:type owl:NamedIndividual ,
+                                         sh:NodeShape ;
+                                sh:property [ sh:class ucm:JurisdictionContext ;
+                sh:message "withinJurisdiction target is not typed as ucm:JurisdictionContext." ;
+                sh:path ucm:withinJurisdiction ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                sh:targetSubjectsOf ucm:withinJurisdiction .
+
+
+###  https://www.w3.org/ns/ucm#ProcessingLocationTypeShape
+ucm:ProcessingLocationTypeShape rdf:type owl:NamedIndividual ,
+                                         sh:NodeShape ;
+                                sh:property [ sh:class ucm:JurisdictionContext ;
+                sh:message "processingLocation target is not typed as ucm:JurisdictionContext." ;
+                sh:path ucm:processingLocation ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                sh:targetSubjectsOf ucm:processingLocation .
+
+
+###  https://www.w3.org/ns/ucm#AcknowledgesNoticeTypeShape
+ucm:AcknowledgesNoticeTypeShape rdf:type owl:NamedIndividual ,
+                                         sh:NodeShape ;
+                                sh:property [ sh:class ucm:PrivacyNotice ;
+                sh:message "acknowledgesNotice target is not typed as ucm:PrivacyNotice." ;
+                sh:path ucm:acknowledgesNotice ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                sh:targetSubjectsOf ucm:acknowledgesNotice .
+
+
+###  https://www.w3.org/ns/ucm#PostedAtTypeShape
+ucm:PostedAtTypeShape rdf:type owl:NamedIndividual ,
+                               sh:NodeShape ;
+                      sh:property [ sh:class ucm:Location ;
+                sh:message "postedAt target is not typed as ucm:Location." ;
+                sh:path ucm:postedAt ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                      sh:targetSubjectsOf ucm:postedAt .
+
+
+###  https://www.w3.org/ns/ucm#SupersedesTypeShape
+ucm:SupersedesTypeShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property [ sh:class ucm:ConsentDirective ;
+                sh:message "supersedes target is not typed as ucm:ConsentDirective." ;
+                sh:path ucm:supersedes ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                        sh:targetSubjectsOf ucm:supersedes .
+
+
+###  https://www.w3.org/ns/ucm#RevokedByTypeShape
+ucm:RevokedByTypeShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property [ sh:class ucm:ConsentInteraction ;
+                sh:message "revokedBy target is not typed as ucm:ConsentInteraction." ;
+                sh:path ucm:revokedBy ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                       sh:targetSubjectsOf ucm:revokedBy .
+
+
+###  https://www.w3.org/ns/ucm#SourceDocumentTypeShape
+ucm:SourceDocumentTypeShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:property [ sh:class ucm:InformationArtifact ;
+                sh:message "sourceDocument target is not typed as ucm:InformationArtifact." ;
+                sh:path ucm:sourceDocument ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                            sh:targetSubjectsOf ucm:sourceDocument .
+
+
+###  https://www.w3.org/ns/ucm#AuthorizedByConsentTypeShape
+ucm:AuthorizedByConsentTypeShape rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:property [ sh:class ucm:ConsentDirective ;
+                sh:message "authorizedByConsent target is not typed as ucm:ConsentDirective." ;
+                sh:path ucm:authorizedByConsent ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                 sh:targetSubjectsOf ucm:authorizedByConsent .
+
+
+###  https://www.w3.org/ns/ucm#HasIdentityTypeShape
+ucm:HasIdentityTypeShape rdf:type owl:NamedIndividual ,
+                                  sh:NodeShape ;
+                         sh:property [ sh:class ucm:Identity ;
+                sh:message "hasIdentity target is not typed as ucm:Identity." ;
+                sh:path ucm:hasIdentity ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                         sh:targetSubjectsOf ucm:hasIdentity .
+
+
+###  https://www.w3.org/ns/ucm#IdentityOfTypeShape
+ucm:IdentityOfTypeShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:property [ sh:class ucm:Entity ;
+                sh:message "identityOf target is not typed as ucm:Entity." ;
+                sh:path ucm:identityOf ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                        sh:targetSubjectsOf ucm:identityOf .
+
+
+###  https://www.w3.org/ns/ucm#HasIdentifierTypeShape
+ucm:HasIdentifierTypeShape rdf:type owl:NamedIndividual ,
+                                    sh:NodeShape ;
+                           sh:property [ sh:class ucm:Identifier ;
+                sh:message "hasIdentifier target is not typed as ucm:Identifier." ;
+                sh:path ucm:hasIdentifier ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                           sh:targetSubjectsOf ucm:hasIdentifier .
+
+
+###  https://www.w3.org/ns/ucm#IssuedByTypeShape
+ucm:IssuedByTypeShape rdf:type owl:NamedIndividual ,
+                               sh:NodeShape ;
+                      sh:property [ sh:class ucm:Entity ;
+                sh:message "issuedBy target is not typed as ucm:Entity." ;
+                sh:path ucm:issuedBy ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                      sh:targetSubjectsOf ucm:issuedBy .
+
+
+###  https://www.w3.org/ns/ucm#IdentifiedAsTypeShape
+ucm:IdentifiedAsTypeShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property [ sh:class ucm:Identity ;
+                sh:message "identifiedAs target is not typed as ucm:Identity." ;
+                sh:path ucm:identifiedAs ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                          sh:targetSubjectsOf ucm:identifiedAs .
+
+
+###  https://www.w3.org/ns/ucm#EstablishesIdentityTypeShape
+ucm:EstablishesIdentityTypeShape rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:property [ sh:class ucm:Identity ;
+                sh:message "establishesIdentity target is not typed as ucm:Identity." ;
+                sh:path ucm:establishesIdentity ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                 sh:targetSubjectsOf ucm:establishesIdentity .
+
+
+###  https://www.w3.org/ns/ucm#UsedEvidenceTypeShape
+ucm:UsedEvidenceTypeShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:property [ sh:class ucm:IdentityEvidence ;
+                sh:message "usedEvidence target is not typed as ucm:IdentityEvidence." ;
+                sh:path ucm:usedEvidence ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                          sh:targetSubjectsOf ucm:usedEvidence .
+
+
+###  https://www.w3.org/ns/ucm#AssertsIdentityTypeShape
+ucm:AssertsIdentityTypeShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:property [ sh:class ucm:Identity ;
+                sh:message "assertsIdentity target is not typed as ucm:Identity." ;
+                sh:path ucm:assertsIdentity ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                             sh:targetSubjectsOf ucm:assertsIdentity .
+
+
+###  https://www.w3.org/ns/ucm#AuthenticatedByTypeShape
+ucm:AuthenticatedByTypeShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:property [ sh:class ucm:Authentication ;
+                sh:message "authenticatedBy target is not typed as ucm:Authentication." ;
+                sh:path ucm:authenticatedBy ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                             sh:targetSubjectsOf ucm:authenticatedBy .
+
+
+###  https://www.w3.org/ns/ucm#UnderTrustFrameworkTypeShape
+ucm:UnderTrustFrameworkTypeShape rdf:type owl:NamedIndividual ,
+                                          sh:NodeShape ;
+                                 sh:property [ sh:class ucm:TrustFramework ;
+                sh:message "underTrustFramework target is not typed as ucm:TrustFramework." ;
+                sh:path ucm:underTrustFramework ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                 sh:targetSubjectsOf ucm:underTrustFramework .
+
+
+###  https://www.w3.org/ns/ucm#CertifiesTypeShape
+ucm:CertifiesTypeShape rdf:type owl:NamedIndividual ,
+                                sh:NodeShape ;
+                       sh:property [ sh:class ucm:Organization ;
+                sh:message "certifies target is not typed as ucm:Organization." ;
+                sh:path ucm:certifies ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                       sh:targetSubjectsOf ucm:certifies .
+
+
+###  https://www.w3.org/ns/ucm#CredentialTermsOfUseTypeShape
+ucm:CredentialTermsOfUseTypeShape rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:property [ sh:class ucm:PolicyDefinition ;
+                sh:message "credentialTermsOfUse target is not typed as ucm:PolicyDefinition." ;
+                sh:path ucm:credentialTermsOfUse ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                                  sh:targetSubjectsOf ucm:credentialTermsOfUse .
+
+
+###  https://www.w3.org/ns/ucm#MatchesIdentityTypeShape
+ucm:MatchesIdentityTypeShape rdf:type owl:NamedIndividual ,
+                                      sh:NodeShape ;
+                             sh:property [ sh:class ucm:Identity ;
+                sh:message "matchesIdentity target is not typed as ucm:Identity." ;
+                sh:path ucm:matchesIdentity ;
+                sh:severity sh:Warning ;
+                ucm:tier ucm:Recommended
+              ] ;
+                             sh:targetSubjectsOf ucm:matchesIdentity .
+
+
+###  https://www.w3.org/ns/ucm#ConsentGrantorShape
+ucm:ConsentGrantorShape rdf:type owl:NamedIndividual ,
+                                 sh:NodeShape ;
+                        sh:severity sh:Warning ;
+                        sh:sparql [ sh:message "Consent directive has no grantor: its recording consent interaction has no participation in a ConsentGrantorRole." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT $this WHERE {
+                FILTER NOT EXISTS {
+                    $this ucm:recordsConsentFrom ?ci .
+                    ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .
+                    { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }
+                }
+            }"""
+              ] ;
+                        sh:targetClass ucm:ConsentDirective ;
+                        ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ProxyGrantorShape
+ucm:ProxyGrantorShape rdf:type owl:NamedIndividual ,
+                               sh:NodeShape ;
+                      sh:severity sh:Warning ;
+                      sh:sparql [ sh:message "Grantor is not the subject, so the grantor's role should be ucm:ConsentProxyRole (or a subclass)." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT $this ?grantor WHERE {
+                $this ucm:recordsConsentFrom ?ci .
+                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .
+                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }
+                ?gp ucm:participatingEntity ?grantor .
+                $this ucm:consentSubject/ucm:participatingEntity ?subject .
+                FILTER (?grantor != ?subject)
+                FILTER NOT EXISTS { ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole }
+            }"""
+              ] ;
+                      sh:targetClass ucm:ConsentDirective ;
+                      ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#SelfConsentBasisShape
+ucm:SelfConsentBasisShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Warning ;
+                          sh:sparql [ sh:message "A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX time: <http://www.w3.org/2006/time#>
+            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this ?subject WHERE {
+                $this ucm:consentSubject/ucm:participatingEntity ?subject .
+                $this ucm:recordsConsentFrom ?ci .
+                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .
+                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }
+                ?gp ucm:participatingEntity ?subject .
+                ?subject ucm:birthDate ?bd .
+                ?ci ucm:occursDuring ?when .
+                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .
+                # Latest possible birth date for a partial date: the conservative reading.
+                BIND (STR(?bd) AS ?b)
+                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, "-12-31"), IF(STRLEN(?b) = 7, CONCAT(?b, "-31"), SUBSTR(?b, 1, 10))) AS ?latest)
+                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)
+                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))
+                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)
+                FILTER (?age < 18)
+                FILTER NOT EXISTS {
+                    $this ucm:governedByPolicy ?rule .
+                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;
+                          ucm:inJurisdiction ?rj .
+                    { $this ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }
+                    UNION
+                    { ?ci ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }
+                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }
+                    FILTER (!BOUND(?min) || ?age >= ?min)
+                }
+            }"""
+              ] ;
+                          sh:targetClass ucm:ConsentDirective ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#RevokedHasRevocationShape
+ucm:RevokedHasRevocationShape rdf:type owl:NamedIndividual ,
+                                       sh:NodeShape ;
+                              sh:severity sh:Warning ;
+                              sh:sparql [ sh:message "Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this WHERE {
+                {
+                    $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentRevoked .
+                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }
+                } UNION {
+                    $this ucm:revokedBy ?r ;
+                          ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .
+                }
+            }"""
+              ] ;
+                              sh:targetClass ucm:ConsentDirective ;
+                              ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ActiveNotExpiredShape
+ucm:ActiveNotExpiredShape rdf:type owl:NamedIndividual ,
+                                   sh:NodeShape ;
+                          sh:severity sh:Warning ;
+                          sh:sparql [ sh:message "Consent directive is marked active but its period of validity has ended." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX time: <http://www.w3.org/2006/time#>
+            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this WHERE {
+                $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;
+                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .
+                FILTER (xsd:dateTime(STR(?end)) < NOW())
+            }"""
+              ] ;
+                          sh:targetClass ucm:ConsentDirective ;
+                          ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#AuthorizedByActiveConsentShape
+ucm:AuthorizedByActiveConsentShape rdf:type owl:NamedIndividual ,
+                                            sh:NodeShape ;
+                                   sh:severity sh:Warning ;
+                                   sh:sparql [ sh:message "Process cites a consent directive whose status is not active." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?value WHERE {
+                $this ucm:authorizedByConsent ?value .
+                ?value ucm:hasConsentStatus ?s .
+                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }
+            }"""
+              ] ;
+                                   sh:targetSubjectsOf ucm:authorizedByConsent ;
+                                   ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ConsentIdentityAssuranceShape
+ucm:ConsentIdentityAssuranceShape rdf:type owl:NamedIndividual ,
+                                           sh:NodeShape ;
+                                  sh:severity sh:Warning ;
+                                  sh:sparql [ sh:message "The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT $this ?value WHERE {
+                $this ucm:recordsConsentFrom ?ci .
+                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .
+                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }
+                $this ucm:governedByPolicy ?policy .
+                {
+                    ?policy ucm:requiresIAL ?value .
+                    ?value ucm:assuranceRank ?need .
+                    FILTER NOT EXISTS {
+                        ?gp ucm:identifiedAs/ucm:achievedIAL/ucm:assuranceRank ?got .
+                        FILTER (?got >= ?need)
+                    }
+                } UNION {
+                    ?policy ucm:requiresAAL ?value .
+                    ?value ucm:assuranceRank ?need .
+                    FILTER NOT EXISTS {
+                        ?ci ucm:authenticatedBy/ucm:achievedAAL/ucm:assuranceRank ?got .
+                        FILTER (?got >= ?need)
+                    }
+                }
+            }"""
+              ] ;
+                                  sh:targetClass ucm:ConsentDirective ;
+                                  ucm:tier ucm:Recommended .
+
+
+###  https://www.w3.org/ns/ucm#ApplicantReferenceShape
+ucm:ApplicantReferenceShape rdf:type owl:NamedIndividual ,
+                                     sh:NodeShape ;
+                            sh:severity sh:Warning ;
+                            sh:sparql [ sh:message "An applicant reference does not act on the applicant's behalf (NIST SP 800-63A): the same entity is the applicant, or is the applicant's consent proxy." ;
+                sh:select """
+            PREFIX ucm:  <https://www.w3.org/ns/ucm#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT $this ?ref WHERE {
+                ?rp ucm:assumesRole/a/rdfs:subClassOf* ucm:ApplicantReferenceRole ;
+                    ucm:participatingEntity ?ref .
+                { ?rp ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?rp }
+                ?ap ucm:assumesRole/a/rdfs:subClassOf* ucm:IdentityApplicantRole ;
+                    ucm:participatingEntity ?applicant .
+                { ?ap ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?ap }
+                FILTER (?ref = ?applicant || EXISTS {
+                    ?cd ucm:consentSubject/ucm:participatingEntity ?applicant ;
+                        ucm:recordsConsentFrom ?ci .
+                    ?pp ucm:participatingEntity ?ref ;
+                        ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole .
+                    { ?pp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?pp }
+                })
+            }"""
+              ] ;
+                            sh:targetClass ucm:IdentityProofing ;
+                            ucm:tier ucm:Recommended .
 
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

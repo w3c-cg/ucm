@@ -107,10 +107,116 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n13"
+        "@id": "_:c14n39"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:acceptsRequest"
+      }
+    },
+    {
+      "@id": "ucm:AchievedAAL-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An authentication reaches at most one authenticator assurance level, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:achievedAAL"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:AchievedAALShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:AchievedAAL-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:achievedAAL"
+      }
+    },
+    {
+      "@id": "ucm:AchievedFAL-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An identity assertion reaches at most one federation assurance level, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:achievedFAL"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:AchievedFALShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:AchievedFAL-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:achievedFAL"
+      }
+    },
+    {
+      "@id": "ucm:AcknowledgesNoticeTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n79"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:acknowledgesNotice"
+      }
+    },
+    {
+      "@id": "ucm:ActiveNotExpiredShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n30"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
       }
     },
     {
@@ -133,10 +239,167 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n17"
+        "@id": "_:c14n52"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:affiliatedWith"
+      }
+    },
+    {
+      "@id": "ucm:ApplicantReferenceShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n2"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:IdentityProofing"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:AssertsIdentityTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n43"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:assertsIdentity"
+      }
+    },
+    {
+      "@id": "ucm:AuthenticatedByTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n82"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:authenticatedBy"
+      }
+    },
+    {
+      "@id": "ucm:AuthenticatorAssuranceLevel-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n34"
+      },
+      "sh:targetSubjectsOf": [
+        {
+          "@id": "ucm:achievedAAL"
+        },
+        {
+          "@id": "ucm:requiresAAL"
+        }
+      ],
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:AuthorizedByActiveConsentShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n38"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:authorizedByConsent"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:AuthorizedByConsentTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n78"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:authorizedByConsent"
+      }
+    },
+    {
+      "@id": "ucm:BirthDateQuality-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n5"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:birthDateQuality"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:BirthDateQuality-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A person holds at most one birth date quality, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:birthDateQuality"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:BirthDateQualityShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:BirthDateQuality-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:birthDateQuality"
       }
     },
     {
@@ -153,6 +416,19 @@
       }
     },
     {
+      "@id": "ucm:CertifiesTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n88"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:certifies"
+      }
+    },
+    {
       "@id": "ucm:ClosedWhilePendingShape",
       "@type": [
         "owl:NamedIndividual",
@@ -162,7 +438,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n22"
+        "@id": "_:c14n73"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasClosureReason"
@@ -181,7 +457,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n20"
+        "@id": "_:c14n64"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasClosureReason"
@@ -237,7 +513,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n16"
+        "@id": "_:c14n49"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasCommitmentStatus"
@@ -284,13 +560,541 @@
       }
     },
     {
+      "@id": "ucm:ConfidentialityLevel-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n3"
+      },
+      "sh:targetSubjectsOf": [
+        {
+          "@id": "ucm:coversConfidentiality"
+        },
+        {
+          "@id": "ucm:hasConfidentialityLevel"
+        }
+      ],
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityLevel-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "Information holds at most one confidentiality level, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConfidentialityLevel"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConfidentialityLevelShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConfidentialityLevel-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConfidentialityLevel"
+      }
+    },
+    {
+      "@id": "ucm:ConsentAction-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n70"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:governsAction"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentCategory-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n51"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentCategory"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentCategory-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent directive holds at most one consent category, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentCategory"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentCategoryShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConsentCategory-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentCategory"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDecision-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n22"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentDecision"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDirective-decision",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent directive has exactly one decision, permit or deny, identified by IRI.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentDecision"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDirective-subject",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:message": "A consent directive names at least one subject participation, which must be a node, not a literal.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:BlankNodeOrIRI"
+      },
+      "sh:path": {
+        "@id": "ucm:consentSubject"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDirective-validity",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:message": "Consent directive states no period of validity. Open-ended consent is allowed but should be deliberate.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:path": {
+        "@id": "ucm:validDuring"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentDirectiveShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": [
+        {
+          "@id": "ucm:ConsentDirective-decision"
+        },
+        {
+          "@id": "ucm:ConsentDirective-subject"
+        },
+        {
+          "@id": "ucm:ConsentDirective-validity"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      }
+    },
+    {
+      "@id": "ucm:ConsentGrantorShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n62"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentIdentityAssuranceShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n67"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInteractionType-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n32"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentInteractionType"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInteractionType-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent interaction holds at most one interaction type, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentInteractionType"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentInteractionTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConsentInteractionType-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentInteractionType"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModality-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n21"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentModality"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModality-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent interaction holds at most one modality, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentModality"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModalityShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConsentModality-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentModality"
+      }
+    },
+    {
+      "@id": "ucm:ConsentModel-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n65"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentModel"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentProvision-decision",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "Every consent provision states exactly one decision, permit or deny, identified by IRI.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentDecision"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentProvisionShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConsentProvision-decision"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentProvision"
+      }
+    },
+    {
+      "@id": "ucm:ConsentStatus-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n53"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentStatus"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ConsentStatus-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent directive holds at most one consent status, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasConsentStatus"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ConsentStatusShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ConsentStatus-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasConsentStatus"
+      }
+    },
+    {
+      "@id": "ucm:ConsentSubjectTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n76"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:consentSubject"
+      }
+    },
+    {
       "@id": "ucm:ContextArtifactShape",
       "@type": [
         "owl:NamedIndividual",
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n21"
+        "@id": "_:c14n68"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:definedByArtifact"
@@ -306,7 +1110,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n23"
+        "@id": "_:c14n83"
       },
       "sh:targetClass": [
         {
@@ -318,6 +1122,53 @@
       ],
       "ucm:tier": {
         "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:Credential-validity",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:message": "Credential states no period of validity (W3C VC validFrom and validUntil).",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:path": {
+        "@id": "ucm:validDuring"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:CredentialShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:Credential-validity"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:Credential"
+      }
+    },
+    {
+      "@id": "ucm:CredentialTermsOfUseTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n60"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:credentialTermsOfUse"
       }
     },
     {
@@ -345,10 +1196,61 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n10"
+        "@id": "_:c14n28"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:EstablishesIdentityTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n93"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:establishesIdentity"
+      }
+    },
+    {
+      "@id": "ucm:EvidenceStrength-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n71"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasEvidenceStrength"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:FederationAssuranceLevel-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n13"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:achievedFAL"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
@@ -364,13 +1266,26 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n2"
+        "@id": "_:c14n8"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasHandshakeFulfillment"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:GovernedByPolicyTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n31"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:governedByPolicy"
       }
     },
     {
@@ -383,7 +1298,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n25"
+        "@id": "_:c14n89"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasHandoffStatus"
@@ -463,7 +1378,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n3"
+        "@id": "_:c14n15"
       },
       "sh:targetClass": {
         "@id": "ucm:Handshake"
@@ -482,7 +1397,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n11"
+        "@id": "_:c14n36"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasHandshakeFulfillment"
@@ -542,6 +1457,304 @@
       }
     },
     {
+      "@id": "ucm:HasIdentifierTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n54"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasIdentifier"
+      }
+    },
+    {
+      "@id": "ucm:HasIdentityTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n11"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasIdentity"
+      }
+    },
+    {
+      "@id": "ucm:HasProvisionTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n14"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasProvision"
+      }
+    },
+    {
+      "@id": "ucm:IdentifiedAsTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n24"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:identifiedAs"
+      }
+    },
+    {
+      "@id": "ucm:Identifier-system",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:datatype": {
+        "@id": "xsd:anyURI"
+      },
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An identifier has at most one system, an xsd:anyURI.",
+      "sh:path": {
+        "@id": "ucm:identifierSystem"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:Identifier-value",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:datatype": {
+        "@id": "xsd:string"
+      },
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An identifier has exactly one value, an xsd:string.",
+      "sh:minCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:path": {
+        "@id": "ucm:identifierValue"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:IdentifierShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": [
+        {
+          "@id": "ucm:Identifier-system"
+        },
+        {
+          "@id": "ucm:Identifier-value"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "ucm:Identifier"
+      }
+    },
+    {
+      "@id": "ucm:IdentifierType-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n10"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasIdentifierType"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:IdentifierType-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An identifier has at most one identifier type, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasIdentifierType"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:IdentifierTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:IdentifierType-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasIdentifierType"
+      }
+    },
+    {
+      "@id": "ucm:IdentityAssuranceLevel-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n47"
+      },
+      "sh:targetSubjectsOf": [
+        {
+          "@id": "ucm:achievedIAL"
+        },
+        {
+          "@id": "ucm:requiresIAL"
+        }
+      ],
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:IdentityEvidenceType-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n75"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasEvidenceType"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:IdentityOfTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n61"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:identityOf"
+      }
+    },
+    {
+      "@id": "ucm:InJurisdictionTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n44"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:inJurisdiction"
+      }
+    },
+    {
+      "@id": "ucm:InformationCategory-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n6"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:coversDataCategory"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:IssuedByTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n81"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:issuedBy"
+      }
+    },
+    {
+      "@id": "ucm:JurisdictionAcyclicShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n94"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:withinJurisdiction"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
       "@id": "ucm:LifecycleState-anchored",
       "@type": [
         "owl:NamedIndividual",
@@ -551,7 +1764,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n27"
+        "@id": "_:c14n92"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasLifecycleState"
@@ -595,6 +1808,19 @@
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasLifecycleState"
+      }
+    },
+    {
+      "@id": "ucm:MatchesIdentityTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n59"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:matchesIdentity"
       }
     },
     {
@@ -661,7 +1887,7 @@
         "@value": "1"
       },
       "sh:path": {
-        "@id": "_:c14n26"
+        "@id": "_:c14n91"
       },
       "sh:severity": {
         "@id": "sh:Violation"
@@ -702,7 +1928,7 @@
       },
       "sh:message": "Participation context is not typed as ucm:SemanticContext.",
       "sh:path": {
-        "@id": "_:c14n15"
+        "@id": "_:c14n45"
       },
       "sh:severity": {
         "@id": "sh:Warning"
@@ -841,10 +2067,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n30"
+            "@id": "_:c14n97"
           },
           {
-            "@id": "_:c14n32"
+            "@id": "_:c14n101"
           }
         ]
       },
@@ -872,10 +2098,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n29"
+            "@id": "_:c14n96"
           },
           {
-            "@id": "_:c14n34"
+            "@id": "_:c14n99"
           }
         ]
       },
@@ -899,7 +2125,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n24"
+        "@id": "_:c14n85"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -918,7 +2144,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n8"
+        "@id": "_:c14n25"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -973,13 +2199,86 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n9"
+        "@id": "_:c14n26"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
       },
       "ucm:tier": {
         "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:Person-birthDate",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A person has at most one birth date, typed xsd:date, xsd:gYearMonth or xsd:gYear.",
+      "sh:or": {
+        "@list": [
+          {
+            "@id": "_:c14n16"
+          },
+          {
+            "@id": "_:c14n57"
+          },
+          {
+            "@id": "_:c14n86"
+          }
+        ]
+      },
+      "sh:path": {
+        "@id": "ucm:birthDate"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:PersonBirthDateShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:Person-birthDate"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:birthDate"
+      }
+    },
+    {
+      "@id": "ucm:PostedAtTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n9"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:postedAt"
+      }
+    },
+    {
+      "@id": "ucm:ProcessingLocationTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n84"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:processingLocation"
       }
     },
     {
@@ -992,7 +2291,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n5"
+        "@id": "_:c14n18"
       },
       "sh:targetSubjectsOf": [
         {
@@ -1005,6 +2304,151 @@
           "@id": "ucm:hasResident"
         }
       ],
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ProofingType-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n48"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasProofingType"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:ProofingType-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "An identity proofing has at most one proofing type, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasProofingType"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ProofingTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:ProofingType-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasProofingType"
+      }
+    },
+    {
+      "@id": "ucm:ProvisionActorTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n29"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:provisionActor"
+      }
+    },
+    {
+      "@id": "ucm:ProvisionAcyclicShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n41"
+      },
+      "sh:targetObjectsOf": {
+        "@id": "ucm:hasProvision"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ProvisionAlternationShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n74"
+      },
+      "sh:targetObjectsOf": {
+        "@id": "ucm:hasProvision"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:ProxyGrantorShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n46"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:PurposeOfUse-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n90"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:forPurpose"
+      },
       "ucm:tier": {
         "@id": "ucm:Recommended"
       }
@@ -1025,6 +2469,19 @@
       }
     },
     {
+      "@id": "ucm:RecordsConsentFromTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n63"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:recordsConsentFrom"
+      }
+    },
+    {
       "@id": "ucm:ReferralDisposition-anchored",
       "@type": [
         "owl:NamedIndividual",
@@ -1034,7 +2491,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n4"
+        "@id": "_:c14n17"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasReferralDisposition"
@@ -1081,6 +2538,281 @@
       }
     },
     {
+      "@id": "ucm:RegulatoryBasis-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n20"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasRegulatoryBasis"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDisposition-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n69"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasRetentionDisposition"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDisposition-single",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A consent directive or provision holds at most one retention disposition, identified by IRI.",
+      "sh:nodeKind": {
+        "@id": "sh:IRI"
+      },
+      "sh:path": {
+        "@id": "ucm:hasRetentionDisposition"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:RetentionDispositionShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:RetentionDisposition-single"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:hasRetentionDisposition"
+      }
+    },
+    {
+      "@id": "ucm:RetentionPeriod-value",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:datatype": {
+        "@id": "xsd:duration"
+      },
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "Retention period is single-valued and must be an xsd:duration, such as P7Y.",
+      "sh:path": {
+        "@id": "ucm:retentionPeriod"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:RetentionPeriodShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:RetentionPeriod-value"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:retentionPeriod"
+      }
+    },
+    {
+      "@id": "ucm:RevokedByTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n66"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:revokedBy"
+      }
+    },
+    {
+      "@id": "ucm:RevokedHasRevocationShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n27"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentBasisShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n80"
+      },
+      "sh:targetClass": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentCondition-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n72"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:selfConsentCondition"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentRule-age",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:datatype": {
+        "@id": "xsd:nonNegativeInteger"
+      },
+      "sh:maxCount": {
+        "@type": "xsd:integer",
+        "@value": "1"
+      },
+      "sh:message": "A self-consent rule states at most one minimum age, a non-negative integer.",
+      "sh:path": {
+        "@id": "ucm:minimumSelfConsentAge"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentRuleAgeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:SelfConsentRule-age"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:minimumSelfConsentAge"
+      }
+    },
+    {
+      "@id": "ucm:SelfConsentScope-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n12"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:selfConsentScope"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:SensitivityCategory-anchored",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n42"
+      },
+      "sh:targetSubjectsOf": [
+        {
+          "@id": "ucm:coversSensitivity"
+        },
+        {
+          "@id": "ucm:hasSensitivityLabel"
+        }
+      ],
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "ucm:SourceDocumentTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n35"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:sourceDocument"
+      }
+    },
+    {
       "@id": "ucm:Statement-context",
       "@type": [
         "owl:NamedIndividual",
@@ -1115,10 +2847,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n28"
+            "@id": "_:c14n95"
           },
           {
-            "@id": "_:c14n36"
+            "@id": "_:c14n104"
           }
         ]
       },
@@ -1197,6 +2929,38 @@
       }
     },
     {
+      "@id": "ucm:SupersedesAcyclicShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "sh:sparql": {
+        "@id": "_:c14n56"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:supersedes"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:SupersedesTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n77"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:supersedes"
+      }
+    },
+    {
       "@id": "ucm:TemporalEntityShape",
       "@type": [
         "owl:NamedIndividual",
@@ -1210,6 +2974,9 @@
         "@id": "sh:Violation"
       },
       "sh:targetObjectsOf": [
+        {
+          "@id": "ucm:dataPeriod"
+        },
         {
           "@id": "ucm:enactiveDuring"
         },
@@ -1237,9 +3004,12 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n14"
+        "@id": "_:c14n40"
       },
       "sh:targetObjectsOf": [
+        {
+          "@id": "ucm:dataPeriod"
+        },
         {
           "@id": "ucm:enactiveDuring"
         },
@@ -1255,6 +3025,78 @@
       ],
       "ucm:tier": {
         "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:UnderTrustFrameworkTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n33"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:underTrustFramework"
+      }
+    },
+    {
+      "@id": "ucm:UsedEvidenceTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n4"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:usedEvidence"
+      }
+    },
+    {
+      "@id": "ucm:WithdrawalMethod-value",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:PropertyShape"
+      ],
+      "sh:datatype": {
+        "@id": "xsd:string"
+      },
+      "sh:message": "Withdrawal method must be text (xsd:string); a link is written as text.",
+      "sh:path": {
+        "@id": "ucm:withdrawalMethod"
+      },
+      "sh:severity": {
+        "@id": "sh:Violation"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Definitional"
+      }
+    },
+    {
+      "@id": "ucm:WithdrawalMethodShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "ucm:WithdrawalMethod-value"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:withdrawalMethod"
+      }
+    },
+    {
+      "@id": "ucm:WithinJurisdictionTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n7"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "ucm:withinJurisdiction"
       }
     },
     {
@@ -1304,16 +3146,236 @@
     },
     {
       "@id": "_:c14n10",
+      "sh:message": "Identifier type is neither in ucm:IdentifierType nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasIdentifierType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentifierType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentifierType))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n101",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n104",
+      "sh:datatype": {
+        "@id": "xsd:dateTimeStamp"
+      }
+    },
+    {
+      "@id": "_:c14n11",
+      "sh:class": {
+        "@id": "ucm:Identity"
+      },
+      "sh:message": "hasIdentity target is not typed as ucm:Identity.",
+      "sh:path": {
+        "@id": "ucm:hasIdentity"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n12",
+      "sh:message": "Self-consent scope is neither in ucm:PurposeOfUse or ucm:ConsentCategory or ucm:InformationCategory or ucm:SensitivityCategory nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:selfConsentScope ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n13",
+      "sh:message": "Federation assurance level is neither in ucm:FederationAssuranceLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedFAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:FederationAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:FederationAssuranceLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n14",
+      "sh:class": {
+        "@id": "ucm:ConsentProvision"
+      },
+      "sh:message": "hasProvision target is not typed as ucm:ConsentProvision.",
+      "sh:path": {
+        "@id": "ucm:hasProvision"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n15",
+      "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
+      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
+    },
+    {
+      "@id": "_:c14n16",
+      "sh:datatype": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "_:c14n17",
+      "sh:message": "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ReferralDisposition\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n18",
+      "sh:message": "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n2",
+      "sh:message": "An applicant reference does not act on the applicant's behalf (NIST SP 800-63A): the same entity is the applicant, or is the applicant's consent proxy.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?ref WHERE {\n                ?rp ucm:assumesRole/a/rdfs:subClassOf* ucm:ApplicantReferenceRole ;\n                    ucm:participatingEntity ?ref .\n                { ?rp ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?rp }\n                ?ap ucm:assumesRole/a/rdfs:subClassOf* ucm:IdentityApplicantRole ;\n                    ucm:participatingEntity ?applicant .\n                { ?ap ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?ap }\n                FILTER (?ref = ?applicant || EXISTS {\n                    ?cd ucm:consentSubject/ucm:participatingEntity ?applicant ;\n                        ucm:recordsConsentFrom ?ci .\n                    ?pp ucm:participatingEntity ?ref ;\n                        ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole .\n                    { ?pp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?pp }\n                })\n            }"
+    },
+    {
+      "@id": "_:c14n20",
+      "sh:message": "Regulatory basis is neither in ucm:RegulatoryBasis nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasRegulatoryBasis ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RegulatoryBasis))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n21",
+      "sh:message": "Consent modality is neither in ucm:ConsentModality nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentModality ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModality)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentModality))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n22",
+      "sh:message": "Consent decision is neither in ucm:ConsentDecision nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentDecision ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentDecision)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentDecision))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n24",
+      "sh:class": {
+        "@id": "ucm:Identity"
+      },
+      "sh:message": "identifiedAs target is not typed as ucm:Identity.",
+      "sh:path": {
+        "@id": "ucm:identifiedAs"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n25",
+      "sh:message": "A process lists this participation via hasParticipant, but the participation occurs within a different process.",
+      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:hasParticipant $this .\n                $this ucm:occursWithin ?actual .\n                FILTER (?claimant != ?actual)\n            }"
+    },
+    {
+      "@id": "_:c14n26",
+      "sh:message": "Participation validTo precedes validFrom.",
+      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:validFrom ?f ; ucm:validTo ?t .\n                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))\n            }"
+    },
+    {
+      "@id": "_:c14n27",
+      "sh:message": "Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this WHERE {\n                {\n                    $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentRevoked .\n                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }\n                } UNION {\n                    $this ucm:revokedBy ?r ;\n                          ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n28",
       "sh:message": "Participation uses both validFrom/validTo and enactiveDuring. The two encodings can diverge; prefer enactiveDuring.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                $this ucm:enactiveDuring ?iv .\n                FILTER EXISTS { $this ucm:validFrom|ucm:validTo ?x }\n            }"
     },
     {
-      "@id": "_:c14n11",
+      "@id": "_:c14n29",
+      "sh:class": {
+        "@id": "ucm:Participation"
+      },
+      "sh:message": "provisionActor target is not typed as ucm:Participation.",
+      "sh:path": {
+        "@id": "ucm:provisionActor"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n3",
+      "sh:message": "Confidentiality level is neither in ucm:ConfidentialityLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversConfidentiality|ucm:hasConfidentialityLevel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConfidentialityLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConfidentialityLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n30",
+      "sh:message": "Consent directive is marked active but its period of validity has ended.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;\n                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .\n                FILTER (xsd:dateTime(STR(?end)) < NOW())\n            }"
+    },
+    {
+      "@id": "_:c14n31",
+      "sh:class": {
+        "@id": "ucm:ConsentPolicy"
+      },
+      "sh:message": "governedByPolicy target is not typed as ucm:ConsentPolicy.",
+      "sh:path": {
+        "@id": "ucm:governedByPolicy"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n32",
+      "sh:message": "Consent interaction type is neither in ucm:ConsentInteractionType nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentInteractionType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentInteractionType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentInteractionType))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n33",
+      "sh:class": {
+        "@id": "ucm:TrustFramework"
+      },
+      "sh:message": "underTrustFramework target is not typed as ucm:TrustFramework.",
+      "sh:path": {
+        "@id": "ucm:underTrustFramework"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n34",
+      "sh:message": "Authenticator assurance level is neither in ucm:AuthenticatorAssuranceLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedAAL|ucm:requiresAAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:AuthenticatorAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:AuthenticatorAssuranceLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n35",
+      "sh:class": {
+        "@id": "ucm:InformationArtifact"
+      },
+      "sh:message": "sourceDocument target is not typed as ucm:InformationArtifact.",
+      "sh:path": {
+        "@id": "ucm:sourceDocument"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n36",
       "sh:message": "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandshakeFulfillment\n                }\n            }"
     },
     {
-      "@id": "_:c14n13",
+      "@id": "_:c14n38",
+      "sh:message": "Process cites a consent directive whose status is not active.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:authorizedByConsent ?value .\n                ?value ucm:hasConsentStatus ?s .\n                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }\n            }"
+    },
+    {
+      "@id": "_:c14n39",
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -1329,12 +3391,70 @@
       }
     },
     {
-      "@id": "_:c14n14",
+      "@id": "_:c14n4",
+      "sh:class": {
+        "@id": "ucm:IdentityEvidence"
+      },
+      "sh:message": "usedEvidence target is not typed as ucm:IdentityEvidence.",
+      "sh:path": {
+        "@id": "ucm:usedEvidence"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n40",
       "sh:message": "Interval ends before it begins.",
       "sh:select": "\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?b ;\n                      time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?e .\n                FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))\n            }"
     },
     {
-      "@id": "_:c14n15",
+      "@id": "_:c14n41",
+      "sh:message": "Provision contains itself, directly or through nested provisions.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:hasProvision+ $this }"
+    },
+    {
+      "@id": "_:c14n42",
+      "sh:message": "Sensitivity category is neither in ucm:SensitivityCategory nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversSensitivity|ucm:hasSensitivityLabel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SensitivityCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:SensitivityCategory))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n43",
+      "sh:class": {
+        "@id": "ucm:Identity"
+      },
+      "sh:message": "assertsIdentity target is not typed as ucm:Identity.",
+      "sh:path": {
+        "@id": "ucm:assertsIdentity"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n44",
+      "sh:class": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "sh:message": "inJurisdiction target is not typed as ucm:JurisdictionContext.",
+      "sh:path": {
+        "@id": "ucm:inJurisdiction"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n45",
       "sh:alternativePath": {
         "@list": [
           {
@@ -1347,12 +3467,37 @@
       }
     },
     {
-      "@id": "_:c14n16",
+      "@id": "_:c14n46",
+      "sh:message": "Grantor is not the subject, so the grantor's role should be ucm:ConsentProxyRole (or a subclass).",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?grantor WHERE {\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?grantor .\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                FILTER (?grantor != ?subject)\n                FILTER NOT EXISTS { ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole }\n            }"
+    },
+    {
+      "@id": "_:c14n47",
+      "sh:message": "Identity assurance level is neither in ucm:IdentityAssuranceLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedIAL|ucm:requiresIAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentityAssuranceLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n48",
+      "sh:message": "Proofing type is neither in ucm:ProofingType nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasProofingType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ProofingType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ProofingType))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n49",
       "sh:message": "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasCommitmentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:CommitmentStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:CommitmentStatus\n                }\n            }"
     },
     {
-      "@id": "_:c14n17",
+      "@id": "_:c14n5",
+      "sh:message": "Birth date quality is neither in ucm:BirthDateQuality nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:birthDateQuality ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:BirthDateQuality)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:BirthDateQuality))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n51",
+      "sh:message": "Consent category is neither in ucm:ConsentCategory nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentCategory ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentCategory))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n52",
       "sh:class": {
         "@id": "ucm:Organization"
       },
@@ -1368,17 +3513,144 @@
       }
     },
     {
-      "@id": "_:c14n2",
-      "sh:message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
+      "@id": "_:c14n53",
+      "sh:message": "Consent status is neither in ucm:ConsentStatus nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentStatus))\n                }\n            }"
     },
     {
-      "@id": "_:c14n20",
+      "@id": "_:c14n54",
+      "sh:class": {
+        "@id": "ucm:Identifier"
+      },
+      "sh:message": "hasIdentifier target is not typed as ucm:Identifier.",
+      "sh:path": {
+        "@id": "ucm:hasIdentifier"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n56",
+      "sh:message": "Consent directive supersedes itself, directly or through a chain.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:supersedes+ $this }"
+    },
+    {
+      "@id": "_:c14n57",
+      "sh:datatype": {
+        "@id": "xsd:gYearMonth"
+      }
+    },
+    {
+      "@id": "_:c14n59",
+      "sh:class": {
+        "@id": "ucm:Identity"
+      },
+      "sh:message": "matchesIdentity target is not typed as ucm:Identity.",
+      "sh:path": {
+        "@id": "ucm:matchesIdentity"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n6",
+      "sh:message": "Data category is neither in ucm:InformationCategory nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversDataCategory ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:InformationCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:InformationCategory))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n60",
+      "sh:class": {
+        "@id": "ucm:PolicyDefinition"
+      },
+      "sh:message": "credentialTermsOfUse target is not typed as ucm:PolicyDefinition.",
+      "sh:path": {
+        "@id": "ucm:credentialTermsOfUse"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n61",
+      "sh:class": {
+        "@id": "ucm:Entity"
+      },
+      "sh:message": "identityOf target is not typed as ucm:Entity.",
+      "sh:path": {
+        "@id": "ucm:identityOf"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n62",
+      "sh:message": "Consent directive has no grantor: its recording consent interaction has no participation in a ConsentGrantorRole.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS {\n                    $this ucm:recordsConsentFrom ?ci .\n                    ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                    { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n63",
+      "sh:class": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "sh:message": "recordsConsentFrom target is not typed as ucm:ConsentInteraction.",
+      "sh:path": {
+        "@id": "ucm:recordsConsentFrom"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n64",
       "sh:message": "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasClosureReason ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ClosureReason }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ClosureReason\n                }\n            }"
     },
     {
-      "@id": "_:c14n21",
+      "@id": "_:c14n65",
+      "sh:message": "Consent model is neither in ucm:ConsentModel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentModel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentModel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n66",
+      "sh:class": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "sh:message": "revokedBy target is not typed as ucm:ConsentInteraction.",
+      "sh:path": {
+        "@id": "ucm:revokedBy"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n67",
+      "sh:message": "The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?value WHERE {\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                $this ucm:governedByPolicy ?policy .\n                {\n                    ?policy ucm:requiresIAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?gp ucm:identifiedAs/ucm:achievedIAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                } UNION {\n                    ?policy ucm:requiresAAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?ci ucm:authenticatedBy/ucm:achievedAAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n68",
       "sh:class": {
         "@id": "ucm:DefinitionArtifact"
       },
@@ -1394,96 +3666,291 @@
       }
     },
     {
-      "@id": "_:c14n22",
+      "@id": "_:c14n69",
+      "sh:message": "Retention disposition is neither in ucm:RetentionDisposition nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasRetentionDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RetentionDisposition)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RetentionDisposition))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n7",
+      "sh:class": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "sh:message": "withinJurisdiction target is not typed as ucm:JurisdictionContext.",
+      "sh:path": {
+        "@id": "ucm:withinJurisdiction"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n70",
+      "sh:message": "Governed action is neither in ucm:ConsentAction nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:governsAction ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentAction)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentAction))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n71",
+      "sh:message": "Evidence strength is neither in ucm:EvidenceStrength nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasEvidenceStrength ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:EvidenceStrength)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:EvidenceStrength))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n72",
+      "sh:message": "Self-consent condition is neither in ucm:SelfConsentCondition nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:selfConsentCondition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SelfConsentCondition)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:SelfConsentCondition))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n73",
       "sh:message": "Closure reason recorded on a request that is still pending a decision.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .\n                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .\n            }"
     },
     {
-      "@id": "_:c14n23",
+      "@id": "_:c14n74",
+      "sh:message": "A provision's decision must be the opposite of its parent's (the directive for a top-level provision, or the enclosing provision).",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                ?parent ucm:hasProvision $this ;\n                        ucm:hasConsentDecision ?pd .\n                $this ucm:hasConsentDecision ?value .\n                ?pd    (skos:exactMatch|^skos:exactMatch)* ?pn .\n                ?value (skos:exactMatch|^skos:exactMatch)* ?vn .\n                FILTER (?pn IN (ucm:Permit, ucm:Deny) && ?pn = ?vn)\n            }"
+    },
+    {
+      "@id": "_:c14n75",
+      "sh:message": "Evidence type is neither in ucm:IdentityEvidenceType nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasEvidenceType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityEvidenceType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentityEvidenceType))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n76",
+      "sh:class": {
+        "@id": "ucm:Participation"
+      },
+      "sh:message": "consentSubject target is not typed as ucm:Participation.",
+      "sh:path": {
+        "@id": "ucm:consentSubject"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n77",
+      "sh:class": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "sh:message": "supersedes target is not typed as ucm:ConsentDirective.",
+      "sh:path": {
+        "@id": "ucm:supersedes"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n78",
+      "sh:class": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "sh:message": "authorizedByConsent target is not typed as ucm:ConsentDirective.",
+      "sh:path": {
+        "@id": "ucm:authorizedByConsent"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n79",
+      "sh:class": {
+        "@id": "ucm:PrivacyNotice"
+      },
+      "sh:message": "acknowledgesNotice target is not typed as ucm:PrivacyNotice.",
+      "sh:path": {
+        "@id": "ucm:acknowledgesNotice"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n8",
+      "sh:message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
+    },
+    {
+      "@id": "_:c14n80",
+      "sh:message": "A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this ?subject WHERE {\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?subject .\n                ?subject ucm:birthDate ?bd .\n                ?ci ucm:occursDuring ?when .\n                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n                # Latest possible birth date for a partial date: the conservative reading.\n                BIND (STR(?bd) AS ?b)\n                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n                FILTER (?age < 18)\n                FILTER NOT EXISTS {\n                    $this ucm:governedByPolicy ?rule .\n                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;\n                          ucm:inJurisdiction ?rj .\n                    { $this ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    UNION\n                    { ?ci ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                    FILTER (!BOUND(?min) || ?age >= ?min)\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n81",
+      "sh:class": {
+        "@id": "ucm:Entity"
+      },
+      "sh:message": "issuedBy target is not typed as ucm:Entity.",
+      "sh:path": {
+        "@id": "ucm:issuedBy"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n82",
+      "sh:class": {
+        "@id": "ucm:Authentication"
+      },
+      "sh:message": "authenticatedBy target is not typed as ucm:Authentication.",
+      "sh:path": {
+        "@id": "ucm:authenticatedBy"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n83",
       "sh:message": "Coordination process declares no activity focus, directly or through a process it negotiates.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }\n            }"
     },
     {
-      "@id": "_:c14n24",
+      "@id": "_:c14n84",
+      "sh:class": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "sh:message": "processingLocation target is not typed as ucm:JurisdictionContext.",
+      "sh:path": {
+        "@id": "ucm:processingLocation"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n85",
       "sh:message": "An entity participates through this participation via participatesThrough, but the participation names a different participating entity.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:participatesThrough $this .\n                $this ucm:participatingEntity ?actual .\n                FILTER (?claimant != ?actual)\n            }"
     },
     {
-      "@id": "_:c14n25",
+      "@id": "_:c14n86",
+      "sh:datatype": {
+        "@id": "xsd:gYear"
+      }
+    },
+    {
+      "@id": "_:c14n88",
+      "sh:class": {
+        "@id": "ucm:Organization"
+      },
+      "sh:message": "certifies target is not typed as ucm:Organization.",
+      "sh:path": {
+        "@id": "ucm:certifies"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n89",
       "sh:message": "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandoffStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandoffStatus\n                }\n            }"
     },
     {
-      "@id": "_:c14n26",
+      "@id": "_:c14n9",
+      "sh:class": {
+        "@id": "ucm:Location"
+      },
+      "sh:message": "postedAt target is not typed as ucm:Location.",
+      "sh:path": {
+        "@id": "ucm:postedAt"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n90",
+      "sh:message": "Purpose of use is neither in ucm:PurposeOfUse nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:forPurpose ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n91",
       "sh:inversePath": {
         "@id": "ucm:hasMembership"
       }
     },
     {
-      "@id": "_:c14n27",
+      "@id": "_:c14n92",
       "sh:message": "Lifecycle state is neither in ucm:LifecycleState nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasLifecycleState ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:LifecycleState }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:LifecycleState\n                }\n            }"
     },
     {
-      "@id": "_:c14n28",
+      "@id": "_:c14n93",
+      "sh:class": {
+        "@id": "ucm:Identity"
+      },
+      "sh:message": "establishesIdentity target is not typed as ucm:Identity.",
+      "sh:path": {
+        "@id": "ucm:establishesIdentity"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n94",
+      "sh:message": "Jurisdiction lies within itself, directly or through a chain.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:withinJurisdiction+ $this }"
+    },
+    {
+      "@id": "_:c14n95",
       "sh:datatype": {
         "@id": "xsd:dateTime"
       }
     },
     {
-      "@id": "_:c14n29",
+      "@id": "_:c14n96",
       "sh:datatype": {
         "@id": "xsd:dateTime"
       }
     },
     {
-      "@id": "_:c14n3",
-      "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
-      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
-    },
-    {
-      "@id": "_:c14n30",
+      "@id": "_:c14n97",
       "sh:datatype": {
         "@id": "xsd:dateTime"
       }
     },
     {
-      "@id": "_:c14n32",
+      "@id": "_:c14n99",
       "sh:datatype": {
         "@id": "xsd:dateTimeStamp"
       }
-    },
-    {
-      "@id": "_:c14n34",
-      "sh:datatype": {
-        "@id": "xsd:dateTimeStamp"
-      }
-    },
-    {
-      "@id": "_:c14n36",
-      "sh:datatype": {
-        "@id": "xsd:dateTimeStamp"
-      }
-    },
-    {
-      "@id": "_:c14n4",
-      "sh:message": "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ReferralDisposition\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n5",
-      "sh:message": "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n8",
-      "sh:message": "A process lists this participation via hasParticipant, but the participation occurs within a different process.",
-      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:hasParticipant $this .\n                $this ucm:occursWithin ?actual .\n                FILTER (?claimant != ?actual)\n            }"
-    },
-    {
-      "@id": "_:c14n9",
-      "sh:message": "Participation validTo precedes validFrom.",
-      "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:validFrom ?f ; ucm:validTo ?t .\n                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))\n            }"
     }
   ]
 }
