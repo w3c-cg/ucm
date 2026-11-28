@@ -53,7 +53,6 @@ W3C Community Group Guidelines and Policies (this is "officially" a W3C Communit
 - `agendas/` — weekly meeting agendas.
 - `user-stories/` — narrative care-coordination user stories.
 - `.github/workflows/` — CI workflows (ontology codegen build, GitHub Pages workbench build).
-- `.claude/` — Claude Code session metadata (not part of the ontology).
 
 ## Visualization: 
 
