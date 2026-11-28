@@ -1,8 +1,5 @@
 # Plan: generalized consent concepts for the Unified Care Model
 
-Status: **plan only**. No ontology, shapes or vocabulary files have been changed.
-Date: 2026-11-27. Base branch: `reorg` (local). Namespace: `https://www.w3.org/ns/ucm#`.
-
 ## 1. Goal
 
 Add a small set of consent concepts to UCM that are general enough to represent,
@@ -142,7 +139,7 @@ for jurisdiction and governance scope (domain question, see Q1), `ucm:Household`
 and `HeadOfHouseholdRole` or `DependentRole` for family consent, and `ucm:MatchClaim`
 for identity matching (SOCI recommendation 2).
 
-### 5.1 Identity layer (added at Eric's request, 2026-11-27)
+### 5.1 Identity layer
 
 A consent is only meaningful if it is bound to a particular, identified individual,
 and if the grantor is who they say they are. UCM today has `ucm:Entity` and
@@ -545,13 +542,12 @@ Lint (`ucm-shapes-lint.ttl`): none needed. The new shapes carry `ucm:tier`.
 | `test-suites/test_core_shapes.py` | Conforming and non-conforming cases for each new shape. |
 | `mapping/` (currently only a placeholder) | `mapping/consent-fhir-r5.md`, `mapping/consent-hmis.md`, `mapping/consent-niem.md` and `mapping/consent-iso27560.md`, holding the tables in sections 7, 8, 8.1 and 8.2, plus a `mapping/consent-mappings.ttl` with `skos:*Match` links to HL7 and HMIS codes. |
 | `codegen/` and `examples/api`, `examples/db` | Regenerate after the ontology changes. Check the FHIR adapter profile for a `Consent` target. |
-| `ns/ucm.ttl`, `ns/ucm.jsonld`, `ns/index.html` | Not touched. Eric hand-edits these. |
+| `ns/ucm.ttl`, `ns/ucm.jsonld`, `ns/index.html` | Not touched. |
 | `catalog-v001.xml` | No change (Q2 decided: no new module). |
 
-## 11. Open questions for Eric and the CG
+## 11. Open questions for the CG
 
-1. **Statement or InformationArtifact for ConsentDirective?** **Decided (Eric,
-   2026-11-27): `ucm:InformationArtifact`, not `ucm:Statement`.** A consent is a
+1. **Statement or InformationArtifact for ConsentDirective?** **Decided: `ucm:InformationArtifact`, not `ucm:Statement`.** A consent is a
    record of choices, not a finding, and requirement 19 maps every Statement to an
    FHIR Observation. The directive therefore uses the new `recordsConsentFrom` and
    `consentSubject` properties, not `generatedByProcess` or `statementSubject`. The
@@ -559,12 +555,12 @@ Lint (`ucm-shapes-lint.ttl`): none needed. The new shapes carry `ucm:tier`.
    follow-on, jurisdiction, is answered by the new `dpv:hasJurisdiction` property
    and `ucm:JurisdictionContext` class (section 6.2). `madeWithinContext` is not
    widened.
-2. **Where do the terms live?** **Decided (Eric, 2026-11-27): in the existing
+2. **Where do the terms live?** **Decided: in the existing
    core files.** Classes and properties go in `unified-care-model.ttl`, SKOS schemes
    in `ucm-lifecycle-vocabularies.ttl`, and shapes in `ucm-core-shapes.ttl`. There
    is no separate `#consent` module, and no `catalog-v001.xml` change.
 3. **Explicit decision on every provision, or FHIR R5 exception semantics?**
-   **Decided (Eric, 2026-11-27): the middle path.** Every `ucm:ConsentProvision`
+   **Decided: the middle path.** Every `ucm:ConsentProvision`
    carries an explicit `hasConsentDecision` (Definitional, exactly one). A
    Definitional SPARQL shape requires each provision's decision to be the opposite
    of its parent's, whether the parent is the directive or an enclosing provision.
@@ -574,7 +570,7 @@ Lint (`ucm-shapes-lint.ttl`): none needed. The new shapes carry `ucm:tier`.
      Nesting already carries the flip.
    - **From R5:** each provision's decision is the opposite of its parent's.
    - **To and from R4:** the decision maps directly to `provision.type`.
-The defaults for Q4 to Q12 were **accepted by Eric on 2026-11-27**:
+The defaults for Q4 to Q12 were:
 
 4. **Household or family consent.** **Decided:** support both. The default is one
    directive per member, as All Chicago does. A `Household` subject is also
@@ -595,32 +591,30 @@ The defaults for Q4 to Q12 were **accepted by Eric on 2026-11-27**:
 11. **Lifecycle naming.** **Decided:** keep the `Consent` prefix.
 12. **Code lists.** **Decided:** every `skos:*Match` link to HL7, SHIFT, HMIS or NIEM
     goes in `mapping/consent-mappings.ttl`. The core stays free of external IRIs.
-13. **UCM-local gaps.** **Decided (Eric, 2026-11-27): UCM defines them** (section
+13. **UCM-local gaps.** **Decided: UCM defines them** (section
     6.1). Proposing them to HL7, for example through the Cross-Paradigm Sensitive Data
     work that SHIFT points to, is a later option. It does not block anything.
-14. **VAWA.** **Decided (Eric, 2026-11-27): added** to `RegulatoryBasis` (section 6.1).
-15. **Self-consent by youth.** **Decided (Eric, 2026-11-27): model region-dependent
+14. **VAWA.** **Decided: added** to `RegulatoryBasis` (section 6.1).
+15. **Self-consent by youth.** **Decided: model region-dependent
     youth consent** with `SelfConsentRule` and `JurisdictionContext` (section 6.2).
-16. **Age.** **Decided (Eric, 2026-11-27): add `ucm:birthDate` to `ucm:Person`**
+16. **Age.** **Decided: add `ucm:birthDate` to `ucm:Person`**
     (section 6.2). A subject's age is computed from it as of the ConsentInteraction's
     date. It is the first new property on an existing core class in this plan.
-17. **Seed rules.** **Decided (Eric, 2026-11-27): include real rules, anonymized**,
+17. **Seed rules.** **Decided: include real rules, anonymized**,
     with a disclaimer and source references (section 6.3). States and CoCs are not
     named. Federal law (FERPA) is named, because it is not a state or CoC rule.
 
 18. **NIEM gap.** NIEM 6.0 has no consent type. Should UCM publish a NIEM-conformant
     extension namespace, with a consent type, permit or deny, purpose and revocation,
     and propose it to the NIEM Human Services domain? Or should it only map to the
-    general types, as section 8.1 does now? **Decided (Eric, 2026-11-27): only map to
+    general types, as section 8.1 does now? **Decided: only map to
     NIEM's general types.**
 19. **ISO/IEC TS 27560 extras.** Should withdrawal method, retention period and
-    processing location become UCM properties now, or wait? **Decided (Eric,
-    2026-11-27): add all three now** (`withdrawalMethod`, `retentionPeriod` with
+    processing location become UCM properties now, or wait? **Decided: add all three now** (`withdrawalMethod`, `retentionPeriod` with
     `hasRetentionDisposition`, and `processingLocation`; section 5).
 20. **"Identity superset" reading.** The plan reads "identity superset of entities" as
     an identity layer that applies to every kind of `ucm:Entity`. The alternative is a
-    new superclass *above* `ucm:Entity`. Section 5.1 explains the choice. **Decided
-    (Eric, 2026-11-27): an identity layer over every `ucm:Entity`.**
+    new superclass *above* `ucm:Entity`. Section 5.1 explains the choice. **Decided: an identity layer over every `ucm:Entity`.**
 
 ## 12. Suggested sequence once approved
 
@@ -708,7 +702,7 @@ implementation differs from the sections above, the implementation wins:
 
 ## 14. DPV reuse (2026-11-28)
 
-Eric's decision: where UCM adds no abstraction of its own, UCM uses the W3C Data
+Rule: where UCM adds no abstraction of its own, UCM uses the W3C Data
 Privacy Vocabulary (DPV 2.3) IRI directly. This replaces the earlier rule (Q12) that
 the core holds no external IRIs. The audit behind it is the "UCM consent terms: DPV
 reuse audit" doc.
@@ -772,7 +766,7 @@ Sources for the section 6.3 examples:
 - SchoolHouse Connection, State Laws on Minor Consent for Housing and Related Services (June 2026): https://schoolhouseconnection.org/article/state-laws-on-minor-consent-for-housing-and-related-services
 - NIST SP 800-63B-4, section 2 (AAL): https://pages.nist.gov/800-63-4/sp800-63b/aal
 - NIST SP 800-63C-4, section 2 (FAL): https://pages.nist.gov/800-63-4/sp800-63c/fal
-- HUD FY 2026 HMIS Data Dictionary (October 2025), element 3.03, supplied by Eric; same codes as the FY 2024 v1.5 copy hosted by Palm Beach County: https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
+- HUD FY 2026 HMIS Data Dictionary (October 2025), element 3.03; same codes as the FY 2024 v1.5 copy hosted by Palm Beach County: https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
 - ISO/IEC TS 27560:2023 sample (through clause 6.3.4, Table 2): https://cdn.standards.iteh.ai/samples/80392/9102635615bf4b88803e1dc61ba5944b/ISO-IEC-TS-27560-2023.pdf
 - W3C DPV, Consent Records and Receipts as per ISO/IEC TS 27560:2023: https://w3c-cg.github.io/dpv/guides/consent-27560.html
 - W3C Data Privacy Vocabulary 2.3: https://w3c-cg.github.io/dpv/2.3/dpv/ (terms read from the w3c-cg/dpv Turtle files: 2.3/dpv/dpv.ttl, 2.3/pd/pd.ttl, 2.3/sector/health/sector-health.ttl, 2.3/legal/eu/legal-eu.ttl)
