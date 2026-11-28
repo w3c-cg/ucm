@@ -41,6 +41,9 @@ W3C Community Group Guidelines and Policies (this is "officially" a W3C Communit
   - `examples/api/` — generated OpenAPI/FHIR/JSON-LD, produced by `codegen/`.
   - `examples/db/` — generated Postgres models and Alembic migrations.
   - `examples/shapes/` — example instance data validated against the core shapes.
+- `mapping/` — non-normative mappings from UCM to external standards:
+  - `mapping/consent-mappings.ttl` — SKOS and subproperty links from the consent vocabularies to HL7 code systems and the W3C Data Privacy Vocabulary (DPV). Load it alongside the core.
+  - `mapping/consent-fhir-r5.md`, `consent-hmis.md`, `consent-niem.md`, `consent-iso27560.md` — consent and identity mappings to FHIR R5/R4 Consent, HUD HMIS, NIEM 6.0, and ISO/IEC TS 27560 consent records.
 - `test-suites/` — the test suite validating the core ontology and shapes (`test_core_shapes.py`).
 - `doc/` — supporting documents and the GitHub Pages site:
   - `doc/github-pages/` — source for the project's GitHub Pages site (implementation workbench build script, templates, tests).
