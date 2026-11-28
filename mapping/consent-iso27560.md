@@ -18,13 +18,13 @@ de-identify or archive), which lines up with DPV `StorageDuration` and `StorageD
 
 | TS 27560 field | UCM |
 |---|---|
-| `privacy_notice` | `ucm:PrivacyNotice` via `acknowledgesNotice` |
-| `purposes` | `forPurpose` |
-| `lawful_basis` | `hasRegulatoryBasis` and `ConsentModel` |
+| `privacy_notice` | `dpv:PrivacyNotice` via `acknowledgesNotice` |
+| `purposes` | `dpv:hasPurpose` |
+| `lawful_basis` | `dpv:hasApplicableLaw` and `ConsentModel` |
 | `pii_information`, `pii_type`, `pii_optional` | `coversDataCategory`, `coversSensitivity` |
 | `pii_controllers` | a `DataControllerRole` participation |
 | `recipient_third_parties` | an `InformationRecipientRole` participation |
-| `jurisdiction` | `inJurisdiction` |
+| `jurisdiction` | `dpv:hasJurisdiction` |
 | `withdrawal_method` | `ucm:withdrawalMethod` |
 | `retention_period` (Required; period and/or disposal schedule) | `ucm:retentionPeriod` for the period, `ucm:hasRetentionDisposition` for the disposal (DPV `StorageDuration`, `StorageDeletion`) |
 | `storage_locations` (Required), `processing_locations`, `geographic_restrictions` | `ucm:processingLocation`, a `JurisdictionContext` (DPV `StorageLocation`, `hasLocation`, `hasJurisdiction`) |

@@ -35,6 +35,9 @@ STANDARD_PREFIXES = {
 }
 
 
+# DCMI Abstract Model "includes" domain and range, as DPV and UCM's DPV declarations use them
+DCAM = Namespace("http://purl.org/dc/dcam/")
+
 # SKOS mapping properties carried on each concept, in the order SKOS lists them
 SKOS_MAPPINGS = ("exactMatch", "closeMatch", "broadMatch", "narrowMatch", "relatedMatch")
 
@@ -101,6 +104,30 @@ class Normalizer:
     def _in_namespace(self, node: Node) -> bool:
         return isinstance(node, URIRef) and str(node).startswith(self.namespace) and str(node) != self.namespace
 
+    def _included(self, node: Node) -> bool:
+        """A term of this ontology, or one reused from another vocabulary and declared here with rdfs:isDefinedBy"""
+        return self._in_namespace(node) or (
+            isinstance(node, URIRef) and (node, RDFS.isDefinedBy, None) in self.ont
+        )
+
+    def _single(self, prop: Node, includes: URIRef) -> List[str]:
+        """A dcam:domainIncludes/rangeIncludes value when there is exactly one (several give no single home)"""
+        iris = self._iris(self.ont, prop, includes)
+        return iris if len(iris) == 1 else []
+
+    def _prefixes(self, iris: Iterable[str]) -> Dict[str, str]:
+        """Prefixes, as bound in the ontology graph, for the namespaces of reused terms"""
+        bound = sorted(((str(ns), p) for p, ns in self.ont.namespaces() if p), key=lambda kv: -len(kv[0]))
+        found: Dict[str, str] = {}
+        for iri in iris:
+            if iri.startswith(self.namespace):
+                continue
+            for ns, p in bound:
+                if iri.startswith(ns) and len(iri) > len(ns) and ns not in STANDARD_PREFIXES.values():
+                    found.setdefault(p, ns)
+                    break
+        return found
+
     @staticmethod
     def _text(graph: Graph, subject: Node, *predicates: URIRef) -> Optional[str]:
         """First literal for the first predicate that has one; English or untagged preferred"""
@@ -130,7 +157,7 @@ class Normalizer:
     def _classes(self) -> Dict[str, OntologyClass]:
         classes: Dict[str, OntologyClass] = {}
         candidates = set(self.ont.subjects(RDF.type, OWL.Class)) | set(self.ont.subjects(RDF.type, RDFS.Class))
-        for cls in sorted(filter(self._in_namespace, candidates), key=str):
+        for cls in sorted(filter(self._included, candidates), key=str):
             equivalents = {
                 str(o) for o in self.ont.objects(cls, OWL.equivalentClass) if isinstance(o, URIRef)
             } | {
@@ -141,7 +168,7 @@ class Normalizer:
                 iri=str(cls),
                 term=term,
                 label=self._text(self.ont, cls, RDFS.label, SKOS.prefLabel) or term,
-                comment=self._text(self.ont, cls, RDFS.comment, SKOS.definition),
+                comment=self._text(self.ont, cls, RDFS.comment, SKOS.scopeNote, SKOS.definition),
                 superclasses=self._iris(self.ont, cls, RDFS.subClassOf),
                 equivalent_classes=sorted(e for e in equivalents if not e.startswith(self.namespace)),
             )
@@ -150,15 +177,15 @@ class Normalizer:
     def _properties(self) -> Dict[str, OntologyProperty]:
         properties: Dict[str, OntologyProperty] = {}
         for kind, owl_type in (("object", OWL.ObjectProperty), ("datatype", OWL.DatatypeProperty)):
-            for prop in sorted(filter(self._in_namespace, self.ont.subjects(RDF.type, owl_type)), key=str):
-                domains = self._iris(self.ont, prop, RDFS.domain)
-                ranges = self._iris(self.ont, prop, RDFS.range)
+            for prop in sorted(filter(self._included, self.ont.subjects(RDF.type, owl_type)), key=str):
+                domains = self._iris(self.ont, prop, RDFS.domain) or self._single(prop, DCAM.domainIncludes)
+                ranges = self._iris(self.ont, prop, RDFS.range) or self._single(prop, DCAM.rangeIncludes)
                 term = local_name(str(prop))
                 properties[str(prop)] = OntologyProperty(
                     iri=str(prop),
                     term=term,
                     label=self._text(self.ont, prop, RDFS.label, SKOS.prefLabel) or term,
-                    comment=self._text(self.ont, prop, RDFS.comment, SKOS.definition),
+                    comment=self._text(self.ont, prop, RDFS.comment, SKOS.scopeNote, SKOS.definition),
                     kind=kind,  # type: ignore[arg-type]
                     domain=domains[0] if domains else None,
                     range=ranges[0] if ranges else None,
@@ -322,7 +349,14 @@ class Normalizer:
                     (p for p, ns in self.shapes.namespaces() if str(ns) == str(self.UCMSH) and p),
                     "ucmsh",
                 ),
-                prefixes={self.prefix: self.namespace, **STANDARD_PREFIXES},
+                prefixes={
+                    self.prefix: self.namespace,
+                    **STANDARD_PREFIXES,
+                    **self._prefixes(
+                        [*classes, *properties]
+                        + [c.iri for scheme in schemes.values() for c in scheme.concepts]
+                    ),
+                },
             )
         except ValidationError as e:
             raise NormalizationError(

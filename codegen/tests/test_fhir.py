@@ -271,6 +271,11 @@ def test_consent_from_directive(bundle):
     deny = root["provision"][0]
     assert deny["type"] == "deny"
     assert deny["securityLabel"] == [{"system": UCM_CODES, "code": "Part2Protected"}]  # a bare Coding
+    # Actions reused from DPV are coded in DPV's namespace; UCM's own in UCM's
+    assert sorted(deny["action"], key=str) == [
+        {"coding": [{"system": "https://w3id.org/dpv#", "code": "Disclose"}]},
+        {"coding": [{"system": UCM_CODES, "code": "RediscloseAction"}]},
+    ]
     assert deny["data"][0]["meaning"] == "instance"
     permit = deny["provision"][0]
     assert permit["type"] == "permit"
@@ -309,10 +314,11 @@ def test_consent_round_trip(adapter, bundle):
         (EX + "prov-sarah-part2", "@type", "ConsentProvision"),
         (EX + "prov-sarah-part2", "hasConsentDecision", "Deny"),
         (EX + "prov-sarah-part2", "governsAction", "RediscloseAction"),
+        (EX + "prov-sarah-part2", "governsAction", "Disclose"),
         (EX + "prov-sarah-part2", "coversSensitivity", "Part2Protected"),
         (EX + "prov-sarah-part2", "coversInstance", EX + "doc-sud-note"),
         (EX + "prov-sarah-part2", "hasProvision", EX + "prov-sarah-part2-tx"),
-        (EX + "prov-sarah-part2-tx", "forPurpose", "Treatment"),
+        (EX + "prov-sarah-part2-tx", "hasPurpose", "Treatment"),
         (EX + "prov-sarah-part2-tx", "coversDataCategory", "BehavioralHealthInformation"),
         (EX + "prov-sarah-part2-tx", "provisionActor", EX + "p-clinic-recipient"),
         (EX + "p-clinic-recipient", "participatingEntity", EX + "org-clinic"),

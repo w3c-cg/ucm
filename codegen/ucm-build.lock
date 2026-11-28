@@ -2,23 +2,23 @@
   "lock-version": 1,
   "toolchain": {
     "version": "0.1.0",
-    "digest": "sha256:87f871a9bd7d258a0e7e2bd0cace15a1ad467188518d40e150231754432da763"
+    "digest": "sha256:1abc2e408dc407a854078a9bf3f658f260b556efe71f7e1fdd54422577ffaac3"
   },
   "sources": {
     "ontology": [
       {
         "path": "../unified-care-model.ttl",
-        "content": "sha256:1eb062abd875d05e6b91b0358f051875b8507e5cb50e869dd79003581828ddd0"
+        "content": "sha256:7d854bff39bbd6603b80b77b77f0155b17b95e76d1c959f882287a81f213ad0e"
       },
       {
         "path": "../ucm-lifecycle-vocabularies.ttl",
-        "content": "sha256:5f7ee3156039452938eef30980f1416d4d8a03d6991ec05679a6176fd46b3efa"
+        "content": "sha256:6194f6b82ef73cd9fb6d2eff7eab0eeab7ccd2fb2d792ada7b434538603b4fc7"
       }
     ],
     "shapes": [
       {
         "path": "../ucm-core-shapes.ttl",
-        "content": "sha256:d411186bd21321d2e618ccddccf34ad501d3a56a6b4280c525f6aa82c2609f3e"
+        "content": "sha256:fd2efceb7319617ae18c4902d3bb42de2cac718507c0da2fb1c80588c1cf06d1"
       }
     ],
     "shapes-lint": [
@@ -30,45 +30,46 @@
     "examples": [
       {
         "path": "../examples/shapes/ucm-core-shapes-example.ttl",
-        "content": "sha256:b5255636766802b6246d93c05a54536998477469e8a1b6a72f5e534254dac4e8"
+        "content": "sha256:9a23164cc0c60469c4bf0917f0a599f5abe4925fc2437de8a193f40689598d43"
       }
     ],
     "profile": [
       {
         "path": "profiles/ucm-api-profile.yaml",
-        "content": "sha256:6d93698f45749d066aa0ff7add81407276b2cf1011e64c9b254a32f6903062ab"
+        "content": "sha256:6bbccee2a5d90ff4d393921f5ef0e0098d509301adfedb4caa3126e7dfc2e4f2"
       }
     ],
     "fhir-mapping": [
       {
         "path": "profiles/ucm-fhir-mapping.yaml",
-        "content": "sha256:6815ffa142002e0903feca1626f55c802eae31c33ed1ea11c756f41bd1f7efd3"
+        "content": "sha256:a345ccc6ef3fc3aa75f022d05e3365f13f03819ef89aad305cc0601f1cbee709"
       }
     ]
   },
   "ir": [
     {
       "file": "ucm-ontology.jsonld",
-      "canonical": "sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b",
-      "content": "sha256:daaf469c440e9ae591639937dffa15ffee72c487646e244f0cc7a4aedf0cdb39",
-      "triples": 2520
+      "canonical": "sha256:43b26d141123f591d38e67c48df194ad319f3c60561d52f7002e954dec325a97",
+      "content": "sha256:8aebe94c9967dabf98200119b2483dda1c20d7832eb8c368eb8a6fce868deb1d",
+      "triples": 2544
     },
     {
       "file": "ucm-shapes.jsonld",
-      "canonical": "sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9",
-      "content": "sha256:32aaf11eb41cf672e860504f55d0901d0c330f8aec0032dc4cf5cd44b1940e65",
+      "canonical": "sha256:68d0e0609c67c5fd4dea4e409041abc29f81cef3d4c45770e28aa310dd7da9d4",
+      "content": "sha256:3e52d20dbb6bcc5f761a300296ba235c413484e106c5c254bb596caab167da7a",
       "triples": 1289
     },
     {
       "file": "ucm-shapes-lint.jsonld",
       "canonical": "sha256:ff621ed70abedb4e858e54b591da59d7f8cafecda1ad1190beb2a3c496b6c6ec",
-      "content": "sha256:0ad3b47a4033f1317fd759d0b63815e5fd0abb0b832ac8d7dca0abeef0c3ad95",
+      "content": "sha256:e69c1b0992f8be934c2e6e1f5fc73cd27749131d713711980b5e77ad0542e9e6",
       "triples": 39
     }
   ],
-  "ir-root": "sha256:3c9857602434b84d1ad58caf6fe726b4f1a6bd25df8778bbbf6c4862471abfd4",
+  "ir-root": "sha256:0c8181d61040d8e89c72de94d187e554b1bae7587d539413a6a771632f70fc38",
   "nodes": {
-    "ontology": "sha256:c374dc114e39fdec7e529c714ca6226be20c5cae6d19ecc76785e7e9c38ba25c",
+    "ontology": "sha256:dc141f654f3a6e9dda9545f6d138ed7c73431c3396564e8b3caa04afea366195",
+    "class:dpv:PrivacyNotice": "sha256:84545f97589c82a8b9a9e502150faf4eb8f6030c2a4b8d42d2f1e93e5ce5f1d1",
     "class:ucm:ActivityFocus": "sha256:d62f729f1285f3a633f372968cfe6418976b630121e66df9c17522793b5cfb0d",
     "class:ucm:ApplicantReferenceRole": "sha256:657a592a2be0982c74c33a15f07e88820ff7fe86d7034441803d5b9b876d1d43",
     "class:ucm:AssuranceCertification": "sha256:98252f8f7cf533210690174dde1c58db2a205e29955b761bac93cda42cf1c2eb",
@@ -142,7 +143,6 @@
     "class:ucm:PatientRole": "sha256:75a780f5354b0bb302718e01f8b175d20eae21f7c2c360ee3161cb89345a6966",
     "class:ucm:Person": "sha256:ff7fb6f9e6d396fa00178076f72ce405feb8505ee8e6b79f088b0ef27aef5784",
     "class:ucm:PolicyDefinition": "sha256:b13cb6bcf0ae31b6030879516b02084d416b10fb2ab87410fa1eb01f270fc7f1",
-    "class:ucm:PrivacyNotice": "sha256:d7f5aa85b3c3e6827769883926e10b01ebd4a0e84823eea4503be008faf27ab4",
     "class:ucm:Process": "sha256:19d4e0c5f4be2a4c62f8f89e3c31c277f2b452d78858ce781f8a9812783bd3d6",
     "class:ucm:ProgramDefinition": "sha256:24eac32171b4f032a5fc71afadcb7457e7418d9883760b57cbf0dcb534d87981",
     "class:ucm:ProofingAgentRole": "sha256:d67e38064745747daf02dbf1416493797d7600a138c818c2ca6a7ba29d9ff55b",
@@ -164,13 +164,17 @@
     "class:ucm:SubjectRole": "sha256:856513f46049b6399eb217dc643a185f9bd0627a7632028d429fda74335ad628",
     "class:ucm:TrustFramework": "sha256:39ca6114298594551ae452b25156787c509c2f559f6d7a2cab2a7e28df9ccf31",
     "class:ucm:TrustedRefereeRole": "sha256:b72621c07e8e9bf899e621fe938d3f34ca59cab5a660402984f67019e504f809",
+    "property:dpv:hasApplicableLaw": "sha256:9e38e86b560369e2deb44ab4bac32cbe10140372d2f6cc2d892f97885cef7a81",
+    "property:dpv:hasConsentStatus": "sha256:500f1543f4d910314e88e4561174d254cf6ae617110fba7ced6fc032e2998a9f",
+    "property:dpv:hasJurisdiction": "sha256:f7434eb43956f1b05cf005ae0909cb46829cdda27367cdfb76ea582d115bfe2d",
+    "property:dpv:hasPurpose": "sha256:4fdb4116bfa110d27edcab38f5e871c19417af44d12d7da2e9f2edc6d305193a",
     "property:ucm:acceptsRequest": "sha256:8fe47bfe649d7813debf634e55460ee6a62783e9572a00b43d31d9777642e99f",
     "property:ucm:achievedAAL": "sha256:5560db8190526383e71f176081098bb48340b9ebcd513627e9c008e03d474cbd",
     "property:ucm:achievedFAL": "sha256:ef4b03d90ff5367b33ec978739be6cfea7d5283fcf5a3cd6922ed5a9942cbcb8",
     "property:ucm:achievedIAL": "sha256:e10d4d54a08340a9f856064bbfcf2f90b1c32938d960eed3fd57119f47da1778",
-    "property:ucm:acknowledgesNotice": "sha256:a2a540f8480b127d1e5199d78106da57c3d9736a617f0a805133c0e625f1e98a",
+    "property:ucm:acknowledgesNotice": "sha256:312ad1cbfbe815b4e6f9fdd4e73f8872ef7e66dde55eaf2c7a1b3726ed8403da",
     "property:ucm:affiliatedWith": "sha256:8d17c1167ab0cff1501fe70c1be8a881498522a38e544544ba87c3c7bb97429d",
-    "property:ucm:amendmentAppliesRetroactively": "sha256:addb340a03b3bbe8686a261aa9d027f74ac16605b77ddffb7a0abcae23d120b7",
+    "property:ucm:amendmentAppliesRetroactively": "sha256:a3df1e417c5501b8b01bb6f7909671c7d2f305e04be513488b90c1f0015ab039",
     "property:ucm:assertsIdentity": "sha256:ec47b21eb9bfb0155606e114b1b38a21bb345e640d56e4f18d4b37514da9948d",
     "property:ucm:assumesRole": "sha256:0fd3da6d36ab20c50154993beb853378d17535acb8ef99601d82adfb19152899",
     "property:ucm:assuranceRank": "sha256:804031fae5cc3dd25b57787687a55ac5ce7e36d843d5a6ddd1ac982287e036fd",
@@ -195,7 +199,6 @@
     "property:ucm:definedByCriteria": "sha256:f8f9e46b42e5728a2670610e6373110a48642a0303163e83c144d2af5d586bf5",
     "property:ucm:enactiveDuring": "sha256:b58aa9fd2f1d652bd030117443ec7071cf4b8bbcb151ef7292432bf6f1eaa6af",
     "property:ucm:establishesIdentity": "sha256:df8cdf650e80374b1b62fb0410a06203c82edc42942a526f39d49359d300401f",
-    "property:ucm:forPurpose": "sha256:fb40aa63b3dd3bb05695feaa89fdb61aeaca5d1aae1020ce0968f67010d44b2b",
     "property:ucm:generatedByProcess": "sha256:4b7c0eda290540739d85104633ea83441a32941ce2af2dca37a0ff6d0697de42",
     "property:ucm:governedByPolicy": "sha256:7b53398cb647c95f5f12cb4ae47d7b5cb937b6899ada5f799142a1ee12b04fdc",
     "property:ucm:governsAction": "sha256:0fe31164ca8d8287b9181950ac6bd4f270db12d4b417deca14c91c6e1071f31b",
@@ -210,7 +213,6 @@
     "property:ucm:hasConsentInteractionType": "sha256:bebf95abe83e4f8e2c0be762c37f4cf33d725ec7da5d0f8a9e57bde9d090a7e7",
     "property:ucm:hasConsentModality": "sha256:79840ace68290fe45ad2dfbde361f51698d329622cd8aafbb6033744050763d5",
     "property:ucm:hasConsentModel": "sha256:8d05a65c6c31a19510f459403e28ebc2c0f4bb7d9d986f1884c73bf0fb5bf653",
-    "property:ucm:hasConsentStatus": "sha256:59da10dcd6efe5492ea7b0e09f46a433b6396103a0f85e88868c603556bec41c",
     "property:ucm:hasEvidenceStrength": "sha256:4c091989c763bf1a6f78a4a87d4df31da501e04f4175cd9dd9e8fd4bff01a9bb",
     "property:ucm:hasEvidenceType": "sha256:ba5f7dc7223e1c73e5895b797146dfd5f58ada7ee6796df1b904b8925957cf0d",
     "property:ucm:hasHandoffStatus": "sha256:deb02fb87e3b1c812223f5bab1c02ac310a3c2b353f870c5cfd8438e0142d394",
@@ -226,7 +228,6 @@
     "property:ucm:hasProofingType": "sha256:4672acda95bbc84baa662a3677e0586e5aa1c782461704dc62cf27dedcda5fb9",
     "property:ucm:hasProvision": "sha256:ac17602394815ee130141a6ab03f02531db96ac3aff2f7dc9d244a03527d23aa",
     "property:ucm:hasReferralDisposition": "sha256:2f5fafc2f77a3774ccd7102c64b50cc3aaa83a9c6644245a50b8a895289f645b",
-    "property:ucm:hasRegulatoryBasis": "sha256:346cdb7a36ec02c2d0e1da748510de76d7a9ae885057aac4c00077f4520347a9",
     "property:ucm:hasResident": "sha256:40947f01c6bb509e9eafbcef2c369d677c86a55e380798234a5f0e678645ce3d",
     "property:ucm:hasRetentionDisposition": "sha256:9bc9cea8a19ef94a2ff21e47373f025ef88ecfb6b63e619935b28f05e4d71c85",
     "property:ucm:hasSensitivityLabel": "sha256:a484dc72b03f809a536bb9903341866b031846a9ff16d0f5fb74ccb6a3955489",
@@ -235,7 +236,6 @@
     "property:ucm:identifierSystem": "sha256:8d128d817485ca8e7b4f46729a64b2b769352c244b072d38931fa61a23c42f32",
     "property:ucm:identifierValue": "sha256:c3eef272c528013ce1cdb250ce8e65c217b04829c719a6cfb37ec287a11cb83a",
     "property:ucm:identityOf": "sha256:9d4f1ca5b14a99672ce1b9f577ebe7c5530cfad9c026a4552acbd84fcba76919",
-    "property:ucm:inJurisdiction": "sha256:be3c39d4ada54876ad55f261755594f0684ebfe7a6e3eaf19eaed2097dfc3db8",
     "property:ucm:issuedBy": "sha256:69b5f0849cb01fc435fb9d22d7fce0e851d5bb9113789e61f69e522be30dec59",
     "property:ucm:locatedAt": "sha256:9c521bde9c71b0fc99951fb55e4cbe05f18e2a57aca565137157c8beb4c5f708",
     "property:ucm:madeWithinContext": "sha256:e475a9949c8c4aa51277b340c7668dcc987d2bd59766d5e08be4d429e4ed09c2",
@@ -249,7 +249,7 @@
     "property:ucm:participatesThrough": "sha256:8d0c794c588fab0a1439b09f2c4288ab85dca131003b4ef022500cd7e5e6a04c",
     "property:ucm:participatingEntity": "sha256:14321d39d1167c293f3c937c66ef3c0f53528dae189260d287292622248a3dfc",
     "property:ucm:participationContext": "sha256:53ea55e9f52ff2fd1ef6574caec1956a65cd9de4c810959356fe980b3285ac53",
-    "property:ucm:postedAt": "sha256:22585b93b0fdb6bf32f4e8c80090328f1b8b78effef83259f5941e18fa814ad3",
+    "property:ucm:postedAt": "sha256:826745b250db88eb0f73f430ae388690018a4a9db9193ab93eedfcf71f1f4294",
     "property:ucm:processingLocation": "sha256:25faa7c40c64142d5ed472083121eca7eb02d61744ca8155e6fbd4fe6cfbef1d",
     "property:ucm:provisionActor": "sha256:4682f39876f7a8e0f298b662121581dea21c467cb6ed40b366ce8a4c32e1324f",
     "property:ucm:qualifiesForMembership": "sha256:e95f067e4b8f3eb780468569d27d27ea10f251dd46a62c5a77a8be2c590c80b2",
@@ -279,13 +279,13 @@
     "scheme:ucm:ClosureReason": "sha256:717b4ef0f8ff41c2db34bd92292d9ec2d0decb958cfcba5452bdb0b204e5ddc8",
     "scheme:ucm:CommitmentStatus": "sha256:b156ce1f4dbd465a766856d530224268b0e3c9c0afb337c75a5213f7a00062cb",
     "scheme:ucm:ConfidentialityLevel": "sha256:62f5d802a18122fb8ff10e3ada30aec5e5e1b3d6cf92e81f2fcec2d9cb799a13",
-    "scheme:ucm:ConsentAction": "sha256:91e4f4a0b21f716ad2d745d57d01eb51d79b57150e406ed48e6aff176de32886",
+    "scheme:ucm:ConsentAction": "sha256:2dabe399f29b2539b1ed6588b543d48792ee17e9e115a8c1013b2a371a2fc3ef",
     "scheme:ucm:ConsentCategory": "sha256:7ee74e04f68ed3ba90c0da4a20f7aafe3134e0cb2651c8765235ed7b9e943c77",
     "scheme:ucm:ConsentDecision": "sha256:de5ba5374c8b38776030b5914ebeeb417ad0117d3251002f9dc806875f47f765",
     "scheme:ucm:ConsentInteractionType": "sha256:82c2cedecd22bcfc0882299f9304de459128498a954a14ec8c8de797b2dbfb20",
     "scheme:ucm:ConsentModality": "sha256:0848dc33a74dc6423a3739a9101ac2d5437f27f54de88d064c7bb1d933b3f584",
     "scheme:ucm:ConsentModel": "sha256:b7475ae7aefb3c41a6c9bb36f1b9f9c4ae4e58a72d72c4634c6ec7ce66530910",
-    "scheme:ucm:ConsentStatus": "sha256:0957f6df56605d4b8377065f37f5308b792574ac7255cc213feae4ce4d1dfbee",
+    "scheme:ucm:ConsentStatus": "sha256:4cbe26fceba628687927afef86e425f7ef0c4f503af60ed738bd4f4af0e020b0",
     "scheme:ucm:EvidenceStrength": "sha256:1876312c0b88a8d0fd7830963844e44db7dde9b5b9a4c50deb02e7f711942e9b",
     "scheme:ucm:FederationAssuranceLevel": "sha256:3d52612f3bdde15f50fea5d9b9b688cbe1a3ef0feb6cb619bd97172f80fa9069",
     "scheme:ucm:HandoffStatus": "sha256:f04867943192b9f68bb7950973192c2076e60501f289a830a5d4e0fee7607205",
@@ -293,27 +293,27 @@
     "scheme:ucm:IdentifierType": "sha256:d22d0e4a7e770aa8e36a36a079416d1d019cdd8119285d08726e0025a90c80cd",
     "scheme:ucm:IdentityAssuranceLevel": "sha256:301e2a1dda0947dd247f9b3d61712ef163e76202a68b436b112bf8d0f61a7a06",
     "scheme:ucm:IdentityEvidenceType": "sha256:3eeb5f272cb8bc403fdda79797187c740d244d2c70814df5dc24b46d8da8c298",
-    "scheme:ucm:InformationCategory": "sha256:71caaf7df18577439a8f5b4dd4eac1565e3d6008dd1bfaca7169a8a483f7cefe",
+    "scheme:ucm:InformationCategory": "sha256:b016cdac18a172fd47d5a9e6eba2cfb5321c342c7ad303daec59055fc890b4e9",
     "scheme:ucm:LifecycleState": "sha256:32c4ae8a202d5e541a91a15441be65a87f9c3d662637090428d9b61a6ca92a2d",
     "scheme:ucm:ProofingType": "sha256:26fc85b5d10a43dcb01393d8167a13bee6664b62935fad84e8e6ef90896ef0b8",
-    "scheme:ucm:PurposeOfUse": "sha256:a9ccc62c979a5042189192a1256e6d654b1983b9bf1703e3f003fd65cd0aa1d0",
+    "scheme:ucm:PurposeOfUse": "sha256:3de83e2d7fcce791dd77a34e081ae124e439a450ed3fc2f7976bb95a870be9c8",
     "scheme:ucm:ReferralDisposition": "sha256:bc0c7292f38e2300f76b257c5141236c47898d8eea2091c45a75d3bbe8fb93f7",
-    "scheme:ucm:RegulatoryBasis": "sha256:8d0ef3579d69f6bf357da63cf35729d7811c352ef993becded5004ddc7b54538",
+    "scheme:ucm:RegulatoryBasis": "sha256:3d45977ee35640962846438b92288afbae1074b0ab60b76ee3d8f86318de446f",
     "scheme:ucm:RetentionDisposition": "sha256:d60232dabf1d572ae92f2308fdff248de25b4724c58a66710b43dabfbf0e76bc",
     "scheme:ucm:SelfConsentCondition": "sha256:a508cbedbd433e03db797735bf21f3ccd2dd752062158dbab933ca50938e95a8",
     "scheme:ucm:SensitivityCategory": "sha256:e9e98cb9ad215e3ab6777ab3563c83bec339d6e8445e75d18f625eb8f80612b3",
     "shape:ucm:AcceptsRequestShape": "sha256:f3098be4ae6181e4392d880ac7b9ff0beeca876ba61b814465523a0dd76d9a94",
     "shape:ucm:AchievedAALShape": "sha256:f43ed47a7ecde7fd102d5ba8175736c77be8be70fc7ecb9df24e80a105a49880",
     "shape:ucm:AchievedFALShape": "sha256:b05330c424fb675f5f4498fe5f157c8091c7131e9185c1f29405d301f8ddac1f",
-    "shape:ucm:AcknowledgesNoticeTypeShape": "sha256:161066b34891c241a41b519b712389b1de3fa7a3f2c27370add3fdc4af0b8f93",
-    "shape:ucm:ActiveNotExpiredShape": "sha256:ecef379e9c199548064e2a53be891082e8203a321de85e0de3872929002570d5",
+    "shape:ucm:AcknowledgesNoticeTypeShape": "sha256:ba123e75656110dd625da5569b2bc0efe4ed4b8a0fcf36af3a894f195f87ec20",
+    "shape:ucm:ActiveNotExpiredShape": "sha256:753bf1a8dc6957a0681a02de169eedf20a6cb0dece9a44c3b6d5617a53a5f2e9",
     "shape:ucm:ActivityFocusTypeShape": "sha256:462fecd873ece2838379f29df84e722004e46ba28d9cc64f138768f87365e559",
     "shape:ucm:AffiliationShape": "sha256:b2059f2e4645a813a451cebb4dac6b6103b42d157c84b2bf52453fec64ef393f",
     "shape:ucm:ApplicantReferenceShape": "sha256:7acc7d95e48fc0ea17eddec9054d7b1a819621411ef673d665749f20a787167b",
     "shape:ucm:AssertsIdentityTypeShape": "sha256:0d4841a775e3be605f1aa75c130c7a12e154953cd5d700b044cc09863771a727",
     "shape:ucm:AuthenticatedByTypeShape": "sha256:caa382c98922540151758621e2cd3146679f53425eef96493b729eea4df7a967",
     "shape:ucm:AuthenticatorAssuranceLevel-anchored": "sha256:7b8afff0e485e89c4824b8f189bdcac5bdd04a2f1ef0032559d66bbdce09d7a6",
-    "shape:ucm:AuthorizedByActiveConsentShape": "sha256:88e94aff444fc99725000c92a0484f7a4fc302d85a5f6b2b33544e21289595fa",
+    "shape:ucm:AuthorizedByActiveConsentShape": "sha256:aee17db4f404925c892ca56f4a927d3bd4034e98dd322735a4c89840c39e158a",
     "shape:ucm:AuthorizedByConsentTypeShape": "sha256:e9f4cdcef8029feddd9160d8fa87bfa66247e92dca505ba4bdbb1a35247d631d",
     "shape:ucm:BirthDateQuality-anchored": "sha256:6bb02ea9faf8e88468592483686bcfce266d332c47e405bd957467bd1a2bd68f",
     "shape:ucm:BirthDateQualityShape": "sha256:053c42f2018055927f1625b50f2b22f3f5e251f4db9f53d5ec02214fb99da44c",
@@ -340,8 +340,8 @@
     "shape:ucm:ConsentModel-anchored": "sha256:80fa801da77646aa71e9995f14f51e10193156e167e6f012d4bfd3436d80e83f",
     "shape:ucm:ConsentOnBehalfOfTypeShape": "sha256:6a1fcca74070d249c73001e62446658456fc65d3306fe984b66cf6dc7f5359a4",
     "shape:ucm:ConsentProvisionShape": "sha256:6c3d19369c55cd38c962e93fcd59c69bed1b1d7ead8994aa7c556c6ea82ce086",
-    "shape:ucm:ConsentStatus-anchored": "sha256:0c4c954d7bc787c327e53a80f4c08a3e6b5ab0af83074ddd9ae7deb1548dd112",
-    "shape:ucm:ConsentStatusShape": "sha256:f1c30e88643c4a47735674b0178a621daed4b3e1baba1a5f755c0e5f25b3d670",
+    "shape:ucm:ConsentStatus-anchored": "sha256:20d0a1183edc10bfd7a0bf3c8642ae8d26193e86961a857b7738d10c9f3c5f89",
+    "shape:ucm:ConsentStatusShape": "sha256:c25874ebac47642b42a4958243d279fc7c82e4b84fd5c9767821cc0fd87d07e0",
     "shape:ucm:ConsentSubjectTypeShape": "sha256:171b6c0c052afd07e8b0afb0e407fb26e5bee957635332a22604cb8db7fbaf43",
     "shape:ucm:ContextArtifactShape": "sha256:fa1c82513817bf0f4be51126dd3125403e3fb27489c7cef12388f5248cefa916",
     "shape:ucm:CoordinativeActivityShape": "sha256:9f29658311f5143c8497c946e8ffc2be20163e8d6ec1ebd733323708c5b4ddf9",
@@ -361,6 +361,7 @@
     "shape:ucm:HandshakeShape": "sha256:5597058efce2479eb9a24a897b13cfbd2d968e8464fc1883c70aabd052bf63f9",
     "shape:ucm:HasIdentifierTypeShape": "sha256:967b9c52e9221d1e0d8fae0c5dd9a40b57c4bd4692233b2435602cd41927def8",
     "shape:ucm:HasIdentityTypeShape": "sha256:0671e51500c6d58845764129276645dee4e6eb92a5a323276751df0ba39616ed",
+    "shape:ucm:HasJurisdictionTypeShape": "sha256:a8034c7760fec612b81c8fcc75e814f47ae23186fb8edd650fd19b0fd90c3cd9",
     "shape:ucm:HasProvisionTypeShape": "sha256:c2972780ac2039c5a30f6470725f76db2fc82a54d3f42624b93939300322f457",
     "shape:ucm:HouseholdMinorProxyShape": "sha256:9274dab441568fed3a18fce6dd5659c4d02388e867a316bc324260757443f64a",
     "shape:ucm:IdentifiedAsTypeShape": "sha256:343042e403b19e99f65e4bb430b873fb1554d5ae9ff33927b050e126631baf50",
@@ -370,7 +371,6 @@
     "shape:ucm:IdentityAssuranceLevel-anchored": "sha256:4ceaa4f2775e6e62e81893017708f1d11a521bc2cfea71dc458891eb268f03d1",
     "shape:ucm:IdentityEvidenceType-anchored": "sha256:8ec63361c831f3d16aa3714862aa66ae7d5e7911bfd0ad3e691d383546a66be3",
     "shape:ucm:IdentityOfTypeShape": "sha256:41bc22efaf8b7818763dc329c3577137b897e6470dfd23911ed049ef47e96f22",
-    "shape:ucm:InJurisdictionTypeShape": "sha256:bda481d5a768cb3a04804177f0d9d55939e93860a014c4dd193811c4a0a943b6",
     "shape:ucm:InformationCategory-anchored": "sha256:06f42973345b290e05147940f890ab5ba76455400fe451b0a043dbbdb38fccdb",
     "shape:ucm:IssuedByTypeShape": "sha256:83484d73dd21156e8a56201cdbd5f8f4566af598e00766e0b742d8b5fb29c0c7",
     "shape:ucm:JurisdictionAcyclicShape": "sha256:b12e7cd37dcb72e3566e6a07a957d4104d7d203c4cb58815a9d36ca88431ba83",
@@ -393,17 +393,17 @@
     "shape:ucm:ProvisionAcyclicShape": "sha256:9d2543ea9761cc152c868ac4c6b48f49aed669312719c7a2d5d0a46cf03dbd22",
     "shape:ucm:ProvisionAlternationShape": "sha256:ad2a46a0ca4a3c3f5bd0bb9290c7e6b2b7e9c4d21e699823b7eb41e4ea1fa73a",
     "shape:ucm:ProxyGrantorShape": "sha256:2a6fefc9ec4245aa5d60a8e39dab411ae0587493ec475173387e5c6a1e5c222e",
-    "shape:ucm:PurposeOfUse-anchored": "sha256:1c7ce988c4a0a4a4dadb70c35652a13776f15ebd25bd2f51e61974c097f65768",
+    "shape:ucm:PurposeOfUse-anchored": "sha256:f92b959094ee8408257e226cffd8273e31b49587573fc31da7979574fb61bc7b",
     "shape:ucm:RecordsConsentFromTypeShape": "sha256:8c214d9833cec2ad8192d32ccd44796026198ebc1c241946f8ba9b55d06bd04f",
     "shape:ucm:ReferralDisposition-anchored": "sha256:8526c068b8df34c26223d68009755fe597879ef639755f14543bc490b7c6d5f4",
     "shape:ucm:ReferralDispositionShape": "sha256:219c6fdbd3100fc51ce0bea95a619275580121f930d2ad99dd788a8f4fe1c189",
-    "shape:ucm:RegulatoryBasis-anchored": "sha256:8c2f511fc8abe820f2323323242df7e37303579939fadec5aeed9b14aea3a1c7",
+    "shape:ucm:RegulatoryBasis-anchored": "sha256:495135f493fbc86ef3606e71851df7b16c1f7f9d149d296ee833bad3c88661b6",
     "shape:ucm:RetentionDisposition-anchored": "sha256:307f87af79ad9b75e2e76a92df377015141d7aa65e52436198adaaf9a3f2921e",
     "shape:ucm:RetentionDispositionShape": "sha256:c45d8a03184585c8a8272b88ef3d1cdda5bdab9576e83da6ec62b7388726251f",
     "shape:ucm:RetentionPeriodShape": "sha256:b4bbf3b980167792e8aa7481228fe51d744b69702739534cdc821e181c4cdfca",
     "shape:ucm:RevokedByTypeShape": "sha256:77ee82d63c12291c8d0cc0517fc1912bd786d0ab9a844003111e93f85f753abb",
-    "shape:ucm:RevokedHasRevocationShape": "sha256:6e256e2d0347ce06c32dc5152a4a6b0690884ca81c304bd76472581e5c370923",
-    "shape:ucm:SelfConsentBasisShape": "sha256:4bb45172aa3fbf376b75ee80db1ec2d6123ef2f524ec5bf3bd74faecac8d5e28",
+    "shape:ucm:RevokedHasRevocationShape": "sha256:4784cb9b7fe42f182d601e2c1bb6ae0d9c9ece8cd6e87bd6efbc90b4e849d392",
+    "shape:ucm:SelfConsentBasisShape": "sha256:1faece303072d253348c29956fccb5c485253d4d75cf1a5192f1c6ece4b0b55c",
     "shape:ucm:SelfConsentCondition-anchored": "sha256:067b041bc33d5d6f3524011c12f37bb0c93cf5566f4d6494f87b5fba5807957e",
     "shape:ucm:SelfConsentRuleAgeShape": "sha256:040aa2bcd1984a05434b9a2a5ec5a647f1fcf6b32b556943aa35702925b522bf",
     "shape:ucm:SelfConsentScope-anchored": "sha256:75facfe16a051a672ffd53dc47d0188f6a4421e3dc5243993a53b599b725c8cb",
@@ -420,13 +420,13 @@
     "shape:ucm:WithinJurisdictionTypeShape": "sha256:f14346681f2f7f00e6a389193af91b4ac9e2bcc97bcdeec3abe32b5c54d6f54a"
   },
   "outputs": {
-    "context.jsonld": "sha256:f277d454663cc15047130489c22bd60326a24d7f8be8c83a69b86bf02bc0e17d",
-    "fhir/ucm_fhir_adapter.py": "sha256:27794872e154dfdd40f870bebd5058b39310f03db401a3bcbba5eecbc918cb7e",
-    "openapi.yaml": "sha256:092445b46969aa6f51f55027f976dfecba2d0d10e71dda5704556e10d74ad2e6",
+    "context.jsonld": "sha256:010761795d5ddaea2e38ef4b81834b9850ee80e67eff5223059f69396d551d15",
+    "fhir/ucm_fhir_adapter.py": "sha256:9c9541fac3c0b019a78827f7974bb1a16732dd794765fd780c4a30af6865d9c2",
+    "openapi.yaml": "sha256:9d5ded8cd57575b6fb1163286cd5bf84e8b6a8aa96c184e0c3d0c059b4e58f01",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
-    "postgres/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py": "sha256:74847c9ff8e048bb27afa1e0370e8c663dfee01fd3231994e5a2542876182969",
-    "postgres/ucm_models.py": "sha256:512861a412db0f8f6a3a69fda75fcee0d7c74240d4df5def7539c9e65eed30df"
+    "postgres/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py": "sha256:fbf369bee75ca1953cfb50af7d8657aa32fd96a0a72dc47fc4db1bb4b1da94c8",
+    "postgres/ucm_models.py": "sha256:1a78cee24c784b56f30bfdc1204147278dbeb5f66a4d4a0d9344e51cdea16c7b"
   }
 }

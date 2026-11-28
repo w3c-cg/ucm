@@ -58,7 +58,7 @@ These follow the existing UCM conventions and `arch-spec/ucm-ontology-requiremen
 | `ucm:ConsentInteraction` | `ucm:Process` | A process in which a person, or someone authorized to act for them, grants, refuses, amends, renews or revokes permission for the collection, use or disclosure of information, or for an action concerning them. | The act. It carries who was present, when it happened and how (verbal, written). Revocation and amendment are also consent interactions. |
 | `ucm:ConsentDirective` | `ucm:InformationArtifact` | A record of the choices a person, or a party acting for them, has made to permit or deny identified actions by identified parties, for given purposes, over given information, for a period. | The record. It maps 1:1 to FHIR `Consent` and to an HMIS ROI. It is an InformationArtifact, not a Statement (Q1, decided). |
 | `ucm:ConsentProvision` | none (part of a directive) | A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions can nest as exceptions. | Granularity (SOCI) and FHIR `provision`. It is also how HMIS "Limited Sharing" is expressed. |
-| `ucm:PrivacyNotice` | `ucm:PolicyDefinition` | A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act. | HUD posted notice, HIPAA Notice of Privacy Practices, GDPR transparency notice. |
+| `dpv:PrivacyNotice` | `ucm:PolicyDefinition` | A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act. | HUD posted notice, HIPAA Notice of Privacy Practices, GDPR transparency notice. |
 | `ucm:ConsentPolicy` | `ucm:PolicyDefinition` | A policy, regulation or program rule that sets the consent model, the default decision and the conditions under which consent is required, allowed or not needed. | FHIR `policyBasis` and `regulatoryBasis`. Program-level opt-in or opt-out. The SOCI point that consent is often asked for when it is not needed. |
 | `ucm:SelfConsentRule` | `ucm:ConsentPolicy` | A rule, in force in a jurisdiction, that sets when a minor or youth may consent for themselves: from what age, for which purposes, categories or sensitivities, and under what conditions. | Youth consent varies by region (section 6.2). |
 | `ucm:JurisdictionContext` | `ucm:SemanticContext` | A legal or administrative region whose rules govern consent, such as a country, state, county, tribal nation or HUD Continuum of Care. Jurisdictions can nest. | Where a consent was given and which rules apply to it. |
@@ -90,22 +90,22 @@ Object properties:
 | `ucm:recordsConsentFrom` | `ConsentDirective`, then `ConsentInteraction` | The process that produced, amended or revoked the directive. Plays the role `generatedByProcess` plays for a Statement (Q1, decided). |
 | `ucm:consentSubject` | `ConsentDirective`, then `Participation` | FHIR `subject`. The subject's Participation in the ConsentInteraction. The entity can be a `Person` or, for a household-wide ROI, a `SocialGroupEntity` (Q4). |
 | `ucm:hasConsentDecision` | `ConsentDirective` or `ConsentProvision`, then `skos:Concept` (`ucm:ConsentDecision`) | FHIR `decision` on the directive. Required on every provision too (Q3, decided). |
-| `ucm:hasConsentStatus` | `ConsentDirective`, then `skos:Concept` (`ucm:ConsentStatus`) | FHIR `status`. |
+| `dpv:hasConsentStatus` | `ConsentDirective`, then `skos:Concept` (`ucm:ConsentStatus`) | FHIR `status`. |
 | `ucm:hasConsentCategory` | `ConsentDirective`, then `skos:Concept` (`ucm:ConsentCategory`) | FHIR `category`. Distinguishes a privacy consent or ROI from a treatment or research consent. |
 | `ucm:hasConsentModality` | `ConsentInteraction`, then `skos:Concept` (`ucm:ConsentModality`) | HUD inferred, verbal or written. Also electronic. |
 | `ucm:hasConsentInteractionType` | `ConsentInteraction`, then `skos:Concept` (`ucm:ConsentInteractionType`) | Grant, refuse, amend, renew, revoke, verify. |
 | `ucm:hasProvision` | `ConsentDirective` or `ConsentProvision`, then `ConsentProvision` | FHIR `provision` and nested `provision.provision`. |
 | `ucm:provisionActor` | `ConsentProvision`, then `Participation` | FHIR `provision.actor`, with role and entity on the Participation. |
 | `ucm:governsAction` | `ConsentProvision`, then `skos:Concept` (`ucm:ConsentAction`) | FHIR `provision.action`. Named `governsAction`, not `permitsAction`, because a provision can be a deny (Q3). |
-| `ucm:forPurpose` | `ConsentProvision` or `PrivacyNotice`, then `skos:Concept` (`ucm:PurposeOfUse`) | FHIR `provision.purpose`, HL7 PurposeOfUse, HMIS notice purposes. |
+| `dpv:hasPurpose` | `ConsentProvision` or `PrivacyNotice`, then `skos:Concept` (`ucm:PurposeOfUse`) | FHIR `provision.purpose`, HL7 PurposeOfUse, HMIS notice purposes. |
 | `ucm:coversDataCategory` | `ConsentProvision`, then `skos:Concept` (`ucm:InformationCategory`) | FHIR `provision.documentType`, `resourceType` and `code`, plus SOCI cross-sector domains. |
 | `ucm:coversSensitivity` | `ConsentProvision`, then `skos:Concept` (`ucm:SensitivityCategory` or `ucm:ConfidentialityLevel`) | FHIR `provision.securityLabel`, SHIFT SLS topics. |
 | `ucm:coversInformation` | `ConsentProvision`, then `ucm:InformationArtifact` or `ucm:Statement` | FHIR `provision.data.reference`, with `data.meaning` via subproperties (Q6). |
 | `ucm:dataPeriod` | `ConsentProvision`, then `time:TemporalEntity` (a subproperty of `ucm:hasTemporalContext`) | FHIR `provision.dataPeriod`. The time span of the *data*, as distinct from the period the consent applies. |
 | `ucm:hasSensitivityLabel` | `InformationArtifact` or `Statement`, then `skos:Concept` | Security labels on data, like SHIFT SLS `meta.security`. Lets provisions match data without listing records. |
 | `ucm:governedByPolicy` | `ConsentDirective`, `ConsentProvision` or `ProgramDefinition`, then `ConsentPolicy` | FHIR `policyBasis`, the program's consent rule. |
-| `ucm:hasRegulatoryBasis` | `ConsentDirective` or `ConsentPolicy`, then `skos:Concept` (`ucm:RegulatoryBasis`) | FHIR `regulatoryBasis`. HIPAA, 42 CFR Part 2, the HMIS 2004 Notice, FERPA, GDPR, state law. |
-| `ucm:inJurisdiction` | `ConsentDirective`, `ConsentInteraction` or `ConsentPolicy`, then `JurisdictionContext` | Where the consent was given, or where a policy is in force. Answers the Q1 follow-on: a new property rather than widening `madeWithinContext`. |
+| `dpv:hasApplicableLaw` | `ConsentDirective` or `ConsentPolicy`, then `skos:Concept` (`ucm:RegulatoryBasis`) | FHIR `regulatoryBasis`. HIPAA, 42 CFR Part 2, the HMIS 2004 Notice, FERPA, GDPR, state law. |
+| `dpv:hasJurisdiction` | `ConsentDirective`, `ConsentInteraction` or `ConsentPolicy`, then `JurisdictionContext` | Where the consent was given, or where a policy is in force. Answers the Q1 follow-on: a new property rather than widening `madeWithinContext`. |
 | `ucm:withinJurisdiction` | `JurisdictionContext`, then `JurisdictionContext` (transitive) | Nesting, for example a county within a state, or a CoC within a state. A rule in force in a state then applies to a CoC within it. |
 | `ucm:selfConsentScope` | `SelfConsentRule`, then `skos:Concept` (`PurposeOfUse`, `ConsentCategory` or `SensitivityCategory`) | What the self-consent covers, for example STD testing, SUD or mental health treatment, or HMIS data sharing. No value means all consents. |
 | `ucm:selfConsentCondition` | `SelfConsentRule`, then `skos:Concept` (`ucm:SelfConsentCondition`) | The condition that unlocks self-consent, such as being emancipated or an unaccompanied youth. Several values mean any one suffices. |
@@ -232,7 +232,7 @@ as a question, `dcterms:publisher "MDIX"`, `skos:definition`, top concepts, and
 
 | Scheme | Concepts (draft) | External mapping |
 |---|---|---|
-| `ucm:ConsentStatus` (Does this consent apply now?) | `ConsentDraft`, `ConsentActive`, `ConsentInactive` with narrower `ConsentRevoked`, `ConsentExpired` and `ConsentSuperseded`, plus `ConsentRefused`, `ConsentEnteredInError`, `ConsentStatusUnknown` | FHIR `consent-state-codes` (verified): draft, active, inactive, not-done, entered-in-error, unknown. FHIR has no revoked or expired, so they map `skos:broadMatch` to inactive. Note FHIR's display for `not-done` is "Abandoned", which only closeMatches `ConsentRefused`. |
+| `ucm:ConsentStatus` (Does this consent apply now?) | `ConsentDraft`, `ConsentActive`, `ConsentInactive` with narrower `dpv:ConsentWithdrawn` (by the subject or their grantor), `dpv:ConsentRevoked` (by another party), `dpv:ConsentExpired` and `ConsentSuperseded`, plus `dpv:ConsentRefused`, `ConsentEnteredInError`, `dpv:ConsentUnknown` | FHIR `consent-state-codes` (verified): draft, active, inactive, not-done, entered-in-error, unknown. FHIR has no revoked or expired, so they map `skos:broadMatch` to inactive. Note FHIR's display for `not-done` is "Abandoned", which only closeMatches `ConsentRefused`. |
 | `ucm:ConsentDecision` | `Permit`, `Deny` | FHIR ConsentProvisionType permit and deny. |
 | `ucm:ConsentCategory` | `PrivacyConsent` with narrower `ReleaseOfInformation`, `ConsentToCollect` and `ConsentToShare`; `TreatmentConsent`; `ResearchConsent`; `AdvanceDirective` (placeholder) | `consentcategorycodes` (verified, Appendix A): `research`, `acd`, `hcd`, `npp`, `emrgonly`. HL7 has no general privacy-consent or ROI category, so `PrivacyConsent` and `ReleaseOfInformation` stay UCM-local. `v3-ActCode#42CFRPart2CD` is a closeMatch for a Part 2 consent. |
 | `ucm:ConsentModality` | `WrittenConsent`, `ElectronicConsent` (broader: written), `VerbalConsent`, `InferredConsent` | HUD FAQ 3310. |
@@ -240,7 +240,7 @@ as a question, `dcterms:publisher "MDIX"`, `skos:definition`, top concepts, and
 | `ucm:ConsentInteractionType` | `Grant`, `Refuse`, `Amend`, `Renew`, `Revoke`, `Verify` | HUD re-consent on amendment. All Chicago renewal. |
 | `ucm:ConsentAction` | `Collect`, `Access`, `Use`, `Disclose`, `Redisclose`, `Correct` | `consentaction` (verified): collect, access, use, disclose, correct (display "Access and Correct"). `Redisclose` has no HL7 code. It is new (SOCI "share or reshare", Part 2), broader `Disclose`. |
 | `ucm:PurposeOfUse` | `Treatment`, `EmergencyTreatment`, `CareCoordination`, `CareManagement`, `Payment`, `Operations`, `EligibilityDetermination`, `Research`, `PublicHealth`, `FamilyRequested`, `PatientRequested`, plus the UCM-defined social-care purposes in section 6.1 | `v3-ActReason` (verified, Appendix A): TREAT, ETREAT, COC, CAREMGT, HPAYMT, HOPERAT, ELIGDTRM, HRESCH, PUBHLTH, FAMRQT, PATRQT. HL7 has no housing or social-services purposes, so UCM defines them (section 6.1). |
-| `ucm:InformationCategory` | `ClinicalInformation`, `BehavioralHealthInformation`, `HousingInformation`, `IncomeAndBenefitsInformation`, `EducationInformation`, `ChildWelfareInformation`, `JusticeInformation`, `NutritionInformation`, `IdentifyingInformation` | Lines up with the UCM `*Domain` and `*Context` classes (Q5). `IdentifyingInformation` closeMatch `v3-ActCode#IDS` and `#DEMO`. |
+| `ucm:InformationCategory` | `ClinicalInformation`, `BehavioralHealthInformation`, `HousingInformation`, `IncomeAndBenefitsInformation`, `pd:Education`, `ChildWelfareInformation`, `JusticeInformation`, `NutritionInformation`, `pd:Identifying` | Lines up with the UCM `*Domain` and `*Context` classes (Q5). `pd:Identifying` closeMatch `v3-ActCode#IDS` and `#DEMO`. |
 | `ucm:SensitivityCategory` | `SubstanceUseDisorder` (narrower `AlcoholUseDisorder`, `OpioidUseDisorder`), `BehavioralHealth` (narrower `MentalHealth`, `PsychiatricDisorder`, `PsychotherapyNote`), `HIV`, `SexuallyTransmittedDisease`, `SexualAndReproductiveHealth`, `GenderAndSexualOrientation`, `GeneticDisease`, `SexualAssaultAbuseDomesticViolence`, `Adolescent`, `Part2Protected` | `v3-ActCode` (verified, Appendix A): SUD, ETH, ETHUD, OPIOIDUD, BH, MH, PSY, PSYTHPN, HIV, STD, SEX, GENDER, GDIS, SDV, ADOL, 42CFRPart2. Same codes SHIFT SLS emits. Covers the All Chicago lock triggers for DV and HIV. Abortion, human trafficking and unaccompanied youth have no HL7 sensitivity code, so UCM defines them (section 6.1). |
 | `ucm:ConfidentialityLevel` | `Unrestricted`, `Low`, `Moderate`, `Normal`, `Restricted`, `VeryRestricted` | `v3-Confidentiality` U, L, M, N, R, V (verified). |
 | `ucm:RegulatoryBasis` | `HIPAA` (narrower `HIPAAAuthorization`, `HIPAANoticeOfPrivacyPractices`, `HIPAAResearch`), `CFR42Part2`, `CommonRule`, `HMISDataStandards2004`, `FERPA`, `GDPR`, `StateLaw` | `consentpolicycodes` (verified, Appendix A): `hipaa-auth`, `hipaa-npp`, `hipaa-research`, `hipaa-restrictions`, `hipaa-self-pay`, `cric`, `mdhhs-5515`. That code system has no 42 CFR Part 2, HMIS, FERPA or GDPR code, so UCM defines them (section 6.1). Adopters can add their own. |
@@ -310,7 +310,7 @@ The plan models this as data, not as fixed logic:
 
 1. **`ucm:JurisdictionContext`** (a `SemanticContext`) names a region, nested with
    `withinJurisdiction`. A CoC sits within a state, and a county within a state.
-2. **`ucm:SelfConsentRule`** (a `ConsentPolicy`) is `inJurisdiction` a region and states:
+2. **`ucm:SelfConsentRule`** (a `ConsentPolicy`) is `dpv:hasJurisdiction` a region and states:
    - `minimumSelfConsentAge`, optional;
    - `selfConsentScope`: the purposes, consent categories or sensitivities it covers;
    - `selfConsentCondition`: the conditions that unlock it.
@@ -335,7 +335,7 @@ The plan models this as data, not as fixed logic:
    `ClientDoesNotKnow`, `ClientPreferNotToAnswer`, `DataNotCollected`) mirrors the
    HMIS Date of Birth data quality element. Its codes are to be verified against the
    current HMIS Data Standards Manual. A birth date is itself identifying data
-   (`IdentifyingInformation`), so provisions can deny it like any other category.
+   (`pd:Identifying`), so provisions can deny it like any other category.
 6. **Validation** is Recommended only (`SelfConsentBasisShape`, section 9). It warns
    when a youth self-consents with no rule in force for that region. It cannot
    decide legality, because the rules are adopter data.
@@ -355,7 +355,7 @@ as `SelfConsentRule` instances.
 
 | Example | Rule as modeled | `SelfConsentRule` values | Drawn from |
 |---|---|---|---|
-| **Federal: education records** | Rights over education records pass from parents to the student at 18, or at any age once the student attends a postsecondary institution. A school *may* still give parents access if the student is their tax dependent. | Jurisdiction: United States. `minimumSelfConsentAge 18`. Conditions: `AgeOfMajority` or `PostsecondaryEnrollment`. Scope: `EducationInformation`. Regulatory basis: `FERPA`. | U.S. Department of Education, Student Privacy Policy Office, "Eligible Student" (studentprivacy.ed.gov). 34 CFR §99.3. 20 U.S.C. §1232g(d). |
+| **Federal: education records** | Rights over education records pass from parents to the student at 18, or at any age once the student attends a postsecondary institution. A school *may* still give parents access if the student is their tax dependent. | Jurisdiction: United States. `minimumSelfConsentAge 18`. Conditions: `AgeOfMajority` or `PostsecondaryEnrollment`. Scope: `pd:Education`. Regulatory basis: `FERPA`. | U.S. Department of Education, Student Privacy Policy Office, "Eligible Student" (studentprivacy.ed.gov). 34 CFR §99.3. 20 U.S.C. §1232g(d). |
 | **Example State A: STI care from 12** | Minors 12 and older may consent to STI testing and treatment. Providers may, but need not, tell parents. | `minimumSelfConsentAge 12`. Condition: `ServiceSpecificMinorConsent`. Scope: `SexuallyTransmittedDisease`, purpose `Treatment`. | Guttmacher Institute, "Minors' Access to STI Services", as of 2026-08-01. Four states follow this age threshold. |
 | **Example State B: STI care from 14** | Minors 14 and older may consent to STI testing and treatment. There is no parental notification provision. | `minimumSelfConsentAge 14`. Condition: `ServiceSpecificMinorConsent`. Scope: `SexuallyTransmittedDisease`. | Same Guttmacher source. Three states set 14. |
 | **Example State C: HIV care from 13** | Minors 13 and older may consent to HIV testing and treatment. | `minimumSelfConsentAge 13`. Scope: `HIV`, purpose `Treatment`. | Same Guttmacher source. One state sets an HIV-specific age. |
@@ -376,7 +376,7 @@ resource carries the disclaimer as `rdfs:comment` and its source as `dcterms:sou
 |---|---|
 | `Consent` | `ucm:ConsentDirective` |
 | `identifier` | Adopter identifier (already open-world). Codegen keeps a stable id (requirement 22). |
-| `status` | `ucm:hasConsentStatus` |
+| `status` | `dpv:hasConsentStatus` |
 | `category` | `ucm:hasConsentCategory` |
 | `subject` | `ucm:consentSubject`, a Participation with `ConsentSubjectRole` |
 | `date` | `ucm:statementDate` on the directive, or `occursDuring` on the ConsentInteraction |
@@ -385,7 +385,7 @@ resource carries the disclaimer as `rdfs:comment` and its source as `dcterms:sou
 | `grantee` | A Participation with `InformationRecipientRole` |
 | `manager`, `controller` | A Participation with `InformationCustodianRole`. Narrower roles if the split matters (Q8). |
 | `sourceAttachment`, `sourceReference`, `policyText` | `ucm:sourceDocument` |
-| `regulatoryBasis` | `ucm:hasRegulatoryBasis` |
+| `regulatoryBasis` | `dpv:hasApplicableLaw` |
 | `policyBasis` | `ucm:governedByPolicy`, pointing to a `ucm:ConsentPolicy` |
 | `decision` | `ucm:hasConsentDecision` |
 | `verification[]` | A ConsentInteraction with type `Verify` and a `ConsentVerifierRole` participation. `verifiedWith` is the subject or grantor participation. |
@@ -394,7 +394,7 @@ resource carries the disclaimer as `rdfs:comment` and its source as `dcterms:sou
 | `provision.actor{role, reference}` | `ucm:provisionActor`, a Participation (`assumesRole`, `participatingEntity`) |
 | `provision.action` | `ucm:governsAction` |
 | `provision.securityLabel` | `ucm:coversSensitivity` |
-| `provision.purpose` | `ucm:forPurpose` |
+| `provision.purpose` | `dpv:hasPurpose` |
 | `provision.documentType`, `resourceType`, `code` | `ucm:coversDataCategory` |
 | `provision.dataPeriod` | `ucm:dataPeriod` |
 | `provision.data{meaning, reference}` | `ucm:coversInformation` with subproperties for instance, related, dependents and authoredby (Q6) |
@@ -420,8 +420,8 @@ custodian, `scope` to category, `provision.type` to the provision decision (R4 a
 | Lock client record (DV or trafficking, HIV/AIDS, unaccompanied minor) | `hasSensitivityLabel` on the data (`SexualAssaultAbuseDomesticViolence`, `HumanTrafficking`, `HIV` or `UnaccompaniedYouth`), plus a deny provision on that sensitivity. Optionally `ucm:recordLocked`. |
 | Witness | A `ConsentWitnessRole` participation |
 | HUD consent form: inferred, verbal, written | `ucm:hasConsentModality` |
-| HUD posted privacy notice | `ucm:PrivacyNotice` with `forPurpose`, `amendmentAppliesRetroactively`, and `locatedAt` an intake `Location` (Q10) |
-| CoC consent policy | `ucm:ConsentPolicy` with `hasConsentModel` and `hasRegulatoryBasis HMISDataStandards2004` |
+| HUD posted privacy notice | `dpv:PrivacyNotice` with `dpv:hasPurpose`, `amendmentAppliesRetroactively`, and `locatedAt` an intake `Location` (Q10) |
+| CoC consent policy | `ucm:ConsentPolicy` with `hasConsentModel` and `dpv:hasApplicableLaw HMISDataStandards2004` |
 
 ### 8.1 Mapping: NIEM 6.0 to UCM
 
@@ -444,9 +444,9 @@ types, its human-services privacy type, and its identity types. The rest is a ga
 | `ucm:birthDate` | `nc:PersonBirthDate` (`nc:DateType`) | `nc:DateType` allows `nc:Date`, `nc:YearMonthDate` and `nc:YearDate`, which line up with `xsd:date`, `xsd:gYearMonth` and `xsd:gYear`. `nc:DateAccuracyAbstract` is close to `ucm:birthDateQuality`. |
 | `ucm:Organization`, `ucm:Location` | `nc:OrganizationType`, `nc:LocationType` | |
 | `ucm:Identity` | `nc:IdentityType` (`nc:IdentityCharacteristics`, `nc:IdentityCreationDate`, `nc:IdentityTerminationDate`) | |
-| `ucm:Identifier` | `nc:IdentificationType` | `nc:IdentificationID` to `identifierValue`. `nc:IdentificationCategoryText` to `hasIdentifierType`. `nc:IdentificationJurisdiction` to `inJurisdiction`. `nc:IdentificationIssuerOrganization` to `issuedBy`. `nc:IdentificationEffectiveDate` and `nc:IdentificationExpirationDate` to `validDuring`. `nc:IdentificationStatus`. |
+| `ucm:Identifier` | `nc:IdentificationType` | `nc:IdentificationID` to `identifierValue`. `nc:IdentificationCategoryText` to `hasIdentifierType`. `nc:IdentificationJurisdiction` to `dpv:hasJurisdiction`. `nc:IdentificationIssuerOrganization` to `issuedBy`. `nc:IdentificationEffectiveDate` and `nc:IdentificationExpirationDate` to `validDuring`. `nc:IdentificationStatus`. |
 | `ucm:JurisdictionContext` | `nc:JurisdictionType` | |
-| `ucm:ConsentDirective`, `ucm:PrivacyNotice` | `nc:DocumentType` | `nc:DocumentEffectiveDate` and `nc:DocumentExpirationDate` to `validDuring`. `nc:DocumentSensitivityText` to `ConfidentialityLevel`. `nc:DocumentPrivacyActIndicator` and `nc:DocumentEUDataPrivacyIndicator` to `hasRegulatoryBasis` (Privacy Act, `GDPR`). |
+| `ucm:ConsentDirective`, `dpv:PrivacyNotice` | `nc:DocumentType` | `nc:DocumentEffectiveDate` and `nc:DocumentExpirationDate` to `validDuring`. `nc:DocumentSensitivityText` to `ConfidentialityLevel`. `nc:DocumentPrivacyActIndicator` and `nc:DocumentEUDataPrivacyIndicator` to `dpv:hasApplicableLaw` (Privacy Act, `GDPR`). |
 | `ucm:ConsentInteraction` | `nc:ActivityType` | `nc:ActivityDate` to `occursDuring`. `nc:ActivityStatus`. `nc:ActivityVerifiedDate` to a `Verify` interaction. |
 | `ucm:ConsentProvision` (sensitivity part) | `hs:DataPrivacyType` | `hs:DataPrivacyCategoryText` to `coversSensitivity`. `hs:DataPrivacyElementName` to `coversInformation`. `hs:DataPrivacyIndicator` (true) to a `Deny` decision. `hs:DataPrivacyPolicyReferenceText` to `governedByPolicy`. `hs:DataPrivacyRuleText` to the provision's description. |
 | `ucm:ConfidentialityLevel` | `nc:SensitivityText` | NIEM uses free text. UCM concepts carry the codes. |
@@ -471,13 +471,13 @@ de-identify or archive), which lines up with DPV `StorageDuration` and `StorageD
 
 | TS 27560 field | UCM |
 |---|---|
-| `privacy_notice` | `ucm:PrivacyNotice` via `acknowledgesNotice` |
-| `purposes` | `forPurpose` |
-| `lawful_basis` | `hasRegulatoryBasis` and `ConsentModel` |
+| `privacy_notice` | `dpv:PrivacyNotice` via `acknowledgesNotice` |
+| `purposes` | `dpv:hasPurpose` |
+| `lawful_basis` | `dpv:hasApplicableLaw` and `ConsentModel` |
 | `pii_information`, `pii_type`, `pii_optional` | `coversDataCategory`, `coversSensitivity` |
 | `pii_controllers` | a `DataControllerRole` participation |
 | `recipient_third_parties` | an `InformationRecipientRole` participation |
-| `jurisdiction` | `inJurisdiction` |
+| `jurisdiction` | `dpv:hasJurisdiction` |
 | `withdrawal_method` | `ucm:withdrawalMethod` |
 | `retention_period` (Required; period and/or disposal schedule) | `ucm:retentionPeriod` for the period, `ucm:hasRetentionDisposition` for the disposal (DPV `StorageDuration`, `StorageDeletion`) |
 | `storage_locations` (Required), `processing_locations`, `geographic_restrictions` | `ucm:processingLocation`, a `JurisdictionContext` (DPV `StorageLocation`, `hasLocation`, `hasJurisdiction`) |
@@ -492,7 +492,7 @@ Following the existing tier convention.
 Definitional (`sh:Violation`):
 
 - `ConsentDirective-decision`: exactly one `hasConsentDecision`, an IRI.
-- `ConsentDirective-status`: at most one `hasConsentStatus`, an IRI. Same for
+- `ConsentDirective-status`: at most one `dpv:hasConsentStatus`, an IRI. Same for
   decision, category and modality: the `-single` pattern.
 - `ConsentDirective-subject`: at least one `consentSubject`, a BlankNodeOrIRI.
 - `ConsentProvision-decision`: exactly one `hasConsentDecision`, an IRI (Q3, decided).
@@ -524,7 +524,7 @@ Recommended (`sh:Warning`):
   `UnaccompaniedYouth` label and `DependentRole` membership.
 - `Person-birthDate` (Definitional): at most one `ucm:birthDate`, typed `xsd:date`,
   `xsd:gYearMonth` or `xsd:gYear` (`sh:or`).
-- `RevokedHasRevocationShape`: status `ConsentRevoked` implies `revokedBy`, and
+- `RevokedHasRevocationShape`: status `dpv:ConsentWithdrawn` or `dpv:ConsentRevoked` implies `revokedBy`, and
   `revokedBy` implies status inactive or revoked.
 - `ActiveNotExpiredShape`: status `ConsentActive` while the `validDuring` end is in
   the past is flagged, using the same SPARQL-cast style as `TemporalOrderShape`.
@@ -556,7 +556,7 @@ Lint (`ucm-shapes-lint.ttl`): none needed. The new shapes carry `ucm:tier`.
    FHIR Observation. The directive therefore uses the new `recordsConsentFrom` and
    `consentSubject` properties, not `generatedByProcess` or `statementSubject`. The
    domains of the existing Statement properties stay as they are. The remaining
-   follow-on, jurisdiction, is answered by the new `ucm:inJurisdiction` property
+   follow-on, jurisdiction, is answered by the new `dpv:hasJurisdiction` property
    and `ucm:JurisdictionContext` class (section 6.2). `madeWithinContext` is not
    widened.
 2. **Where do the terms live?** **Decided (Eric, 2026-11-27): in the existing
@@ -641,9 +641,9 @@ implementation differs from the sections above, the implementation wins:
 - **Names that would have clashed or been too generic** got a suffix or prefix:
   `ConsentGrant`, `ConsentRefusal`, `ConsentAmendment`, `ConsentRenewal`,
   `ConsentRevocation` and `ConsentVerification` (interaction types);
-  `CollectAction`, `AccessAction`, `UseAction`, `DiscloseAction`,
+  `dpv:Collect`, `dpv:Access`, `dpv:Use`, `dpv:Disclose`,
   `RediscloseAction` and `CorrectAction`; `EligibilityPurpose` (the class
-  `ucm:EligibilityDetermination` already exists), `ResearchPurpose`,
+  `ucm:EligibilityDetermination` already exists), `dpv:ScientificResearch`,
   `PublicHealthPurpose` and `HealthcareOperations`; `ConfidentialityUnrestricted`
   through `ConfidentialityVeryRestricted`; `FairEvidence`, `StrongEvidence` and
   `SuperiorEvidence`; `*Proofing` for proofing types and `*Evidence` for evidence
@@ -706,6 +706,48 @@ implementation differs from the sections above, the implementation wins:
   confirmed from the ISO sample; `withdrawal_method` and `processing_locations` are from
   Pandit et al. and the DPV guide, because the free sample stops before them.
 
+## 14. DPV reuse (2026-11-28)
+
+Eric's decision: where UCM adds no abstraction of its own, UCM uses the W3C Data
+Privacy Vocabulary (DPV 2.3) IRI directly. This replaces the earlier rule (Q12) that
+the core holds no external IRIs. The audit behind it is the "UCM consent terms: DPV
+reuse audit" doc.
+
+- **Reused (18 terms):** `dpv:hasPurpose`, `dpv:hasConsentStatus`,
+  `dpv:hasJurisdiction`, `dpv:hasApplicableLaw` (properties); `dpv:PrivacyNotice`
+  (class, `rdfs:subClassOf ucm:PolicyDefinition`); `dpv:ConsentRefused`,
+  `dpv:ConsentExpired`, `dpv:ConsentUnknown`, `dpv:ConsentWithdrawn` (the old
+  `ucm:ConsentRevoked`, "the subject or grantor withdrew"), plus the new
+  `dpv:ConsentRevoked` (revoked by another party); `dpv:Collect`, `dpv:Access`,
+  `dpv:Use`, `dpv:Disclose`; `dpv:ScientificResearch`; `pd:Identifying`,
+  `pd:Education`; `legal-eu:law-GDPR`. The old `ucm:` IRIs are gone.
+- **How they are declared:** each reused term is declared in the UCM file that uses
+  it, with `rdfs:isDefinedBy` its DPV namespace and DPV's own `skos:prefLabel` and
+  `skos:definition` copied verbatim, so a graph that also loads DPV agrees. UCM's
+  reading goes in a `skos:scopeNote` ("In UCM: ..."). UCM adds no `rdfs:domain` or
+  `rdfs:range` to DPV properties; it uses `dcam:domainIncludes` and
+  `dcam:rangeIncludes`, as DPV does, and the shapes do the checking. Concepts join
+  UCM schemes with `skos:inScheme`, and `skos:broader` where UCM needs it (for
+  example both withdrawn and revoked are narrower than `ucm:ConsentInactive`).
+- **Mapped, not reused:** `mapping/consent-mappings.ttl` now has a DPV part:
+  `rdfs:subPropertyOf` links (consentOnBehalfOf to `dpv:isRepresentativeFor`,
+  processingLocation to `dpv:hasLocation`, acknowledgesNotice to `dpv:hasNotice`,
+  governsAction to `dpv:hasProcessing`, coversDataCategory to `dpv:hasPersonalData`),
+  JurisdictionContext `rdfs:subClassOf dpv:Jurisdiction`, and SKOS matches for the
+  roles, statuses, purposes, data categories, retention dispositions, modalities,
+  interaction types and decisions listed in the audit.
+- **Shapes:** `InJurisdictionTypeShape` is now `HasJurisdictionTypeShape`.
+  `RevokedHasRevocationShape` fires for either `dpv:ConsentWithdrawn` or
+  `dpv:ConsentRevoked`. New test case C20b covers revocation by another party.
+- **Codegen:** the normalizer includes a term from another namespace when the
+  ontology declares it with `rdfs:isDefinedBy`, reads a single
+  `dcam:domainIncludes`/`rangeIncludes` when there is no `rdfs:domain`/`range`, and
+  carries the `dpv`, `pd` and `legal-eu` prefixes into the IR and JSON-LD context
+  (so the API shows `dpv:Collect`). The FHIR adapter codes a DPV concept in its DPV
+  namespace (system `https://w3id.org/dpv#`, code `Disclose`) and UCM's own in
+  `https://www.w3.org/ns/ucm#`. The FHIR status map adds `ConsentWithdrawn` and
+  `ConsentRevoked`, both `inactive`.
+
 ## Sources
 
 - Stewards of Change Institute, *Consent Learning Lab Report* (HIMSS 2023), August 2023 (attached PDF).
@@ -733,6 +775,7 @@ Sources for the section 6.3 examples:
 - HUD FY 2026 HMIS Data Dictionary (October 2025), element 3.03, supplied by Eric; same codes as the FY 2024 v1.5 copy hosted by Palm Beach County: https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
 - ISO/IEC TS 27560:2023 sample (through clause 6.3.4, Table 2): https://cdn.standards.iteh.ai/samples/80392/9102635615bf4b88803e1dc61ba5944b/ISO-IEC-TS-27560-2023.pdf
 - W3C DPV, Consent Records and Receipts as per ISO/IEC TS 27560:2023: https://w3c-cg.github.io/dpv/guides/consent-27560.html
+- W3C Data Privacy Vocabulary 2.3: https://w3c-cg.github.io/dpv/2.3/dpv/ (terms read from the w3c-cg/dpv Turtle files: 2.3/dpv/dpv.ttl, 2.3/pd/pd.ttl, 2.3/sector/health/sector-health.ttl, 2.3/legal/eu/legal-eu.ttl)
 
 ## Appendix A. Verified code values (2026-11-27)
 
@@ -759,7 +802,7 @@ Checked against HL7's published sources: the `HL7/UTG` repository (`input/source
 | ADOL | adolescent information sensitivity | `Adolescent` |
 | 42CFRPart2 | 42 CFR Part2 | `Part2Protected`, and closeMatch `RegulatoryBasis/CFR42Part2` |
 | 42CFRPart2CD | 42 CFR Part 2 consent directive | closeMatch on a Part 2 `ConsentCategory` |
-| IDS, DEMO | Identifier Sensitivity; all demographic information sensitivity | `IdentifyingInformation` (closeMatch) |
+| IDS, DEMO | Identifier Sensitivity; all demographic information sensitivity | `pd:Identifying` (closeMatch) |
 
 Not found: `REPHC` (no separate reproductive health code; use SEX). `SICKLE` exists but is **retired**.
 

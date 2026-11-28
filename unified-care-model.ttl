@@ -15,6 +15,8 @@
 @prefix ucm-lifecycle: <https://www.w3.org/ns/ucm#lifecycle> .
 @prefix ucm-shapes-lint: <https://www.w3.org/ns/ucm#shapes-lint> .
 @prefix ucm-participation-membership: <https://www.w3.org/ns/ucm#participation-membership> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix dcam: <http://purl.org/dc/dcam/> .
 @base <https://www.w3.org/ns/ucm#> .
 
 <https://www.w3.org/ns/ucm#> rdf:type owl:Ontology ;
@@ -750,6 +752,63 @@ ucm:SubjectRole rdf:type owl:Class ;
 #    Consent and identity (consent-concepts-plan, 2026-11-27)
 #################################################################
 
+#    Terms reused from the W3C Data Privacy Vocabulary (DPV 2.3)
+#    Label and definition are DPV's own; UCM adds a scope note and how it uses the term.
+
+###  https://w3id.org/dpv#hasPurpose
+dpv:hasPurpose rdf:type owl:ObjectProperty ;
+               dcam:domainIncludes ucm:ConsentProvision ,
+                                   dpv:PrivacyNotice ;
+               dcam:rangeIncludes skos:Concept ;
+               rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+               skos:definition "Indicates association with Purpose"@en ;
+               skos:prefLabel "has purpose"@en ;
+               skos:scopeNote "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one."@en .
+
+
+###  https://w3id.org/dpv#hasConsentStatus
+dpv:hasConsentStatus rdf:type owl:ObjectProperty ;
+                     dcam:domainIncludes ucm:ConsentDirective ;
+                     dcam:rangeIncludes skos:Concept ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "Specifies the state or status of consent"@en ;
+                     skos:prefLabel "has consent status"@en ;
+                     skos:scopeNote "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus."@en .
+
+
+###  https://w3id.org/dpv#hasJurisdiction
+dpv:hasJurisdiction rdf:type owl:ObjectProperty ;
+                    dcam:domainIncludes ucm:ConsentDirective ,
+                                        ucm:ConsentInteraction ,
+                                        ucm:ConsentPolicy ,
+                                        ucm:Identifier ;
+                    dcam:rangeIncludes ucm:JurisdictionContext ;
+                    rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                    skos:definition "Indicates applicability of specified jurisdiction"@en ;
+                    skos:prefLabel "has jurisdiction"@en ;
+                    skos:scopeNote "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued."@en .
+
+
+###  https://w3id.org/dpv#hasApplicableLaw
+dpv:hasApplicableLaw rdf:type owl:ObjectProperty ;
+                     dcam:domainIncludes ucm:ConsentDirective ,
+                                         ucm:ConsentPolicy ;
+                     dcam:rangeIncludes skos:Concept ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "Indicates applicability of a Law"@en ;
+                     skos:prefLabel "has applicable law"@en ;
+                     skos:scopeNote "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis."@en .
+
+
+###  https://w3id.org/dpv#PrivacyNotice
+dpv:PrivacyNotice rdf:type owl:Class ;
+                  rdfs:subClassOf ucm:PolicyDefinition ;
+                  rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                  skos:definition "Represents a notice or document outlining information regarding privacy"@en ;
+                  skos:prefLabel "Privacy Notice"@en ;
+                  skos:scopeNote "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."@en .
+
+
 #    Object properties
 
 ###  https://www.w3.org/ns/ucm#recordsConsentFrom
@@ -782,14 +841,6 @@ ucm:hasConsentDecision rdf:type owl:ObjectProperty ;
                        rdfs:range skos:Concept ;
                        rdfs:comment "Relates a consent directive or provision to its permit or deny decision. Every provision states its own decision, the opposite of its parent's." ;
                        rdfs:label "has consent decision" .
-
-
-###  https://www.w3.org/ns/ucm#hasConsentStatus
-ucm:hasConsentStatus rdf:type owl:ObjectProperty ;
-                     rdfs:domain ucm:ConsentDirective ;
-                     rdfs:range skos:Concept ;
-                     rdfs:comment "Relates a consent directive to whether it applies now (FHIR Consent.status)." ;
-                     rdfs:label "has consent status" .
 
 
 ###  https://www.w3.org/ns/ucm#hasConsentCategory
@@ -838,14 +889,6 @@ ucm:governsAction rdf:type owl:ObjectProperty ;
                   rdfs:range skos:Concept ;
                   rdfs:comment "Relates a provision to an action it permits or denies, such as collect, access, use or disclose." ;
                   rdfs:label "governs action" .
-
-
-###  https://www.w3.org/ns/ucm#forPurpose
-ucm:forPurpose rdf:type owl:ObjectProperty ;
-               rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentProvision ucm:PrivacyNotice ) ] ;
-               rdfs:range skos:Concept ;
-               rdfs:comment "Relates a provision or privacy notice to a purpose of use it covers." ;
-               rdfs:label "for purpose" .
 
 
 ###  https://www.w3.org/ns/ucm#coversDataCategory
@@ -942,22 +985,6 @@ ucm:governedByPolicy rdf:type owl:ObjectProperty ;
                      rdfs:label "governed by policy" .
 
 
-###  https://www.w3.org/ns/ucm#hasRegulatoryBasis
-ucm:hasRegulatoryBasis rdf:type owl:ObjectProperty ;
-                       rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentPolicy ) ] ;
-                       rdfs:range skos:Concept ;
-                       rdfs:comment "Relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis)." ;
-                       rdfs:label "has regulatory basis" .
-
-
-###  https://www.w3.org/ns/ucm#inJurisdiction
-ucm:inJurisdiction rdf:type owl:ObjectProperty ;
-                   rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:ConsentInteraction ucm:ConsentPolicy ucm:Identifier ) ] ;
-                   rdfs:range ucm:JurisdictionContext ;
-                   rdfs:comment "Relates a consent, consent interaction, policy or identifier to the jurisdiction where it was given, is in force or was issued." ;
-                   rdfs:label "in jurisdiction" .
-
-
 ###  https://www.w3.org/ns/ucm#withinJurisdiction
 ucm:withinJurisdiction rdf:type owl:ObjectProperty ,
                                 owl:TransitiveProperty ;
@@ -985,7 +1012,7 @@ ucm:selfConsentCondition rdf:type owl:ObjectProperty ;
 
 ###  https://www.w3.org/ns/ucm#hasConsentModel
 ucm:hasConsentModel rdf:type owl:ObjectProperty ;
-                    rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentPolicy ucm:ProgramDefinition ucm:PrivacyNotice ) ] ;
+                    rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentPolicy ucm:ProgramDefinition dpv:PrivacyNotice ) ] ;
                     rdfs:range skos:Concept ;
                     rdfs:comment "Relates a policy, program or notice to its consent model, such as opt-in or opt-out." ;
                     rdfs:label "has consent model" .
@@ -994,14 +1021,14 @@ ucm:hasConsentModel rdf:type owl:ObjectProperty ;
 ###  https://www.w3.org/ns/ucm#acknowledgesNotice
 ucm:acknowledgesNotice rdf:type owl:ObjectProperty ;
                        rdfs:domain ucm:ConsentInteraction ;
-                       rdfs:range ucm:PrivacyNotice ;
+                       rdfs:range dpv:PrivacyNotice ;
                        rdfs:comment "Relates a consent interaction to a privacy notice the subject or grantor was given or shown." ;
                        rdfs:label "acknowledges notice" .
 
 
 ###  https://www.w3.org/ns/ucm#postedAt
 ucm:postedAt rdf:type owl:ObjectProperty ;
-             rdfs:domain ucm:PrivacyNotice ;
+             rdfs:domain dpv:PrivacyNotice ;
              rdfs:range ucm:Location ;
              rdfs:comment "Relates a privacy notice to a location where it is posted, such as an intake desk." ;
              rdfs:label "posted at" .
@@ -1025,7 +1052,7 @@ ucm:revokedBy rdf:type owl:ObjectProperty ;
 
 ###  https://www.w3.org/ns/ucm#sourceDocument
 ucm:sourceDocument rdf:type owl:ObjectProperty ;
-                   rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:PrivacyNotice ) ] ;
+                   rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective dpv:PrivacyNotice ) ] ;
                    rdfs:range ucm:InformationArtifact ;
                    rdfs:comment "Relates a consent directive or privacy notice to its source, such as a scanned signed form or the policy text." ;
                    rdfs:label "source document" .
@@ -1252,7 +1279,7 @@ ucm:assuranceRank rdf:type owl:DatatypeProperty ;
 
 ###  https://www.w3.org/ns/ucm#amendmentAppliesRetroactively
 ucm:amendmentAppliesRetroactively rdf:type owl:DatatypeProperty ;
-                                  rdfs:domain ucm:PrivacyNotice ;
+                                  rdfs:domain dpv:PrivacyNotice ;
                                   rdfs:range xsd:boolean ;
                                   rdfs:comment "Whether an amendment to the privacy notice applies to information collected before the amendment." ;
                                   rdfs:label "amendment applies retroactively" .
@@ -1308,7 +1335,7 @@ ucm:trustFrameworkIdentifier rdf:type owl:DatatypeProperty ;
 
 ###  https://www.w3.org/ns/ucm#withdrawalMethod
 ucm:withdrawalMethod rdf:type owl:DatatypeProperty ;
-                     rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective ucm:PrivacyNotice ucm:ConsentPolicy ) ] ;
+                     rdfs:domain [ rdf:type owl:Class ; owl:unionOf ( ucm:ConsentDirective dpv:PrivacyNotice ucm:ConsentPolicy ) ] ;
                      rdfs:range xsd:string ;
                      rdfs:comment "How the person can revoke the consent: a URL, phone number, form or written instructions, as text (ISO/IEC TS 27560 withdrawal method)." ;
                      rdfs:label "withdrawal method" .
@@ -1342,13 +1369,6 @@ ucm:ConsentDirective rdf:type owl:Class ;
 ucm:ConsentProvision rdf:type owl:Class ;
                      rdfs:comment "A rule within a consent directive that permits or denies specific actions by specific actors, for specific purposes, on specific information, within a period. Provisions nest as exceptions: each provision's decision is the opposite of its parent's." ;
                      rdfs:label "Consent Provision" .
-
-
-###  https://www.w3.org/ns/ucm#PrivacyNotice
-ucm:PrivacyNotice rdf:type owl:Class ;
-                  rdfs:subClassOf ucm:PolicyDefinition ;
-                  rdfs:comment "A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act." ;
-                  rdfs:label "Privacy Notice" .
 
 
 ###  https://www.w3.org/ns/ucm#ConsentPolicy

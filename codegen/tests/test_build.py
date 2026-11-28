@@ -115,7 +115,7 @@ def test_report_summarizes_the_vocabularies(compilation):
         assert f"<b>{scheme}</b>" in overview
     assert '<span class="mono">hasClosureReason</span> <span class="muted">on ucm:CoordinationRequest</span>' in overview
     assert "No property uses this scheme" not in html
-    assert "<tr><th>Concepts</th><td>181</td></tr>" in html
+    assert "<tr><th>Concepts</th><td>182</td></tr>" in html
     vocabularies = html[html.index('id="vocabularies"'):html.index('id="openapi"')]
     assert vocabularies.index("<b>ClosedNotConnected</b>") < vocabularies.index("<b>OutOfArea</b>")  # parent first
     assert "2 levels" in vocabularies
@@ -129,7 +129,7 @@ def test_summary_for_ci(tmp_path):
     assert result.exit_code == 0, result.output
     text = summary.read_text(encoding="utf-8")
     assert text.startswith("earlier step\n### UCM reference build: passed")  # appended, like $GITHUB_STEP_SUMMARY
-    assert "| Concepts | 181 |" in text
+    assert "| Concepts | 182 |" in text
     assert "| ClosureReason | 10 | 2 | `hasClosureReason` on ucm:CoordinationRequest |" in text
     assert "#### Lint findings" not in text
 

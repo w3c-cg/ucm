@@ -30,6 +30,7 @@ PFX = """
 @prefix fhir: <http://hl7.org/fhir/> .
 @prefix hmis: <http://example.org/hmis#> .
 @prefix cco:  <https://www.commoncoreontologies.org/AgentOntology#> .
+@prefix dpv:  <https://w3id.org/dpv#> .
 """
 
 def shapes_graph(mutate=None):
@@ -228,7 +229,7 @@ CASES = [
   "ex:cd-jameson-2023 ucm:supersedes ex:cd-jameson .",
   {(V, "SupersedesAcyclicShape", "cd-jameson"), (V, "SupersedesAcyclicShape", "cd-jameson-2023")}),
  ("C08 two consent statuses",
-  "ex:cd-madison ucm:hasConsentStatus ucm:ConsentDraft .",
+  "ex:cd-madison dpv:hasConsentStatus ucm:ConsentDraft .",
   {(V, "ConsentStatus-single", "cd-madison")}),
  ("C09 birth date as free text",
   'ex:madison ucm:birthDate "Feb 2017" .',
@@ -240,7 +241,7 @@ CASES = [
   'ex:cd-madison ucm:retentionPeriod 7 .',
   {(V, "RetentionPeriod-value", "cd-madison")}),
  ("C12 local consent status, unmapped",
-  "ex:cd-madison ucm:hasConsentStatus ex:OnHold . ex:OnHold a skos:Concept ; skos:inScheme ex:LocalStatuses . ",
+  "ex:cd-madison dpv:hasConsentStatus ex:OnHold . ex:OnHold a skos:Concept ; skos:inScheme ex:LocalStatuses . ",
   {(V, "ConsentStatus-single", "cd-madison"), (W, "ConsentStatus-anchored", "cd-madison")}),
  ("C13 sensitivity concept from the wrong scheme",
   "ex:prov-youth-ut ucm:coversSensitivity ucm:HousingInformation .",
@@ -257,20 +258,23 @@ CASES = [
   {(W, "ProxyGrantorShape", "cd-sarah")}),
  ("C17 a 14-year-old self-consents; the rule in force needs 16",
   'ex:youth2 a ucm:Person ; ucm:birthDate "2012-05-01"^^xsd:date . '
-  "ex:ci-y2 a ucm:ConsentInteraction ; ucm:occursDuring ex:t-ci-youth ; ucm:inJurisdiction ex:ExampleCountyD . "
+  "ex:ci-y2 a ucm:ConsentInteraction ; ucm:occursDuring ex:t-ci-youth ; dpv:hasJurisdiction ex:ExampleCountyD . "
   "ex:p-y2-g a ucm:Participation ; ucm:occursWithin ex:ci-y2 ; ucm:participatingEntity ex:youth2 ; ucm:assumesRole ex:role-grantor . "
   "ex:p-y2-s a ucm:Participation ; ucm:occursWithin ex:ci-y2 ; ucm:participatingEntity ex:youth2 ; ucm:assumesRole ex:role-csubject . "
   "ex:cd-y2 a ucm:ConsentDirective ; ucm:recordsConsentFrom ex:ci-y2 ; ucm:consentSubject ex:p-y2-s ; ucm:hasConsentDecision ucm:Permit ; "
-  "ucm:governedByPolicy ex:rule-state-d-housing ; ucm:inJurisdiction ex:ExampleCountyD ; ucm:validDuring ex:t-roi .",
+  "ucm:governedByPolicy ex:rule-state-d-housing ; dpv:hasJurisdiction ex:ExampleCountyD ; ucm:validDuring ex:t-roi .",
   {(W, "SelfConsentBasisShape", "cd-y2")}),
  ("C18 partial birth year read conservatively: may still be under the rule's minimum",
   'ex:youth ucm:birthDate "2010"^^xsd:gYear .',  # a second, later birth date: 15 at the latest
   {(V, "Person-birthDate", "youth"), (W, "SelfConsentBasisShape", "cd-youth")}),
- ("C20 revoked with no revocation recorded",
-  "ex:cd-madison ucm:hasConsentStatus ucm:ConsentRevoked .",
+ ("C20 withdrawn with no revocation recorded",
+  "ex:cd-madison dpv:hasConsentStatus dpv:ConsentWithdrawn .",
+  {(V, "ConsentStatus-single", "cd-madison"), (W, "RevokedHasRevocationShape", "cd-madison")}),
+ ("C20b revoked by another party with no revocation recorded",
+  "ex:cd-madison dpv:hasConsentStatus dpv:ConsentRevoked .",
   {(V, "ConsentStatus-single", "cd-madison"), (W, "RevokedHasRevocationShape", "cd-madison")}),
  ("C21 active directive whose period has ended",
-  "ex:cd-jameson-2023 ucm:hasConsentStatus ucm:ConsentActive .",
+  "ex:cd-jameson-2023 dpv:hasConsentStatus ucm:ConsentActive .",
   {(V, "ConsentStatus-single", "cd-jameson-2023"), (W, "ActiveNotExpiredShape", "cd-jameson-2023")}),
  ("C22 process cites a revoked consent",
   "ex:req-1 ucm:authorizedByConsent ex:cd-a-2025 .",
@@ -303,7 +307,7 @@ CASES = [
   "ex:p-hh2-proxy a ucm:Participation ; ucm:occursWithin ex:ci-hh2 ; ucm:participatingEntity ex:ruth ; "
   "ucm:assumesRole ex:role-proxy ; ucm:consentOnBehalfOf ex:jameson . "
   "ex:cd-hh2 a ucm:ConsentDirective ; ucm:recordsConsentFrom ex:ci-hh2 ; ucm:consentSubject ex:p-hh2-s ; "
-  "ucm:hasConsentDecision ucm:Permit ; ucm:hasConsentStatus ucm:ConsentActive ; ucm:validDuring ex:t-roi .",
+  "ucm:hasConsentDecision ucm:Permit ; dpv:hasConsentStatus ucm:ConsentActive ; ucm:validDuring ex:t-roi .",
   {(W, "HouseholdMinorProxyShape", "cd-hh2")}),
  ("C30 proxy names a minor who is not the one in the household",
   "ex:p-on-behalf a ucm:Participation ; ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:sarah ; "

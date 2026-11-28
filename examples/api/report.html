@@ -351,7 +351,7 @@ h3 { font-size: 12px; }
       <a href="#validation" data-pane="validation"><span class="label">Validation</span>
 </a>
       <a href="#changes" data-pane="changes"><span class="label">Changes</span>
-</a>
+<span class="badge amber">1</span></a>
       <h2>Ontology</h2>
       <a href="#classes" data-pane="classes"><span class="label">Classes</span><span class="badge">95</span></a>
       <a href="#vocabularies" data-pane="vocabularies"><span class="label">Vocabularies</span><span class="badge">28</span></a>
@@ -386,7 +386,7 @@ h3 { font-size: 12px; }
               <tr><th>Classes</th><td>95</td></tr>
               <tr><th>Properties</th><td>110</td></tr>
               <tr><th>Concept schemes</th><td>28</td></tr>
-              <tr><th>Concepts</th><td>181</td></tr>
+              <tr><th>Concepts</th><td>182</td></tr>
               <tr><th>Node shapes</th><td>116</td></tr>
             </table>
             <table class="info">
@@ -475,7 +475,7 @@ h3 { font-size: 12px; }
               </tr>
               <tr>
                 <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>ConsentStatus</b></a></td>
-                <td class="num">9</td>
+                <td class="num">10</td>
                 <td class="num">2</td>
                 <td><span class="mono">hasConsentStatus</span> <span class="muted">on ucm:ConsentDirective</span></td>
               </tr>
@@ -543,7 +543,7 @@ h3 { font-size: 12px; }
                 <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>PurposeOfUse</b></a></td>
                 <td class="num">18</td>
                 <td class="num">3</td>
-                <td><span class="mono">forPurpose</span></td>
+                <td><span class="mono">hasPurpose</span></td>
               </tr>
               <tr>
                 <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>ReferralDisposition</b></a></td>
@@ -555,7 +555,7 @@ h3 { font-size: 12px; }
                 <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>RegulatoryBasis</b></a></td>
                 <td class="num">11</td>
                 <td class="num">2</td>
-                <td><span class="mono">hasRegulatoryBasis</span></td>
+                <td><span class="mono">hasApplicableLaw</span></td>
               </tr>
               <tr>
                 <td class="nowrap"><a href="#vocabularies" data-pane="vocabularies"><b>RetentionDisposition</b></a></td>
@@ -584,8 +584,8 @@ h3 { font-size: 12px; }
           <table class="list">
             <thead><tr><th>JSON-LD IR</th><th class="num">Triples</th><th>Graph (URDNA2015)</th><th>File bytes</th></tr></thead>
             <tbody>
-              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">2520</td><td class="mono" title="sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b">ab0f501ce9ea8403</td><td class="mono" title="sha256:daaf469c440e9ae591639937dffa15ffee72c487646e244f0cc7a4aedf0cdb39">daaf469c440e9ae5</td></tr>
-              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">1289</td><td class="mono" title="sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9">1e62d43538c32e8d</td><td class="mono" title="sha256:32aaf11eb41cf672e860504f55d0901d0c330f8aec0032dc4cf5cd44b1940e65">32aaf11eb41cf672</td></tr>
+              <tr><td class="nowrap">ucm-ontology.jsonld</td><td class="num">2544</td><td class="mono" title="sha256:43b26d141123f591d38e67c48df194ad319f3c60561d52f7002e954dec325a97">43b26d141123f591</td><td class="mono" title="sha256:8aebe94c9967dabf98200119b2483dda1c20d7832eb8c368eb8a6fce868deb1d">8aebe94c9967dabf</td></tr>
+              <tr><td class="nowrap">ucm-shapes.jsonld</td><td class="num">1289</td><td class="mono" title="sha256:68d0e0609c67c5fd4dea4e409041abc29f81cef3d4c45770e28aa310dd7da9d4">68d0e0609c67c5fd</td><td class="mono" title="sha256:3e52d20dbb6bcc5f761a300296ba235c413484e106c5c254bb596caab167da7a">3e52d20dbb6bcc5f</td></tr>
             </tbody>
           </table>
         </div>
@@ -594,7 +594,7 @@ h3 { font-size: 12px; }
         <div class="scroll">
           <table class="list">
             <tbody>
-<tr><td class="nowrap">IR root (350 nodes)</td><td class="mono break">sha256:3c9857602434b84d1ad58caf6fe726b4f1a6bd25df8778bbbf6c4862471abfd4</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:87f871a9bd7d258a0e7e2bd0cace15a1ad467188518d40e150231754432da763</td></tr>
+<tr><td class="nowrap">IR root (350 nodes)</td><td class="mono break">sha256:0c8181d61040d8e89c72de94d187e554b1bae7587d539413a6a771632f70fc38</td></tr>              <tr><td class="nowrap">Toolchain</td><td class="mono break">sha256:1abc2e408dc407a854078a9bf3f658f260b556efe71f7e1fdd54422577ffaac3</td></tr>
             </tbody>
           </table>
         </div>
@@ -603,7 +603,15 @@ h3 { font-size: 12px; }
       <!-- ===================== Changes ===================== -->
       <section class="pane" id="changes">
         <h1>Changes</h1>
-        <p class="lede">No changes since the previous build (IR root <span class="mono">3c9857602434</span>). Every node and output has the same content digest.</p>
+        <p class="lede">Compared with the previous build (IR root <span class="mono">0c8181d61040</span>) by content digest: 0 added, 0 removed, 0 changed IR nodes.</p>
+        <h3>Generated files</h3>
+        <div class="scroll">
+          <table class="list">
+            <thead><tr><th>Change</th><th>File</th></tr></thead>
+            <tbody>
+<tr><td><span class="pill amber">changed</span></td><td class="mono">fhir/ucm_fhir_adapter.py</td></tr>            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ===================== Lint ===================== -->
@@ -624,20 +632,20 @@ h3 { font-size: 12px; }
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">datatype-coercion</td><td class="mono break">ucm:statementDate</td><td class="wide">Shapes accept xsd:dateTime, xsd:dateTimeStamp; the context term coerces to xsd:dateTime. Values typed xsd:dateTimeStamp compact to a value object under the full IRI.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">datatype-coercion</td><td class="mono break">ucm:validFrom</td><td class="wide">Shapes accept xsd:dateTime, xsd:dateTimeStamp; the context term coerces to xsd:dateTime. Values typed xsd:dateTimeStamp compact to a value object under the full IRI.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">datatype-coercion</td><td class="mono break">ucm:validTo</td><td class="wide">Shapes accept xsd:dateTime, xsd:dateTimeStamp; the context term coerces to xsd:dateTime. Values typed xsd:dateTimeStamp compact to a value object under the full IRI.</td></tr>
+              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">dpv:hasApplicableLaw</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
+              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">dpv:hasJurisdiction</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
+              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">dpv:hasPurpose</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:achievedIAL</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:assertsIdentity</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
-              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:forPurpose</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:governedByPolicy</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasCareTrajectoryContext</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasConfidentialityLevel</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasConsentDecision</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasConsentModel</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasProvision</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
-              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasRegulatoryBasis</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasRetentionDisposition</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasSensitivityLabel</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:hasTemporalContext</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
-              <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:inJurisdiction</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:issuedBy</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:processingLocation</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
               <tr data-level="Info"><td><span class="pill Info">Info</span></td><td class="nowrap mono">no-domain</td><td class="mono break">ucm:requiresAAL</td><td class="wide">No rdfs:domain: generated on the UcmNode base schema, so every resource accepts it.</td></tr>
@@ -681,7 +689,7 @@ h3 { font-size: 12px; }
           <button type="button" data-expand="close">Collapse all</button>
         </div>
         <div class="classes">
-          <details class="class" data-search="ucmnode base node @context @id @type achievedial assertsidentity assurancerank forpurpose governedbypolicy hascaretrajectorycontext hasconfidentialitylevel hasconsentdecision hasconsentmodel hasprovision hasregulatorybasis hasretentiondisposition hassensitivitylabel hastemporalcontext injurisdiction issuedby processinglocation requiresaal requiresial retentionperiod sourcedocument undertrustframework validduring withdrawalmethod">
+          <details class="class" data-search="ucmnode base node @context @id @type achievedial assertsidentity assurancerank governedbypolicy hasapplicablelaw hascaretrajectorycontext hasconfidentialitylevel hasconsentdecision hasconsentmodel hasjurisdiction hasprovision haspurpose hasretentiondisposition hassensitivitylabel hastemporalcontext issuedby processinglocation requiresaal requiresial retentionperiod sourcedocument undertrustframework validduring withdrawalmethod">
             <summary style="padding-left: 6px">
               <span class="term">UcmNode</span>
               <span class="mono muted">(base)</span>
@@ -744,19 +752,19 @@ h3 { font-size: 12px; }
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
-                      <td class="nowrap"><b>forPurpose</b><br><span class="mono muted">ucm:forPurpose</span></td>
-                      <td class="mono nowrap">0..*</td>
-                      <td class="mono">skos:Concept</td>
-                      <td class="mono">PurposeOfUse[]</td>
-                      <td class="mono">node__for_purpose<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
-                    </tr>
-                    <tr>
                       <td class="nowrap"><b>governedByPolicy</b><br><span class="mono muted">ucm:governedByPolicy</span></td>
                       <td class="mono nowrap">0..*</td>
                       <td class="mono">ucm:ConsentPolicy</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">node__governed_by_policy<br><span class="muted">association</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
+                    </tr>
+                    <tr>
+                      <td class="nowrap"><b>hasApplicableLaw</b><br><span class="mono muted">dpv:hasApplicableLaw</span></td>
+                      <td class="mono nowrap">0..*</td>
+                      <td class="mono">skos:Concept</td>
+                      <td class="mono">RegulatoryBasis[]</td>
+                      <td class="mono">node__has_applicable_law<br><span class="muted">association</span></td>
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
@@ -792,6 +800,14 @@ h3 { font-size: 12px; }
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
+                      <td class="nowrap"><b>hasJurisdiction</b><br><span class="mono muted">dpv:hasJurisdiction</span></td>
+                      <td class="mono nowrap">0..*</td>
+                      <td class="mono">ucm:JurisdictionContext</td>
+                      <td class="mono">NodeRef[]</td>
+                      <td class="mono">node__has_jurisdiction<br><span class="muted">association</span></td>
+                      <td class="mono"><span class="muted">none</span></td>
+                    </tr>
+                    <tr>
                       <td class="nowrap"><b>hasProvision</b><br><span class="mono muted">ucm:hasProvision</span></td>
                       <td class="mono nowrap">0..*</td>
                       <td class="mono">ucm:ConsentProvision</td>
@@ -800,11 +816,11 @@ h3 { font-size: 12px; }
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
-                      <td class="nowrap"><b>hasRegulatoryBasis</b><br><span class="mono muted">ucm:hasRegulatoryBasis</span></td>
+                      <td class="nowrap"><b>hasPurpose</b><br><span class="mono muted">dpv:hasPurpose</span></td>
                       <td class="mono nowrap">0..*</td>
                       <td class="mono">skos:Concept</td>
-                      <td class="mono">RegulatoryBasis[]</td>
-                      <td class="mono">node__has_regulatory_basis<br><span class="muted">association</span></td>
+                      <td class="mono">PurposeOfUse[]</td>
+                      <td class="mono">node__has_purpose<br><span class="muted">association</span></td>
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
@@ -829,14 +845,6 @@ h3 { font-size: 12px; }
                       <td class="mono">time:TemporalEntity</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">node__has_temporal_context<br><span class="muted">association</span></td>
-                      <td class="mono"><span class="muted">none</span></td>
-                    </tr>
-                    <tr>
-                      <td class="nowrap"><b>inJurisdiction</b><br><span class="mono muted">ucm:inJurisdiction</span></td>
-                      <td class="mono nowrap">0..*</td>
-                      <td class="mono">ucm:JurisdictionContext</td>
-                      <td class="mono">NodeRef[]</td>
-                      <td class="mono">node__in_jurisdiction<br><span class="muted">association</span></td>
                       <td class="mono"><span class="muted">none</span></td>
                     </tr>
                     <tr>
@@ -919,13 +927,13 @@ h3 { font-size: 12px; }
                 <li><span class="pill Warning">Recommended</span><span>governedByPolicy target is not typed as ucm:ConsentPolicy.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>Care trajectory context is not typed as ucm:CareTrajectoryContext.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Information holds at most one confidentiality level, identified by IRI.</span></li>
+                <li><span class="pill Warning">Recommended</span><span>hasJurisdiction target is not typed as ucm:JurisdictionContext.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>hasProvision target is not typed as ucm:ConsentProvision.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Provision contains itself, directly or through nested provisions.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A provision&#39;s decision must be the opposite of its parent&#39;s (the directive for a top-level provision, or the enclosing provision).</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A consent directive or provision holds at most one retention disposition, identified by IRI.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Temporal context must be an OWL-Time entity, not a literal. Wrap a bare timestamp in a time:Instant.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Interval ends before it begins.</span></li>
-                <li><span class="pill Warning">Recommended</span><span>inJurisdiction target is not typed as ucm:JurisdictionContext.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>issuedBy target is not typed as ucm:Entity.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>processingLocation target is not typed as ucm:JurisdictionContext.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>Retention period is single-valued and must be an xsd:duration, such as P7Y.</span></li>
@@ -1246,12 +1254,12 @@ h3 { font-size: 12px; }
           <details class="class" data-search="privacynotice privacy notice amendmentappliesretroactively postedat">
             <summary style="padding-left: 60px">
               <span class="term">PrivacyNotice</span>
-              <span class="mono muted">ucm:PrivacyNotice</span>
+              <span class="mono muted">dpv:PrivacyNotice</span>
               <span class="tags">
 <span class="badge">2</span>              </span>
             </summary>
             <div class="class-body">
-<p>A published statement of an organization&#39;s or program&#39;s purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act.</p>              <div class="meta">
+<p>In UCM: a published statement of an organization&#39;s or program&#39;s purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act.</p>              <div class="meta">
 <span>Extends <b>PolicyDefinition</b></span><span>Table <b class="mono">definition_artifact</b></span><span>Examples <b>1</b></span>              </div>
               <div class="scroll">
                 <table class="list">
@@ -1496,7 +1504,7 @@ h3 { font-size: 12px; }
                       <td class="mono">Consent.scope<br>Consent.category</td>
                     </tr>
                     <tr>
-                      <td class="nowrap"><b>hasConsentStatus</b><br><span class="mono muted">ucm:hasConsentStatus</span></td>
+                      <td class="nowrap"><b>hasConsentStatus</b><br><span class="mono muted">dpv:hasConsentStatus</span></td>
                       <td class="mono nowrap">0..1</td>
                       <td class="mono">skos:Concept</td>
                       <td class="mono">ConsentStatus</td>
@@ -1544,7 +1552,7 @@ h3 { font-size: 12px; }
                 <li><span class="pill Warning">Recommended</span><span>The governing consent policy requires an identity or authenticator assurance level that the grantor&#39;s recorded identity or authentication does not reach.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>The consent subject is a household, and a member who was a minor on the consent date (under 18, from ucm:birthDate) has no ucm:ConsentProxyRole participation acting ucm:consentOnBehalfOf them, and does not self-consent under a ucm:SelfConsentRule whose minimum age they had reached.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>Grantor is neither the subject nor a member of the subject group, so the grantor&#39;s role should be ucm:ConsentProxyRole (or a subclass).</span></li>
-                <li><span class="pill Warning">Recommended</span><span>Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.</span></li>
+                <li><span class="pill Warning">Recommended</span><span>Withdrawal or revocation is half-recorded: status is withdrawn or revoked with no revokedBy, or revokedBy is set while the status is still active.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A consent directive names at least one subject participation, which must be a node, not a literal.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>consentSubject target is not typed as ucm:Participation.</span></li>
@@ -2179,7 +2187,7 @@ h3 { font-size: 12px; }
                     <tr>
                       <td class="nowrap"><b>acknowledgesNotice</b><br><span class="mono muted">ucm:acknowledgesNotice</span></td>
                       <td class="mono nowrap">0..*</td>
-                      <td class="mono">ucm:PrivacyNotice</td>
+                      <td class="mono">dpv:PrivacyNotice</td>
                       <td class="mono">NodeRef[]</td>
                       <td class="mono">process__acknowledges_notice<br><span class="muted">association</span></td>
                       <td class="mono"><span class="muted">none</span></td>
@@ -2212,7 +2220,7 @@ h3 { font-size: 12px; }
                 </table>
               </div>
               <ul class="constraints">
-                <li><span class="pill Warning">Recommended</span><span>acknowledgesNotice target is not typed as ucm:PrivacyNotice.</span></li>
+                <li><span class="pill Warning">Recommended</span><span>acknowledgesNotice target is not typed as dpv:PrivacyNotice.</span></li>
                 <li><span class="pill Warning">Recommended</span><span>authenticatedBy target is not typed as ucm:Authentication.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A consent interaction holds at most one interaction type, identified by IRI.</span></li>
                 <li><span class="pill Violation">Definitional</span><span>A consent interaction holds at most one modality, identified by IRI.</span></li>
@@ -3361,16 +3369,16 @@ Values of <span class="mono">governsAction</span> <span class="muted">on ucm:Con
               <thead><tr><th>Term</th><th>Label</th><th>Definition</th><th>IRI</th></tr></thead>
               <tbody>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>AccessAction</b></td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Access</b></td>
                   <td>Access</td>
-                  <td>Retrieve and view information.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#AccessAction</td>
+                  <td>to access data</td>
+                  <td class="mono break">https://w3id.org/dpv#Access</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>CollectAction</b></td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Collect</b></td>
                   <td>Collect</td>
-                  <td>Gather and record information.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#CollectAction</td>
+                  <td>to gather data from someone</td>
+                  <td class="mono break">https://w3id.org/dpv#Collect</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 8px"><b>CorrectAction</b></td>
@@ -3379,10 +3387,10 @@ Values of <span class="mono">governsAction</span> <span class="muted">on ucm:Con
                   <td class="mono break">https://www.w3.org/ns/ucm#CorrectAction</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>DiscloseAction</b></td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Disclose</b></td>
                   <td>Disclose</td>
-                  <td>Release information to another party.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#DiscloseAction</td>
+                  <td>to make data known</td>
+                  <td class="mono break">https://w3id.org/dpv#Disclose</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>RediscloseAction</b></td>
@@ -3391,10 +3399,10 @@ Values of <span class="mono">governsAction</span> <span class="muted">on ucm:Con
                   <td class="mono break">https://www.w3.org/ns/ucm#RediscloseAction</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>UseAction</b></td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Use</b></td>
                   <td>Use</td>
-                  <td>Use information for a purpose.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#UseAction</td>
+                  <td>to use data</td>
+                  <td class="mono break">https://w3id.org/dpv#Use</td>
                 </tr>
               </tbody>
             </table>
@@ -3612,7 +3620,7 @@ Values of <span class="mono">hasConsentModel</span>            <span class="pill
         <div class="group">
           <h3>ConsentStatus <span class="mono muted">https://www.w3.org/ns/ucm#ConsentStatus</span></h3>
 <p>Does this consent apply now?</p>          <p>
-Values of <span class="mono">hasConsentStatus</span> <span class="muted">on ucm:ConsentDirective</span>            <span class="pill graphite">9 concepts</span>
+Values of <span class="mono">hasConsentStatus</span> <span class="muted">on ucm:ConsentDirective</span>            <span class="pill graphite">10 concepts</span>
 <span class="pill graphite">2 levels</span>          </p>
           <div class="scroll">
             <table class="list">
@@ -3644,15 +3652,15 @@ Values of <span class="mono">hasConsentStatus</span> <span class="muted">on ucm:
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ConsentExpired</b></td>
-                  <td>Expired</td>
-                  <td>The directive&#39;s period of validity ended.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#ConsentExpired</td>
+                  <td>Consent Expired</td>
+                  <td>The state where the temporal or contextual validity of consent has &#39;expired&#39;</td>
+                  <td class="mono break">https://w3id.org/dpv#ConsentExpired</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ConsentRevoked</b></td>
-                  <td>Revoked</td>
-                  <td>The subject or grantor withdrew the directive.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#ConsentRevoked</td>
+                  <td>Consent Revoked</td>
+                  <td>The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state</td>
+                  <td class="mono break">https://w3id.org/dpv#ConsentRevoked</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ConsentSuperseded</b></td>
@@ -3661,16 +3669,22 @@ Values of <span class="mono">hasConsentStatus</span> <span class="muted">on ucm:
                   <td class="mono break">https://www.w3.org/ns/ucm#ConsentSuperseded</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>ConsentRefused</b></td>
-                  <td>Refused</td>
-                  <td>The subject or grantor declined to give consent, so the directive never came into force.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#ConsentRefused</td>
+                  <td class="nowrap" style="padding-left: 26px"><span class="muted">└ </span><b>ConsentWithdrawn</b></td>
+                  <td>Consent Withdrawn</td>
+                  <td>The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state</td>
+                  <td class="mono break">https://w3id.org/dpv#ConsentWithdrawn</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>ConsentStatusUnknown</b></td>
-                  <td>Unknown</td>
-                  <td>The status of the directive is not known.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#ConsentStatusUnknown</td>
+                  <td class="nowrap" style="padding-left: 8px"><b>ConsentRefused</b></td>
+                  <td>Consent Refused</td>
+                  <td>The state where consent has been refused</td>
+                  <td class="mono break">https://w3id.org/dpv#ConsentRefused</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>ConsentUnknown</b></td>
+                  <td>Consent Unknown</td>
+                  <td>State where information about consent is not available or is unknown</td>
+                  <td class="mono break">https://w3id.org/dpv#ConsentUnknown</td>
                 </tr>
               </tbody>
             </table>
@@ -3993,10 +4007,10 @@ Values of <span class="mono">coversDataCategory</span> <span class="muted">on uc
                   <td class="mono break">https://www.w3.org/ns/ucm#ClinicalInformation</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>EducationInformation</b></td>
-                  <td>Education information</td>
-                  <td>Education records.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#EducationInformation</td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Education</b></td>
+                  <td>Education</td>
+                  <td>Information about education</td>
+                  <td class="mono break">https://w3id.org/dpv/pd#Education</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 8px"><b>HousingInformation</b></td>
@@ -4005,10 +4019,10 @@ Values of <span class="mono">coversDataCategory</span> <span class="muted">on uc
                   <td class="mono break">https://www.w3.org/ns/ucm#HousingInformation</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>IdentifyingInformation</b></td>
-                  <td>Identifying information</td>
-                  <td>Information that identifies a person, such as name, birth date and identifiers.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#IdentifyingInformation</td>
+                  <td class="nowrap" style="padding-left: 8px"><b>Identifying</b></td>
+                  <td>Identifying</td>
+                  <td>Information that uniquely or semi-uniquely identifies an individual or a group</td>
+                  <td class="mono break">https://w3id.org/dpv/pd#Identifying</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 8px"><b>IncomeAndBenefitsInformation</b></td>
@@ -4103,7 +4117,7 @@ Values of <span class="mono">hasProofingType</span> <span class="muted">on ucm:I
         <div class="group">
           <h3>PurposeOfUse <span class="mono muted">https://www.w3.org/ns/ucm#PurposeOfUse</span></h3>
 <p>For what purpose may the information be used?</p>          <p>
-Values of <span class="mono">forPurpose</span>            <span class="pill graphite">18 concepts</span>
+Values of <span class="mono">hasPurpose</span>            <span class="pill graphite">18 concepts</span>
 <span class="pill graphite">3 levels</span>          </p>
           <div class="scroll">
             <table class="list">
@@ -4200,10 +4214,10 @@ Values of <span class="mono">forPurpose</span>            <span class="pill grap
                   <td class="mono break">https://www.w3.org/ns/ucm#PublicHealthPurpose</td>
                 </tr>
                 <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>ResearchPurpose</b></td>
-                  <td>Research</td>
-                  <td>Research.</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#ResearchPurpose</td>
+                  <td class="nowrap" style="padding-left: 8px"><b>ScientificResearch</b></td>
+                  <td>Scientific Research</td>
+                  <td>Purposes associated with scientific research</td>
+                  <td class="mono break">https://w3id.org/dpv#ScientificResearch</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 8px"><b>Treatment</b></td>
@@ -4267,7 +4281,7 @@ Values of <span class="mono">hasReferralDisposition</span> <span class="muted">o
         <div class="group">
           <h3>RegulatoryBasis <span class="mono muted">https://www.w3.org/ns/ucm#RegulatoryBasis</span></h3>
 <p>Which law or regulation does this consent rest on?</p>          <p>
-Values of <span class="mono">hasRegulatoryBasis</span>            <span class="pill graphite">11 concepts</span>
+Values of <span class="mono">hasApplicableLaw</span>            <span class="pill graphite">11 concepts</span>
 <span class="pill graphite">2 levels</span>          </p>
           <div class="scroll">
             <table class="list">
@@ -4290,12 +4304,6 @@ Values of <span class="mono">hasRegulatoryBasis</span>            <span class="p
                   <td>FERPA</td>
                   <td>The Family Educational Rights and Privacy Act (20 U.S.C. 1232g; 34 CFR Part 99).</td>
                   <td class="mono break">https://www.w3.org/ns/ucm#FERPA</td>
-                </tr>
-                <tr>
-                  <td class="nowrap" style="padding-left: 8px"><b>GDPR</b></td>
-                  <td>GDPR</td>
-                  <td>The EU General Data Protection Regulation (Regulation (EU) 2016/679).</td>
-                  <td class="mono break">https://www.w3.org/ns/ucm#GDPR</td>
                 </tr>
                 <tr>
                   <td class="nowrap" style="padding-left: 8px"><b>HIPAA</b></td>
@@ -4338,6 +4346,12 @@ Values of <span class="mono">hasRegulatoryBasis</span>            <span class="p
                   <td>VAWA</td>
                   <td>The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS.</td>
                   <td class="mono break">https://www.w3.org/ns/ucm#VAWA</td>
+                </tr>
+                <tr>
+                  <td class="nowrap" style="padding-left: 8px"><b>law-GDPR</b></td>
+                  <td>General Data Protection Regulation (GDPR)</td>
+                  <td></td>
+                  <td class="mono break">https://w3id.org/dpv/legal/eu#law-GDPR</td>
                 </tr>
               </tbody>
             </table>
@@ -4720,7 +4734,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
       <!-- ===================== Postgres ===================== -->
       <section class="pane" id="postgres">
         <h1>Postgres</h1>
-        <p class="lede">Revision <span class="mono">ucm_8535f380cce4</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
+        <p class="lede">Revision <span class="mono">ucm_8af3b9af554b</span>. One table per root class (single-table inheritance on <span class="mono">type</span>); references are IRIs without foreign keys; only the Definitional tier is enforced.</p>
         <div class="scroll">
           <table class="list">
             <thead><tr><th>Table</th><th>Columns</th><th>Checks</th><th class="num">Classes</th></tr></thead>
@@ -4880,11 +4894,11 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
               <tr><td class="mono">entity__defined_by_criteria</td><td>definedByCriteria</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">participation__enactive_during</td><td>enactiveDuring</td><td class="mono">participation</td><td>reference</td></tr>
               <tr><td class="mono">process__establishes_identity</td><td>establishesIdentity</td><td class="mono">process</td><td>reference</td></tr>
-              <tr><td class="mono">node__for_purpose</td><td>forPurpose</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">statement__generated_by_process</td><td>generatedByProcess</td><td class="mono">statement</td><td>reference</td></tr>
               <tr><td class="mono">node__governed_by_policy</td><td>governedByPolicy</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">consent_provision__governs_action</td><td>governsAction</td><td class="mono">consent_provision</td><td>reference</td></tr>
               <tr><td class="mono">process__has_activity_focus</td><td>hasActivityFocus</td><td class="mono">process</td><td>reference</td></tr>
+              <tr><td class="mono">node__has_applicable_law</td><td>hasApplicableLaw</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">node__has_care_trajectory_context</td><td>hasCareTrajectoryContext</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">process__has_client</td><td>hasClient</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">node__has_confidentiality_level</td><td>hasConfidentialityLevel</td><td class="mono">any node</td><td>reference</td></tr>
@@ -4894,19 +4908,19 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
               <tr><td class="mono">entity__has_evidence_type</td><td>hasEvidenceType</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">entity__has_identifier</td><td>hasIdentifier</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">entity__has_identity</td><td>hasIdentity</td><td class="mono">entity</td><td>reference</td></tr>
+              <tr><td class="mono">node__has_jurisdiction</td><td>hasJurisdiction</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">entity__has_member</td><td>hasMember</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">entity__has_membership</td><td>hasMembership</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">process__has_participant</td><td>hasParticipant</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">process__has_patient</td><td>hasPatient</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">node__has_provision</td><td>hasProvision</td><td class="mono">any node</td><td>reference</td></tr>
-              <tr><td class="mono">node__has_regulatory_basis</td><td>hasRegulatoryBasis</td><td class="mono">any node</td><td>reference</td></tr>
+              <tr><td class="mono">node__has_purpose</td><td>hasPurpose</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">process__has_resident</td><td>hasResident</td><td class="mono">process</td><td>reference</td></tr>
               <tr><td class="mono">node__has_retention_disposition</td><td>hasRetentionDisposition</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">node__has_sensitivity_label</td><td>hasSensitivityLabel</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">node__has_temporal_context</td><td>hasTemporalContext</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">participation__identified_as</td><td>identifiedAs</td><td class="mono">participation</td><td>reference</td></tr>
               <tr><td class="mono">entity__identity_of</td><td>identityOf</td><td class="mono">entity</td><td>reference</td></tr>
-              <tr><td class="mono">node__in_jurisdiction</td><td>inJurisdiction</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">node__issued_by</td><td>issuedBy</td><td class="mono">any node</td><td>reference</td></tr>
               <tr><td class="mono">entity__located_at</td><td>locatedAt</td><td class="mono">entity</td><td>reference</td></tr>
               <tr><td class="mono">statement__made_within_context</td><td>madeWithinContext</td><td class="mono">statement</td><td>reference</td></tr>
@@ -5049,7 +5063,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
             <table class="list">
               <thead><tr><th>FHIR element</th><th>From</th></tr></thead>
               <tbody>
-<tr><td class="mono nowrap">Consent.status</td><td>hasConsentStatus · code · ConsentDraft→draft, ConsentActive→active, ConsentInactive→inactive, ConsentRevoked→inactive, ConsentExpired→inactive, ConsentSuperseded→inactive, ConsentRefused→rejected, ConsentEnteredInError→entered-in-error</td></tr><tr><td class="mono nowrap">Consent.scope</td><td>hasConsentCategory · code · PrivacyConsent→patient-privacy, ReleaseOfInformation→patient-privacy, ConsentToCollect→patient-privacy, ConsentToShare→patient-privacy, TreatmentConsent→treatment, ResearchConsent→research, AdvanceDirective→adr</td></tr><tr><td class="mono nowrap">Consent.category</td><td>hasConsentCategory · concept-coding</td></tr><tr><td class="mono nowrap">Consent.patient</td><td>consentSubject/participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.dateTime</td><td>recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.performer</td><td>Participation nodes whose occursWithin points here · role ConsentGrantorRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.organization</td><td>Participation nodes whose occursWithin points here · role InformationCustodianRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.sourceReference</td><td>sourceDocument · reference</td></tr><tr><td class="mono nowrap">Consent.policy</td><td>governedByPolicy · 1 sub-elements</td></tr><tr><td class="mono nowrap">Consent.policyRule</td><td>hasRegulatoryBasis · concept-coding</td></tr><tr><td class="mono nowrap">Consent.provision.type</td><td>hasConsentDecision · code · Permit→permit, Deny→deny</td></tr><tr><td class="mono nowrap">Consent.provision.period.start</td><td>validDuring/time:hasBeginning/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.period.end</td><td>validDuring/time:hasEnd/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.provision</td><td>hasProvision · 16 sub-elements</td></tr>              </tbody>
+<tr><td class="mono nowrap">Consent.status</td><td>hasConsentStatus · code · ConsentDraft→draft, ConsentActive→active, ConsentInactive→inactive, ConsentWithdrawn→inactive, ConsentRevoked→inactive, ConsentExpired→inactive, ConsentSuperseded→inactive, ConsentRefused→rejected, ConsentEnteredInError→entered-in-error</td></tr><tr><td class="mono nowrap">Consent.scope</td><td>hasConsentCategory · code · PrivacyConsent→patient-privacy, ReleaseOfInformation→patient-privacy, ConsentToCollect→patient-privacy, ConsentToShare→patient-privacy, TreatmentConsent→treatment, ResearchConsent→research, AdvanceDirective→adr</td></tr><tr><td class="mono nowrap">Consent.category</td><td>hasConsentCategory · concept-coding</td></tr><tr><td class="mono nowrap">Consent.patient</td><td>consentSubject/participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.dateTime</td><td>recordsConsentFrom/occursDuring/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.performer</td><td>Participation nodes whose occursWithin points here · role ConsentGrantorRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.organization</td><td>Participation nodes whose occursWithin points here · role InformationCustodianRole · participatingEntity · reference</td></tr><tr><td class="mono nowrap">Consent.sourceReference</td><td>sourceDocument · reference</td></tr><tr><td class="mono nowrap">Consent.policy</td><td>governedByPolicy · 1 sub-elements</td></tr><tr><td class="mono nowrap">Consent.policyRule</td><td>hasApplicableLaw · concept-coding</td></tr><tr><td class="mono nowrap">Consent.provision.type</td><td>hasConsentDecision · code · Permit→permit, Deny→deny</td></tr><tr><td class="mono nowrap">Consent.provision.period.start</td><td>validDuring/time:hasBeginning/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.period.end</td><td>validDuring/time:hasEnd/time:inXSDDateTimeStamp</td></tr><tr><td class="mono nowrap">Consent.provision.provision</td><td>hasProvision · 16 sub-elements</td></tr>              </tbody>
             </table>
           </div>
         </div>
@@ -5063,7 +5077,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
           <table class="list">
             <thead><tr><th>File</th><th>sha256</th></tr></thead>
             <tbody>
-<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:f277d454663cc15047130489c22bd60326a24d7f8be8c83a69b86bf02bc0e17d">f277d454663cc150</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:27794872e154dfdd40f870bebd5058b39310f03db401a3bcbba5eecbc918cb7e">27794872e154dfdd</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:092445b46969aa6f51f55027f976dfecba2d0d10e71dda5704556e10d74ad2e6">092445b46969aa6f</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py">postgres/migrations/versions/ucm_8535f380cce4_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:74847c9ff8e048bb27afa1e0370e8c663dfee01fd3231994e5a2542876182969">74847c9ff8e048bb</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:512861a412db0f8f6a3a69fda75fcee0d7c74240d4df5def7539c9e65eed30df">512861a412db0f8f</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
+<tr><td class="mono"><a href="context.jsonld">context.jsonld</a></td><td class="mono muted" title="sha256:010761795d5ddaea2e38ef4b81834b9850ee80e67eff5223059f69396d551d15">010761795d5ddaea</td></tr><tr><td class="mono"><a href="fhir/ucm_fhir_adapter.py">fhir/ucm_fhir_adapter.py</a></td><td class="mono muted" title="sha256:9c9541fac3c0b019a78827f7974bb1a16732dd794765fd780c4a30af6865d9c2">9c9541fac3c0b019</td></tr><tr><td class="mono"><a href="openapi.yaml">openapi.yaml</a></td><td class="mono muted" title="sha256:9d5ded8cd57575b6fb1163286cd5bf84e8b6a8aa96c184e0c3d0c059b4e58f01">9d5ded8cd57575b6</td></tr><tr><td class="mono"><a href="../db/alembic.ini">postgres/alembic.ini</a></td><td class="mono muted" title="sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b">8358d7425c24090f</td></tr><tr><td class="mono"><a href="../db/migrations/env.py">postgres/migrations/env.py</a></td><td class="mono muted" title="sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc">d213ecab0d2c115b</td></tr><tr><td class="mono"><a href="../db/migrations/script.py.mako">postgres/migrations/script.py.mako</a></td><td class="mono muted" title="sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e">c20f6ab92d4ed36d</td></tr><tr><td class="mono"><a href="../db/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py">postgres/migrations/versions/ucm_8af3b9af554b_ucm_0_0_1.py</a></td><td class="mono muted" title="sha256:fbf369bee75ca1953cfb50af7d8657aa32fd96a0a72dc47fc4db1bb4b1da94c8">fbf369bee75ca195</td></tr><tr><td class="mono"><a href="../db/ucm_models.py">postgres/ucm_models.py</a></td><td class="mono muted" title="sha256:1a78cee24c784b56f30bfdc1204147278dbeb5f66a4d4a0d9344e51cdea16c7b">1a78cee24c784b56</td></tr><tr><td class="mono"><a href="report.html">report.html</a></td><td class="mono muted" title="">(this file)</td></tr>            </tbody>
           </table>
         </div>
       </section>
@@ -5071,7 +5085,7 @@ Values of <span class="mono">coversSensitivity</span> <span class="muted">on ucm
   </div>
 
   <div class="statusbar">
-    <span>95 classes · 110 properties · 181 concepts · 20 resources</span>
+    <span>95 classes · 110 properties · 182 concepts · 20 resources</span>
     <span class="mono">https://www.w3.org/ns/ucm#</span>
     <span>Generated by ucm-codegen</span>
   </div>

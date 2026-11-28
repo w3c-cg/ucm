@@ -15,10 +15,10 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b"
-        triples: 2520
+        digest: "sha256:43b26d141123f591d38e67c48df194ad319f3c60561d52f7002e954dec325a97"
+        triples: 2544
       - file: "ucm-shapes.jsonld"
-        digest: "sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9"
+        digest: "sha256:68d0e0609c67c5fd4dea4e409041abc29f81cef3d4c45770e28aa310dd7da9d4"
         triples: 1289
 
 servers:
@@ -2418,35 +2418,35 @@ components:
       x-ucm-open-vocabulary: true
       x-ucm-properties: ["governsAction"]
       x-ucm-concepts:
-        AccessAction:
-          iri: https://www.w3.org/ns/ucm#AccessAction
+        Access:
+          iri: https://w3id.org/dpv#Access
           label: Access
-          definition: Retrieve and view information.
-        CollectAction:
-          iri: https://www.w3.org/ns/ucm#CollectAction
+          definition: to access data
+        Collect:
+          iri: https://w3id.org/dpv#Collect
           label: Collect
-          definition: Gather and record information.
+          definition: to gather data from someone
         CorrectAction:
           iri: https://www.w3.org/ns/ucm#CorrectAction
           label: Access and correct
           definition: Access information in order to correct it.
-        DiscloseAction:
-          iri: https://www.w3.org/ns/ucm#DiscloseAction
+        Disclose:
+          iri: https://w3id.org/dpv#Disclose
           label: Disclose
-          definition: Release information to another party.
+          definition: to make data known
         RediscloseAction:
           iri: https://www.w3.org/ns/ucm#RediscloseAction
           label: Redisclose
           definition: A recipient releasing information it received to a further party.
           broader:
-          - DiscloseAction
-        UseAction:
-          iri: https://www.w3.org/ns/ucm#UseAction
+          - Disclose
+        Use:
+          iri: https://w3id.org/dpv#Use
           label: Use
-          definition: Use information for a purpose.
+          definition: to use data
       anyOf:
         - type: string
-          enum: ["AccessAction", "CollectAction", "CorrectAction", "DiscloseAction", "RediscloseAction", "UseAction"]
+          enum: ["Access", "Collect", "CorrectAction", "Disclose", "RediscloseAction", "Use"]
         - $ref: '#/components/schemas/IRI'
     "ConsentCategory":
       description: "Consent Category. What kind of consent is this? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -2621,9 +2621,9 @@ components:
           label: Entered in error
           definition: The directive was recorded by mistake and should be disregarded.
         ConsentExpired:
-          iri: https://www.w3.org/ns/ucm#ConsentExpired
-          label: Expired
-          definition: The directive's period of validity ended.
+          iri: https://w3id.org/dpv#ConsentExpired
+          label: Consent Expired
+          definition: The state where the temporal or contextual validity of consent has 'expired'
           broader:
           - ConsentInactive
         ConsentInactive:
@@ -2631,28 +2631,34 @@ components:
           label: Inactive
           definition: The directive was in force and no longer is. Record a narrower reason when known.
         ConsentRefused:
-          iri: https://www.w3.org/ns/ucm#ConsentRefused
-          label: Refused
-          definition: The subject or grantor declined to give consent, so the directive never came into force.
+          iri: https://w3id.org/dpv#ConsentRefused
+          label: Consent Refused
+          definition: The state where consent has been refused
         ConsentRevoked:
-          iri: https://www.w3.org/ns/ucm#ConsentRevoked
-          label: Revoked
-          definition: The subject or grantor withdrew the directive.
+          iri: https://w3id.org/dpv#ConsentRevoked
+          label: Consent Revoked
+          definition: The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state
           broader:
           - ConsentInactive
-        ConsentStatusUnknown:
-          iri: https://www.w3.org/ns/ucm#ConsentStatusUnknown
-          label: Unknown
-          definition: The status of the directive is not known.
         ConsentSuperseded:
           iri: https://www.w3.org/ns/ucm#ConsentSuperseded
           label: Superseded
           definition: A newer directive amended or renewed this one.
           broader:
           - ConsentInactive
+        ConsentUnknown:
+          iri: https://w3id.org/dpv#ConsentUnknown
+          label: Consent Unknown
+          definition: State where information about consent is not available or is unknown
+        ConsentWithdrawn:
+          iri: https://w3id.org/dpv#ConsentWithdrawn
+          label: Consent Withdrawn
+          definition: The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state
+          broader:
+          - ConsentInactive
       anyOf:
         - type: string
-          enum: ["ConsentActive", "ConsentDraft", "ConsentEnteredInError", "ConsentExpired", "ConsentInactive", "ConsentRefused", "ConsentRevoked", "ConsentStatusUnknown", "ConsentSuperseded"]
+          enum: ["ConsentActive", "ConsentDraft", "ConsentEnteredInError", "ConsentExpired", "ConsentInactive", "ConsentRefused", "ConsentRevoked", "ConsentSuperseded", "ConsentUnknown", "ConsentWithdrawn"]
         - $ref: '#/components/schemas/IRI'
     "EvidenceStrength":
       description: "Evidence Strength. How strong is this identity evidence? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -2874,18 +2880,18 @@ components:
           iri: https://www.w3.org/ns/ucm#ClinicalInformation
           label: Clinical information
           definition: Health and clinical care information.
-        EducationInformation:
-          iri: https://www.w3.org/ns/ucm#EducationInformation
-          label: Education information
-          definition: Education records.
+        Education:
+          iri: https://w3id.org/dpv/pd#Education
+          label: Education
+          definition: Information about education
         HousingInformation:
           iri: https://www.w3.org/ns/ucm#HousingInformation
           label: Housing information
           definition: Housing status, history, assessments and placements.
-        IdentifyingInformation:
-          iri: https://www.w3.org/ns/ucm#IdentifyingInformation
-          label: Identifying information
-          definition: Information that identifies a person, such as name, birth date and identifiers.
+        Identifying:
+          iri: https://w3id.org/dpv/pd#Identifying
+          label: Identifying
+          definition: Information that uniquely or semi-uniquely identifies an individual or a group
         IncomeAndBenefitsInformation:
           iri: https://www.w3.org/ns/ucm#IncomeAndBenefitsInformation
           label: Income and benefits information
@@ -2900,7 +2906,7 @@ components:
           definition: Food security and nutrition information.
       anyOf:
         - type: string
-          enum: ["BehavioralHealthInformation", "ChildWelfareInformation", "ClinicalInformation", "EducationInformation", "HousingInformation", "IdentifyingInformation", "IncomeAndBenefitsInformation", "JusticeInformation", "NutritionInformation"]
+          enum: ["BehavioralHealthInformation", "ChildWelfareInformation", "ClinicalInformation", "Education", "HousingInformation", "Identifying", "IncomeAndBenefitsInformation", "JusticeInformation", "NutritionInformation"]
         - $ref: '#/components/schemas/IRI'
     "LifecycleState":
       description: "Lifecycle State. A state associated with a process during a portion of its lifecycle. Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -2954,7 +2960,7 @@ components:
       description: "Purpose of Use. For what purpose may the information be used? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#PurposeOfUse"
       x-ucm-open-vocabulary: true
-      x-ucm-properties: ["forPurpose"]
+      x-ucm-properties: ["hasPurpose"]
       x-ucm-concepts:
         BenefitsEnrollment:
           iri: https://www.w3.org/ns/ucm#BenefitsEnrollment
@@ -3016,10 +3022,10 @@ components:
           iri: https://www.w3.org/ns/ucm#PublicHealthPurpose
           label: Public health
           definition: Public health activities and reporting.
-        ResearchPurpose:
-          iri: https://www.w3.org/ns/ucm#ResearchPurpose
-          label: Research
-          definition: Research.
+        ScientificResearch:
+          iri: https://w3id.org/dpv#ScientificResearch
+          label: Scientific Research
+          definition: Purposes associated with scientific research
         SocialCareCoordination:
           iri: https://www.w3.org/ns/ucm#SocialCareCoordination
           label: Social care coordination
@@ -3044,7 +3050,7 @@ components:
           definition: Providing health care or services to the person.
       anyOf:
         - type: string
-          enum: ["BenefitsEnrollment", "CareCoordination", "CareManagement", "CoordinatedEntry", "EligibilityPurpose", "EmergencyTreatment", "FamilyRequested", "HealthcareOperations", "HousingPlacement", "PatientRequested", "Payment", "ProgramReporting", "PublicHealthPurpose", "ResearchPurpose", "SocialCareCoordination", "SocialCaseManagement", "SocialServicesReferral", "Treatment"]
+          enum: ["BenefitsEnrollment", "CareCoordination", "CareManagement", "CoordinatedEntry", "EligibilityPurpose", "EmergencyTreatment", "FamilyRequested", "HealthcareOperations", "HousingPlacement", "PatientRequested", "Payment", "ProgramReporting", "PublicHealthPurpose", "ScientificResearch", "SocialCareCoordination", "SocialCaseManagement", "SocialServicesReferral", "Treatment"]
         - $ref: '#/components/schemas/IRI'
     "ReferralDisposition":
       description: "Referral Disposition. What has the receiving party decided about a care coordination request? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -3086,7 +3092,7 @@ components:
       description: "Regulatory Basis. Which law or regulation does this consent rest on? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
       x-semantic-uri: "https://www.w3.org/ns/ucm#RegulatoryBasis"
       x-ucm-open-vocabulary: true
-      x-ucm-properties: ["hasRegulatoryBasis"]
+      x-ucm-properties: ["hasApplicableLaw"]
       x-ucm-concepts:
         CFR42Part2:
           iri: https://www.w3.org/ns/ucm#CFR42Part2
@@ -3100,10 +3106,6 @@ components:
           iri: https://www.w3.org/ns/ucm#FERPA
           label: FERPA
           definition: The Family Educational Rights and Privacy Act (20 U.S.C. 1232g; 34 CFR Part 99).
-        GDPR:
-          iri: https://www.w3.org/ns/ucm#GDPR
-          label: GDPR
-          definition: The EU General Data Protection Regulation (Regulation (EU) 2016/679).
         HIPAA:
           iri: https://www.w3.org/ns/ucm#HIPAA
           label: HIPAA
@@ -3138,9 +3140,12 @@ components:
           iri: https://www.w3.org/ns/ucm#VAWA
           label: VAWA
           definition: The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS.
+        law-GDPR:
+          iri: https://w3id.org/dpv/legal/eu#law-GDPR
+          label: General Data Protection Regulation (GDPR)
       anyOf:
         - type: string
-          enum: ["CFR42Part2", "CommonRule", "FERPA", "GDPR", "HIPAA", "HIPAAAuthorization", "HIPAANoticeOfPrivacyPractices", "HIPAAResearch", "HMISDataStandards", "StateLaw", "VAWA"]
+          enum: ["CFR42Part2", "CommonRule", "FERPA", "HIPAA", "HIPAAAuthorization", "HIPAANoticeOfPrivacyPractices", "HIPAAResearch", "HMISDataStandards", "StateLaw", "VAWA", "law-GDPR"]
         - $ref: '#/components/schemas/IRI'
     "RetentionDisposition":
       description: "Retention Disposition. What happens to the data when its retention period ends? Open vocabulary: known concepts are listed; other concept IRIs are accepted when SKOS-mapped into the scheme."
@@ -3354,15 +3359,6 @@ components:
           description: "An integer rank on an assurance or strength level, so levels in one scheme can be compared with >=."
           x-semantic-uri: https://www.w3.org/ns/ucm#assuranceRank
           x-ucm-datatype: xsd:integer
-        "forPurpose":
-          type: array
-          items:
-            $ref: '#/components/schemas/PurposeOfUse'
-          uniqueItems: true
-          description: "Relates a provision or privacy notice to a purpose of use it covers."
-          x-semantic-uri: https://www.w3.org/ns/ucm#forPurpose
-          x-ucm-concept-scheme: PurposeOfUse
-          x-ucm-range: skos:Concept
         "governedByPolicy":
           type: array
           items:
@@ -3375,6 +3371,15 @@ components:
           - severity: Warning
             tier: Recommended
             message: governedByPolicy target is not typed as ucm:ConsentPolicy.
+        "hasApplicableLaw":
+          type: array
+          items:
+            $ref: '#/components/schemas/RegulatoryBasis'
+          uniqueItems: true
+          description: "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis."
+          x-semantic-uri: https://w3id.org/dpv#hasApplicableLaw
+          x-ucm-concept-scheme: RegulatoryBasis
+          x-ucm-range: skos:Concept
         "hasCareTrajectoryContext":
           type: array
           items:
@@ -3412,6 +3417,18 @@ components:
           x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentModel
           x-ucm-concept-scheme: ConsentModel
           x-ucm-range: skos:Concept
+        "hasJurisdiction":
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeRef'
+          uniqueItems: true
+          description: "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued."
+          x-semantic-uri: https://w3id.org/dpv#hasJurisdiction
+          x-ucm-range: ucm:JurisdictionContext
+          x-ucm-constraints:
+          - severity: Warning
+            tier: Recommended
+            message: hasJurisdiction target is not typed as ucm:JurisdictionContext.
         "hasProvision":
           type: array
           items:
@@ -3430,14 +3447,14 @@ components:
           - severity: Violation
             tier: Definitional
             message: A provision's decision must be the opposite of its parent's (the directive for a top-level provision, or the enclosing provision).
-        "hasRegulatoryBasis":
+        "hasPurpose":
           type: array
           items:
-            $ref: '#/components/schemas/RegulatoryBasis'
+            $ref: '#/components/schemas/PurposeOfUse'
           uniqueItems: true
-          description: "Relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis)."
-          x-semantic-uri: https://www.w3.org/ns/ucm#hasRegulatoryBasis
-          x-ucm-concept-scheme: RegulatoryBasis
+          description: "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one."
+          x-semantic-uri: https://w3id.org/dpv#hasPurpose
+          x-ucm-concept-scheme: PurposeOfUse
           x-ucm-range: skos:Concept
         "hasRetentionDisposition":
           $ref: '#/components/schemas/RetentionDisposition'
@@ -3473,18 +3490,6 @@ components:
           - severity: Violation
             tier: Definitional
             message: Interval ends before it begins.
-        "inJurisdiction":
-          type: array
-          items:
-            $ref: '#/components/schemas/NodeRef'
-          uniqueItems: true
-          description: "Relates a consent, consent interaction, policy or identifier to the jurisdiction where it was given, is in force or was issued."
-          x-semantic-uri: https://www.w3.org/ns/ucm#inJurisdiction
-          x-ucm-range: ucm:JurisdictionContext
-          x-ucm-constraints:
-          - severity: Warning
-            tier: Recommended
-            message: inJurisdiction target is not typed as ucm:JurisdictionContext.
         "issuedBy":
           type: array
           items:
@@ -4223,8 +4228,8 @@ components:
             message: A consent directive holds at most one consent category, identified by IRI.
         "hasConsentStatus":
           $ref: '#/components/schemas/ConsentStatus'
-          description: "Relates a consent directive to whether it applies now (FHIR Consent.status)."
-          x-semantic-uri: https://www.w3.org/ns/ucm#hasConsentStatus
+          description: "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus."
+          x-semantic-uri: https://w3id.org/dpv#hasConsentStatus
           x-ucm-concept-scheme: ConsentStatus
           x-ucm-range: skos:Concept
           x-ucm-constraints:
@@ -4296,18 +4301,18 @@ components:
         message: Grantor is neither the subject nor a member of the subject group, so the grantor's role should be ucm:ConsentProxyRole (or a subclass).
       - severity: Warning
         tier: Recommended
-        message: 'Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.'
+        message: 'Withdrawal or revocation is half-recorded: status is withdrawn or revoked with no revokedBy, or revokedBy is set while the status is still active.'
       - severity: Warning
         tier: Recommended
         message: A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.
       examples:
         - '@id': http://example.org/ucm/cd-a-2025
           '@type': ConsentDirective
+          hasConsentStatus: ConsentWithdrawn
           consentSubject:
           - http://example.org/ucm/p-a-subj-2025
           hasConsentCategory: ConsentToShare
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentRevoked
           recordsConsentFrom:
           - http://example.org/ucm/ci-a-2025
           revokedBy:
@@ -4316,29 +4321,29 @@ components:
           - http://example.org/ucm/t-roi-2025
         - '@id': http://example.org/ucm/cd-a-verbal
           '@type': ConsentDirective
+          hasConsentStatus: ConsentActive
           consentSubject:
           - http://example.org/ucm/p-a-subj
           hasConsentCategory: ConsentToShare
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
           recordsConsentFrom:
           - http://example.org/ucm/ci-a-verbal
           validDuring:
           - http://example.org/ucm/t-roi
         - '@id': http://example.org/ucm/cd-jameson
           '@type': ConsentDirective
+          hasApplicableLaw:
+          - HMISDataStandards
+          hasConsentStatus: ConsentActive
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           consentSubject:
           - http://example.org/ucm/p-jameson-subj
           governedByPolicy:
           - http://example.org/ucm/policy-coc-e
           hasConsentCategory: ReleaseOfInformation
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
-          hasRegulatoryBasis:
-          - HMISDataStandards
           hasRetentionDisposition: RetentionDeidentify
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           processingLocation:
           - http://example.org/ucm/jur-us
           recordsConsentFrom:
@@ -4352,76 +4357,76 @@ components:
           - Tell any participating agency in writing, or call the CoC HMIS help desk.
         - '@id': http://example.org/ucm/cd-jameson-2023
           '@type': ConsentDirective
+          hasConsentStatus: ConsentSuperseded
           consentSubject:
           - http://example.org/ucm/p-jameson-subj-2023
           hasConsentCategory: ReleaseOfInformation
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentSuperseded
           recordsConsentFrom:
           - http://example.org/ucm/ci-thomson-2023
           validDuring:
           - http://example.org/ucm/t-roi-2023
         - '@id': http://example.org/ucm/cd-madison
           '@type': ConsentDirective
+          hasConsentStatus: ConsentActive
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           consentSubject:
           - http://example.org/ucm/p-madison-subj
           governedByPolicy:
           - http://example.org/ucm/policy-coc-e
           hasConsentCategory: ReleaseOfInformation
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           recordsConsentFrom:
           - http://example.org/ucm/ci-thomson
           validDuring:
           - http://example.org/ucm/t-roi
         - '@id': http://example.org/ucm/cd-sarah
           '@type': ConsentDirective
+          hasApplicableLaw:
+          - CFR42Part2
+          - HMISDataStandards
+          hasConsentStatus: ConsentActive
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           consentSubject:
           - http://example.org/ucm/p-sarah-subj
           hasConsentCategory: ReleaseOfInformation
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
           hasProvision:
           - http://example.org/ucm/prov-sarah-part2
-          hasRegulatoryBasis:
-          - CFR42Part2
-          - HMISDataStandards
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           recordsConsentFrom:
           - http://example.org/ucm/ci-sarah
           validDuring:
           - http://example.org/ucm/t-roi
         - '@id': http://example.org/ucm/cd-thomson-hh
           '@type': ConsentDirective
+          hasConsentStatus: ConsentActive
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           consentSubject:
           - http://example.org/ucm/p-hh-subj
           governedByPolicy:
           - http://example.org/ucm/policy-coc-e
           hasConsentCategory: ReleaseOfInformation
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           recordsConsentFrom:
           - http://example.org/ucm/ci-thomson-hh
           validDuring:
           - http://example.org/ucm/t-roi
         - '@id': http://example.org/ucm/cd-youth
           '@type': ConsentDirective
+          hasConsentStatus: ConsentActive
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCountyD
           consentSubject:
           - http://example.org/ucm/p-youth-subj
           governedByPolicy:
           - http://example.org/ucm/rule-state-d-housing
           hasConsentCategory: ConsentToShare
           hasConsentDecision: Permit
-          hasConsentStatus: ConsentActive
           hasProvision:
           - http://example.org/ucm/prov-youth-ut
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCountyD
           recordsConsentFrom:
           - http://example.org/ucm/ci-youth
           - http://example.org/ucm/ci-youth-verify
@@ -4486,11 +4491,11 @@ components:
           uniqueItems: true
           description: "Relates a consent interaction to a privacy notice the subject or grantor was given or shown."
           x-semantic-uri: https://www.w3.org/ns/ucm#acknowledgesNotice
-          x-ucm-range: ucm:PrivacyNotice
+          x-ucm-range: dpv:PrivacyNotice
           x-ucm-constraints:
           - severity: Warning
             tier: Recommended
-            message: acknowledgesNotice target is not typed as ucm:PrivacyNotice.
+            message: acknowledgesNotice target is not typed as dpv:PrivacyNotice.
         "authenticatedBy":
           type: array
           items:
@@ -4547,22 +4552,22 @@ components:
           - http://example.org/ucm/t-ci-verbal
         - '@id': http://example.org/ucm/ci-sarah
           '@type': ConsentInteraction
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           hasConsentInteractionType: ConsentGrant
           hasConsentModality: WrittenConsent
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           occursDuring:
           - http://example.org/ucm/t-ci-thomson
         - '@id': http://example.org/ucm/ci-thomson
           '@type': ConsentInteraction
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           acknowledgesNotice:
           - http://example.org/ucm/notice-coc-e
           authenticatedBy:
           - http://example.org/ucm/auth-ruth
           hasConsentInteractionType: ConsentGrant
           hasConsentModality: ElectronicConsent
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           occursDuring:
           - http://example.org/ucm/t-ci-thomson
         - '@id': http://example.org/ucm/ci-thomson-2023
@@ -4573,18 +4578,18 @@ components:
           - http://example.org/ucm/t-ci-2023
         - '@id': http://example.org/ucm/ci-thomson-hh
           '@type': ConsentInteraction
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           hasConsentInteractionType: ConsentGrant
           hasConsentModality: WrittenConsent
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           occursDuring:
           - http://example.org/ucm/t-ci-thomson
         - '@id': http://example.org/ucm/ci-youth
           '@type': ConsentInteraction
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCountyD
           hasConsentInteractionType: ConsentGrant
           hasConsentModality: WrittenConsent
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCountyD
           occursDuring:
           - http://example.org/ucm/t-ci-youth
         - '@id': http://example.org/ucm/ci-youth-verify
@@ -4647,12 +4652,12 @@ components:
         - '@id': http://example.org/ucm/policy-coc-e
           '@type': ConsentPolicy
           rdfs:label: Example CoC E HMIS consent policy
+          hasApplicableLaw:
+          - HMISDataStandards
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleCoCE
           hasConsentModel:
           - OptIn
-          hasRegulatoryBasis:
-          - HMISDataStandards
-          inJurisdiction:
-          - http://example.org/ucm/ExampleCoCE
           requiresIAL:
           - IAL1
           withdrawalMethod:
@@ -4793,21 +4798,21 @@ components:
           coversSensitivity:
           - Part2Protected
           governsAction:
-          - DiscloseAction
+          - Disclose
           - RediscloseAction
           hasConsentDecision: Deny
           hasProvision:
           - http://example.org/ucm/prov-sarah-part2-tx
         - '@id': http://example.org/ucm/prov-sarah-part2-tx
           '@type': ConsentProvision
+          hasPurpose:
+          - Treatment
           coversDataCategory:
           - BehavioralHealthInformation
           dataPeriod:
           - http://example.org/ucm/t-data
-          forPurpose:
-          - Treatment
           governsAction:
-          - DiscloseAction
+          - Disclose
           hasConsentDecision: Permit
           provisionActor:
           - http://example.org/ucm/p-clinic-recipient
@@ -4816,7 +4821,7 @@ components:
           coversSensitivity:
           - UnaccompaniedYouth
           governsAction:
-          - DiscloseAction
+          - Disclose
           hasConsentDecision: Deny
 
     "ConsentProxyRole":
@@ -5780,11 +5785,11 @@ components:
       examples:
         - '@id': http://example.org/ucm/idf-ruth-dl
           '@type': Identifier
+          hasJurisdiction:
+          - http://example.org/ucm/ExampleStateE
           hasIdentifierType: DriversLicenseNumber
           identifierSystem: https://example.org/state-e/drivers-licenses
           identifierValue: E1234567
-          inJurisdiction:
-          - http://example.org/ucm/ExampleStateE
           issuedBy:
           - http://example.org/ucm/org-state-e
         - '@id': http://example.org/ucm/idf-youth-pid
@@ -7024,9 +7029,9 @@ components:
 
     "PrivacyNotice":
       type: object
-      description: "A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."
-      x-jsonld-type: "ucm:PrivacyNotice"
-      x-semantic-uri: "https://www.w3.org/ns/ucm#PrivacyNotice"
+      description: "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."
+      x-jsonld-type: "dpv:PrivacyNotice"
+      x-semantic-uri: "https://w3id.org/dpv#PrivacyNotice"
       allOf:
         - $ref: '#/components/schemas/PolicyDefinition'
       properties:
@@ -7068,11 +7073,11 @@ components:
         - '@id': http://example.org/ucm/notice-coc-e
           '@type': PrivacyNotice
           rdfs:label: Example CoC E posted HMIS privacy notice
-          amendmentAppliesRetroactively:
-          - false
-          forPurpose:
+          hasPurpose:
           - CoordinatedEntry
           - ProgramReporting
+          amendmentAppliesRetroactively:
+          - false
           hasConsentModel:
           - OptOutWithExceptions
           postedAt:
@@ -7519,9 +7524,9 @@ components:
           http://purl.org/dc/terms/source: All Chicago HMIS, 'Documenting Client Consent in HMIS (ROI)'.
           rdfs:comment: Clients 18 and over sign their own ROI. For each child under 18, a parent or legal guardian chooses the sharing option and signs a separate consent. Illustration only; actual CoC policies vary; not legal guidance.
           rdfs:label: 'Example CoC E: HMIS release of information'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - HMISDataStandards
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/ExampleCoCE
           minimumSelfConsentAge: 18
           selfConsentCondition:
@@ -7533,24 +7538,24 @@ components:
           http://purl.org/dc/terms/source: U.S. Department of Education, Student Privacy Policy Office, 'Eligible Student' (studentprivacy.ed.gov); 34 CFR 99.3; 20 U.S.C. 1232g(d).
           rdfs:comment: Rights over education records pass from parents to the student at 18, or at any age once the student attends a postsecondary institution. Illustration only; not legal guidance.
           rdfs:label: 'Federal: education records'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - FERPA
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/jur-us
           minimumSelfConsentAge: 18
           selfConsentCondition:
           - AgeOfMajority
           - PostsecondaryEnrollment
           selfConsentScope:
-          - ucm:EducationInformation
+          - pd:Education
         - '@id': http://example.org/ucm/rule-state-a-sti
           '@type': SelfConsentRule
           http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
           rdfs:comment: Minors 12 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance.
           rdfs:label: 'Example State A: STI care from 12'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - StateLaw
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/ExampleStateA
           minimumSelfConsentAge: 12
           selfConsentCondition:
@@ -7563,9 +7568,9 @@ components:
           http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
           rdfs:comment: Minors 14 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance.
           rdfs:label: 'Example State B: STI care from 14'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - StateLaw
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/ExampleStateB
           minimumSelfConsentAge: 14
           selfConsentCondition:
@@ -7577,9 +7582,9 @@ components:
           http://purl.org/dc/terms/source: Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01.
           rdfs:comment: Minors 13 and older may consent to HIV testing and treatment. Illustration only; actual state rules vary; not legal guidance.
           rdfs:label: 'Example State C: HIV care from 13'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - StateLaw
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/ExampleStateC
           minimumSelfConsentAge: 13
           selfConsentCondition:
@@ -7592,9 +7597,9 @@ components:
           http://purl.org/dc/terms/source: SchoolHouse Connection, 'State Laws on Minor Consent for Housing and Related Services' (June 2026). Secondary summary; check the statute.
           rdfs:comment: A youth aged 16 or 17 who is homeless, or a victim of domestic violence, and is self-supporting may consent to housing, shelter, medical and mental health care and related services. A homeless service provider or school district homeless liaison verifies the status in a letter. Illustration only; actual state rules vary; not legal guidance.
           rdfs:label: 'Example State D: housing for homeless youth'
-          hasRegulatoryBasis:
+          hasApplicableLaw:
           - StateLaw
-          inJurisdiction:
+          hasJurisdiction:
           - http://example.org/ucm/ExampleStateD
           minimumSelfConsentAge: 16
           selfConsentCondition:

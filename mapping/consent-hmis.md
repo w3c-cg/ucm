@@ -15,8 +15,8 @@
 | Lock client record (DV or trafficking, HIV/AIDS, unaccompanied minor) | `hasSensitivityLabel` on the data (`SexualAssaultAbuseDomesticViolence`, `HumanTrafficking`, `HIV` or `UnaccompaniedYouth`), plus a deny provision on that sensitivity. Optionally `ucm:recordLocked`. |
 | Witness | A `ConsentWitnessRole` participation |
 | HUD consent form: inferred, verbal, written | `ucm:hasConsentModality` |
-| HUD posted privacy notice | `ucm:PrivacyNotice` with `forPurpose`, `amendmentAppliesRetroactively`, and `postedAt` an intake `Location` |
-| CoC consent policy | `ucm:ConsentPolicy` with `hasConsentModel` and `hasRegulatoryBasis HMISDataStandards` |
+| HUD posted privacy notice | `dpv:PrivacyNotice` with `dpv:hasPurpose`, `amendmentAppliesRetroactively`, and `postedAt` an intake `Location` |
+| CoC consent policy | `ucm:ConsentPolicy` with `hasConsentModel` and `dpv:hasApplicableLaw HMISDataStandards` |
 
 ## Sharing levels
 

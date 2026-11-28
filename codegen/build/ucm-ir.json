@@ -8,18 +8,28 @@
   "sources": [
     {
       "file": "ucm-ontology.jsonld",
-      "digest": "sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b",
-      "triples": 2520,
-      "content": "sha256:daaf469c440e9ae591639937dffa15ffee72c487646e244f0cc7a4aedf0cdb39"
+      "digest": "sha256:43b26d141123f591d38e67c48df194ad319f3c60561d52f7002e954dec325a97",
+      "triples": 2544,
+      "content": "sha256:8aebe94c9967dabf98200119b2483dda1c20d7832eb8c368eb8a6fce868deb1d"
     },
     {
       "file": "ucm-shapes.jsonld",
-      "digest": "sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9",
+      "digest": "sha256:68d0e0609c67c5fd4dea4e409041abc29f81cef3d4c45770e28aa310dd7da9d4",
       "triples": 1289,
-      "content": "sha256:32aaf11eb41cf672e860504f55d0901d0c330f8aec0032dc4cf5cd44b1940e65"
+      "content": "sha256:3e52d20dbb6bcc5f761a300296ba235c413484e106c5c254bb596caab167da7a"
     }
   ],
   "classes": {
+    "https://w3id.org/dpv#PrivacyNotice": {
+      "iri": "https://w3id.org/dpv#PrivacyNotice",
+      "term": "PrivacyNotice",
+      "label": "Privacy Notice",
+      "comment": "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act.",
+      "superclasses": [
+        "https://www.w3.org/ns/ucm#PolicyDefinition"
+      ],
+      "equivalent_classes": []
+    },
     "https://www.w3.org/ns/ucm#ActivityFocus": {
       "iri": "https://www.w3.org/ns/ucm#ActivityFocus",
       "term": "ActivityFocus",
@@ -726,16 +736,6 @@
       ],
       "equivalent_classes": []
     },
-    "https://www.w3.org/ns/ucm#PrivacyNotice": {
-      "iri": "https://www.w3.org/ns/ucm#PrivacyNotice",
-      "term": "PrivacyNotice",
-      "label": "Privacy Notice",
-      "comment": "A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act.",
-      "superclasses": [
-        "https://www.w3.org/ns/ucm#PolicyDefinition"
-      ],
-      "equivalent_classes": []
-    },
     "https://www.w3.org/ns/ucm#Process": {
       "iri": "https://www.w3.org/ns/ucm#Process",
       "term": "Process",
@@ -936,6 +936,46 @@
     }
   },
   "properties": {
+    "https://w3id.org/dpv#hasApplicableLaw": {
+      "iri": "https://w3id.org/dpv#hasApplicableLaw",
+      "term": "hasApplicableLaw",
+      "label": "has applicable law",
+      "comment": "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis.",
+      "kind": "object",
+      "domain": null,
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
+    "https://w3id.org/dpv#hasConsentStatus": {
+      "iri": "https://w3id.org/dpv#hasConsentStatus",
+      "term": "hasConsentStatus",
+      "label": "has consent status",
+      "comment": "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus.",
+      "kind": "object",
+      "domain": "https://www.w3.org/ns/ucm#ConsentDirective",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
+    "https://w3id.org/dpv#hasJurisdiction": {
+      "iri": "https://w3id.org/dpv#hasJurisdiction",
+      "term": "hasJurisdiction",
+      "label": "has jurisdiction",
+      "comment": "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued.",
+      "kind": "object",
+      "domain": null,
+      "range": "https://www.w3.org/ns/ucm#JurisdictionContext",
+      "superproperties": []
+    },
+    "https://w3id.org/dpv#hasPurpose": {
+      "iri": "https://w3id.org/dpv#hasPurpose",
+      "term": "hasPurpose",
+      "label": "has purpose",
+      "comment": "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one.",
+      "kind": "object",
+      "domain": null,
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
+      "superproperties": []
+    },
     "https://www.w3.org/ns/ucm#acceptsRequest": {
       "iri": "https://www.w3.org/ns/ucm#acceptsRequest",
       "term": "acceptsRequest",
@@ -983,7 +1023,7 @@
       "comment": "Relates a consent interaction to a privacy notice the subject or grantor was given or shown.",
       "kind": "object",
       "domain": "https://www.w3.org/ns/ucm#ConsentInteraction",
-      "range": "https://www.w3.org/ns/ucm#PrivacyNotice",
+      "range": "https://w3id.org/dpv#PrivacyNotice",
       "superproperties": []
     },
     "https://www.w3.org/ns/ucm#affiliatedWith": {
@@ -1228,16 +1268,6 @@
       "range": "https://www.w3.org/ns/ucm#Identity",
       "superproperties": []
     },
-    "https://www.w3.org/ns/ucm#forPurpose": {
-      "iri": "https://www.w3.org/ns/ucm#forPurpose",
-      "term": "forPurpose",
-      "label": "for purpose",
-      "comment": "Relates a provision or privacy notice to a purpose of use it covers.",
-      "kind": "object",
-      "domain": null,
-      "range": "http://www.w3.org/2004/02/skos/core#Concept",
-      "superproperties": []
-    },
     "https://www.w3.org/ns/ucm#generatedByProcess": {
       "iri": "https://www.w3.org/ns/ucm#generatedByProcess",
       "term": "generatedByProcess",
@@ -1375,16 +1405,6 @@
       "comment": "Relates a policy, program or notice to its consent model, such as opt-in or opt-out.",
       "kind": "object",
       "domain": null,
-      "range": "http://www.w3.org/2004/02/skos/core#Concept",
-      "superproperties": []
-    },
-    "https://www.w3.org/ns/ucm#hasConsentStatus": {
-      "iri": "https://www.w3.org/ns/ucm#hasConsentStatus",
-      "term": "hasConsentStatus",
-      "label": "has consent status",
-      "comment": "Relates a consent directive to whether it applies now (FHIR Consent.status).",
-      "kind": "object",
-      "domain": "https://www.w3.org/ns/ucm#ConsentDirective",
       "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "superproperties": []
     },
@@ -1538,16 +1558,6 @@
       "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "superproperties": []
     },
-    "https://www.w3.org/ns/ucm#hasRegulatoryBasis": {
-      "iri": "https://www.w3.org/ns/ucm#hasRegulatoryBasis",
-      "term": "hasRegulatoryBasis",
-      "label": "has regulatory basis",
-      "comment": "Relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis).",
-      "kind": "object",
-      "domain": null,
-      "range": "http://www.w3.org/2004/02/skos/core#Concept",
-      "superproperties": []
-    },
     "https://www.w3.org/ns/ucm#hasResident": {
       "iri": "https://www.w3.org/ns/ucm#hasResident",
       "term": "hasResident",
@@ -1606,16 +1616,6 @@
       "kind": "object",
       "domain": "https://www.w3.org/ns/ucm#Identity",
       "range": "https://www.w3.org/ns/ucm#Entity",
-      "superproperties": []
-    },
-    "https://www.w3.org/ns/ucm#inJurisdiction": {
-      "iri": "https://www.w3.org/ns/ucm#inJurisdiction",
-      "term": "inJurisdiction",
-      "label": "in jurisdiction",
-      "comment": "Relates a consent, consent interaction, policy or identifier to the jurisdiction where it was given, is in force or was issued.",
-      "kind": "object",
-      "domain": null,
-      "range": "https://www.w3.org/ns/ucm#JurisdictionContext",
       "superproperties": []
     },
     "https://www.w3.org/ns/ucm#issuedBy": {
@@ -1746,7 +1746,7 @@
       "label": "posted at",
       "comment": "Relates a privacy notice to a location where it is posted, such as an intake desk.",
       "kind": "object",
-      "domain": "https://www.w3.org/ns/ucm#PrivacyNotice",
+      "domain": "https://w3id.org/dpv#PrivacyNotice",
       "range": "https://www.w3.org/ns/ucm#Location",
       "superproperties": []
     },
@@ -1928,7 +1928,7 @@
       "label": "amendment applies retroactively",
       "comment": "Whether an amendment to the privacy notice applies to information collected before the amendment.",
       "kind": "datatype",
-      "domain": "https://www.w3.org/ns/ucm#PrivacyNotice",
+      "domain": "https://w3id.org/dpv#PrivacyNotice",
       "range": "http://www.w3.org/2001/XMLSchema#boolean",
       "superproperties": []
     },
@@ -2376,20 +2376,20 @@
       "description": "What action does this provision permit or deny?",
       "concepts": [
         {
-          "iri": "https://www.w3.org/ns/ucm#AccessAction",
-          "term": "AccessAction",
+          "iri": "https://w3id.org/dpv#Access",
+          "term": "Access",
           "label": "Access",
           "alt_labels": [],
-          "definition": "Retrieve and view information.",
+          "definition": "to access data",
           "broader": [],
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#CollectAction",
-          "term": "CollectAction",
+          "iri": "https://w3id.org/dpv#Collect",
+          "term": "Collect",
           "label": "Collect",
           "alt_labels": [],
-          "definition": "Gather and record information.",
+          "definition": "to gather data from someone",
           "broader": [],
           "mappings": {}
         },
@@ -2403,11 +2403,11 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#DiscloseAction",
-          "term": "DiscloseAction",
+          "iri": "https://w3id.org/dpv#Disclose",
+          "term": "Disclose",
           "label": "Disclose",
           "alt_labels": [],
-          "definition": "Release information to another party.",
+          "definition": "to make data known",
           "broader": [],
           "mappings": {}
         },
@@ -2418,16 +2418,16 @@
           "alt_labels": [],
           "definition": "A recipient releasing information it received to a further party.",
           "broader": [
-            "https://www.w3.org/ns/ucm#DiscloseAction"
+            "https://w3id.org/dpv#Disclose"
           ],
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#UseAction",
-          "term": "UseAction",
+          "iri": "https://w3id.org/dpv#Use",
+          "term": "Use",
           "label": "Use",
           "alt_labels": [],
-          "definition": "Use information for a purpose.",
+          "definition": "to use data",
           "broader": [],
           "mappings": {}
         }
@@ -2731,11 +2731,11 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#ConsentExpired",
+          "iri": "https://w3id.org/dpv#ConsentExpired",
           "term": "ConsentExpired",
-          "label": "Expired",
+          "label": "Consent Expired",
           "alt_labels": [],
-          "definition": "The directive's period of validity ended.",
+          "definition": "The state where the temporal or contextual validity of consent has 'expired'",
           "broader": [
             "https://www.w3.org/ns/ucm#ConsentInactive"
           ],
@@ -2751,32 +2751,23 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#ConsentRefused",
+          "iri": "https://w3id.org/dpv#ConsentRefused",
           "term": "ConsentRefused",
-          "label": "Refused",
+          "label": "Consent Refused",
           "alt_labels": [],
-          "definition": "The subject or grantor declined to give consent, so the directive never came into force.",
+          "definition": "The state where consent has been refused",
           "broader": [],
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#ConsentRevoked",
+          "iri": "https://w3id.org/dpv#ConsentRevoked",
           "term": "ConsentRevoked",
-          "label": "Revoked",
+          "label": "Consent Revoked",
           "alt_labels": [],
-          "definition": "The subject or grantor withdrew the directive.",
+          "definition": "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state",
           "broader": [
             "https://www.w3.org/ns/ucm#ConsentInactive"
           ],
-          "mappings": {}
-        },
-        {
-          "iri": "https://www.w3.org/ns/ucm#ConsentStatusUnknown",
-          "term": "ConsentStatusUnknown",
-          "label": "Unknown",
-          "alt_labels": [],
-          "definition": "The status of the directive is not known.",
-          "broader": [],
           "mappings": {}
         },
         {
@@ -2785,6 +2776,26 @@
           "label": "Superseded",
           "alt_labels": [],
           "definition": "A newer directive amended or renewed this one.",
+          "broader": [
+            "https://www.w3.org/ns/ucm#ConsentInactive"
+          ],
+          "mappings": {}
+        },
+        {
+          "iri": "https://w3id.org/dpv#ConsentUnknown",
+          "term": "ConsentUnknown",
+          "label": "Consent Unknown",
+          "alt_labels": [],
+          "definition": "State where information about consent is not available or is unknown",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://w3id.org/dpv#ConsentWithdrawn",
+          "term": "ConsentWithdrawn",
+          "label": "Consent Withdrawn",
+          "alt_labels": [],
+          "definition": "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state",
           "broader": [
             "https://www.w3.org/ns/ucm#ConsentInactive"
           ],
@@ -3187,11 +3198,11 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#EducationInformation",
-          "term": "EducationInformation",
-          "label": "Education information",
+          "iri": "https://w3id.org/dpv/pd#Education",
+          "term": "Education",
+          "label": "Education",
           "alt_labels": [],
-          "definition": "Education records.",
+          "definition": "Information about education",
           "broader": [],
           "mappings": {}
         },
@@ -3205,11 +3216,11 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#IdentifyingInformation",
-          "term": "IdentifyingInformation",
-          "label": "Identifying information",
+          "iri": "https://w3id.org/dpv/pd#Identifying",
+          "term": "Identifying",
+          "label": "Identifying",
           "alt_labels": [],
-          "definition": "Information that identifies a person, such as name, birth date and identifiers.",
+          "definition": "Information that uniquely or semi-uniquely identifies an individual or a group",
           "broader": [],
           "mappings": {}
         },
@@ -3459,11 +3470,11 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#ResearchPurpose",
-          "term": "ResearchPurpose",
-          "label": "Research",
+          "iri": "https://w3id.org/dpv#ScientificResearch",
+          "term": "ScientificResearch",
+          "label": "Scientific Research",
           "alt_labels": [],
-          "definition": "Research.",
+          "definition": "Purposes associated with scientific research",
           "broader": [],
           "mappings": {}
         },
@@ -3610,15 +3621,6 @@
           "mappings": {}
         },
         {
-          "iri": "https://www.w3.org/ns/ucm#GDPR",
-          "term": "GDPR",
-          "label": "GDPR",
-          "alt_labels": [],
-          "definition": "The EU General Data Protection Regulation (Regulation (EU) 2016/679).",
-          "broader": [],
-          "mappings": {}
-        },
-        {
           "iri": "https://www.w3.org/ns/ucm#HIPAA",
           "term": "HIPAA",
           "label": "HIPAA",
@@ -3684,6 +3686,15 @@
           "label": "VAWA",
           "alt_labels": [],
           "definition": "The Violence Against Women Act confidentiality provisions, which bar victim service providers from entering personally identifying information into HMIS.",
+          "broader": [],
+          "mappings": {}
+        },
+        {
+          "iri": "https://w3id.org/dpv/legal/eu#law-GDPR",
+          "term": "law-GDPR",
+          "label": "General Data Protection Regulation (GDPR)",
+          "alt_labels": [],
+          "definition": null,
           "broader": [],
           "mappings": {}
         }
@@ -4105,7 +4116,7 @@
           "iri": null,
           "severity": "Warning",
           "tier": "Recommended",
-          "message": "acknowledgesNotice target is not typed as ucm:PrivacyNotice.",
+          "message": "acknowledgesNotice target is not typed as dpv:PrivacyNotice.",
           "paths": [
             "https://www.w3.org/ns/ucm#acknowledgesNotice"
           ],
@@ -4115,7 +4126,7 @@
           "node_kind": null,
           "datatypes": [],
           "classes": [
-            "https://www.w3.org/ns/ucm#PrivacyNotice"
+            "https://w3id.org/dpv#PrivacyNotice"
           ]
         }
       ],
@@ -4139,7 +4150,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "Consent directive is marked active but its period of validity has ended.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;\n                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .\n                FILTER (xsd:dateTime(STR(?end)) < NOW())\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this WHERE {\n                $this dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;\n                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .\n                FILTER (xsd:dateTime(STR(?end)) < NOW())\n            }"
         }
       ]
     },
@@ -4334,7 +4345,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "Process cites a consent directive whose status is not active.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:authorizedByConsent ?value .\n                ?value ucm:hasConsentStatus ?s .\n                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this ucm:authorizedByConsent ?value .\n                ?value dpv:hasConsentStatus ?s .\n                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }\n            }"
         }
       ]
     },
@@ -5060,7 +5071,7 @@
       "message": null,
       "target_classes": [],
       "target_subjects_of": [
-        "https://www.w3.org/ns/ucm#hasConsentStatus"
+        "https://w3id.org/dpv#hasConsentStatus"
       ],
       "target_objects_of": [],
       "node_kind": null,
@@ -5071,7 +5082,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "Consent status is neither in ucm:ConsentStatus nor SKOS-mapped to a concept that is.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentStatus))\n                }\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasConsentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentStatus))\n                }\n            }"
         }
       ]
     },
@@ -5082,7 +5093,7 @@
       "message": null,
       "target_classes": [],
       "target_subjects_of": [
-        "https://www.w3.org/ns/ucm#hasConsentStatus"
+        "https://w3id.org/dpv#hasConsentStatus"
       ],
       "target_objects_of": [],
       "node_kind": null,
@@ -5093,7 +5104,7 @@
           "tier": "Definitional",
           "message": "A consent directive holds at most one consent status, identified by IRI.",
           "paths": [
-            "https://www.w3.org/ns/ucm#hasConsentStatus"
+            "https://w3id.org/dpv#hasConsentStatus"
           ],
           "inverse": false,
           "min_count": null,
@@ -5627,6 +5638,38 @@
       "sparql": []
     },
     {
+      "iri": "https://www.w3.org/ns/ucm#HasJurisdictionTypeShape",
+      "severity": "Violation",
+      "tier": null,
+      "message": null,
+      "target_classes": [],
+      "target_subjects_of": [
+        "https://w3id.org/dpv#hasJurisdiction"
+      ],
+      "target_objects_of": [],
+      "node_kind": null,
+      "properties": [
+        {
+          "iri": null,
+          "severity": "Warning",
+          "tier": "Recommended",
+          "message": "hasJurisdiction target is not typed as ucm:JurisdictionContext.",
+          "paths": [
+            "https://w3id.org/dpv#hasJurisdiction"
+          ],
+          "inverse": false,
+          "min_count": null,
+          "max_count": null,
+          "node_kind": null,
+          "datatypes": [],
+          "classes": [
+            "https://www.w3.org/ns/ucm#JurisdictionContext"
+          ]
+        }
+      ],
+      "sparql": []
+    },
+    {
       "iri": "https://www.w3.org/ns/ucm#HasProvisionTypeShape",
       "severity": "Violation",
       "tier": null,
@@ -5885,38 +5928,6 @@
           "datatypes": [],
           "classes": [
             "https://www.w3.org/ns/ucm#Entity"
-          ]
-        }
-      ],
-      "sparql": []
-    },
-    {
-      "iri": "https://www.w3.org/ns/ucm#InJurisdictionTypeShape",
-      "severity": "Violation",
-      "tier": null,
-      "message": null,
-      "target_classes": [],
-      "target_subjects_of": [
-        "https://www.w3.org/ns/ucm#inJurisdiction"
-      ],
-      "target_objects_of": [],
-      "node_kind": null,
-      "properties": [
-        {
-          "iri": null,
-          "severity": "Warning",
-          "tier": "Recommended",
-          "message": "inJurisdiction target is not typed as ucm:JurisdictionContext.",
-          "paths": [
-            "https://www.w3.org/ns/ucm#inJurisdiction"
-          ],
-          "inverse": false,
-          "min_count": null,
-          "max_count": null,
-          "node_kind": null,
-          "datatypes": [],
-          "classes": [
-            "https://www.w3.org/ns/ucm#JurisdictionContext"
           ]
         }
       ],
@@ -6661,7 +6672,7 @@
       "message": null,
       "target_classes": [],
       "target_subjects_of": [
-        "https://www.w3.org/ns/ucm#forPurpose"
+        "https://w3id.org/dpv#hasPurpose"
       ],
       "target_objects_of": [],
       "node_kind": null,
@@ -6672,7 +6683,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "Purpose of use is neither in ucm:PurposeOfUse nor SKOS-mapped to a concept that is.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:forPurpose ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse))\n                }\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasPurpose ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse))\n                }\n            }"
         }
       ]
     },
@@ -6767,7 +6778,7 @@
       "message": null,
       "target_classes": [],
       "target_subjects_of": [
-        "https://www.w3.org/ns/ucm#hasRegulatoryBasis"
+        "https://w3id.org/dpv#hasApplicableLaw"
       ],
       "target_objects_of": [],
       "node_kind": null,
@@ -6778,7 +6789,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "Regulatory basis is neither in ucm:RegulatoryBasis nor SKOS-mapped to a concept that is.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasRegulatoryBasis ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RegulatoryBasis))\n                }\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasApplicableLaw ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RegulatoryBasis))\n                }\n            }"
         }
       ]
     },
@@ -6915,8 +6926,8 @@
           "iri": "https://www.w3.org/ns/ucm#RevokedHasRevocationShape",
           "severity": "Warning",
           "tier": "Recommended",
-          "message": "Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this WHERE {\n                {\n                    $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentRevoked .\n                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }\n                } UNION {\n                    $this ucm:revokedBy ?r ;\n                          ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .\n                }\n            }"
+          "message": "Withdrawal or revocation is half-recorded: status is withdrawn or revoked with no revokedBy, or revokedBy is set while the status is still active.",
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this WHERE {\n                {\n                    $this dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ?ended .\n                    FILTER (?ended IN (dpv:ConsentWithdrawn, dpv:ConsentRevoked))\n                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }\n                } UNION {\n                    $this ucm:revokedBy ?r ;\n                          dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .\n                }\n            }"
         }
       ]
     },
@@ -6938,7 +6949,7 @@
           "severity": "Warning",
           "tier": "Recommended",
           "message": "A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.",
-          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this ?subject WHERE {\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?subject .\n                ?subject ucm:birthDate ?bd .\n                ?ci ucm:occursDuring ?when .\n                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n                # Latest possible birth date for a partial date: the conservative reading.\n                BIND (STR(?bd) AS ?b)\n                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n                FILTER (?age < 18)\n                FILTER NOT EXISTS {\n                    $this ucm:governedByPolicy ?rule .\n                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;\n                          ucm:inJurisdiction ?rj .\n                    { $this ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    UNION\n                    { ?ci ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                    FILTER (!BOUND(?min) || ?age >= ?min)\n                }\n            }"
+          "select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?subject WHERE {\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?subject .\n                ?subject ucm:birthDate ?bd .\n                ?ci ucm:occursDuring ?when .\n                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n                # Latest possible birth date for a partial date: the conservative reading.\n                BIND (STR(?bd) AS ?b)\n                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n                FILTER (?age < 18)\n                FILTER NOT EXISTS {\n                    $this ucm:governedByPolicy ?rule .\n                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;\n                          dpv:hasJurisdiction ?rj .\n                    { $this dpv:hasJurisdiction/ucm:withinJurisdiction* ?rj }\n                    UNION\n                    { ?ci dpv:hasJurisdiction/ucm:withinJurisdiction* ?rj }\n                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                    FILTER (!BOUND(?min) || ?age >= ?min)\n                }\n            }"
         }
       ]
     },
@@ -7389,6 +7400,9 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "time": "http://www.w3.org/2006/time#"
+    "time": "http://www.w3.org/2006/time#",
+    "dpv": "https://w3id.org/dpv#",
+    "pd": "https://w3id.org/dpv/pd#",
+    "legal-eu": "https://w3id.org/dpv/legal/eu#"
   }
 }

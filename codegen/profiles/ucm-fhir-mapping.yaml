@@ -152,6 +152,7 @@ resources:
           ConsentDraft: draft
           ConsentActive: active
           ConsentInactive: inactive
+          ConsentWithdrawn: inactive
           ConsentRevoked: inactive
           ConsentExpired: inactive
           ConsentSuperseded: inactive
@@ -185,7 +186,7 @@ resources:
         property: governedByPolicy
         each:
           uri: {transform: iri}
-      policyRule: {property: hasRegulatoryBasis, transform: concept-coding}
+      policyRule: {property: hasApplicableLaw, transform: concept-coding}
       provision.type: {property: hasConsentDecision, transform: code, map: {Permit: permit, Deny: deny}}
       provision.period.start: {property: [validDuring, "time:hasBeginning", "time:inXSDDateTimeStamp"]}
       provision.period.end: {property: [validDuring, "time:hasEnd", "time:inXSDDateTimeStamp"]}
@@ -206,7 +207,7 @@ resources:
             action: {property: governsAction, transform: concept-coding, list: true}
             securityLabel#sensitivity: {property: coversSensitivity, transform: concept-coding, coding: true, list: true}
             securityLabel#confidentiality: {property: coversConfidentiality, transform: concept-coding, coding: true, list: true}
-            purpose: {property: forPurpose, transform: concept-coding, coding: true, list: true}
+            purpose: {property: hasPurpose, transform: concept-coding, coding: true, list: true}
             code: {property: coversDataCategory, transform: concept-coding, list: true}
             dataPeriod.start: {property: [dataPeriod, "time:hasBeginning", "time:inXSDDateTimeStamp"]}
             dataPeriod.end: {property: [dataPeriod, "time:hasEnd", "time:inXSDDateTimeStamp"]}

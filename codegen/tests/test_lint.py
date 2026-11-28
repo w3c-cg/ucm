@@ -33,8 +33,8 @@ def test_lifecycle_namespace_drift(regressed_compilation):
     assert drift.subject == "https://www.w3.org/ns/ucm#"
     assert "declared only under <http://mdixinc.com/ucm#>" in drift.message
     # every scheme the shapes anchor to, plus the concepts the cross-scheme checks name
-    assert drift.message.startswith("37 terms (AuthenticatorAssuranceLevel, BirthDateQuality, ")
-    assert "and 31 more" in drift.message  # LifecycleState is among the names not listed
+    assert drift.message.startswith("36 terms (AuthenticatorAssuranceLevel, BirthDateQuality, ")
+    assert "and 30 more" in drift.message  # LifecycleState is among the names not listed
 
 
 def test_accepts_request_range(regressed_compilation):
@@ -104,7 +104,7 @@ def test_namespace_split_is_one_clear_finding(split_compilation):
     (drift,) = by_code(split_compilation, "namespace-drift")
     assert drift.subject == "https://www.w3.org/ns/ucm#"
     assert f"declared only under <{MOVED_NAMESPACE}>" in drift.message
-    assert drift.message.startswith("176 terms (ActivityFocus, ")  # every UCM term the shapes use
+    assert drift.message.startswith("170 terms (ActivityFocus, ")  # every UCM term the shapes use
     assert "Align the @prefix" in drift.message
     assert not by_code(split_compilation, "undeclared-term")  # no per-term flood
 
@@ -116,7 +116,9 @@ def test_standard_vocabularies_are_never_drift(split_compilation, compilation):
 
 def test_strict_failure_names_the_drift(split_compilation):
     reasons = build_failed(split_compilation, None, strict=True)
-    assert reasons == ["1 lint warnings (--strict), 1 of them namespace drift between spec files"]
+    # The second warning is a DPV property (dpv:hasJurisdiction, which does not move) whose
+    # range moved with the ontology while its type-check shape still names the old class
+    assert reasons == ["2 lint warnings (--strict), 1 of them namespace drift between spec files"]
 
 
 # ---------- Concept hierarchies ----------

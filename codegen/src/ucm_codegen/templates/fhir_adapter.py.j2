@@ -54,6 +54,14 @@ def resource_id(iri: str) -> str:
     return str(uuid.uuid5(uuid.NAMESPACE_URL, iri))
 
 
+def concept_system(iri: str) -> str:
+    """Coding system for a concept: UCM's own system, or the namespace of a reused vocabulary such as DPV"""
+    for namespace in PREFIXES.values():
+        if iri.startswith(namespace) and namespace != PREFIXES.get("ucm"):
+            return namespace
+    return CODE_SYSTEM
+
+
 def _unwrap(value: Any) -> Any:
     return value["@value"] if isinstance(value, dict) and "@value" in value else value
 
@@ -236,10 +244,10 @@ def _transform(g: _Graph, value: Any, field: Dict[str, Any]) -> Any:
         iri = _expand(str(_iri(value) or value))
         if field.get("coding"):  # a bare Coding (Consent.provision.purpose, securityLabel)
             if iri in CONCEPT_TERMS:
-                return {"system": CODE_SYSTEM, "code": CONCEPT_TERMS[iri]}
+                return {"system": concept_system(iri), "code": CONCEPT_TERMS[iri]}
             return {"display": iri, "extension": [{"url": NODE_IRI_EXTENSION, "valueUri": iri}]}
         if iri in CONCEPT_TERMS:
-            return {"coding": [{"system": CODE_SYSTEM, "code": CONCEPT_TERMS[iri]}]}
+            return {"coding": [{"system": concept_system(iri), "code": CONCEPT_TERMS[iri]}]}
         # an adopter's own concept: keep its IRI so the reverse direction recovers it
         return {"text": iri, "extension": [{"url": NODE_IRI_EXTENSION, "valueUri": iri}]}
     if kind == "class-coding":
@@ -413,7 +421,7 @@ def _reverse_value(field: Dict[str, Any], value: Any, urls: Dict[str, str], out:
         codings = [value] if field.get("coding") else (value.get("coding") or [])
         for coding in codings:
             code = coding.get("code")
-            if coding.get("system") == CODE_SYSTEM and code in CONCEPTS and (own is None or code in own):
+            if code in CONCEPTS and coding.get("system") == concept_system(CONCEPTS[code]) and (own is None or code in own):
                 return code
         if field.get("shared"):
             return None  # an adopter concept in a shared element: no way to tell whose it is

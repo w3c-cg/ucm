@@ -11,9 +11,16 @@
 @prefix cpol:    <http://terminology.hl7.org/CodeSystem/consentpolicycodes#> .
 @prefix cstate:  <http://hl7.org/fhir/consent-state-codes#> .
 @prefix cprov:   <http://hl7.org/fhir/consent-provision-type#> .
+@prefix dpv:     <https://w3id.org/dpv#> .
+@prefix pd:      <https://w3id.org/dpv/pd#> .
+@prefix health:  <https://w3id.org/dpv/sector/health#> .
+@prefix legal-eu: <https://w3id.org/dpv/legal/eu#> .
 
-# SKOS links from the UCM consent vocabularies to HL7 code systems (plan Q12:
-# every external match lives here, so the core stays free of external IRIs).
+# SKOS links from the UCM consent vocabularies to HL7 code systems and to the
+# W3C Data Privacy Vocabulary (DPV 2.3). External matches live here (plan Q12).
+# The one exception: where UCM adds nothing to a DPV term, the core uses the
+# DPV IRI itself (dpv:hasPurpose, dpv:Collect, pd:Identifying and so on), and
+# the HL7 links below attach to that DPV IRI.
 #
 # Code IRIs are written as <code system URL>#<code>. FHIR identifies a code by
 # (system, code) and defines no IRI for it; this is the common convention.
@@ -25,32 +32,39 @@
 #   - Abortion: SHIFT's SLS value sets use a local placeholder,
 #     ExtraSensitiveCodes#ABORTION, marked TODO in its source. Add a closeMatch
 #     once SHIFT publishes a stable code.
-#   - HMISDataStandards, FERPA, GDPR, VAWA, StateLaw: consentpolicycodes has
-#     no code for them.
+#   - HMISDataStandards, FERPA, legal-eu:law-GDPR, VAWA, StateLaw:
+#     consentpolicycodes has no code for them.
+#
+# DPV links (second part of this file) follow the DPV reuse audit, 2026-11-28.
+# DPV classifies entities (dpv:DataController) where UCM assigns roles in a
+# participation, so roles link with closeMatch rather than reuse.
 
 <https://www.w3.org/ns/ucm#consent-mappings> a owl:Ontology ;
-    rdfs:label "UCM consent vocabulary mappings to HL7" ;
+    rdfs:label "UCM consent vocabulary mappings to HL7 and DPV" ;
     dcterms:created "2026-11-27" ;
     rdfs:comment "Non-normative SKOS mapping links. Load alongside the core to let HL7-coded data validate against the -anchored shapes." .
+
+# ---------------------------------------------------------------- HL7
 
 ucm:ConsentDraft skos:exactMatch cstate:draft .
 ucm:ConsentActive skos:exactMatch cstate:active .
 ucm:ConsentInactive skos:exactMatch cstate:inactive .
-ucm:ConsentRevoked skos:broadMatch cstate:inactive .
-ucm:ConsentExpired skos:broadMatch cstate:inactive .
+dpv:ConsentWithdrawn skos:broadMatch cstate:inactive .
+dpv:ConsentRevoked skos:broadMatch cstate:inactive .
+dpv:ConsentExpired skos:broadMatch cstate:inactive .
 ucm:ConsentSuperseded skos:broadMatch cstate:inactive .
-ucm:ConsentRefused skos:closeMatch cstate:not-done .
+dpv:ConsentRefused skos:closeMatch cstate:not-done .
 ucm:ConsentEnteredInError skos:exactMatch cstate:entered-in-error .
-ucm:ConsentStatusUnknown skos:exactMatch cstate:unknown .
+dpv:ConsentUnknown skos:exactMatch cstate:unknown .
 ucm:Permit skos:exactMatch cprov:permit .
 ucm:Deny skos:exactMatch cprov:deny .
 ucm:ResearchConsent skos:closeMatch ccat:research .
 ucm:AdvanceDirective skos:closeMatch ccat:acd .
 ucm:TreatmentConsent skos:closeMatch ccat:hcd .
-ucm:CollectAction skos:exactMatch cact:collect .
-ucm:AccessAction skos:exactMatch cact:access .
-ucm:UseAction skos:exactMatch cact:use .
-ucm:DiscloseAction skos:exactMatch cact:disclose .
+dpv:Collect skos:exactMatch cact:collect .
+dpv:Access skos:exactMatch cact:access .
+dpv:Use skos:exactMatch cact:use .
+dpv:Disclose skos:exactMatch cact:disclose .
 ucm:CorrectAction skos:exactMatch cact:correct .
 ucm:Treatment skos:exactMatch reason:TREAT .
 ucm:EmergencyTreatment skos:exactMatch reason:ETREAT .
@@ -59,7 +73,7 @@ ucm:CareManagement skos:exactMatch reason:CAREMGT .
 ucm:Payment skos:exactMatch reason:HPAYMT .
 ucm:HealthcareOperations skos:exactMatch reason:HOPERAT .
 ucm:EligibilityPurpose skos:exactMatch reason:ELIGDTRM .
-ucm:ResearchPurpose skos:exactMatch reason:HRESCH .
+dpv:ScientificResearch skos:exactMatch reason:HRESCH .
 ucm:PublicHealthPurpose skos:exactMatch reason:PUBHLTH .
 ucm:FamilyRequested skos:exactMatch reason:FAMRQT .
 ucm:PatientRequested skos:exactMatch reason:PATRQT .
@@ -67,7 +81,7 @@ ucm:SocialCareCoordination skos:broadMatch reason:COC .
 ucm:SocialCaseManagement skos:closeMatch reason:CAREMGT .
 ucm:BenefitsEnrollment skos:broadMatch reason:ELIGDTRM .
 ucm:ProgramReporting skos:broadMatch reason:HOPERAT .
-ucm:IdentifyingInformation skos:closeMatch act:IDS ;
+pd:Identifying skos:closeMatch act:IDS ;
     skos:closeMatch act:DEMO .
 ucm:SubstanceUseDisorder skos:exactMatch act:SUD ;
     skos:closeMatch act:ETH .
@@ -100,3 +114,47 @@ ucm:HIPAAResearch skos:exactMatch cpol:hipaa-research .
 ucm:CommonRule skos:closeMatch cpol:cric .
 ucm:CFR42Part2 skos:closeMatch act:42CFRPart2 .
 ucm:ServiceSpecificMinorConsent skos:closeMatch cpol:illinois-minor-procedure .
+
+# ---------------------------------------------------------------- DPV 2.3
+
+ucm:consentOnBehalfOf rdfs:subPropertyOf dpv:isRepresentativeFor .
+ucm:processingLocation rdfs:subPropertyOf dpv:hasLocation .
+ucm:acknowledgesNotice rdfs:subPropertyOf dpv:hasNotice .
+ucm:governsAction rdfs:subPropertyOf dpv:hasProcessing .
+ucm:coversDataCategory rdfs:subPropertyOf dpv:hasPersonalData .
+ucm:JurisdictionContext rdfs:subClassOf dpv:Jurisdiction .
+ucm:ConsentDirective skos:closeMatch dpv:ConsentRecord .
+ucm:ConsentProvision skos:relatedMatch dpv:Permission, dpv:Prohibition .
+ucm:ConsentSubjectRole skos:closeMatch dpv:DataSubject .
+ucm:ConsentProxyRole skos:closeMatch dpv:GuardianOfDataSubject, dpv:Representative .
+ucm:DataControllerRole skos:closeMatch dpv:DataController .
+ucm:InformationRecipientRole skos:closeMatch dpv:Recipient .
+ucm:ConsentActive skos:closeMatch dpv:ConsentGiven, dpv:RenewedConsentGiven .
+ucm:RediscloseAction skos:broadMatch dpv:Disclose .
+ucm:CorrectAction skos:broadMatch dpv:Modify .
+ucm:EligibilityPurpose skos:narrowMatch health:EligibilityAssessment .
+ucm:SocialServicesReferral skos:narrowMatch health:ReferralManagement .
+ucm:SocialCaseManagement skos:narrowMatch health:SocialServicesProvision .
+ucm:EmergencyTreatment skos:closeMatch health:EmergencyCareManagement .
+ucm:PublicHealthPurpose skos:narrowMatch health:PublicHealthMonitoring, health:PublicHealthSurveillance .
+ucm:Payment skos:closeMatch dpv:PaymentManagement .
+ucm:PatientRequested skos:closeMatch dpv:RequestedServiceProvision .
+ucm:ClinicalInformation skos:closeMatch pd:MedicalHealth .
+ucm:BehavioralHealthInformation skos:narrowMatch pd:MentalHealth .
+ucm:IncomeAndBenefitsInformation skos:narrowMatch pd:Income .
+ucm:JusticeInformation skos:closeMatch pd:Criminal .
+ucm:RetentionDelete skos:closeMatch dpv:Erase, dpv:Delete .
+ucm:RetentionDeidentify skos:broadMatch dpv:Anonymise, dpv:Pseudonymise .
+ucm:RetentionArchive skos:relatedMatch dpv:Store, dpv:Restrict .
+ucm:InferredConsent skos:closeMatch dpv:ImpliedConsent .
+ucm:WrittenConsent skos:broadMatch dpv:ExpressedConsent .
+ucm:ElectronicConsent skos:broadMatch dpv:ExpressedConsent .
+ucm:VerbalConsent skos:broadMatch dpv:ExpressedConsent .
+ucm:ConsentGrant skos:relatedMatch dpv:ProvideConsent .
+ucm:ConsentRefusal skos:relatedMatch dpv:RefuseConsent .
+ucm:ConsentRenewal skos:relatedMatch dpv:ReaffirmConsent .
+ucm:ConsentRevocation skos:relatedMatch dpv:WithdrawConsent .
+ucm:Permit skos:relatedMatch dpv:Permission .
+ucm:Deny skos:relatedMatch dpv:Prohibition .
+ucm:MentalHealth skos:closeMatch pd:MentalHealth .
+ucm:GeneticDisease skos:closeMatch pd:Genetic .

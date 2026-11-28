@@ -9,7 +9,11 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "sh": "http://www.w3.org/ns/shacl#",
     "time": "http://www.w3.org/2006/time#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcam": "http://purl.org/dc/dcam/",
+    "dpv": "https://w3id.org/dpv#",
+    "pd": "https://w3id.org/dpv/pd#",
+    "legal-eu": "https://w3id.org/dpv/legal/eu#"
   },
   "@graph": [
     {
@@ -107,7 +111,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n41"
+        "@id": "_:c14n42"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:acceptsRequest"
@@ -194,7 +198,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n81"
+        "@id": "_:c14n48"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:acknowledgesNotice"
@@ -210,7 +214,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n30"
+        "@id": "_:c14n62"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -239,7 +243,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n54"
+        "@id": "_:c14n56"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:affiliatedWith"
@@ -271,7 +275,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n45"
+        "@id": "_:c14n47"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:assertsIdentity"
@@ -284,7 +288,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n85"
+        "@id": "_:c14n86"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:authenticatedBy"
@@ -324,7 +328,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n40"
+        "@id": "_:c14n29"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:authorizedByConsent"
@@ -340,7 +344,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n80"
+        "@id": "_:c14n83"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:authorizedByConsent"
@@ -422,7 +426,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n91"
+        "@id": "_:c14n92"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:certifies"
@@ -438,7 +442,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n75"
+        "@id": "_:c14n78"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasClosureReason"
@@ -457,7 +461,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n66"
+        "@id": "_:c14n69"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasClosureReason"
@@ -513,7 +517,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n50"
+        "@id": "_:c14n52"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasCommitmentStatus"
@@ -630,7 +634,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n72"
+        "@id": "_:c14n75"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:governsAction"
@@ -649,7 +653,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n52"
+        "@id": "_:c14n54"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasConsentCategory"
@@ -818,7 +822,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n64"
+        "@id": "_:c14n66"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -837,7 +841,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n69"
+        "@id": "_:c14n72"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -968,7 +972,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n67"
+        "@id": "_:c14n70"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasConsentModel"
@@ -1041,10 +1045,10 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n55"
+        "@id": "_:c14n67"
       },
       "sh:targetSubjectsOf": {
-        "@id": "ucm:hasConsentStatus"
+        "@id": "dpv:hasConsentStatus"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
@@ -1065,7 +1069,7 @@
         "@id": "sh:IRI"
       },
       "sh:path": {
-        "@id": "ucm:hasConsentStatus"
+        "@id": "dpv:hasConsentStatus"
       },
       "sh:severity": {
         "@id": "sh:Violation"
@@ -1084,7 +1088,7 @@
         "@id": "ucm:ConsentStatus-single"
       },
       "sh:targetSubjectsOf": {
-        "@id": "ucm:hasConsentStatus"
+        "@id": "dpv:hasConsentStatus"
       }
     },
     {
@@ -1094,7 +1098,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n78"
+        "@id": "_:c14n81"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:consentSubject"
@@ -1107,7 +1111,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n70"
+        "@id": "_:c14n73"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:definedByArtifact"
@@ -1123,7 +1127,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n86"
+        "@id": "_:c14n87"
       },
       "sh:targetClass": [
         {
@@ -1178,7 +1182,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n62"
+        "@id": "_:c14n64"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:credentialTermsOfUse"
@@ -1241,7 +1245,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n73"
+        "@id": "_:c14n76"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasEvidenceStrength"
@@ -1260,7 +1264,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n13"
+        "@id": "_:c14n14"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:achievedFAL"
@@ -1311,7 +1315,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n92"
+        "@id": "_:c14n93"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasHandoffStatus"
@@ -1391,7 +1395,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n15"
+        "@id": "_:c14n16"
       },
       "sh:targetClass": {
         "@id": "ucm:Handshake"
@@ -1410,7 +1414,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n38"
+        "@id": "_:c14n39"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasHandshakeFulfillment"
@@ -1476,7 +1480,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n56"
+        "@id": "_:c14n57"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasIdentifier"
@@ -1489,10 +1493,23 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n11"
+        "@id": "_:c14n12"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasIdentity"
+      }
+    },
+    {
+      "@id": "ucm:HasJurisdictionTypeShape",
+      "@type": [
+        "owl:NamedIndividual",
+        "sh:NodeShape"
+      ],
+      "sh:property": {
+        "@id": "_:c14n41"
+      },
+      "sh:targetSubjectsOf": {
+        "@id": "dpv:hasJurisdiction"
       }
     },
     {
@@ -1502,7 +1519,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n14"
+        "@id": "_:c14n15"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasProvision"
@@ -1518,7 +1535,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n53"
+        "@id": "_:c14n55"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -1676,7 +1693,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n48"
+        "@id": "_:c14n50"
       },
       "sh:targetSubjectsOf": [
         {
@@ -1700,7 +1717,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n77"
+        "@id": "_:c14n80"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasEvidenceType"
@@ -1716,23 +1733,10 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n63"
+        "@id": "_:c14n65"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:identityOf"
-      }
-    },
-    {
-      "@id": "ucm:InJurisdictionTypeShape",
-      "@type": [
-        "owl:NamedIndividual",
-        "sh:NodeShape"
-      ],
-      "sh:property": {
-        "@id": "_:c14n46"
-      },
-      "sh:targetSubjectsOf": {
-        "@id": "ucm:inJurisdiction"
       }
     },
     {
@@ -1761,7 +1765,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n83"
+        "@id": "_:c14n84"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:issuedBy"
@@ -1849,7 +1853,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n61"
+        "@id": "_:c14n63"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:matchesIdentity"
@@ -1959,7 +1963,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n84"
+        "@id": "_:c14n85"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:consentOnBehalfOf"
@@ -1979,7 +1983,7 @@
       },
       "sh:message": "Participation context is not typed as ucm:SemanticContext.",
       "sh:path": {
-        "@id": "_:c14n47"
+        "@id": "_:c14n49"
       },
       "sh:severity": {
         "@id": "sh:Warning"
@@ -2118,7 +2122,7 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n99"
+            "@id": "_:c14n100"
           },
           {
             "@id": "_:c14n107"
@@ -2149,10 +2153,10 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n100"
+            "@id": "_:c14n99"
           },
           {
-            "@id": "_:c14n103"
+            "@id": "_:c14n105"
           }
         ]
       },
@@ -2176,7 +2180,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n88"
+        "@id": "_:c14n89"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -2195,7 +2199,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n25"
+        "@id": "_:c14n26"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -2250,7 +2254,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n26"
+        "@id": "_:c14n27"
       },
       "sh:targetClass": {
         "@id": "ucm:Participation"
@@ -2273,13 +2277,13 @@
       "sh:or": {
         "@list": [
           {
-            "@id": "_:c14n16"
+            "@id": "_:c14n17"
           },
           {
-            "@id": "_:c14n59"
+            "@id": "_:c14n60"
           },
           {
-            "@id": "_:c14n89"
+            "@id": "_:c14n90"
           }
         ]
       },
@@ -2326,7 +2330,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n87"
+        "@id": "_:c14n88"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:processingLocation"
@@ -2342,7 +2346,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n18"
+        "@id": "_:c14n19"
       },
       "sh:targetSubjectsOf": [
         {
@@ -2369,7 +2373,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n49"
+        "@id": "_:c14n51"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasProofingType"
@@ -2422,7 +2426,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n29"
+        "@id": "_:c14n30"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:provisionActor"
@@ -2438,7 +2442,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n43"
+        "@id": "_:c14n44"
       },
       "sh:targetObjectsOf": {
         "@id": "ucm:hasProvision"
@@ -2457,7 +2461,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n76"
+        "@id": "_:c14n79"
       },
       "sh:targetObjectsOf": {
         "@id": "ucm:hasProvision"
@@ -2495,10 +2499,10 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n93"
+        "@id": "_:c14n45"
       },
       "sh:targetSubjectsOf": {
-        "@id": "ucm:forPurpose"
+        "@id": "dpv:hasPurpose"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
@@ -2526,7 +2530,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n65"
+        "@id": "_:c14n68"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:recordsConsentFrom"
@@ -2542,7 +2546,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n17"
+        "@id": "_:c14n18"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasReferralDisposition"
@@ -2598,10 +2602,10 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n20"
+        "@id": "_:c14n25"
       },
       "sh:targetSubjectsOf": {
-        "@id": "ucm:hasRegulatoryBasis"
+        "@id": "dpv:hasApplicableLaw"
       },
       "ucm:tier": {
         "@id": "ucm:Recommended"
@@ -2617,7 +2621,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n71"
+        "@id": "_:c14n74"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:hasRetentionDisposition"
@@ -2707,7 +2711,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n68"
+        "@id": "_:c14n71"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:revokedBy"
@@ -2723,7 +2727,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n27"
+        "@id": "_:c14n38"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -2742,7 +2746,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n82"
+        "@id": "_:c14n11"
       },
       "sh:targetClass": {
         "@id": "ucm:ConsentDirective"
@@ -2761,7 +2765,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n74"
+        "@id": "_:c14n77"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:selfConsentCondition"
@@ -2817,7 +2821,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n12"
+        "@id": "_:c14n13"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:selfConsentScope"
@@ -2836,7 +2840,7 @@
         "@id": "sh:Warning"
       },
       "sh:sparql": {
-        "@id": "_:c14n44"
+        "@id": "_:c14n46"
       },
       "sh:targetSubjectsOf": [
         {
@@ -2901,7 +2905,7 @@
             "@id": "_:c14n98"
           },
           {
-            "@id": "_:c14n105"
+            "@id": "_:c14n103"
           }
         ]
       },
@@ -2989,7 +2993,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n58"
+        "@id": "_:c14n59"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:supersedes"
@@ -3005,7 +3009,7 @@
         "sh:NodeShape"
       ],
       "sh:property": {
-        "@id": "_:c14n79"
+        "@id": "_:c14n82"
       },
       "sh:targetSubjectsOf": {
         "@id": "ucm:supersedes"
@@ -3055,7 +3059,7 @@
         "@id": "sh:Violation"
       },
       "sh:sparql": {
-        "@id": "_:c14n42"
+        "@id": "_:c14n43"
       },
       "sh:targetObjectsOf": [
         {
@@ -3226,6 +3230,11 @@
     },
     {
       "@id": "_:c14n11",
+      "sh:message": "A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?subject WHERE {\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?subject .\n                ?subject ucm:birthDate ?bd .\n                ?ci ucm:occursDuring ?when .\n                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n                # Latest possible birth date for a partial date: the conservative reading.\n                BIND (STR(?bd) AS ?b)\n                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n                FILTER (?age < 18)\n                FILTER NOT EXISTS {\n                    $this ucm:governedByPolicy ?rule .\n                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;\n                          dpv:hasJurisdiction ?rj .\n                    { $this dpv:hasJurisdiction/ucm:withinJurisdiction* ?rj }\n                    UNION\n                    { ?ci dpv:hasJurisdiction/ucm:withinJurisdiction* ?rj }\n                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                    FILTER (!BOUND(?min) || ?age >= ?min)\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n12",
       "sh:class": {
         "@id": "ucm:Identity"
       },
@@ -3241,17 +3250,17 @@
       }
     },
     {
-      "@id": "_:c14n12",
+      "@id": "_:c14n13",
       "sh:message": "Self-consent scope is neither in ucm:PurposeOfUse or ucm:ConsentCategory or ucm:InformationCategory or ucm:SensitivityCategory nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:selfConsentScope ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse, ucm:ConsentCategory, ucm:InformationCategory, ucm:SensitivityCategory))\n                }\n            }"
     },
     {
-      "@id": "_:c14n13",
+      "@id": "_:c14n14",
       "sh:message": "Federation assurance level is neither in ucm:FederationAssuranceLevel nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedFAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:FederationAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:FederationAssuranceLevel))\n                }\n            }"
     },
     {
-      "@id": "_:c14n14",
+      "@id": "_:c14n15",
       "sh:class": {
         "@id": "ucm:ConsentProvision"
       },
@@ -3267,23 +3276,23 @@
       }
     },
     {
-      "@id": "_:c14n15",
+      "@id": "_:c14n16",
       "sh:message": "Handshake negotiates itself, directly or through a chain: the negotiation has no base case.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:negotiates+ $this }"
     },
     {
-      "@id": "_:c14n16",
+      "@id": "_:c14n17",
       "sh:datatype": {
         "@id": "xsd:date"
       }
     },
     {
-      "@id": "_:c14n17",
+      "@id": "_:c14n18",
       "sh:message": "Referral disposition is neither in ucm:ReferralDisposition nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ReferralDisposition }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ReferralDisposition\n                }\n            }"
     },
     {
-      "@id": "_:c14n18",
+      "@id": "_:c14n19",
       "sh:message": "Convenience projection (hasClient/hasPatient/hasResident) has no backing participation with the matching role.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                # UNION, not VALUES: SHACL forbids VALUES in SPARQL constraints.\n                { $this ucm:hasClient   ?person . BIND (ucm:ClientRole   AS ?roleClass) }\n                UNION\n                { $this ucm:hasPatient  ?person . BIND (ucm:PatientRole  AS ?roleClass) }\n                UNION\n                { $this ucm:hasResident ?person . BIND (ucm:ResidentRole AS ?roleClass) }\n                FILTER NOT EXISTS {\n                    ?p ucm:participatingEntity ?person ;\n                       ucm:assumesRole/a/rdfs:subClassOf* ?roleClass .\n                    { ?p ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?p }\n                }\n            }"
     },
@@ -3291,11 +3300,6 @@
       "@id": "_:c14n2",
       "sh:message": "An applicant reference does not act on the applicant's behalf (NIST SP 800-63A): the same entity is the applicant, or is the applicant's consent proxy.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?ref WHERE {\n                ?rp ucm:assumesRole/a/rdfs:subClassOf* ucm:ApplicantReferenceRole ;\n                    ucm:participatingEntity ?ref .\n                { ?rp ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?rp }\n                ?ap ucm:assumesRole/a/rdfs:subClassOf* ucm:IdentityApplicantRole ;\n                    ucm:participatingEntity ?applicant .\n                { ?ap ucm:occursWithin $this } UNION { $this ucm:hasParticipant ?ap }\n                FILTER (?ref = ?applicant || EXISTS {\n                    ?cd ucm:consentSubject/ucm:participatingEntity ?applicant ;\n                        ucm:recordsConsentFrom ?ci .\n                    ?pp ucm:participatingEntity ?ref ;\n                        ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole .\n                    { ?pp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?pp }\n                })\n            }"
-    },
-    {
-      "@id": "_:c14n20",
-      "sh:message": "Regulatory basis is neither in ucm:RegulatoryBasis nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasRegulatoryBasis ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RegulatoryBasis))\n                }\n            }"
     },
     {
       "@id": "_:c14n21",
@@ -3325,18 +3329,18 @@
     },
     {
       "@id": "_:c14n25",
+      "sh:message": "Regulatory basis is neither in ucm:RegulatoryBasis nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasApplicableLaw ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RegulatoryBasis)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RegulatoryBasis))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n26",
       "sh:message": "A process lists this participation via hasParticipant, but the participation occurs within a different process.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:hasParticipant $this .\n                $this ucm:occursWithin ?actual .\n                FILTER (?claimant != ?actual)\n            }"
     },
     {
-      "@id": "_:c14n26",
+      "@id": "_:c14n27",
       "sh:message": "Participation validTo precedes validFrom.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:validFrom ?f ; ucm:validTo ?t .\n                FILTER (xsd:dateTime(STR(?t)) < xsd:dateTime(STR(?f)))\n            }"
-    },
-    {
-      "@id": "_:c14n27",
-      "sh:message": "Revocation is half-recorded: status is revoked with no revokedBy, or revokedBy is set while the status is still active.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this WHERE {\n                {\n                    $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentRevoked .\n                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }\n                } UNION {\n                    $this ucm:revokedBy ?r ;\n                          ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .\n                }\n            }"
     },
     {
       "@id": "_:c14n28",
@@ -3345,6 +3349,16 @@
     },
     {
       "@id": "_:c14n29",
+      "sh:message": "Process cites a consent directive whose status is not active.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this ucm:authorizedByConsent ?value .\n                ?value dpv:hasConsentStatus ?s .\n                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }\n            }"
+    },
+    {
+      "@id": "_:c14n3",
+      "sh:message": "Confidentiality level is neither in ucm:ConfidentialityLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversConfidentiality|ucm:hasConfidentialityLevel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConfidentialityLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConfidentialityLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n30",
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -3358,16 +3372,6 @@
       "ucm:tier": {
         "@id": "ucm:Recommended"
       }
-    },
-    {
-      "@id": "_:c14n3",
-      "sh:message": "Confidentiality level is neither in ucm:ConfidentialityLevel nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversConfidentiality|ucm:hasConfidentialityLevel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConfidentialityLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConfidentialityLevel))\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n30",
-      "sh:message": "Consent directive is marked active but its period of validity has ended.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this ucm:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;\n                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .\n                FILTER (xsd:dateTime(STR(?end)) < NOW())\n            }"
     },
     {
       "@id": "_:c14n31",
@@ -3450,6 +3454,11 @@
     },
     {
       "@id": "_:c14n38",
+      "sh:message": "Withdrawal or revocation is half-recorded: status is withdrawn or revoked with no revokedBy, or revokedBy is set while the status is still active.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this WHERE {\n                {\n                    $this dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ?ended .\n                    FILTER (?ended IN (dpv:ConsentWithdrawn, dpv:ConsentRevoked))\n                    FILTER NOT EXISTS { $this ucm:revokedBy ?r }\n                } UNION {\n                    $this ucm:revokedBy ?r ;\n                          dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive .\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n39",
       "sh:message": "Handshake fulfillment is neither in ucm:HandshakeFulfillment nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandshakeFulfillment }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandshakeFulfillment\n                }\n            }"
     },
@@ -3470,12 +3479,23 @@
       }
     },
     {
-      "@id": "_:c14n40",
-      "sh:message": "Process cites a consent directive whose status is not active.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:authorizedByConsent ?value .\n                ?value ucm:hasConsentStatus ?s .\n                FILTER NOT EXISTS { ?s (skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive }\n            }"
+      "@id": "_:c14n41",
+      "sh:class": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "sh:message": "hasJurisdiction target is not typed as ucm:JurisdictionContext.",
+      "sh:path": {
+        "@id": "dpv:hasJurisdiction"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
     },
     {
-      "@id": "_:c14n41",
+      "@id": "_:c14n42",
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -3491,22 +3511,27 @@
       }
     },
     {
-      "@id": "_:c14n42",
+      "@id": "_:c14n43",
       "sh:message": "Interval ends before it begins.",
       "sh:select": "\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this WHERE {\n                $this time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?b ;\n                      time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?e .\n                FILTER (xsd:dateTime(STR(?e)) < xsd:dateTime(STR(?b)))\n            }"
     },
     {
-      "@id": "_:c14n43",
+      "@id": "_:c14n44",
       "sh:message": "Provision contains itself, directly or through nested provisions.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:hasProvision+ $this }"
     },
     {
-      "@id": "_:c14n44",
+      "@id": "_:c14n45",
+      "sh:message": "Purpose of use is neither in ucm:PurposeOfUse nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasPurpose ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n46",
       "sh:message": "Sensitivity category is neither in ucm:SensitivityCategory nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversSensitivity|ucm:hasSensitivityLabel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SensitivityCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:SensitivityCategory))\n                }\n            }"
     },
     {
-      "@id": "_:c14n45",
+      "@id": "_:c14n47",
       "sh:class": {
         "@id": "ucm:Identity"
       },
@@ -3522,13 +3547,13 @@
       }
     },
     {
-      "@id": "_:c14n46",
+      "@id": "_:c14n48",
       "sh:class": {
-        "@id": "ucm:JurisdictionContext"
+        "@id": "dpv:PrivacyNotice"
       },
-      "sh:message": "inJurisdiction target is not typed as ucm:JurisdictionContext.",
+      "sh:message": "acknowledgesNotice target is not typed as dpv:PrivacyNotice.",
       "sh:path": {
-        "@id": "ucm:inJurisdiction"
+        "@id": "ucm:acknowledgesNotice"
       },
       "sh:severity": {
         "@id": "sh:Warning"
@@ -3538,7 +3563,7 @@
       }
     },
     {
-      "@id": "_:c14n47",
+      "@id": "_:c14n49",
       "sh:alternativePath": {
         "@list": [
           {
@@ -3551,37 +3576,37 @@
       }
     },
     {
-      "@id": "_:c14n48",
-      "sh:message": "Identity assurance level is neither in ucm:IdentityAssuranceLevel nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedIAL|ucm:requiresIAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentityAssuranceLevel))\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n49",
-      "sh:message": "Proofing type is neither in ucm:ProofingType nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasProofingType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ProofingType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ProofingType))\n                }\n            }"
-    },
-    {
       "@id": "_:c14n5",
       "sh:message": "Birth date quality is neither in ucm:BirthDateQuality nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:birthDateQuality ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:BirthDateQuality)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:BirthDateQuality))\n                }\n            }"
     },
     {
       "@id": "_:c14n50",
+      "sh:message": "Identity assurance level is neither in ucm:IdentityAssuranceLevel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:achievedIAL|ucm:requiresIAL ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityAssuranceLevel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentityAssuranceLevel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n51",
+      "sh:message": "Proofing type is neither in ucm:ProofingType nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasProofingType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ProofingType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ProofingType))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n52",
       "sh:message": "Commitment status is neither in ucm:CommitmentStatus nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasCommitmentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:CommitmentStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:CommitmentStatus\n                }\n            }"
     },
     {
-      "@id": "_:c14n52",
+      "@id": "_:c14n54",
       "sh:message": "Consent category is neither in ucm:ConsentCategory nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentCategory ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentCategory))\n                }\n            }"
     },
     {
-      "@id": "_:c14n53",
+      "@id": "_:c14n55",
       "sh:message": "The consent subject is a household, and a member who was a minor on the consent date (under 18, from ucm:birthDate) has no ucm:ConsentProxyRole participation acting ucm:consentOnBehalfOf them, and does not self-consent under a ucm:SelfConsentRule whose minimum age they had reached.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n               SELECT DISTINCT $this ?member WHERE {\n                   $this ucm:consentSubject/ucm:participatingEntity ?hh ;\n                         ucm:recordsConsentFrom ?ci .\n                   ?hh a/rdfs:subClassOf* ucm:Household .\n                   { ?hh ucm:hasMember ?member } UNION { ?member ucm:memberOf ?hh }\n                   UNION { ?member ucm:hasMembership/ucm:membershipIn ?hh }\n            ?member ucm:birthDate ?bd .\n            ?ci ucm:occursDuring ?when .\n            ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n            BIND (STR(?bd) AS ?b)\n            BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n            BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n            BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                  - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n            FILTER (?age < 18)\n                   FILTER NOT EXISTS {\n                       $this ucm:recordsConsentFrom ?pci .\n                       ?pp ucm:consentOnBehalfOf ?member ;\n                           ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole .\n                       { ?pp ucm:occursWithin ?pci } UNION { ?pci ucm:hasParticipant ?pp }\n                   }\n                   FILTER NOT EXISTS {\n                       $this ucm:recordsConsentFrom ?sci ;\n                             ucm:governedByPolicy ?rule .\n                       ?sp ucm:participatingEntity ?member ;\n                           ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                       { ?sp ucm:occursWithin ?sci } UNION { ?sci ucm:hasParticipant ?sp }\n                       ?rule a/rdfs:subClassOf* ucm:SelfConsentRule .\n                       OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                       FILTER (!BOUND(?min) || ?age >= ?min)\n                   }\n               }"
     },
     {
-      "@id": "_:c14n54",
+      "@id": "_:c14n56",
       "sh:class": {
         "@id": "ucm:Organization"
       },
@@ -3597,12 +3622,7 @@
       }
     },
     {
-      "@id": "_:c14n55",
-      "sh:message": "Consent status is neither in ucm:ConsentStatus nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentStatus))\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n56",
+      "@id": "_:c14n57",
       "sh:class": {
         "@id": "ucm:Identifier"
       },
@@ -3618,15 +3638,9 @@
       }
     },
     {
-      "@id": "_:c14n58",
+      "@id": "_:c14n59",
       "sh:message": "Consent directive supersedes itself, directly or through a chain.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE { $this ucm:supersedes+ $this }"
-    },
-    {
-      "@id": "_:c14n59",
-      "sh:datatype": {
-        "@id": "xsd:gYearMonth"
-      }
     },
     {
       "@id": "_:c14n6",
@@ -3634,7 +3648,18 @@
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:coversDataCategory ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:InformationCategory)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:InformationCategory))\n                }\n            }"
     },
     {
-      "@id": "_:c14n61",
+      "@id": "_:c14n60",
+      "sh:datatype": {
+        "@id": "xsd:gYearMonth"
+      }
+    },
+    {
+      "@id": "_:c14n62",
+      "sh:message": "Consent directive is marked active but its period of validity has ended.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this WHERE {\n                $this dpv:hasConsentStatus/(skos:exactMatch|^skos:exactMatch)* ucm:ConsentActive ;\n                      ucm:validDuring/time:hasEnd/(time:inXSDDateTimeStamp|time:inXSDDateTime) ?end .\n                FILTER (xsd:dateTime(STR(?end)) < NOW())\n            }"
+    },
+    {
+      "@id": "_:c14n63",
       "sh:class": {
         "@id": "ucm:Identity"
       },
@@ -3650,7 +3675,7 @@
       }
     },
     {
-      "@id": "_:c14n62",
+      "@id": "_:c14n64",
       "sh:class": {
         "@id": "ucm:PolicyDefinition"
       },
@@ -3666,7 +3691,7 @@
       }
     },
     {
-      "@id": "_:c14n63",
+      "@id": "_:c14n65",
       "sh:class": {
         "@id": "ucm:Entity"
       },
@@ -3682,12 +3707,17 @@
       }
     },
     {
-      "@id": "_:c14n64",
+      "@id": "_:c14n66",
       "sh:message": "Consent directive has no grantor: its recording consent interaction has no participation in a ConsentGrantorRole.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS {\n                    $this ucm:recordsConsentFrom ?ci .\n                    ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                    { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                }\n            }"
     },
     {
-      "@id": "_:c14n65",
+      "@id": "_:c14n67",
+      "sh:message": "Consent status is neither in ucm:ConsentStatus nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX dpv:  <https://w3id.org/dpv#>\n            SELECT $this ?value WHERE {\n                $this dpv:hasConsentStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentStatus)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentStatus))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n68",
       "sh:class": {
         "@id": "ucm:ConsentInteraction"
       },
@@ -3703,35 +3733,9 @@
       }
     },
     {
-      "@id": "_:c14n66",
+      "@id": "_:c14n69",
       "sh:message": "Closure reason is neither in ucm:ClosureReason nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasClosureReason ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:ClosureReason }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:ClosureReason\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n67",
-      "sh:message": "Consent model is neither in ucm:ConsentModel nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentModel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentModel))\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n68",
-      "sh:class": {
-        "@id": "ucm:ConsentInteraction"
-      },
-      "sh:message": "revokedBy target is not typed as ucm:ConsentInteraction.",
-      "sh:path": {
-        "@id": "ucm:revokedBy"
-      },
-      "sh:severity": {
-        "@id": "sh:Warning"
-      },
-      "ucm:tier": {
-        "@id": "ucm:Recommended"
-      }
-    },
-    {
-      "@id": "_:c14n69",
-      "sh:message": "The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?value WHERE {\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                $this ucm:governedByPolicy ?policy .\n                {\n                    ?policy ucm:requiresIAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?gp ucm:identifiedAs/ucm:achievedIAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                } UNION {\n                    ?policy ucm:requiresAAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?ci ucm:authenticatedBy/ucm:achievedAAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                }\n            }"
     },
     {
       "@id": "_:c14n7",
@@ -3751,6 +3755,32 @@
     },
     {
       "@id": "_:c14n70",
+      "sh:message": "Consent model is neither in ucm:ConsentModel nor SKOS-mapped to a concept that is.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasConsentModel ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentModel)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentModel))\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n71",
+      "sh:class": {
+        "@id": "ucm:ConsentInteraction"
+      },
+      "sh:message": "revokedBy target is not typed as ucm:ConsentInteraction.",
+      "sh:path": {
+        "@id": "ucm:revokedBy"
+      },
+      "sh:severity": {
+        "@id": "sh:Warning"
+      },
+      "ucm:tier": {
+        "@id": "ucm:Recommended"
+      }
+    },
+    {
+      "@id": "_:c14n72",
+      "sh:message": "The governing consent policy requires an identity or authenticator assurance level that the grantor's recorded identity or authentication does not reach.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this ?value WHERE {\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                $this ucm:governedByPolicy ?policy .\n                {\n                    ?policy ucm:requiresIAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?gp ucm:identifiedAs/ucm:achievedIAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                } UNION {\n                    ?policy ucm:requiresAAL ?value .\n                    ?value ucm:assuranceRank ?need .\n                    FILTER NOT EXISTS {\n                        ?ci ucm:authenticatedBy/ucm:achievedAAL/ucm:assuranceRank ?got .\n                        FILTER (?got >= ?need)\n                    }\n                }\n            }"
+    },
+    {
+      "@id": "_:c14n73",
       "sh:class": {
         "@id": "ucm:DefinitionArtifact"
       },
@@ -3766,42 +3796,47 @@
       }
     },
     {
-      "@id": "_:c14n71",
+      "@id": "_:c14n74",
       "sh:message": "Retention disposition is neither in ucm:RetentionDisposition nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasRetentionDisposition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:RetentionDisposition)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:RetentionDisposition))\n                }\n            }"
     },
     {
-      "@id": "_:c14n72",
+      "@id": "_:c14n75",
       "sh:message": "Governed action is neither in ucm:ConsentAction nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:governsAction ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:ConsentAction)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:ConsentAction))\n                }\n            }"
     },
     {
-      "@id": "_:c14n73",
+      "@id": "_:c14n76",
       "sh:message": "Evidence strength is neither in ucm:EvidenceStrength nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasEvidenceStrength ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:EvidenceStrength)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:EvidenceStrength))\n                }\n            }"
     },
     {
-      "@id": "_:c14n74",
+      "@id": "_:c14n77",
       "sh:message": "Self-consent condition is neither in ucm:SelfConsentCondition nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:selfConsentCondition ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:SelfConsentCondition)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:SelfConsentCondition))\n                }\n            }"
     },
     {
-      "@id": "_:c14n75",
+      "@id": "_:c14n78",
       "sh:message": "Closure reason recorded on a request that is still pending a decision.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasReferralDisposition|ucm:hasLifecycleState ?value .\n                ?value (skos:exactMatch|^skos:exactMatch)* ucm:ReferralPending .\n            }"
     },
     {
-      "@id": "_:c14n76",
+      "@id": "_:c14n79",
       "sh:message": "A provision's decision must be the opposite of its parent's (the directive for a top-level provision, or the enclosing provision).",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                ?parent ucm:hasProvision $this ;\n                        ucm:hasConsentDecision ?pd .\n                $this ucm:hasConsentDecision ?value .\n                ?pd    (skos:exactMatch|^skos:exactMatch)* ?pn .\n                ?value (skos:exactMatch|^skos:exactMatch)* ?vn .\n                FILTER (?pn IN (ucm:Permit, ucm:Deny) && ?pn = ?vn)\n            }"
     },
     {
-      "@id": "_:c14n77",
+      "@id": "_:c14n8",
+      "sh:message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
+      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
+    },
+    {
+      "@id": "_:c14n80",
       "sh:message": "Evidence type is neither in ucm:IdentityEvidenceType nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasEvidenceType ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:IdentityEvidenceType)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:IdentityEvidenceType))\n                }\n            }"
     },
     {
-      "@id": "_:c14n78",
+      "@id": "_:c14n81",
       "sh:class": {
         "@id": "ucm:Participation"
       },
@@ -3817,7 +3852,7 @@
       }
     },
     {
-      "@id": "_:c14n79",
+      "@id": "_:c14n82",
       "sh:class": {
         "@id": "ucm:ConsentDirective"
       },
@@ -3833,12 +3868,7 @@
       }
     },
     {
-      "@id": "_:c14n8",
-      "sh:message": "Handshake reports services delivered for a request that was declined, withdrawn or expired.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandshakeFulfillment ?value .\n                FILTER NOT EXISTS { ?value (skos:exactMatch|^skos:exactMatch)* ucm:FulfillmentNotStarted }\n                $this ucm:negotiates+ ?request .\n                ?request ucm:hasReferralDisposition|ucm:hasLifecycleState ?state .\n                ?state (skos:exactMatch|^skos:exactMatch)* ?ended .\n                FILTER (?ended IN (ucm:ReferralDeclined, ucm:ReferralWithdrawn, ucm:ReferralExpired))\n            }"
-    },
-    {
-      "@id": "_:c14n80",
+      "@id": "_:c14n83",
       "sh:class": {
         "@id": "ucm:ConsentDirective"
       },
@@ -3854,28 +3884,7 @@
       }
     },
     {
-      "@id": "_:c14n81",
-      "sh:class": {
-        "@id": "ucm:PrivacyNotice"
-      },
-      "sh:message": "acknowledgesNotice target is not typed as ucm:PrivacyNotice.",
-      "sh:path": {
-        "@id": "ucm:acknowledgesNotice"
-      },
-      "sh:severity": {
-        "@id": "sh:Warning"
-      },
-      "ucm:tier": {
-        "@id": "ucm:Recommended"
-      }
-    },
-    {
-      "@id": "_:c14n82",
-      "sh:message": "A minor (under 18 on the consent date, from ucm:birthDate) is their own grantor, but the directive is not governedByPolicy a ucm:SelfConsentRule in force in its jurisdiction whose minimum age the subject had reached.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            PREFIX time: <http://www.w3.org/2006/time#>\n            PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n            SELECT $this ?subject WHERE {\n                $this ucm:consentSubject/ucm:participatingEntity ?subject .\n                $this ucm:recordsConsentFrom ?ci .\n                ?gp ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentGrantorRole .\n                { ?gp ucm:occursWithin ?ci } UNION { ?ci ucm:hasParticipant ?gp }\n                ?gp ucm:participatingEntity ?subject .\n                ?subject ucm:birthDate ?bd .\n                ?ci ucm:occursDuring ?when .\n                ?when (time:hasBeginning/(time:inXSDDateTimeStamp|time:inXSDDateTime))|time:inXSDDateTimeStamp|time:inXSDDateTime ?at .\n                # Latest possible birth date for a partial date: the conservative reading.\n                BIND (STR(?bd) AS ?b)\n                BIND (IF(STRLEN(?b) = 4, CONCAT(?b, \"-12-31\"), IF(STRLEN(?b) = 7, CONCAT(?b, \"-31\"), SUBSTR(?b, 1, 10))) AS ?latest)\n                BIND (SUBSTR(STR(?at), 1, 10) AS ?on)\n                BIND (xsd:integer(SUBSTR(?on, 1, 4)) - xsd:integer(SUBSTR(?latest, 1, 4))\n                      - IF(SUBSTR(?on, 6, 5) < SUBSTR(?latest, 6, 5), 1, 0) AS ?age)\n                FILTER (?age < 18)\n                FILTER NOT EXISTS {\n                    $this ucm:governedByPolicy ?rule .\n                    ?rule a/rdfs:subClassOf* ucm:SelfConsentRule ;\n                          ucm:inJurisdiction ?rj .\n                    { $this ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    UNION\n                    { ?ci ucm:inJurisdiction/ucm:withinJurisdiction* ?rj }\n                    OPTIONAL { ?rule ucm:minimumSelfConsentAge ?min }\n                    FILTER (!BOUND(?min) || ?age >= ?min)\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n83",
+      "@id": "_:c14n84",
       "sh:class": {
         "@id": "ucm:Entity"
       },
@@ -3891,12 +3900,12 @@
       }
     },
     {
-      "@id": "_:c14n84",
+      "@id": "_:c14n85",
       "sh:message": "Participation consents on behalf of someone but does not assume a ucm:ConsentProxyRole (or a subclass).",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n            SELECT $this WHERE {\n                $this ucm:consentOnBehalfOf ?someone .\n                FILTER NOT EXISTS { $this ucm:assumesRole/a/rdfs:subClassOf* ucm:ConsentProxyRole }\n            }"
     },
     {
-      "@id": "_:c14n85",
+      "@id": "_:c14n86",
       "sh:class": {
         "@id": "ucm:Authentication"
       },
@@ -3912,12 +3921,12 @@
       }
     },
     {
-      "@id": "_:c14n86",
+      "@id": "_:c14n87",
       "sh:message": "Coordination process declares no activity focus, directly or through a process it negotiates.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                FILTER NOT EXISTS { $this ucm:negotiates*/ucm:hasActivityFocus ?f }\n            }"
     },
     {
-      "@id": "_:c14n87",
+      "@id": "_:c14n88",
       "sh:class": {
         "@id": "ucm:JurisdictionContext"
       },
@@ -3933,15 +3942,9 @@
       }
     },
     {
-      "@id": "_:c14n88",
+      "@id": "_:c14n89",
       "sh:message": "An entity participates through this participation via participatesThrough, but the participation names a different participating entity.",
       "sh:select": "\n            PREFIX ucm: <https://www.w3.org/ns/ucm#>\n            SELECT $this WHERE {\n                ?claimant ucm:participatesThrough $this .\n                $this ucm:participatingEntity ?actual .\n                FILTER (?claimant != ?actual)\n            }"
-    },
-    {
-      "@id": "_:c14n89",
-      "sh:datatype": {
-        "@id": "xsd:gYear"
-      }
     },
     {
       "@id": "_:c14n9",
@@ -3960,7 +3963,13 @@
       }
     },
     {
-      "@id": "_:c14n91",
+      "@id": "_:c14n90",
+      "sh:datatype": {
+        "@id": "xsd:gYear"
+      }
+    },
+    {
+      "@id": "_:c14n92",
       "sh:class": {
         "@id": "ucm:Organization"
       },
@@ -3976,14 +3985,9 @@
       }
     },
     {
-      "@id": "_:c14n92",
+      "@id": "_:c14n93",
       "sh:message": "Handoff status is neither in ucm:HandoffStatus nor SKOS-mapped to a concept that is.",
       "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:hasHandoffStatus ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ucm:HandoffStatus }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme\n                           ucm:HandoffStatus\n                }\n            }"
-    },
-    {
-      "@id": "_:c14n93",
-      "sh:message": "Purpose of use is neither in ucm:PurposeOfUse nor SKOS-mapped to a concept that is.",
-      "sh:select": "\n            PREFIX ucm:  <https://www.w3.org/ns/ucm#>\n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            SELECT $this ?value WHERE {\n                $this ucm:forPurpose ?value .\n                FILTER NOT EXISTS { ?value skos:inScheme ?s . FILTER (?s IN (ucm:PurposeOfUse)) }\n                FILTER NOT EXISTS {\n                    ?value (skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch)/skos:inScheme ?m .\n                    FILTER (?m IN (ucm:PurposeOfUse))\n                }\n            }"
     },
     {
       "@id": "_:c14n94",

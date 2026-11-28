@@ -30,9 +30,9 @@ from sqlalchemy.types import TypeDecorator
 
 ONTOLOGY_IRI = 'https://www.w3.org/ns/ucm#'
 ONTOLOGY_VERSION = 'v0.0.1'
-REVISION = 'ucm_8535f380cce4'
-SOURCES = ['sha256:ab0f501ce9ea84034331bf972a17d657da0135f191fd0380703fe074a168ef1b',
- 'sha256:1e62d43538c32e8dc6ccb1bbe2f4d1d26147da84ee01c2015e090775bd8a05f9']
+REVISION = 'ucm_8af3b9af554b'
+SOURCES = ['sha256:43b26d141123f591d38e67c48df194ad319f3c60561d52f7002e954dec325a97',
+ 'sha256:68d0e0609c67c5fd4dea4e409041abc29f81cef3d4c45770e28aa310dd7da9d4']
 
 JSONType = sa.JSON().with_variant(postgresql.JSONB(), "postgresql")
 SurrogateKey = sa.BigInteger().with_variant(sa.Integer(), "sqlite")
@@ -284,7 +284,7 @@ class ConsentPolicy(PolicyDefinition):
 
 
 class PrivacyNotice(PolicyDefinition):
-    """A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."""
+    """In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."""
 
     __mapper_args__ = {"polymorphic_identity": 'PrivacyNotice'}
 
@@ -331,7 +331,8 @@ class Entity(Base):
  'release of information, a treatment consent or a research consent.')
     )
     has_consent_status: Mapped[Optional[str]] = mapped_column(
-        sa.Text(), nullable=True, index=True, comment='ucm:hasConsentStatus: Relates a consent directive to whether it applies now (FHIR Consent.status).'
+        sa.Text(), nullable=True, index=True, comment=('dpv:hasConsentStatus: In UCM: relates a consent directive to whether it applies now (FHIR '
+ 'Consent.status), a concept in ucm:ConsentStatus.')
     )
     has_identifier_type: Mapped[Optional[str]] = mapped_column(
         sa.Text(), nullable=True, index=True, comment=('ucm:hasIdentifierType: Relates an identifier to its kind, such as a medical record number or '
@@ -1311,17 +1312,6 @@ process__establishes_identity = sa.Table(
     comment='ucm:establishesIdentity: Relates an identity proofing process to the identity it establishes.',
 )
 
-node__for_purpose = sa.Table(
-    'node__for_purpose',
-    Base.metadata,
-    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
-    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
-    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
-    sa.Column("object_node", JSONType, nullable=True),
-    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
-    comment='ucm:forPurpose: Relates a provision or privacy notice to a purpose of use it covers.',
-)
-
 statement__generated_by_process = sa.Table(
     'statement__generated_by_process',
     Base.metadata,
@@ -1366,6 +1356,18 @@ process__has_activity_focus = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:hasActivityFocus: Situates a process within an activity focus.',
+)
+
+node__has_applicable_law = sa.Table(
+    'node__has_applicable_law',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('dpv:hasApplicableLaw: In UCM: relates a consent directive or policy to the law or regulation it '
+ 'rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis.'),
 )
 
 node__has_care_trajectory_context = sa.Table(
@@ -1474,6 +1476,18 @@ entity__has_identity = sa.Table(
  'many identities.'),
 )
 
+node__has_jurisdiction = sa.Table(
+    'node__has_jurisdiction',
+    Base.metadata,
+    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
+    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
+    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
+    sa.Column("object_node", JSONType, nullable=True),
+    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
+    comment=('dpv:hasJurisdiction: In UCM: relates a consent, consent interaction, policy or identifier to the '
+ 'jurisdiction context where it was given, is in force or was issued.'),
+)
+
 entity__has_member = sa.Table(
     'entity__has_member',
     Base.metadata,
@@ -1530,16 +1544,16 @@ node__has_provision = sa.Table(
  'it (FHIR Consent.provision).'),
 )
 
-node__has_regulatory_basis = sa.Table(
-    'node__has_regulatory_basis',
+node__has_purpose = sa.Table(
+    'node__has_purpose',
     Base.metadata,
     sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
     sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
     sa.Column("object_iri", sa.Text(), nullable=True, index=True),
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
-    comment=('ucm:hasRegulatoryBasis: Relates a consent directive or policy to the law or regulation it rests '
- 'on (FHIR Consent.regulatoryBasis).'),
+    comment=('dpv:hasPurpose: In UCM: relates a consent provision or privacy notice to a purpose of use it '
+ 'covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one.'),
 )
 
 process__has_resident = sa.Table(
@@ -1610,18 +1624,6 @@ entity__identity_of = sa.Table(
     sa.Column("object_node", JSONType, nullable=True),
     sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
     comment='ucm:identityOf: Relates an identity to the entity it identifies.',
-)
-
-node__in_jurisdiction = sa.Table(
-    'node__in_jurisdiction',
-    Base.metadata,
-    sa.Column("id", SurrogateKey, primary_key=True, autoincrement=True),
-    sa.Column("subject_iri", sa.Text(), nullable=False, index=True, unique=False),
-    sa.Column("object_iri", sa.Text(), nullable=True, index=True),
-    sa.Column("object_node", JSONType, nullable=True),
-    sa.CheckConstraint("(object_iri IS NULL) <> (object_node IS NULL)", name="one_value"),
-    comment=('ucm:inJurisdiction: Relates a consent, consent interaction, policy or identifier to the '
- 'jurisdiction where it was given, is in force or was issued.'),
 )
 
 node__issued_by = sa.Table(
@@ -2137,14 +2139,14 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'ConfidentialityVeryRestricted',
   'label': 'Very restricted',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#AccessAction',
+ {'iri': 'https://w3id.org/dpv#Access',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
-  'term': 'AccessAction',
+  'term': 'Access',
   'label': 'Access',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#CollectAction',
+ {'iri': 'https://w3id.org/dpv#Collect',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
-  'term': 'CollectAction',
+  'term': 'Collect',
   'label': 'Collect',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#CorrectAction',
@@ -2152,19 +2154,19 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'CorrectAction',
   'label': 'Access and correct',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#DiscloseAction',
+ {'iri': 'https://w3id.org/dpv#Disclose',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
-  'term': 'DiscloseAction',
+  'term': 'Disclose',
   'label': 'Disclose',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#RediscloseAction',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
   'term': 'RediscloseAction',
   'label': 'Redisclose',
-  'broader_iri': 'https://www.w3.org/ns/ucm#DiscloseAction'},
- {'iri': 'https://www.w3.org/ns/ucm#UseAction',
+  'broader_iri': 'https://w3id.org/dpv#Disclose'},
+ {'iri': 'https://w3id.org/dpv#Use',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentAction',
-  'term': 'UseAction',
+  'term': 'Use',
   'label': 'Use',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#AdvanceDirective',
@@ -2302,35 +2304,40 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'ConsentEnteredInError',
   'label': 'Entered in error',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#ConsentExpired',
+ {'iri': 'https://w3id.org/dpv#ConsentExpired',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
   'term': 'ConsentExpired',
-  'label': 'Expired',
+  'label': 'Consent Expired',
   'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
  {'iri': 'https://www.w3.org/ns/ucm#ConsentInactive',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
   'term': 'ConsentInactive',
   'label': 'Inactive',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#ConsentRefused',
+ {'iri': 'https://w3id.org/dpv#ConsentRefused',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
   'term': 'ConsentRefused',
-  'label': 'Refused',
+  'label': 'Consent Refused',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#ConsentRevoked',
+ {'iri': 'https://w3id.org/dpv#ConsentRevoked',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
   'term': 'ConsentRevoked',
-  'label': 'Revoked',
+  'label': 'Consent Revoked',
   'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
- {'iri': 'https://www.w3.org/ns/ucm#ConsentStatusUnknown',
-  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
-  'term': 'ConsentStatusUnknown',
-  'label': 'Unknown',
-  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#ConsentSuperseded',
   'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
   'term': 'ConsentSuperseded',
   'label': 'Superseded',
+  'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
+ {'iri': 'https://w3id.org/dpv#ConsentUnknown',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentUnknown',
+  'label': 'Consent Unknown',
+  'broader_iri': None},
+ {'iri': 'https://w3id.org/dpv#ConsentWithdrawn',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#ConsentStatus',
+  'term': 'ConsentWithdrawn',
+  'label': 'Consent Withdrawn',
   'broader_iri': 'https://www.w3.org/ns/ucm#ConsentInactive'},
  {'iri': 'https://www.w3.org/ns/ucm#FairEvidence',
   'scheme_iri': 'https://www.w3.org/ns/ucm#EvidenceStrength',
@@ -2512,20 +2519,20 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'ClinicalInformation',
   'label': 'Clinical information',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#EducationInformation',
+ {'iri': 'https://w3id.org/dpv/pd#Education',
   'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
-  'term': 'EducationInformation',
-  'label': 'Education information',
+  'term': 'Education',
+  'label': 'Education',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#HousingInformation',
   'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
   'term': 'HousingInformation',
   'label': 'Housing information',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#IdentifyingInformation',
+ {'iri': 'https://w3id.org/dpv/pd#Identifying',
   'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
-  'term': 'IdentifyingInformation',
-  'label': 'Identifying information',
+  'term': 'Identifying',
+  'label': 'Identifying',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#IncomeAndBenefitsInformation',
   'scheme_iri': 'https://www.w3.org/ns/ucm#InformationCategory',
@@ -2642,10 +2649,10 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'PublicHealthPurpose',
   'label': 'Public health',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#ResearchPurpose',
+ {'iri': 'https://w3id.org/dpv#ScientificResearch',
   'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
-  'term': 'ResearchPurpose',
-  'label': 'Research',
+  'term': 'ScientificResearch',
+  'label': 'Scientific Research',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#SocialCareCoordination',
   'scheme_iri': 'https://www.w3.org/ns/ucm#PurposeOfUse',
@@ -2707,11 +2714,6 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'term': 'FERPA',
   'label': 'FERPA',
   'broader_iri': None},
- {'iri': 'https://www.w3.org/ns/ucm#GDPR',
-  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
-  'term': 'GDPR',
-  'label': 'GDPR',
-  'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#HIPAA',
   'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
   'term': 'HIPAA',
@@ -2746,6 +2748,11 @@ CONCEPTS: List[Dict[str, Optional[str]]] =[{'iri': 'https://www.w3.org/ns/ucm#AA
   'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
   'term': 'VAWA',
   'label': 'VAWA',
+  'broader_iri': None},
+ {'iri': 'https://w3id.org/dpv/legal/eu#law-GDPR',
+  'scheme_iri': 'https://www.w3.org/ns/ucm#RegulatoryBasis',
+  'term': 'law-GDPR',
+  'label': 'General Data Protection Regulation (GDPR)',
   'broader_iri': None},
  {'iri': 'https://www.w3.org/ns/ucm#RetentionArchive',
   'scheme_iri': 'https://www.w3.org/ns/ucm#RetentionDisposition',
@@ -3061,11 +3068,11 @@ ASSOCIATIONS: Dict[str, Tuple[sa.Table, Optional[str], str]] = {
     'definedByCriteria': (entity__defined_by_criteria, 'entity', 'reference'),
     'enactiveDuring': (participation__enactive_during, 'participation', 'reference'),
     'establishesIdentity': (process__establishes_identity, 'process', 'reference'),
-    'forPurpose': (node__for_purpose, None, 'reference'),
     'generatedByProcess': (statement__generated_by_process, 'statement', 'reference'),
     'governedByPolicy': (node__governed_by_policy, None, 'reference'),
     'governsAction': (consent_provision__governs_action, 'consent_provision', 'reference'),
     'hasActivityFocus': (process__has_activity_focus, 'process', 'reference'),
+    'hasApplicableLaw': (node__has_applicable_law, None, 'reference'),
     'hasCareTrajectoryContext': (node__has_care_trajectory_context, None, 'reference'),
     'hasClient': (process__has_client, 'process', 'reference'),
     'hasConfidentialityLevel': (node__has_confidentiality_level, None, 'reference'),
@@ -3075,19 +3082,19 @@ ASSOCIATIONS: Dict[str, Tuple[sa.Table, Optional[str], str]] = {
     'hasEvidenceType': (entity__has_evidence_type, 'entity', 'reference'),
     'hasIdentifier': (entity__has_identifier, 'entity', 'reference'),
     'hasIdentity': (entity__has_identity, 'entity', 'reference'),
+    'hasJurisdiction': (node__has_jurisdiction, None, 'reference'),
     'hasMember': (entity__has_member, 'entity', 'reference'),
     'hasMembership': (entity__has_membership, 'entity', 'reference'),
     'hasParticipant': (process__has_participant, 'process', 'reference'),
     'hasPatient': (process__has_patient, 'process', 'reference'),
     'hasProvision': (node__has_provision, None, 'reference'),
-    'hasRegulatoryBasis': (node__has_regulatory_basis, None, 'reference'),
+    'hasPurpose': (node__has_purpose, None, 'reference'),
     'hasResident': (process__has_resident, 'process', 'reference'),
     'hasRetentionDisposition': (node__has_retention_disposition, None, 'reference'),
     'hasSensitivityLabel': (node__has_sensitivity_label, None, 'reference'),
     'hasTemporalContext': (node__has_temporal_context, None, 'reference'),
     'identifiedAs': (participation__identified_as, 'participation', 'reference'),
     'identityOf': (entity__identity_of, 'entity', 'reference'),
-    'inJurisdiction': (node__in_jurisdiction, None, 'reference'),
     'issuedBy': (node__issued_by, None, 'reference'),
     'locatedAt': (entity__located_at, 'entity', 'reference'),
     'madeWithinContext': (statement__made_within_context, 'statement', 'reference'),

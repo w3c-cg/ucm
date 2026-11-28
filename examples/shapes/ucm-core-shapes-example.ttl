@@ -9,6 +9,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix ucm-shapes-example: <https://www.w3.org/ns/ucm#shapes-example> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix pd: <https://w3id.org/dpv/pd#> .
 @base <https://www.w3.org/ns/ucm#shapes-example#> .
 
 <https://www.w3.org/ns/ucm#shapes-example> rdf:type owl:Ontology ;
@@ -526,18 +528,18 @@ ex:rule-ferpa a ucm:SelfConsentRule ;
     rdfs:label "Federal: education records" ;
     rdfs:comment "Rights over education records pass from parents to the student at 18, or at any age once the student attends a postsecondary institution. Illustration only; not legal guidance." ;
     dcterms:source "U.S. Department of Education, Student Privacy Policy Office, 'Eligible Student' (studentprivacy.ed.gov); 34 CFR 99.3; 20 U.S.C. 1232g(d)." ;
-    ucm:inJurisdiction ex:jur-us ;
-    ucm:hasRegulatoryBasis ucm:FERPA ;
+    dpv:hasJurisdiction ex:jur-us ;
+    dpv:hasApplicableLaw ucm:FERPA ;
     ucm:minimumSelfConsentAge "18"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:AgeOfMajority , ucm:PostsecondaryEnrollment ;
-    ucm:selfConsentScope ucm:EducationInformation .
+    ucm:selfConsentScope pd:Education .
 
 ex:rule-state-a-sti a ucm:SelfConsentRule ;
     rdfs:label "Example State A: STI care from 12" ;
     rdfs:comment "Minors 12 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance." ;
     dcterms:source "Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01." ;
-    ucm:inJurisdiction ex:ExampleStateA ;
-    ucm:hasRegulatoryBasis ucm:StateLaw ;
+    dpv:hasJurisdiction ex:ExampleStateA ;
+    dpv:hasApplicableLaw ucm:StateLaw ;
     ucm:minimumSelfConsentAge "12"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:ServiceSpecificMinorConsent ;
     ucm:selfConsentScope ucm:SexuallyTransmittedDisease , ucm:Treatment .
@@ -546,8 +548,8 @@ ex:rule-state-b-sti a ucm:SelfConsentRule ;
     rdfs:label "Example State B: STI care from 14" ;
     rdfs:comment "Minors 14 and older may consent to STI testing and treatment. Illustration only; actual state rules vary; not legal guidance." ;
     dcterms:source "Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01." ;
-    ucm:inJurisdiction ex:ExampleStateB ;
-    ucm:hasRegulatoryBasis ucm:StateLaw ;
+    dpv:hasJurisdiction ex:ExampleStateB ;
+    dpv:hasApplicableLaw ucm:StateLaw ;
     ucm:minimumSelfConsentAge "14"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:ServiceSpecificMinorConsent ;
     ucm:selfConsentScope ucm:SexuallyTransmittedDisease .
@@ -556,8 +558,8 @@ ex:rule-state-c-hiv a ucm:SelfConsentRule ;
     rdfs:label "Example State C: HIV care from 13" ;
     rdfs:comment "Minors 13 and older may consent to HIV testing and treatment. Illustration only; actual state rules vary; not legal guidance." ;
     dcterms:source "Guttmacher Institute, 'Minors' Access to STI Services', as of 2026-08-01." ;
-    ucm:inJurisdiction ex:ExampleStateC ;
-    ucm:hasRegulatoryBasis ucm:StateLaw ;
+    dpv:hasJurisdiction ex:ExampleStateC ;
+    dpv:hasApplicableLaw ucm:StateLaw ;
     ucm:minimumSelfConsentAge "13"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:ServiceSpecificMinorConsent ;
     ucm:selfConsentScope ucm:HIV , ucm:Treatment .
@@ -566,8 +568,8 @@ ex:rule-state-d-housing a ucm:SelfConsentRule ;
     rdfs:label "Example State D: housing for homeless youth" ;
     rdfs:comment "A youth aged 16 or 17 who is homeless, or a victim of domestic violence, and is self-supporting may consent to housing, shelter, medical and mental health care and related services. A homeless service provider or school district homeless liaison verifies the status in a letter. Illustration only; actual state rules vary; not legal guidance." ;
     dcterms:source "SchoolHouse Connection, 'State Laws on Minor Consent for Housing and Related Services' (June 2026). Secondary summary; check the statute." ;
-    ucm:inJurisdiction ex:ExampleStateD ;
-    ucm:hasRegulatoryBasis ucm:StateLaw ;
+    dpv:hasJurisdiction ex:ExampleStateD ;
+    dpv:hasApplicableLaw ucm:StateLaw ;
     ucm:minimumSelfConsentAge "16"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:UnaccompaniedYouthStatus , ucm:SelfSupporting ;
     ucm:selfConsentScope ucm:HousingPlacement , ucm:SocialCareCoordination , ucm:Treatment .
@@ -576,8 +578,8 @@ ex:rule-coc-e-roi a ucm:SelfConsentRule ;
     rdfs:label "Example CoC E: HMIS release of information" ;
     rdfs:comment "Clients 18 and over sign their own ROI. For each child under 18, a parent or legal guardian chooses the sharing option and signs a separate consent. Illustration only; actual CoC policies vary; not legal guidance." ;
     dcterms:source "All Chicago HMIS, 'Documenting Client Consent in HMIS (ROI)'." ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
-    ucm:hasRegulatoryBasis ucm:HMISDataStandards ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
+    dpv:hasApplicableLaw ucm:HMISDataStandards ;
     ucm:minimumSelfConsentAge "18"^^xsd:nonNegativeInteger ;
     ucm:selfConsentCondition ucm:AgeOfMajority ;
     ucm:selfConsentScope ucm:ReleaseOfInformation .
@@ -586,15 +588,15 @@ ex:rule-coc-e-roi a ucm:SelfConsentRule ;
 
 ex:policy-coc-e a ucm:ConsentPolicy ;
     rdfs:label "Example CoC E HMIS consent policy" ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:hasConsentModel ucm:OptIn ;
-    ucm:hasRegulatoryBasis ucm:HMISDataStandards ;
+    dpv:hasApplicableLaw ucm:HMISDataStandards ;
     ucm:requiresIAL ucm:IAL1 ;
     ucm:withdrawalMethod "Tell any participating agency in writing, or call the CoC HMIS help desk." .
 
-ex:notice-coc-e a ucm:PrivacyNotice ;
+ex:notice-coc-e a dpv:PrivacyNotice ;
     rdfs:label "Example CoC E posted HMIS privacy notice" ;
-    ucm:forPurpose ucm:CoordinatedEntry , ucm:ProgramReporting ;
+    dpv:hasPurpose ucm:CoordinatedEntry , ucm:ProgramReporting ;
     ucm:hasConsentModel ucm:OptOutWithExceptions ;
     ucm:amendmentAppliesRetroactively false ;
     ucm:postedAt ex:loc-intake ;
@@ -666,7 +668,7 @@ ex:idf-ruth-dl a ucm:Identifier ;
     ucm:identifierSystem "https://example.org/state-e/drivers-licenses"^^xsd:anyURI ;
     ucm:hasIdentifierType ucm:DriversLicenseNumber ;
     ucm:issuedBy ex:org-state-e ;
-    ucm:inJurisdiction ex:ExampleStateE .
+    dpv:hasJurisdiction ex:ExampleStateE .
 ex:cred-ruth a ucm:Credential ;
     ucm:assertsIdentity ex:id-ruth ;
     ucm:issuedBy ex:org-csp ;
@@ -686,7 +688,7 @@ ex:ci-thomson a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentGrant ;
     ucm:hasConsentModality ucm:ElectronicConsent ;
     ucm:occursDuring ex:t-ci-thomson ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:acknowledgesNotice ex:notice-coc-e ;
     ucm:authenticatedBy ex:auth-ruth .
 ex:p-ruth-proxy a ucm:Participation ;
@@ -703,11 +705,11 @@ ex:cd-jameson a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-thomson ;
     ucm:consentSubject ex:p-jameson-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ReleaseOfInformation ;
     ucm:governedByPolicy ex:policy-coc-e ;
-    ucm:hasRegulatoryBasis ucm:HMISDataStandards ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasApplicableLaw ucm:HMISDataStandards ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:validDuring ex:t-roi ;
     ucm:supersedes ex:cd-jameson-2023 ;
     ucm:retentionPeriod "P7Y"^^xsd:duration ;
@@ -719,10 +721,10 @@ ex:cd-madison a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-thomson ;
     ucm:consentSubject ex:p-madison-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ReleaseOfInformation ;
     ucm:governedByPolicy ex:policy-coc-e ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:validDuring ex:t-roi .
 
 # (b) a household-wide ROI: one directive whose subject is the Thomson
@@ -741,7 +743,7 @@ ex:ci-thomson-hh a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentGrant ;
     ucm:hasConsentModality ucm:WrittenConsent ;
     ucm:occursDuring ex:t-ci-thomson ;
-    ucm:inJurisdiction ex:ExampleCoCE .
+    dpv:hasJurisdiction ex:ExampleCoCE .
 ex:p-hh-subj a ucm:Participation ;
     ucm:occursWithin ex:ci-thomson-hh ; ucm:participatingEntity ex:hh-thomson ; ucm:assumesRole ex:role-csubject .
 ex:p-ruth-grantor-hh a ucm:Participation ;
@@ -756,10 +758,10 @@ ex:cd-thomson-hh a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-thomson-hh ;
     ucm:consentSubject ex:p-hh-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ReleaseOfInformation ;
     ucm:governedByPolicy ex:policy-coc-e ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:validDuring ex:t-roi .
 
 # (d) renewal: the 2023 ROI that cd-jameson renews (three-year re-confirmation).
@@ -775,7 +777,7 @@ ex:cd-jameson-2023 a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-thomson-2023 ;
     ucm:consentSubject ex:p-jameson-subj-2023 ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentSuperseded ;
+    dpv:hasConsentStatus ucm:ConsentSuperseded ;
     ucm:hasConsentCategory ucm:ReleaseOfInformation ;
     ucm:validDuring ex:t-roi-2023 .
 
@@ -790,7 +792,7 @@ ex:ci-sarah a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentGrant ;
     ucm:hasConsentModality ucm:WrittenConsent ;
     ucm:occursDuring ex:t-ci-thomson ;
-    ucm:inJurisdiction ex:ExampleCoCE .
+    dpv:hasJurisdiction ex:ExampleCoCE .
 ex:p-sarah-grantor a ucm:Participation ;
     ucm:occursWithin ex:ci-sarah ; ucm:participatingEntity ex:sarah ; ucm:assumesRole ex:role-grantor .
 ex:p-sarah-subj a ucm:Participation ;
@@ -802,22 +804,22 @@ ex:cd-sarah a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-sarah ;
     ucm:consentSubject ex:p-sarah-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ReleaseOfInformation ;
-    ucm:hasRegulatoryBasis ucm:HMISDataStandards , ucm:CFR42Part2 ;
-    ucm:inJurisdiction ex:ExampleCoCE ;
+    dpv:hasApplicableLaw ucm:HMISDataStandards , ucm:CFR42Part2 ;
+    dpv:hasJurisdiction ex:ExampleCoCE ;
     ucm:validDuring ex:t-roi ;
     ucm:hasProvision ex:prov-sarah-part2 .
 ex:prov-sarah-part2 a ucm:ConsentProvision ;
     ucm:hasConsentDecision ucm:Deny ;
-    ucm:governsAction ucm:DiscloseAction , ucm:RediscloseAction ;
+    ucm:governsAction dpv:Disclose , ucm:RediscloseAction ;
     ucm:coversSensitivity ucm:Part2Protected ;
     ucm:coversInstance ex:doc-sud-note ;
     ucm:hasProvision ex:prov-sarah-part2-tx .
 ex:prov-sarah-part2-tx a ucm:ConsentProvision ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:governsAction ucm:DiscloseAction ;
-    ucm:forPurpose ucm:Treatment ;
+    ucm:governsAction dpv:Disclose ;
+    dpv:hasPurpose ucm:Treatment ;
     ucm:provisionActor ex:p-clinic-recipient ;
     ucm:coversDataCategory ucm:BehavioralHealthInformation ;
     ucm:dataPeriod ex:t-data .
@@ -844,7 +846,7 @@ ex:cd-a-2025 a ucm:ConsentDirective ;
     ucm:hasConsentCategory ucm:ConsentToShare ;
     ucm:consentSubject ex:p-a-subj-2025 ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentRevoked ;
+    dpv:hasConsentStatus dpv:ConsentWithdrawn ;
     ucm:revokedBy ex:ci-a-revoke ;
     ucm:validDuring ex:t-roi-2025 .
 
@@ -861,7 +863,7 @@ ex:cd-a-verbal a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-a-verbal ;
     ucm:consentSubject ex:p-a-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ConsentToShare ;
     ucm:validDuring ex:t-roi .
 ex:req-1 ucm:authorizedByConsent ex:cd-a-verbal .
@@ -909,7 +911,7 @@ ex:ci-youth a ucm:ConsentInteraction ;
     ucm:hasConsentInteractionType ucm:ConsentGrant ;
     ucm:hasConsentModality ucm:WrittenConsent ;
     ucm:occursDuring ex:t-ci-youth ;
-    ucm:inJurisdiction ex:ExampleCountyD .
+    dpv:hasJurisdiction ex:ExampleCountyD .
 ex:p-youth-grantor a ucm:Participation ;
     ucm:occursWithin ex:ci-youth ; ucm:participatingEntity ex:youth ;
     ucm:assumesRole ex:role-grantor ; ucm:identifiedAs ex:id-youth .
@@ -926,15 +928,15 @@ ex:cd-youth a ucm:ConsentDirective ;
     ucm:recordsConsentFrom ex:ci-youth , ex:ci-youth-verify ;
     ucm:consentSubject ex:p-youth-subj ;
     ucm:hasConsentDecision ucm:Permit ;
-    ucm:hasConsentStatus ucm:ConsentActive ;
+    dpv:hasConsentStatus ucm:ConsentActive ;
     ucm:hasConsentCategory ucm:ConsentToShare ;
     ucm:governedByPolicy ex:rule-state-d-housing ;
-    ucm:inJurisdiction ex:ExampleCountyD ;
+    dpv:hasJurisdiction ex:ExampleCountyD ;
     ucm:validDuring ex:t-roi ;
     ucm:hasProvision ex:prov-youth-ut .
 ex:prov-youth-ut a ucm:ConsentProvision ;
     ucm:hasConsentDecision ucm:Deny ;
-    ucm:governsAction ucm:DiscloseAction ;
+    ucm:governsAction dpv:Disclose ;
     ucm:coversSensitivity ucm:UnaccompaniedYouth .
 
 # ---------------------------------------------------------------- time

@@ -18,7 +18,8 @@ exclude: []
 # is found by convention; list bindings here when the names differ.
 scheme-bindings:
   governsAction: ConsentAction
-  forPurpose: PurposeOfUse
+  hasPurpose: PurposeOfUse
+  hasApplicableLaw: RegulatoryBasis
   coversDataCategory: InformationCategory
   coversSensitivity: SensitivityCategory
   hasSensitivityLabel: SensitivityCategory

@@ -8,6 +8,9 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ucm-lifecycle: <https://www.w3.org/ns/ucm#lifecycle> .
+@prefix dpv: <https://w3id.org/dpv#> .
+@prefix pd: <https://w3id.org/dpv/pd#> .
+@prefix legal-eu: <https://w3id.org/dpv/legal/eu#> .
 @base <https://www.w3.org/ns/ucm#lifecycle> .
 
 <https://www.w3.org/ns/ucm#lifecycle> rdf:type owl:Ontology ;
@@ -505,6 +508,7 @@ ucm:ReferralWithdrawn rdf:type owl:NamedIndividual ,
 
 #################################################################
 #    Consent and identity schemes (consent-concepts-plan, 2026-11-27)
+#    Concepts reused from DPV 2.3 keep DPV's label and definition; the UCM reading is a skos:scopeNote.
 #################################################################
 
 ###  https://www.w3.org/ns/ucm#ConsentStatus
@@ -518,9 +522,9 @@ ucm:ConsentStatus rdf:type owl:NamedIndividual ,
                   skos:hasTopConcept ucm:ConsentDraft ,
                                      ucm:ConsentActive ,
                                      ucm:ConsentInactive ,
-                                     ucm:ConsentRefused ,
+                                     dpv:ConsentRefused ,
                                      ucm:ConsentEnteredInError ,
-                                     ucm:ConsentStatusUnknown ;
+                                     dpv:ConsentUnknown ;
                   skos:prefLabel "Consent Status"@en .
 
 
@@ -551,22 +555,37 @@ ucm:ConsentInactive rdf:type owl:NamedIndividual ,
                     skos:topConceptOf ucm:ConsentStatus .
 
 
-###  https://www.w3.org/ns/ucm#ConsentRevoked
-ucm:ConsentRevoked rdf:type owl:NamedIndividual ,
-                            skos:Concept ;
-                   skos:broader ucm:ConsentInactive ;
-                   skos:definition "The subject or grantor withdrew the directive."@en ;
-                   skos:inScheme ucm:ConsentStatus ;
-                   skos:prefLabel "Revoked"@en .
+###  https://w3id.org/dpv#ConsentWithdrawn
+dpv:ConsentWithdrawn rdf:type owl:NamedIndividual ,
+                              skos:Concept ;
+                     skos:broader ucm:ConsentInactive ;
+                     rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                     skos:definition "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state"@en ;
+                     skos:inScheme ucm:ConsentStatus ;
+                     skos:prefLabel "Consent Withdrawn"@en ;
+                     skos:scopeNote "In UCM: the subject, or a grantor acting for them, withdrew the directive."@en .
 
 
-###  https://www.w3.org/ns/ucm#ConsentExpired
-ucm:ConsentExpired rdf:type owl:NamedIndividual ,
+###  https://w3id.org/dpv#ConsentRevoked
+dpv:ConsentRevoked rdf:type owl:NamedIndividual ,
                             skos:Concept ;
                    skos:broader ucm:ConsentInactive ;
-                   skos:definition "The directive's period of validity ended."@en ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state"@en ;
                    skos:inScheme ucm:ConsentStatus ;
-                   skos:prefLabel "Expired"@en .
+                   skos:prefLabel "Consent Revoked"@en ;
+                   skos:scopeNote "In UCM: a party other than the subject or their grantor, such as a court or the data controller, revoked the directive."@en .
+
+
+###  https://w3id.org/dpv#ConsentExpired
+dpv:ConsentExpired rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   skos:broader ucm:ConsentInactive ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where the temporal or contextual validity of consent has 'expired'"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Expired"@en ;
+                   skos:scopeNote "In UCM: the directive's period of validity ended."@en .
 
 
 ###  https://www.w3.org/ns/ucm#ConsentSuperseded
@@ -578,12 +597,14 @@ ucm:ConsentSuperseded rdf:type owl:NamedIndividual ,
                       skos:prefLabel "Superseded"@en .
 
 
-###  https://www.w3.org/ns/ucm#ConsentRefused
-ucm:ConsentRefused rdf:type owl:NamedIndividual ,
+###  https://w3id.org/dpv#ConsentRefused
+dpv:ConsentRefused rdf:type owl:NamedIndividual ,
                             skos:Concept ;
-                   skos:definition "The subject or grantor declined to give consent, so the directive never came into force."@en ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "The state where consent has been refused"@en ;
                    skos:inScheme ucm:ConsentStatus ;
-                   skos:prefLabel "Refused"@en ;
+                   skos:prefLabel "Consent Refused"@en ;
+                   skos:scopeNote "In UCM: the subject or grantor declined to give consent, so the directive never came into force."@en ;
                    skos:topConceptOf ucm:ConsentStatus .
 
 
@@ -596,13 +617,15 @@ ucm:ConsentEnteredInError rdf:type owl:NamedIndividual ,
                           skos:topConceptOf ucm:ConsentStatus .
 
 
-###  https://www.w3.org/ns/ucm#ConsentStatusUnknown
-ucm:ConsentStatusUnknown rdf:type owl:NamedIndividual ,
-                                  skos:Concept ;
-                         skos:definition "The status of the directive is not known."@en ;
-                         skos:inScheme ucm:ConsentStatus ;
-                         skos:prefLabel "Unknown"@en ;
-                         skos:topConceptOf ucm:ConsentStatus .
+###  https://w3id.org/dpv#ConsentUnknown
+dpv:ConsentUnknown rdf:type owl:NamedIndividual ,
+                            skos:Concept ;
+                   rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                   skos:definition "State where information about consent is not available or is unknown"@en ;
+                   skos:inScheme ucm:ConsentStatus ;
+                   skos:prefLabel "Consent Unknown"@en ;
+                   skos:scopeNote "In UCM: the status of the directive is not known."@en ;
+                   skos:topConceptOf ucm:ConsentStatus .
 
 
 ###  https://www.w3.org/ns/ucm#ConsentDecision
@@ -904,54 +927,62 @@ ucm:ConsentAction rdf:type owl:NamedIndividual ,
                   dcterms:publisher "MDIX"@en ;
                   dcterms:title "UCM Consent Action"@en ;
                   skos:definition "Actions on information that a consent provision governs."@en ;
-                  skos:hasTopConcept ucm:CollectAction ,
-                                     ucm:AccessAction ,
-                                     ucm:UseAction ,
-                                     ucm:DiscloseAction ,
+                  skos:hasTopConcept dpv:Collect ,
+                                     dpv:Access ,
+                                     dpv:Use ,
+                                     dpv:Disclose ,
                                      ucm:CorrectAction ;
                   skos:prefLabel "Consent Action"@en .
 
 
-###  https://www.w3.org/ns/ucm#CollectAction
-ucm:CollectAction rdf:type owl:NamedIndividual ,
-                           skos:Concept ;
-                  skos:definition "Gather and record information."@en ;
-                  skos:inScheme ucm:ConsentAction ;
-                  skos:prefLabel "Collect"@en ;
-                  skos:topConceptOf ucm:ConsentAction .
+###  https://w3id.org/dpv#Collect
+dpv:Collect rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+            skos:definition "to gather data from someone"@en ;
+            skos:inScheme ucm:ConsentAction ;
+            skos:prefLabel "Collect"@en ;
+            skos:scopeNote "In UCM: gather and record information."@en ;
+            skos:topConceptOf ucm:ConsentAction .
 
 
-###  https://www.w3.org/ns/ucm#AccessAction
-ucm:AccessAction rdf:type owl:NamedIndividual ,
-                          skos:Concept ;
-                 skos:definition "Retrieve and view information."@en ;
-                 skos:inScheme ucm:ConsentAction ;
-                 skos:prefLabel "Access"@en ;
-                 skos:topConceptOf ucm:ConsentAction .
+###  https://w3id.org/dpv#Access
+dpv:Access rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+           skos:definition "to access data"@en ;
+           skos:inScheme ucm:ConsentAction ;
+           skos:prefLabel "Access"@en ;
+           skos:scopeNote "In UCM: retrieve and view information."@en ;
+           skos:topConceptOf ucm:ConsentAction .
 
 
-###  https://www.w3.org/ns/ucm#UseAction
-ucm:UseAction rdf:type owl:NamedIndividual ,
-                       skos:Concept ;
-              skos:definition "Use information for a purpose."@en ;
-              skos:inScheme ucm:ConsentAction ;
-              skos:prefLabel "Use"@en ;
-              skos:topConceptOf ucm:ConsentAction .
+###  https://w3id.org/dpv#Use
+dpv:Use rdf:type owl:NamedIndividual ,
+                 skos:Concept ;
+        rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+        skos:definition "to use data"@en ;
+        skos:inScheme ucm:ConsentAction ;
+        skos:prefLabel "Use"@en ;
+        skos:scopeNote "In UCM: use information for a purpose."@en ;
+        skos:topConceptOf ucm:ConsentAction .
 
 
-###  https://www.w3.org/ns/ucm#DiscloseAction
-ucm:DiscloseAction rdf:type owl:NamedIndividual ,
-                            skos:Concept ;
-                   skos:definition "Release information to another party."@en ;
-                   skos:inScheme ucm:ConsentAction ;
-                   skos:prefLabel "Disclose"@en ;
-                   skos:topConceptOf ucm:ConsentAction .
+###  https://w3id.org/dpv#Disclose
+dpv:Disclose rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+             skos:definition "to make data known"@en ;
+             skos:inScheme ucm:ConsentAction ;
+             skos:prefLabel "Disclose"@en ;
+             skos:scopeNote "In UCM: release information to another party."@en ;
+             skos:topConceptOf ucm:ConsentAction .
 
 
 ###  https://www.w3.org/ns/ucm#RediscloseAction
 ucm:RediscloseAction rdf:type owl:NamedIndividual ,
                               skos:Concept ;
-                     skos:broader ucm:DiscloseAction ;
+                     skos:broader dpv:Disclose ;
                      skos:definition "A recipient releasing information it received to a further party."@en ;
                      skos:inScheme ucm:ConsentAction ;
                      skos:prefLabel "Redisclose"@en .
@@ -980,7 +1011,7 @@ ucm:PurposeOfUse rdf:type owl:NamedIndividual ,
                                     ucm:Payment ,
                                     ucm:HealthcareOperations ,
                                     ucm:EligibilityPurpose ,
-                                    ucm:ResearchPurpose ,
+                                    dpv:ScientificResearch ,
                                     ucm:PublicHealthPurpose ,
                                     ucm:FamilyRequested ,
                                     ucm:PatientRequested ,
@@ -1105,13 +1136,15 @@ ucm:BenefitsEnrollment rdf:type owl:NamedIndividual ,
                        skos:prefLabel "Benefits enrollment"@en .
 
 
-###  https://www.w3.org/ns/ucm#ResearchPurpose
-ucm:ResearchPurpose rdf:type owl:NamedIndividual ,
-                             skos:Concept ;
-                    skos:definition "Research."@en ;
-                    skos:inScheme ucm:PurposeOfUse ;
-                    skos:prefLabel "Research"@en ;
-                    skos:topConceptOf ucm:PurposeOfUse .
+###  https://w3id.org/dpv#ScientificResearch
+dpv:ScientificResearch rdf:type owl:NamedIndividual ,
+                                skos:Concept ;
+                       rdfs:isDefinedBy <https://w3id.org/dpv#> ;
+                       skos:definition "Purposes associated with scientific research"@en ;
+                       skos:inScheme ucm:PurposeOfUse ;
+                       skos:prefLabel "Scientific Research"@en ;
+                       skos:scopeNote "In UCM: research."@en ;
+                       skos:topConceptOf ucm:PurposeOfUse .
 
 
 ###  https://www.w3.org/ns/ucm#PublicHealthPurpose
@@ -1162,11 +1195,11 @@ ucm:InformationCategory rdf:type owl:NamedIndividual ,
                                            ucm:BehavioralHealthInformation ,
                                            ucm:HousingInformation ,
                                            ucm:IncomeAndBenefitsInformation ,
-                                           ucm:EducationInformation ,
+                                           pd:Education ,
                                            ucm:ChildWelfareInformation ,
                                            ucm:JusticeInformation ,
                                            ucm:NutritionInformation ,
-                                           ucm:IdentifyingInformation ;
+                                           pd:Identifying ;
                         skos:prefLabel "Information Category"@en .
 
 
@@ -1209,13 +1242,15 @@ ucm:IncomeAndBenefitsInformation rdf:type owl:NamedIndividual ,
                                  skos:topConceptOf ucm:InformationCategory .
 
 
-###  https://www.w3.org/ns/ucm#EducationInformation
-ucm:EducationInformation rdf:type owl:NamedIndividual ,
-                                  skos:Concept ;
-                         skos:definition "Education records."@en ;
-                         skos:inScheme ucm:InformationCategory ;
-                         skos:prefLabel "Education information"@en ;
-                         skos:topConceptOf ucm:InformationCategory .
+###  https://w3id.org/dpv/pd#Education
+pd:Education rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             rdfs:isDefinedBy <https://w3id.org/dpv/pd#> ;
+             skos:definition "Information about education"@en ;
+             skos:inScheme ucm:InformationCategory ;
+             skos:prefLabel "Education"@en ;
+             skos:scopeNote "In UCM: education records."@en ;
+             skos:topConceptOf ucm:InformationCategory .
 
 
 ###  https://www.w3.org/ns/ucm#ChildWelfareInformation
@@ -1245,13 +1280,15 @@ ucm:NutritionInformation rdf:type owl:NamedIndividual ,
                          skos:topConceptOf ucm:InformationCategory .
 
 
-###  https://www.w3.org/ns/ucm#IdentifyingInformation
-ucm:IdentifyingInformation rdf:type owl:NamedIndividual ,
-                                    skos:Concept ;
-                           skos:definition "Information that identifies a person, such as name, birth date and identifiers."@en ;
-                           skos:inScheme ucm:InformationCategory ;
-                           skos:prefLabel "Identifying information"@en ;
-                           skos:topConceptOf ucm:InformationCategory .
+###  https://w3id.org/dpv/pd#Identifying
+pd:Identifying rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               rdfs:isDefinedBy <https://w3id.org/dpv/pd#> ;
+               skos:definition "Information that uniquely or semi-uniquely identifies an individual or a group"@en ;
+               skos:inScheme ucm:InformationCategory ;
+               skos:prefLabel "Identifying"@en ;
+               skos:scopeNote "In UCM: information that identifies a person, such as name, birth date and identifiers."@en ;
+               skos:topConceptOf ucm:InformationCategory .
 
 
 ###  https://www.w3.org/ns/ucm#SensitivityCategory
@@ -1525,7 +1562,7 @@ ucm:RegulatoryBasis rdf:type owl:NamedIndividual ,
                                        ucm:CommonRule ,
                                        ucm:HMISDataStandards ,
                                        ucm:FERPA ,
-                                       ucm:GDPR ,
+                                       legal-eu:law-GDPR ,
                                        ucm:VAWA ,
                                        ucm:StateLaw ;
                     skos:prefLabel "Regulatory Basis"@en .
@@ -1603,13 +1640,14 @@ ucm:FERPA rdf:type owl:NamedIndividual ,
           skos:topConceptOf ucm:RegulatoryBasis .
 
 
-###  https://www.w3.org/ns/ucm#GDPR
-ucm:GDPR rdf:type owl:NamedIndividual ,
-                  skos:Concept ;
-         skos:definition "The EU General Data Protection Regulation (Regulation (EU) 2016/679)."@en ;
-         skos:inScheme ucm:RegulatoryBasis ;
-         skos:prefLabel "GDPR"@en ;
-         skos:topConceptOf ucm:RegulatoryBasis .
+###  https://w3id.org/dpv/legal/eu#law-GDPR
+legal-eu:law-GDPR rdf:type owl:NamedIndividual ,
+                           skos:Concept ;
+                  rdfs:isDefinedBy <https://w3id.org/dpv/legal/eu#> ;
+                  skos:inScheme ucm:RegulatoryBasis ;
+                  skos:prefLabel "General Data Protection Regulation (GDPR)"@en ;
+                  skos:scopeNote "In UCM: the EU General Data Protection Regulation (Regulation (EU) 2016/679)."@en ;
+                  skos:topConceptOf ucm:RegulatoryBasis .
 
 
 ###  https://www.w3.org/ns/ucm#VAWA

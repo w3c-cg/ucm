@@ -6,7 +6,7 @@
 |---|---|
 | `Consent` | `ucm:ConsentDirective` |
 | `identifier` | Adopter identifier (already open-world). Codegen keeps a stable id (requirement 22). |
-| `status` | `ucm:hasConsentStatus` |
+| `status` | `dpv:hasConsentStatus` |
 | `category` | `ucm:hasConsentCategory` |
 | `subject` | `ucm:consentSubject`, a Participation with `ConsentSubjectRole` |
 | `date` | `ucm:statementDate` on the directive, or `occursDuring` on the ConsentInteraction |
@@ -15,7 +15,7 @@
 | `grantee` | A Participation with `InformationRecipientRole` |
 | `manager`, `controller` | A Participation with `InformationCustodianRole`. Narrower roles if the split matters (Q8). |
 | `sourceAttachment`, `sourceReference`, `policyText` | `ucm:sourceDocument` |
-| `regulatoryBasis` | `ucm:hasRegulatoryBasis` |
+| `regulatoryBasis` | `dpv:hasApplicableLaw` |
 | `policyBasis` | `ucm:governedByPolicy`, pointing to a `ucm:ConsentPolicy` |
 | `decision` | `ucm:hasConsentDecision` |
 | `verification[]` | A ConsentInteraction with type `ConsentVerification` and a `ConsentVerifierRole` participation. `verifiedWith` is the subject or grantor participation. |
@@ -24,7 +24,7 @@
 | `provision.actor{role, reference}` | `ucm:provisionActor`, a Participation (`assumesRole`, `participatingEntity`) |
 | `provision.action` | `ucm:governsAction` |
 | `provision.securityLabel` | `ucm:coversSensitivity` (sensitivity codes) or `ucm:coversConfidentiality` (confidentiality codes) |
-| `provision.purpose` | `ucm:forPurpose` |
+| `provision.purpose` | `dpv:hasPurpose` |
 | `provision.documentType`, `resourceType`, `code` | `ucm:coversDataCategory` |
 | `provision.dataPeriod` | `ucm:dataPeriod` |
 | `provision.data{meaning, reference}` | `ucm:coversInformation` with subproperties for instance, related, dependents and authoredby (Q6) |
@@ -52,7 +52,7 @@ maps `ConsentDirective` to R4 `Consent`, and the generated
 
 | R4 `Consent` | UCM | Read back |
 |---|---|---|
-| `status` | `hasConsentStatus` (`inactive` carries the exact concept in `_status`) | yes |
+| `status` | `dpv:hasConsentStatus` (`inactive` carries the exact concept in `_status`) | yes |
 | `scope` | from `hasConsentCategory` (consentscope codes) | no, `category` carries it |
 | `category` | `hasConsentCategory` | yes |
 | `patient` | `consentSubject` / `participatingEntity`, a Patient only | yes |
@@ -61,10 +61,10 @@ maps `ConsentDirective` to R4 `Consent`, and the generated
 | `organization` | custodian participations in the consent interaction | no |
 | `sourceReference` | `sourceDocument` | yes |
 | `policy.uri` | `governedByPolicy` | yes |
-| `policyRule` | `hasRegulatoryBasis` (first value; more are warned) | yes |
+| `policyRule` | `dpv:hasApplicableLaw` (first value; more are warned) | yes |
 | `provision` (root) | the directive: `hasConsentDecision`, `validDuring` | type yes, period no |
 | `provision.provision` | `hasProvision`, two levels deep | yes |
-| `.type`, `.action`, `.purpose`, `.code` | `hasConsentDecision`, `governsAction`, `forPurpose`, `coversDataCategory` | yes |
+| `.type`, `.action`, `.purpose`, `.code` | `hasConsentDecision`, `governsAction`, `dpv:hasPurpose`, `coversDataCategory` | yes |
 | `.securityLabel` | `coversSensitivity` and `coversConfidentiality` | yes, each to its own property |
 | `.actor{role, reference}` | `provisionActor` participation | yes |
 | `.data{meaning, reference}` | `coversInstance`, `coversRelated`, `coversDependents`, `coversAuthoredBy` | yes |
@@ -72,3 +72,7 @@ maps `ConsentDirective` to R4 `Consent`, and the generated
 Not mapped: `verification` (R4 cannot name the verifier) and the consent
 interaction itself, which an R4 `Provenance` could carry. A household-wide
 directive has no R4 `patient` (R5 `subject` allows a Group); the adapter warns.
+
+Concept codings use the concept's own namespace as the coding system: UCM concepts
+are coded in `https://www.w3.org/ns/ucm#`, and concepts UCM reuses from DPV in DPV's
+namespace, for example `{"system": "https://w3id.org/dpv#", "code": "Disclose"}`.

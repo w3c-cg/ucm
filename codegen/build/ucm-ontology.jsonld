@@ -9,7 +9,11 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "sh": "http://www.w3.org/ns/shacl#",
     "time": "http://www.w3.org/2006/time#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcam": "http://purl.org/dc/dcam/",
+    "dpv": "https://w3id.org/dpv#",
+    "pd": "https://w3id.org/dpv/pd#",
+    "legal-eu": "https://w3id.org/dpv/legal/eu#"
   },
   "@graph": [
     {
@@ -27,6 +31,429 @@
     {
       "@id": "dcterms:title",
       "@type": "owl:AnnotationProperty"
+    },
+    {
+      "@id": "dpv:Access",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to access data"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Access"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: retrieve and view information."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:Collect",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to gather data from someone"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Collect"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: gather and record information."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:ConsentExpired",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the temporal or contextual validity of consent has 'expired'"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Expired"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the directive's period of validity ended."
+      }
+    },
+    {
+      "@id": "dpv:ConsentRefused",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where consent has been refused"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Refused"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the subject or grantor declined to give consent, so the directive never came into force."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "dpv:ConsentRevoked",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Revoked"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: a party other than the subject or their grantor, such as a court or the data controller, revoked the directive."
+      }
+    },
+    {
+      "@id": "dpv:ConsentUnknown",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "State where information about consent is not available or is unknown"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Unknown"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the status of the directive is not known."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentStatus"
+      }
+    },
+    {
+      "@id": "dpv:ConsentWithdrawn",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:broader": {
+        "@id": "ucm:ConsentInactive"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentStatus"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Consent Withdrawn"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the subject, or a grantor acting for them, withdrew the directive."
+      }
+    },
+    {
+      "@id": "dpv:Disclose",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to make data known"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Disclose"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: release information to another party."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:PrivacyNotice",
+      "@type": "owl:Class",
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "rdfs:subClassOf": {
+        "@id": "ucm:PolicyDefinition"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Represents a notice or document outlining information regarding privacy"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Privacy Notice"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: a published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act."
+      }
+    },
+    {
+      "@id": "dpv:ScientificResearch",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Purposes associated with scientific research"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:PurposeOfUse"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Scientific Research"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: research."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:PurposeOfUse"
+      }
+    },
+    {
+      "@id": "dpv:Use",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "to use data"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:ConsentAction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Use"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: use information for a purpose."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:ConsentAction"
+      }
+    },
+    {
+      "@id": "dpv:hasApplicableLaw",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "ucm:ConsentDirective"
+        },
+        {
+          "@id": "ucm:ConsentPolicy"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates applicability of a Law"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has applicable law"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis), a concept in ucm:RegulatoryBasis."
+      }
+    },
+    {
+      "@id": "dpv:hasConsentStatus",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": {
+        "@id": "ucm:ConsentDirective"
+      },
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Specifies the state or status of consent"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has consent status"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent directive to whether it applies now (FHIR Consent.status), a concept in ucm:ConsentStatus."
+      }
+    },
+    {
+      "@id": "dpv:hasJurisdiction",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "ucm:ConsentDirective"
+        },
+        {
+          "@id": "ucm:ConsentInteraction"
+        },
+        {
+          "@id": "ucm:ConsentPolicy"
+        },
+        {
+          "@id": "ucm:Identifier"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "ucm:JurisdictionContext"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates applicability of specified jurisdiction"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has jurisdiction"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent, consent interaction, policy or identifier to the jurisdiction context where it was given, is in force or was issued."
+      }
+    },
+    {
+      "@id": "dpv:hasPurpose",
+      "@type": "owl:ObjectProperty",
+      "dcam:domainIncludes": [
+        {
+          "@id": "dpv:PrivacyNotice"
+        },
+        {
+          "@id": "ucm:ConsentProvision"
+        }
+      ],
+      "dcam:rangeIncludes": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Indicates association with Purpose"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "has purpose"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: relates a consent provision or privacy notice to a purpose of use it covers, a concept in ucm:PurposeOfUse or SKOS-mapped to one."
+      }
     },
     {
       "@id": "http://purl.bioontology.org/ontology/SNOMEDCT#337915000",
@@ -76,6 +503,86 @@
         "@id": "ucm:0.0.1"
       },
       "owl:versionInfo": "v0.0.1"
+    },
+    {
+      "@id": "legal-eu:law-GDPR",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/legal/eu#"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:RegulatoryBasis"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "General Data Protection Regulation (GDPR)"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: the EU General Data Protection Regulation (Regulation (EU) 2016/679)."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:RegulatoryBasis"
+      }
+    },
+    {
+      "@id": "pd:Education",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/pd#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information about education"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Education"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: education records."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
+    },
+    {
+      "@id": "pd:Identifying",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "https://w3id.org/dpv/pd#"
+      },
+      "skos:definition": {
+        "@language": "en",
+        "@value": "Information that uniquely or semi-uniquely identifies an individual or a group"
+      },
+      "skos:inScheme": {
+        "@id": "ucm:InformationCategory"
+      },
+      "skos:prefLabel": {
+        "@language": "en",
+        "@value": "Identifying"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "In UCM: information that identifies a person, such as name, birth date and identifiers."
+      },
+      "skos:topConceptOf": {
+        "@id": "ucm:InformationCategory"
+      }
     },
     {
       "@id": "skos:Concept",
@@ -248,27 +755,6 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:LifecycleState"
-      }
-    },
-    {
-      "@id": "ucm:AccessAction",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Retrieve and view information."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentAction"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Access"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentAction"
       }
     },
     {
@@ -984,27 +1470,6 @@
       }
     },
     {
-      "@id": "ucm:CollectAction",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Gather and record information."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentAction"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Collect"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentAction"
-      }
-    },
-    {
       "@id": "ucm:CommitmentInForce",
       "@type": [
         "owl:NamedIndividual",
@@ -1395,19 +1860,19 @@
       },
       "skos:hasTopConcept": [
         {
-          "@id": "ucm:AccessAction"
+          "@id": "dpv:Access"
         },
         {
-          "@id": "ucm:CollectAction"
+          "@id": "dpv:Collect"
+        },
+        {
+          "@id": "dpv:Disclose"
+        },
+        {
+          "@id": "dpv:Use"
         },
         {
           "@id": "ucm:CorrectAction"
-        },
-        {
-          "@id": "ucm:DiscloseAction"
-        },
-        {
-          "@id": "ucm:UseAction"
         }
       ],
       "skos:prefLabel": {
@@ -1590,27 +2055,6 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:ConsentStatus"
-      }
-    },
-    {
-      "@id": "ucm:ConsentExpired",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:broader": {
-        "@id": "ucm:ConsentInactive"
-      },
-      "skos:definition": {
-        "@language": "en",
-        "@value": "The directive's period of validity ended."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentStatus"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Expired"
       }
     },
     {
@@ -1869,27 +2313,6 @@
       }
     },
     {
-      "@id": "ucm:ConsentRefused",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "The subject or grantor declined to give consent, so the directive never came into force."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentStatus"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Refused"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentStatus"
-      }
-    },
-    {
       "@id": "ucm:ConsentRenewal",
       "@type": [
         "owl:NamedIndividual",
@@ -1932,27 +2355,6 @@
       }
     },
     {
-      "@id": "ucm:ConsentRevoked",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:broader": {
-        "@id": "ucm:ConsentInactive"
-      },
-      "skos:definition": {
-        "@language": "en",
-        "@value": "The subject or grantor withdrew the directive."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentStatus"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Revoked"
-      }
-    },
-    {
       "@id": "ucm:ConsentStatus",
       "@type": [
         "owl:NamedIndividual",
@@ -1980,6 +2382,12 @@
       },
       "skos:hasTopConcept": [
         {
+          "@id": "dpv:ConsentRefused"
+        },
+        {
+          "@id": "dpv:ConsentUnknown"
+        },
+        {
           "@id": "ucm:ConsentActive"
         },
         {
@@ -1990,38 +2398,11 @@
         },
         {
           "@id": "ucm:ConsentInactive"
-        },
-        {
-          "@id": "ucm:ConsentRefused"
-        },
-        {
-          "@id": "ucm:ConsentStatusUnknown"
         }
       ],
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Consent Status"
-      }
-    },
-    {
-      "@id": "ucm:ConsentStatusUnknown",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "The status of the directive is not known."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentStatus"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Unknown"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentStatus"
       }
     },
     {
@@ -2342,27 +2723,6 @@
       }
     },
     {
-      "@id": "ucm:DiscloseAction",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Release information to another party."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentAction"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Disclose"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentAction"
-      }
-    },
-    {
       "@id": "ucm:DocumentEvidence",
       "@type": [
         "owl:NamedIndividual",
@@ -2402,27 +2762,6 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:IdentifierType"
-      }
-    },
-    {
-      "@id": "ucm:EducationInformation",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Education records."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:InformationCategory"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Education information"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:InformationCategory"
       }
     },
     {
@@ -2924,27 +3263,6 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:BirthDateQuality"
-      }
-    },
-    {
-      "@id": "ucm:GDPR",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "The EU General Data Protection Regulation (Regulation (EU) 2016/679)."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:RegulatoryBasis"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "GDPR"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:RegulatoryBasis"
       }
     },
     {
@@ -3663,27 +3981,6 @@
       }
     },
     {
-      "@id": "ucm:IdentifyingInformation",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Information that identifies a person, such as name, birth date and identifiers."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:InformationCategory"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Identifying information"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:InformationCategory"
-      }
-    },
-    {
       "@id": "ucm:Identity",
       "@type": "owl:Class",
       "rdfs:comment": "A set of identifiers, attributes and characteristics by which one entity is recognized within a context, such as a system, program, jurisdiction or trust framework. An entity can have many identities.",
@@ -3931,6 +4228,12 @@
       },
       "skos:hasTopConcept": [
         {
+          "@id": "pd:Education"
+        },
+        {
+          "@id": "pd:Identifying"
+        },
+        {
           "@id": "ucm:BehavioralHealthInformation"
         },
         {
@@ -3940,13 +4243,7 @@
           "@id": "ucm:ClinicalInformation"
         },
         {
-          "@id": "ucm:EducationInformation"
-        },
-        {
           "@id": "ucm:HousingInformation"
-        },
-        {
-          "@id": "ucm:IdentifyingInformation"
         },
         {
           "@id": "ucm:IncomeAndBenefitsInformation"
@@ -4727,15 +5024,6 @@
       }
     },
     {
-      "@id": "ucm:PrivacyNotice",
-      "@type": "owl:Class",
-      "rdfs:comment": "A published statement of an organization's or program's purposes for collecting information and its permitted uses and disclosures, which applies without an individual consent act.",
-      "rdfs:label": "Privacy Notice",
-      "rdfs:subClassOf": {
-        "@id": "ucm:PolicyDefinition"
-      }
-    },
-    {
       "@id": "ucm:Process",
       "@type": "owl:Class",
       "rdfs:comment": "A bounded interaction or activity occurring over time.",
@@ -4957,6 +5245,9 @@
       },
       "skos:hasTopConcept": [
         {
+          "@id": "dpv:ScientificResearch"
+        },
+        {
           "@id": "ucm:CareCoordination"
         },
         {
@@ -4984,9 +5275,6 @@
           "@id": "ucm:PublicHealthPurpose"
         },
         {
-          "@id": "ucm:ResearchPurpose"
-        },
-        {
           "@id": "ucm:Treatment"
         }
       ],
@@ -5002,7 +5290,7 @@
         "skos:Concept"
       ],
       "skos:broader": {
-        "@id": "ucm:DiscloseAction"
+        "@id": "dpv:Disclose"
       },
       "skos:definition": {
         "@language": "en",
@@ -5210,6 +5498,9 @@
       },
       "skos:hasTopConcept": [
         {
+          "@id": "legal-eu:law-GDPR"
+        },
+        {
           "@id": "ucm:CFR42Part2"
         },
         {
@@ -5217,9 +5508,6 @@
         },
         {
           "@id": "ucm:FERPA"
-        },
-        {
-          "@id": "ucm:GDPR"
         },
         {
           "@id": "ucm:HIPAA"
@@ -5330,27 +5618,6 @@
       },
       "skos:topConceptOf": {
         "@id": "ucm:ConsentCategory"
-      }
-    },
-    {
-      "@id": "ucm:ResearchPurpose",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Research."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:PurposeOfUse"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Research"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:PurposeOfUse"
       }
     },
     {
@@ -6084,27 +6351,6 @@
       }
     },
     {
-      "@id": "ucm:UseAction",
-      "@type": [
-        "owl:NamedIndividual",
-        "skos:Concept"
-      ],
-      "skos:definition": {
-        "@language": "en",
-        "@value": "Use information for a purpose."
-      },
-      "skos:inScheme": {
-        "@id": "ucm:ConsentAction"
-      },
-      "skos:prefLabel": {
-        "@language": "en",
-        "@value": "Use"
-      },
-      "skos:topConceptOf": {
-        "@id": "ucm:ConsentAction"
-      }
-    },
-    {
       "@id": "ucm:VAWA",
       "@type": [
         "owl:NamedIndividual",
@@ -6229,7 +6475,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates an identity proofing process or identity to the identity assurance level it reached.",
       "rdfs:domain": {
-        "@id": "_:c14n32"
+        "@id": "_:c14n26"
       },
       "rdfs:label": "achieved IAL",
       "rdfs:range": {
@@ -6245,7 +6491,7 @@
       },
       "rdfs:label": "acknowledges notice",
       "rdfs:range": {
-        "@id": "ucm:PrivacyNotice"
+        "@id": "dpv:PrivacyNotice"
       }
     },
     {
@@ -6264,7 +6510,7 @@
       "@type": "owl:DatatypeProperty",
       "rdfs:comment": "Whether an amendment to the privacy notice applies to information collected before the amendment.",
       "rdfs:domain": {
-        "@id": "ucm:PrivacyNotice"
+        "@id": "dpv:PrivacyNotice"
       },
       "rdfs:label": "amendment applies retroactively",
       "rdfs:range": {
@@ -6276,7 +6522,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates an identity assertion or credential to the identity it makes claims about.",
       "rdfs:domain": {
-        "@id": "_:c14n33"
+        "@id": "_:c14n27"
       },
       "rdfs:label": "asserts identity",
       "rdfs:range": {
@@ -6339,7 +6585,7 @@
       },
       "rdfs:label": "birth date",
       "rdfs:range": {
-        "@id": "_:c14n28"
+        "@id": "_:c14n24"
       }
     },
     {
@@ -6560,18 +6806,6 @@
       }
     },
     {
-      "@id": "ucm:forPurpose",
-      "@type": "owl:ObjectProperty",
-      "rdfs:comment": "Relates a provision or privacy notice to a purpose of use it covers.",
-      "rdfs:domain": {
-        "@id": "_:c14n26"
-      },
-      "rdfs:label": "for purpose",
-      "rdfs:range": {
-        "@id": "skos:Concept"
-      }
-    },
-    {
       "@id": "ucm:generatedByProcess",
       "@type": "owl:ObjectProperty",
       "rdfs:domain": {
@@ -6587,7 +6821,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive, provision or program to the consent policy it relies on (FHIR Consent.policyBasis).",
       "rdfs:domain": {
-        "@id": "_:c14n8"
+        "@id": "_:c14n6"
       },
       "rdfs:label": "governed by policy",
       "rdfs:range": {
@@ -6686,7 +6920,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive or provision to its permit or deny decision. Every provision states its own decision, the opposite of its parent's.",
       "rdfs:domain": {
-        "@id": "_:c14n3"
+        "@id": "_:c14n1"
       },
       "rdfs:label": "has consent decision",
       "rdfs:range": {
@@ -6722,21 +6956,9 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a policy, program or notice to its consent model, such as opt-in or opt-out.",
       "rdfs:domain": {
-        "@id": "_:c14n34"
+        "@id": "_:c14n28"
       },
       "rdfs:label": "has consent model",
-      "rdfs:range": {
-        "@id": "skos:Concept"
-      }
-    },
-    {
-      "@id": "ucm:hasConsentStatus",
-      "@type": "owl:ObjectProperty",
-      "rdfs:comment": "Relates a consent directive to whether it applies now (FHIR Consent.status).",
-      "rdfs:domain": {
-        "@id": "ucm:ConsentDirective"
-      },
-      "rdfs:label": "has consent status",
       "rdfs:range": {
         "@id": "skos:Concept"
       }
@@ -6899,7 +7121,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive, or an enclosing provision, to a provision within it (FHIR Consent.provision).",
       "rdfs:domain": {
-        "@id": "_:c14n4"
+        "@id": "_:c14n2"
       },
       "rdfs:label": "has provision",
       "rdfs:range": {
@@ -6914,18 +7136,6 @@
         "@id": "ucm:CoordinationRequest"
       },
       "rdfs:label": "has referral disposition",
-      "rdfs:range": {
-        "@id": "skos:Concept"
-      }
-    },
-    {
-      "@id": "ucm:hasRegulatoryBasis",
-      "@type": "owl:ObjectProperty",
-      "rdfs:comment": "Relates a consent directive or policy to the law or regulation it rests on (FHIR Consent.regulatoryBasis).",
-      "rdfs:domain": {
-        "@id": "_:c14n16"
-      },
-      "rdfs:label": "has regulatory basis",
       "rdfs:range": {
         "@id": "skos:Concept"
       }
@@ -6947,7 +7157,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive or provision to what happens to the data when its retention period ends.",
       "rdfs:domain": {
-        "@id": "_:c14n12"
+        "@id": "_:c14n10"
       },
       "rdfs:label": "has retention disposition",
       "rdfs:range": {
@@ -7024,23 +7234,11 @@
       }
     },
     {
-      "@id": "ucm:inJurisdiction",
-      "@type": "owl:ObjectProperty",
-      "rdfs:comment": "Relates a consent, consent interaction, policy or identifier to the jurisdiction where it was given, is in force or was issued.",
-      "rdfs:domain": {
-        "@id": "_:c14n15"
-      },
-      "rdfs:label": "in jurisdiction",
-      "rdfs:range": {
-        "@id": "ucm:JurisdictionContext"
-      }
-    },
-    {
       "@id": "ucm:issuedBy",
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates an identifier, credential or certification to the entity that issued it.",
       "rdfs:domain": {
-        "@id": "_:c14n7"
+        "@id": "_:c14n5"
       },
       "rdfs:label": "issued by",
       "rdfs:range": {
@@ -7201,7 +7399,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a privacy notice to a location where it is posted, such as an intake desk.",
       "rdfs:domain": {
-        "@id": "ucm:PrivacyNotice"
+        "@id": "dpv:PrivacyNotice"
       },
       "rdfs:label": "posted at",
       "rdfs:range": {
@@ -7213,7 +7411,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive or provision to a jurisdiction where the data may be stored or processed. Several values mean any of them is allowed (ISO/IEC TS 27560 storage and processing locations).",
       "rdfs:domain": {
-        "@id": "_:c14n10"
+        "@id": "_:c14n8"
       },
       "rdfs:label": "processing location",
       "rdfs:range": {
@@ -7272,7 +7470,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent policy or trust framework to the minimum authenticator assurance level it requires.",
       "rdfs:domain": {
-        "@id": "_:c14n23"
+        "@id": "_:c14n21"
       },
       "rdfs:label": "requires AAL",
       "rdfs:range": {
@@ -7284,7 +7482,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent policy or trust framework to the minimum identity assurance level it requires.",
       "rdfs:domain": {
-        "@id": "_:c14n9"
+        "@id": "_:c14n7"
       },
       "rdfs:label": "requires IAL",
       "rdfs:range": {
@@ -7296,7 +7494,7 @@
       "@type": "owl:DatatypeProperty",
       "rdfs:comment": "How long data covered by the consent may be kept, as a duration such as P7Y (ISO/IEC TS 27560 retention period).",
       "rdfs:domain": {
-        "@id": "_:c14n19"
+        "@id": "_:c14n16"
       },
       "rdfs:label": "retention period",
       "rdfs:range": {
@@ -7355,7 +7553,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates a consent directive or privacy notice to its source, such as a scanned signed form or the policy text.",
       "rdfs:domain": {
-        "@id": "_:c14n6"
+        "@id": "_:c14n4"
       },
       "rdfs:label": "source document",
       "rdfs:range": {
@@ -7414,7 +7612,7 @@
       "@type": "owl:ObjectProperty",
       "rdfs:comment": "Relates an identity proofing, assertion, credential or certification to the trust framework whose rules it follows.",
       "rdfs:domain": {
-        "@id": "_:c14n20"
+        "@id": "_:c14n17"
       },
       "rdfs:label": "under trust framework",
       "rdfs:range": {
@@ -7472,7 +7670,7 @@
       "@type": "owl:DatatypeProperty",
       "rdfs:comment": "How the person can revoke the consent: a URL, phone number, form or written instructions, as text (ISO/IEC TS 27560 withdrawal method).",
       "rdfs:domain": {
-        "@id": "_:c14n14"
+        "@id": "_:c14n12"
       },
       "rdfs:label": "withdrawal method",
       "rdfs:range": {
@@ -7499,6 +7697,20 @@
       "@type": "rdfs:Datatype"
     },
     {
+      "@id": "_:c14n1",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
       "@id": "_:c14n10",
       "@type": "owl:Class",
       "owl:unionOf": {
@@ -7521,44 +7733,10 @@
             "@id": "ucm:ConsentDirective"
           },
           {
-            "@id": "ucm:ConsentProvision"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n14",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentDirective"
-          },
-          {
-            "@id": "ucm:PrivacyNotice"
+            "@id": "dpv:PrivacyNotice"
           },
           {
             "@id": "ucm:ConsentPolicy"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n15",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentDirective"
-          },
-          {
-            "@id": "ucm:ConsentInteraction"
-          },
-          {
-            "@id": "ucm:ConsentPolicy"
-          },
-          {
-            "@id": "ucm:Identifier"
           }
         ]
       }
@@ -7572,27 +7750,13 @@
             "@id": "ucm:ConsentDirective"
           },
           {
-            "@id": "ucm:ConsentPolicy"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n19",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentDirective"
-          },
-          {
             "@id": "ucm:ConsentProvision"
           }
         ]
       }
     },
     {
-      "@id": "_:c14n20",
+      "@id": "_:c14n17",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7612,7 +7776,21 @@
       }
     },
     {
-      "@id": "_:c14n23",
+      "@id": "_:c14n2",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n21",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7626,21 +7804,7 @@
       }
     },
     {
-      "@id": "_:c14n26",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentProvision"
-          },
-          {
-            "@id": "ucm:PrivacyNotice"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n28",
+      "@id": "_:c14n24",
       "@type": "rdfs:Datatype",
       "owl:unionOf": {
         "@list": [
@@ -7657,21 +7821,7 @@
       }
     },
     {
-      "@id": "_:c14n3",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentDirective"
-          },
-          {
-            "@id": "ucm:ConsentProvision"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n32",
+      "@id": "_:c14n26",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7685,7 +7835,7 @@
       }
     },
     {
-      "@id": "_:c14n33",
+      "@id": "_:c14n27",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7699,7 +7849,7 @@
       }
     },
     {
-      "@id": "_:c14n34",
+      "@id": "_:c14n28",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7710,7 +7860,7 @@
             "@id": "ucm:ProgramDefinition"
           },
           {
-            "@id": "ucm:PrivacyNotice"
+            "@id": "dpv:PrivacyNotice"
           }
         ]
       }
@@ -7724,27 +7874,13 @@
             "@id": "ucm:ConsentDirective"
           },
           {
-            "@id": "ucm:ConsentProvision"
+            "@id": "dpv:PrivacyNotice"
           }
         ]
       }
     },
     {
-      "@id": "_:c14n6",
-      "@type": "owl:Class",
-      "owl:unionOf": {
-        "@list": [
-          {
-            "@id": "ucm:ConsentDirective"
-          },
-          {
-            "@id": "ucm:PrivacyNotice"
-          }
-        ]
-      }
-    },
-    {
-      "@id": "_:c14n7",
+      "@id": "_:c14n5",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7761,7 +7897,7 @@
       }
     },
     {
-      "@id": "_:c14n8",
+      "@id": "_:c14n6",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7778,7 +7914,7 @@
       }
     },
     {
-      "@id": "_:c14n9",
+      "@id": "_:c14n7",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -7787,6 +7923,20 @@
           },
           {
             "@id": "ucm:TrustFramework"
+          }
+        ]
+      }
+    },
+    {
+      "@id": "_:c14n8",
+      "@type": "owl:Class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "@id": "ucm:ConsentDirective"
+          },
+          {
+            "@id": "ucm:ConsentProvision"
           }
         ]
       }
