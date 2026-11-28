@@ -8,9 +8,9 @@
   "sources": [
     {
       "file": "ucm-ontology.jsonld",
-      "digest": "sha256:a941532b4247c6ecdf2bbcf44baccda131a137cf926802e03b69ec394932ddbb",
-      "triples": 2513,
-      "content": "sha256:b911a1b2ff04a63fefa733c3f45c00d598038cb51cdbdc654fc01dadd797611e"
+      "digest": "sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e",
+      "triples": 2515,
+      "content": "sha256:73a748572263e62b730f641d39f17d2e045208ecdf00dff6e6f02dfb0190bd0f"
     },
     {
       "file": "ucm-shapes.jsonld",
@@ -2055,7 +2055,7 @@
           "term": "AAL1",
           "label": "AAL1",
           "alt_labels": [],
-          "definition": "Single-factor or multi-factor authentication with basic assurance (NIST AAL1).",
+          "definition": "Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1).",
           "broader": [],
           "mappings": {}
         },
@@ -2064,7 +2064,7 @@
           "term": "AAL2",
           "label": "AAL2",
           "alt_labels": [],
-          "definition": "Multi-factor authentication with high confidence (NIST AAL2).",
+          "definition": "High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2).",
           "broader": [],
           "mappings": {}
         },
@@ -2073,7 +2073,7 @@
           "term": "AAL3",
           "label": "AAL3",
           "alt_labels": [],
-          "definition": "Multi-factor authentication with a hardware-based, phishing-resistant authenticator (NIST AAL3).",
+          "definition": "Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3).",
           "broader": [],
           "mappings": {}
         }
@@ -2090,7 +2090,7 @@
           "term": "ApproximateOrPartial",
           "label": "Approximate or partial",
           "alt_labels": [],
-          "definition": "An approximate or partial date of birth was reported.",
+          "definition": "An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported).",
           "broader": [],
           "mappings": {}
         },
@@ -2099,7 +2099,7 @@
           "term": "ClientDoesNotKnow",
           "label": "Client doesn't know",
           "alt_labels": [],
-          "definition": "The person does not know their date of birth.",
+          "definition": "The person does not know their date of birth. HMIS allows this only with no birth date recorded.",
           "broader": [],
           "mappings": {}
         },
@@ -2108,7 +2108,7 @@
           "term": "ClientPreferNotToAnswer",
           "label": "Client prefers not to answer",
           "alt_labels": [],
-          "definition": "The person declined to give their date of birth.",
+          "definition": "The person declined to give their date of birth. HMIS allows this only with no birth date recorded.",
           "broader": [],
           "mappings": {}
         },
@@ -2117,7 +2117,7 @@
           "term": "DataNotCollected",
           "label": "Data not collected",
           "alt_labels": [],
-          "definition": "The date of birth was not collected.",
+          "definition": "The date of birth was not collected. HMIS allows this only with no birth date recorded.",
           "broader": [],
           "mappings": {}
         },
@@ -2126,7 +2126,7 @@
           "term": "FullDateReported",
           "label": "Full date reported",
           "alt_labels": [],
-          "definition": "The full date of birth was reported.",
+          "definition": "The full date of birth was reported (HMIS: Full DOB reported).",
           "broader": [],
           "mappings": {}
         }
@@ -2828,7 +2828,7 @@
           "term": "FAL1",
           "label": "FAL1",
           "alt_labels": [],
-          "definition": "A signed assertion from the identity provider (NIST FAL1).",
+          "definition": "Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1).",
           "broader": [],
           "mappings": {}
         },
@@ -2837,7 +2837,7 @@
           "term": "FAL2",
           "label": "FAL2",
           "alt_labels": [],
-          "definition": "An assertion protected against injection and bound to the relying party (NIST FAL2).",
+          "definition": "High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2).",
           "broader": [],
           "mappings": {}
         },
@@ -2846,7 +2846,7 @@
           "term": "FAL3",
           "label": "FAL3",
           "alt_labels": [],
-          "definition": "An assertion bound to an authenticator the subscriber holds (NIST FAL3).",
+          "definition": "Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3).",
           "broader": [],
           "mappings": {}
         }

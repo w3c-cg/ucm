@@ -137,7 +137,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "Single-factor or multi-factor authentication with basic assurance (NIST AAL1)."
+        "@value": "Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1)."
       },
       "skos:inScheme": {
         "@id": "ucm:AuthenticatorAssuranceLevel"
@@ -162,7 +162,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "Multi-factor authentication with high confidence (NIST AAL2)."
+        "@value": "High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2)."
       },
       "skos:inScheme": {
         "@id": "ucm:AuthenticatorAssuranceLevel"
@@ -187,7 +187,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "Multi-factor authentication with a hardware-based, phishing-resistant authenticator (NIST AAL3)."
+        "@value": "Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3)."
       },
       "skos:inScheme": {
         "@id": "ucm:AuthenticatorAssuranceLevel"
@@ -378,11 +378,12 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "An approximate or partial date of birth was reported."
+        "@value": "An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported)."
       },
       "skos:inScheme": {
         "@id": "ucm:BirthDateQuality"
       },
+      "skos:notation": "2",
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Approximate or partial"
@@ -433,11 +434,7 @@
       },
       "skos:definition": {
         "@language": "en",
-        "@value": "NIST SP 800-63B-4 authenticator assurance levels."
-      },
-      "skos:editorialNote": {
-        "@language": "en",
-        "@value": "Definitions to be checked against SP 800-63B-4."
+        "@value": "NIST SP 800-63B-4 authenticator assurance levels (section 2)."
       },
       "skos:hasTopConcept": [
         {
@@ -566,11 +563,7 @@
       },
       "skos:definition": {
         "@language": "en",
-        "@value": "How reliable a person's recorded birth date is, mirroring the HMIS Date of Birth data quality element."
-      },
-      "skos:editorialNote": {
-        "@language": "en",
-        "@value": "Codes to be checked against the current HMIS Data Standards Manual."
+        "@value": "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2024 HMIS Data Dictionary v1.5). skos:notation carries the HMIS response code."
       },
       "skos:hasTopConcept": [
         {
@@ -763,11 +756,12 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "The person does not know their date of birth."
+        "@value": "The person does not know their date of birth. HMIS allows this only with no birth date recorded."
       },
       "skos:inScheme": {
         "@id": "ucm:BirthDateQuality"
       },
+      "skos:notation": "8",
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Client doesn't know"
@@ -784,11 +778,12 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "The person declined to give their date of birth."
+        "@value": "The person declined to give their date of birth. HMIS allows this only with no birth date recorded."
       },
       "skos:inScheme": {
         "@id": "ucm:BirthDateQuality"
       },
+      "skos:notation": "9",
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Client prefers not to answer"
@@ -2243,11 +2238,12 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "The date of birth was not collected."
+        "@value": "The date of birth was not collected. HMIS allows this only with no birth date recorded."
       },
       "skos:inScheme": {
         "@id": "ucm:BirthDateQuality"
       },
+      "skos:notation": "99",
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Data not collected"
@@ -2636,7 +2632,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "A signed assertion from the identity provider (NIST FAL1)."
+        "@value": "Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1)."
       },
       "skos:inScheme": {
         "@id": "ucm:FederationAssuranceLevel"
@@ -2661,7 +2657,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "An assertion protected against injection and bound to the relying party (NIST FAL2)."
+        "@value": "High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2)."
       },
       "skos:inScheme": {
         "@id": "ucm:FederationAssuranceLevel"
@@ -2686,7 +2682,7 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "An assertion bound to an authenticator the subscriber holds (NIST FAL3)."
+        "@value": "Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3)."
       },
       "skos:inScheme": {
         "@id": "ucm:FederationAssuranceLevel"
@@ -2794,11 +2790,7 @@
       },
       "skos:definition": {
         "@language": "en",
-        "@value": "NIST SP 800-63C-4 federation assurance levels."
-      },
-      "skos:editorialNote": {
-        "@language": "en",
-        "@value": "Definitions to be checked against SP 800-63C-4."
+        "@value": "NIST SP 800-63C-4 federation assurance levels (section 2)."
       },
       "skos:hasTopConcept": [
         {
@@ -2920,11 +2912,12 @@
       ],
       "skos:definition": {
         "@language": "en",
-        "@value": "The full date of birth was reported."
+        "@value": "The full date of birth was reported (HMIS: Full DOB reported)."
       },
       "skos:inScheme": {
         "@id": "ucm:BirthDateQuality"
       },
+      "skos:notation": "1",
       "skos:prefLabel": {
         "@language": "en",
         "@value": "Full date reported"

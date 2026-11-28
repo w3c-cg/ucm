@@ -15,8 +15,8 @@ info:
     version: "v0.0.1"
     sources:
       - file: "ucm-ontology.jsonld"
-        digest: "sha256:a941532b4247c6ecdf2bbcf44baccda131a137cf926802e03b69ec394932ddbb"
-        triples: 2513
+        digest: "sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e"
+        triples: 2515
       - file: "ucm-shapes.jsonld"
         digest: "sha256:48c9034d0e7c3a55701eae891be86a789dc07059f1dc5d82f7326591a84f630f"
         triples: 1264
@@ -2241,15 +2241,15 @@ components:
         AAL1:
           iri: https://www.w3.org/ns/ucm#AAL1
           label: AAL1
-          definition: Single-factor or multi-factor authentication with basic assurance (NIST AAL1).
+          definition: Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1).
         AAL2:
           iri: https://www.w3.org/ns/ucm#AAL2
           label: AAL2
-          definition: Multi-factor authentication with high confidence (NIST AAL2).
+          definition: High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2).
         AAL3:
           iri: https://www.w3.org/ns/ucm#AAL3
           label: AAL3
-          definition: Multi-factor authentication with a hardware-based, phishing-resistant authenticator (NIST AAL3).
+          definition: Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3).
       anyOf:
         - type: string
           enum: ["AAL1", "AAL2", "AAL3"]
@@ -2263,23 +2263,23 @@ components:
         ApproximateOrPartial:
           iri: https://www.w3.org/ns/ucm#ApproximateOrPartial
           label: Approximate or partial
-          definition: An approximate or partial date of birth was reported.
+          definition: 'An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported).'
         ClientDoesNotKnow:
           iri: https://www.w3.org/ns/ucm#ClientDoesNotKnow
           label: Client doesn't know
-          definition: The person does not know their date of birth.
+          definition: The person does not know their date of birth. HMIS allows this only with no birth date recorded.
         ClientPreferNotToAnswer:
           iri: https://www.w3.org/ns/ucm#ClientPreferNotToAnswer
           label: Client prefers not to answer
-          definition: The person declined to give their date of birth.
+          definition: The person declined to give their date of birth. HMIS allows this only with no birth date recorded.
         DataNotCollected:
           iri: https://www.w3.org/ns/ucm#DataNotCollected
           label: Data not collected
-          definition: The date of birth was not collected.
+          definition: The date of birth was not collected. HMIS allows this only with no birth date recorded.
         FullDateReported:
           iri: https://www.w3.org/ns/ucm#FullDateReported
           label: Full date reported
-          definition: The full date of birth was reported.
+          definition: 'The full date of birth was reported (HMIS: Full DOB reported).'
       anyOf:
         - type: string
           enum: ["ApproximateOrPartial", "ClientDoesNotKnow", "ClientPreferNotToAnswer", "DataNotCollected", "FullDateReported"]
@@ -2685,15 +2685,15 @@ components:
         FAL1:
           iri: https://www.w3.org/ns/ucm#FAL1
           label: FAL1
-          definition: A signed assertion from the identity provider (NIST FAL1).
+          definition: 'Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1).'
         FAL2:
           iri: https://www.w3.org/ns/ucm#FAL2
           label: FAL2
-          definition: An assertion protected against injection and bound to the relying party (NIST FAL2).
+          definition: 'High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2).'
         FAL3:
           iri: https://www.w3.org/ns/ucm#FAL3
           label: FAL3
-          definition: An assertion bound to an authenticator the subscriber holds (NIST FAL3).
+          definition: 'Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3).'
       anyOf:
         - type: string
           enum: ["FAL1", "FAL2", "FAL3"]

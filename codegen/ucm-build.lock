@@ -12,7 +12,7 @@
       },
       {
         "path": "../ucm-lifecycle-vocabularies.ttl",
-        "content": "sha256:f718e68f434f37c45f195200fa121135e334d5216e16a9eb5328de0e392024b0"
+        "content": "sha256:3a64780d3f44a873aa49616e456ff7af833a1951d833c605218cb8b3fbd6fdaa"
       }
     ],
     "shapes": [
@@ -49,9 +49,9 @@
   "ir": [
     {
       "file": "ucm-ontology.jsonld",
-      "canonical": "sha256:a941532b4247c6ecdf2bbcf44baccda131a137cf926802e03b69ec394932ddbb",
-      "content": "sha256:b911a1b2ff04a63fefa733c3f45c00d598038cb51cdbdc654fc01dadd797611e",
-      "triples": 2513
+      "canonical": "sha256:8433479e61ffa268915d298deba78a50d4a0b26d1959157056ef06e3ee4b421e",
+      "content": "sha256:73a748572263e62b730f641d39f17d2e045208ecdf00dff6e6f02dfb0190bd0f",
+      "triples": 2515
     },
     {
       "file": "ucm-shapes.jsonld",
@@ -66,7 +66,7 @@
       "triples": 39
     }
   ],
-  "ir-root": "sha256:a10466f6be598d25b95ffd8beb99f715ed1767b42feb8b4a125fce758a352587",
+  "ir-root": "sha256:3712a918b36059f1f9e4a722a0226b6a5816f56bf1e37200feb17cbd24667611",
   "nodes": {
     "ontology": "sha256:c374dc114e39fdec7e529c714ca6226be20c5cae6d19ecc76785e7e9c38ba25c",
     "class:ucm:ActivityFocus": "sha256:d62f729f1285f3a633f372968cfe6418976b630121e66df9c17522793b5cfb0d",
@@ -273,8 +273,8 @@
     "property:ucm:validTo": "sha256:c618778712d7fe210de10856fdd59b46804bcdfbb1cc9beb49f5695c559c592a",
     "property:ucm:withdrawalMethod": "sha256:dfb32ff71152eb971d1e0e7d96db7a127b511273249f6234caa23307c4588cff",
     "property:ucm:withinJurisdiction": "sha256:a3b52e6bf86fde34211025de33407490340a596ccf01795deb2cc2f7d684e3c0",
-    "scheme:ucm:AuthenticatorAssuranceLevel": "sha256:a392a597221e6ff8c55a815068313e9a44fef8383e2d69e0a595471fc41ad90d",
-    "scheme:ucm:BirthDateQuality": "sha256:ad2373c0ca158fac78b65c82301140c678c4aba0caf7b92987498695538b9509",
+    "scheme:ucm:AuthenticatorAssuranceLevel": "sha256:5abbdf677dd1a9849e369fab2ca14fb59520cb874573116f9a82c292570a4f7f",
+    "scheme:ucm:BirthDateQuality": "sha256:5e731d576f4eb70285bd19093c0d47c97047dc0a2c7a60b5dafe8dd32e15ae03",
     "scheme:ucm:ClosureReason": "sha256:717b4ef0f8ff41c2db34bd92292d9ec2d0decb958cfcba5452bdb0b204e5ddc8",
     "scheme:ucm:CommitmentStatus": "sha256:b156ce1f4dbd465a766856d530224268b0e3c9c0afb337c75a5213f7a00062cb",
     "scheme:ucm:ConfidentialityLevel": "sha256:62f5d802a18122fb8ff10e3ada30aec5e5e1b3d6cf92e81f2fcec2d9cb799a13",
@@ -286,7 +286,7 @@
     "scheme:ucm:ConsentModel": "sha256:b7475ae7aefb3c41a6c9bb36f1b9f9c4ae4e58a72d72c4634c6ec7ce66530910",
     "scheme:ucm:ConsentStatus": "sha256:0957f6df56605d4b8377065f37f5308b792574ac7255cc213feae4ce4d1dfbee",
     "scheme:ucm:EvidenceStrength": "sha256:1876312c0b88a8d0fd7830963844e44db7dde9b5b9a4c50deb02e7f711942e9b",
-    "scheme:ucm:FederationAssuranceLevel": "sha256:b756f59cacf1ede2f86584add7cf5c3759131dd08efeebb3d2b7ab23e1fe15c0",
+    "scheme:ucm:FederationAssuranceLevel": "sha256:3d52612f3bdde15f50fea5d9b9b688cbe1a3ef0feb6cb619bd97172f80fa9069",
     "scheme:ucm:HandoffStatus": "sha256:f04867943192b9f68bb7950973192c2076e60501f289a830a5d4e0fee7607205",
     "scheme:ucm:HandshakeFulfillment": "sha256:90dc33991a34141ac32daea3524b8d13b8034613929ba7b73ae19192108bcdd0",
     "scheme:ucm:IdentifierType": "sha256:d22d0e4a7e770aa8e36a36a079416d1d019cdd8119285d08726e0025a90c80cd",
@@ -418,11 +418,11 @@
   "outputs": {
     "context.jsonld": "sha256:6115285645c00fea6d238784a6f716bb97dc8af2a5300215b3fdafbbc0e3e075",
     "fhir/ucm_fhir_adapter.py": "sha256:5d198dfa7625bf6db18a7f8fb9284e45ed7ae0e30eb1fb21697752415b458276",
-    "openapi.yaml": "sha256:48d430206a3e6c56dd6c2ce3966a32ac97cd3ab7ad5853c59974b56d1e2f2f37",
+    "openapi.yaml": "sha256:299920e9d8ae8d5972035122db41f30e952a46886ede30ed0ef803cb6d7fefbc",
     "postgres/alembic.ini": "sha256:8358d7425c24090f24a11a31f2712578c5b18822ffef72d6cf975b0cbafc631b",
     "postgres/migrations/env.py": "sha256:d213ecab0d2c115b98f7228e8f680286278a5d4be6f437b9aa963ec1fedcdcbc",
     "postgres/migrations/script.py.mako": "sha256:c20f6ab92d4ed36d77fbccb82bc410cd2ced42f2c162eebb43ddd45ae93dd90e",
-    "postgres/migrations/versions/ucm_47d15426eae9_ucm_0_0_1.py": "sha256:ed366912e1ce94cc830350b96876d1cd37a61f39471ba18412d12e439a79d2a3",
-    "postgres/ucm_models.py": "sha256:969c2ed406992fbc9ea8f1604e6e5b9b6490f8a18b65204d6cb87d9a6e9e7a2d"
+    "postgres/migrations/versions/ucm_fbdcc29d7c1b_ucm_0_0_1.py": "sha256:71957b01a82818bc51b2139c8e5f50be12af51091bad590422d9ee5b82dc7346",
+    "postgres/ucm_models.py": "sha256:bfdaa858c92ebb5fd236f59f5448a4cfba448853c4a687446dc2f31331bc938f"
   }
 }

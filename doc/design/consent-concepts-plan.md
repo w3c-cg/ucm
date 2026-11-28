@@ -456,9 +456,18 @@ types, its human-services privacy type, and its identity types. The rest is a ga
 ### 8.2 Mapping: Kantara Consent Receipt and ISO/IEC TS 27560:2023 to UCM
 
 ISO/IEC TS 27560:2023 (consent record and receipt structure) grew out of the Kantara
-Initiative's Consent Receipt Specification (v1.1). Field names below are as given in
-Pandit et al. (arXiv 2405.04528), keyed to TS 27560 clauses. They should be checked
-against the TS itself before publication.
+Initiative's Consent Receipt Specification (v1.1). Field names were checked on
+2026-11-27 against the ISO sample of the TS (clause 6.3.4, Table 2, "PII processing
+section contents"), which confirms `storage_locations` ("the geo-locations of where the
+data will be physically stored") and `retention_period` ("the retention period and/or
+disposal schedule"), both Required. The fields after Table 2 in the TS (`withdrawal_method`,
+`processing_locations`, `jurisdiction`, `geographic_restrictions`) are not in the free
+sample; their names come from Pandit, Lindquist and Krog (arXiv 2405.04528, Table 2,
+withdrawal_method at 6.3.4.18) and the W3C DPV guide "Consent Records and Receipts as
+per ISO/IEC TS 27560:2023 using DPV". TS 27560 has no separate field for what happens
+when retention ends: the disposal schedule sits inside `retention_period`. UCM splits
+it into `retentionPeriod` (the duration) and `hasRetentionDisposition` (delete,
+de-identify or archive), which lines up with DPV `StorageDuration` and `StorageDeletion`.
 
 | TS 27560 field | UCM |
 |---|---|
@@ -470,8 +479,8 @@ against the TS itself before publication.
 | `recipient_third_parties` | an `InformationRecipientRole` participation |
 | `jurisdiction` | `inJurisdiction` |
 | `withdrawal_method` | `ucm:withdrawalMethod` |
-| `retention_period` | `ucm:retentionPeriod`, with `ucm:hasRetentionDisposition` |
-| `storage_locations`, `processing_locations`, `geographic_restrictions` | `ucm:processingLocation`, a `JurisdictionContext` |
+| `retention_period` (Required; period and/or disposal schedule) | `ucm:retentionPeriod` for the period, `ucm:hasRetentionDisposition` for the disposal (DPV `StorageDuration`, `StorageDeletion`) |
+| `storage_locations` (Required), `processing_locations`, `geographic_restrictions` | `ucm:processingLocation`, a `JurisdictionContext` (DPV `StorageLocation`, `hasLocation`, `hasJurisdiction`) |
 | `party_name`, `party_role`, `party_type`, `entity_id` | A participation with `assumesRole`, and `identifiedAs` an identity |
 | `event_type`, `event_time` | `ConsentInteractionType` and `occursDuring` |
 | `validity_duration` | `validDuring` |
@@ -666,6 +675,15 @@ implementation differs from the sections above, the implementation wins:
   scheme binding is skipped when no vocabulary is compiled at all. Codegen tests
   with fixed counts were updated.
 
+- **Checked against sources (2026-11-27):** the AAL and FAL definitions now follow
+  SP 800-63B-4 and SP 800-63C-4 section 2 (AAL2 verifiers must offer a
+  phishing-resistant option; AAL3 needs a non-exportable cryptographic key; FAL3 needs
+  a holder-of-key assertion or a bound authenticator). The BirthDateQuality codes match
+  HMIS element 3.03 in the FY 2024 HMIS Data Dictionary v1.5 (1, 2, 8, 9, 99, carried as
+  `skos:notation`). The TS 27560 names `storage_locations` and `retention_period` are
+  confirmed from the ISO sample; `withdrawal_method` and `processing_locations` are from
+  Pandit et al. and the DPV guide, because the free sample stops before them.
+
 ## Sources
 
 - Stewards of Change Institute, *Consent Learning Lab Report* (HIMSS 2023), August 2023 (attached PDF).
@@ -688,6 +706,11 @@ Sources for the section 6.3 examples:
 - U.S. Department of Education, Student Privacy Policy Office: https://studentprivacy.ed.gov/content/eligible-student and https://studentprivacy.ed.gov/faq/who-eligible-student
 - Guttmacher Institute, Minors' Access to STI Services (as of 2026-08-01): https://www.guttmacher.org/state-policy/explore/minors-access-sti-services
 - SchoolHouse Connection, State Laws on Minor Consent for Housing and Related Services (June 2026): https://schoolhouseconnection.org/article/state-laws-on-minor-consent-for-housing-and-related-services
+- NIST SP 800-63B-4, section 2 (AAL): https://pages.nist.gov/800-63-4/sp800-63b/aal
+- NIST SP 800-63C-4, section 2 (FAL): https://pages.nist.gov/800-63-4/sp800-63c/fal
+- HUD FY 2024 HMIS Data Dictionary v1.5, element 3.03 (copy hosted by Palm Beach County): https://discover.pbc.gov/communityservices/financiallyassisted/PDF/2024/HMIS-Data-Dictionary-2024.pdf
+- ISO/IEC TS 27560:2023 sample (through clause 6.3.4, Table 2): https://cdn.standards.iteh.ai/samples/80392/9102635615bf4b88803e1dc61ba5944b/ISO-IEC-TS-27560-2023.pdf
+- W3C DPV, Consent Records and Receipts as per ISO/IEC TS 27560:2023: https://w3c-cg.github.io/dpv/guides/consent-27560.html
 
 ## Appendix A. Verified code values (2026-11-27)
 

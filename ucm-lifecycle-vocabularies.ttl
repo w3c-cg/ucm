@@ -1738,8 +1738,7 @@ ucm:BirthDateQuality rdf:type owl:NamedIndividual ,
                      dcterms:description "How reliable is the recorded birth date?"@en ;
                      dcterms:publisher "MDIX"@en ;
                      dcterms:title "UCM Birth Date Quality"@en ;
-                     skos:definition "How reliable a person's recorded birth date is, mirroring the HMIS Date of Birth data quality element."@en ;
-                     skos:editorialNote "Codes to be checked against the current HMIS Data Standards Manual."@en ;
+                     skos:definition "How reliable a person's recorded birth date is, mirroring HMIS element 3.03 DOB Data Quality (FY 2024 HMIS Data Dictionary v1.5). skos:notation carries the HMIS response code."@en ;
                      skos:hasTopConcept ucm:FullDateReported ,
                                         ucm:ApproximateOrPartial ,
                                         ucm:ClientDoesNotKnow ,
@@ -1751,7 +1750,8 @@ ucm:BirthDateQuality rdf:type owl:NamedIndividual ,
 ###  https://www.w3.org/ns/ucm#FullDateReported
 ucm:FullDateReported rdf:type owl:NamedIndividual ,
                               skos:Concept ;
-                     skos:definition "The full date of birth was reported."@en ;
+                     skos:notation "1" ;
+                     skos:definition "The full date of birth was reported (HMIS: Full DOB reported)."@en ;
                      skos:inScheme ucm:BirthDateQuality ;
                      skos:prefLabel "Full date reported"@en ;
                      skos:topConceptOf ucm:BirthDateQuality .
@@ -1760,7 +1760,8 @@ ucm:FullDateReported rdf:type owl:NamedIndividual ,
 ###  https://www.w3.org/ns/ucm#ApproximateOrPartial
 ucm:ApproximateOrPartial rdf:type owl:NamedIndividual ,
                                   skos:Concept ;
-                         skos:definition "An approximate or partial date of birth was reported."@en ;
+                         skos:notation "2" ;
+                         skos:definition "An approximate or partial date of birth was reported (HMIS: Approximate or partial DOB reported)."@en ;
                          skos:inScheme ucm:BirthDateQuality ;
                          skos:prefLabel "Approximate or partial"@en ;
                          skos:topConceptOf ucm:BirthDateQuality .
@@ -1769,7 +1770,8 @@ ucm:ApproximateOrPartial rdf:type owl:NamedIndividual ,
 ###  https://www.w3.org/ns/ucm#ClientDoesNotKnow
 ucm:ClientDoesNotKnow rdf:type owl:NamedIndividual ,
                                skos:Concept ;
-                      skos:definition "The person does not know their date of birth."@en ;
+                      skos:notation "8" ;
+                      skos:definition "The person does not know their date of birth. HMIS allows this only with no birth date recorded."@en ;
                       skos:inScheme ucm:BirthDateQuality ;
                       skos:prefLabel "Client doesn't know"@en ;
                       skos:topConceptOf ucm:BirthDateQuality .
@@ -1778,7 +1780,8 @@ ucm:ClientDoesNotKnow rdf:type owl:NamedIndividual ,
 ###  https://www.w3.org/ns/ucm#ClientPreferNotToAnswer
 ucm:ClientPreferNotToAnswer rdf:type owl:NamedIndividual ,
                                      skos:Concept ;
-                            skos:definition "The person declined to give their date of birth."@en ;
+                            skos:notation "9" ;
+                            skos:definition "The person declined to give their date of birth. HMIS allows this only with no birth date recorded."@en ;
                             skos:inScheme ucm:BirthDateQuality ;
                             skos:prefLabel "Client prefers not to answer"@en ;
                             skos:topConceptOf ucm:BirthDateQuality .
@@ -1787,7 +1790,8 @@ ucm:ClientPreferNotToAnswer rdf:type owl:NamedIndividual ,
 ###  https://www.w3.org/ns/ucm#DataNotCollected
 ucm:DataNotCollected rdf:type owl:NamedIndividual ,
                               skos:Concept ;
-                     skos:definition "The date of birth was not collected."@en ;
+                     skos:notation "99" ;
+                     skos:definition "The date of birth was not collected. HMIS allows this only with no birth date recorded."@en ;
                      skos:inScheme ucm:BirthDateQuality ;
                      skos:prefLabel "Data not collected"@en ;
                      skos:topConceptOf ucm:BirthDateQuality .
@@ -1897,8 +1901,7 @@ ucm:AuthenticatorAssuranceLevel rdf:type owl:NamedIndividual ,
                                 dcterms:description "How strongly was the claimant authenticated?"@en ;
                                 dcterms:publisher "MDIX"@en ;
                                 dcterms:title "UCM Authenticator Assurance Level"@en ;
-                                skos:definition "NIST SP 800-63B-4 authenticator assurance levels."@en ;
-                                skos:editorialNote "Definitions to be checked against SP 800-63B-4."@en ;
+                                skos:definition "NIST SP 800-63B-4 authenticator assurance levels (section 2)."@en ;
                                 skos:hasTopConcept ucm:AAL1 ,
                                                    ucm:AAL2 ,
                                                    ucm:AAL3 ;
@@ -1909,7 +1912,7 @@ ucm:AuthenticatorAssuranceLevel rdf:type owl:NamedIndividual ,
 ucm:AAL1 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "1"^^xsd:integer ;
-         skos:definition "Single-factor or multi-factor authentication with basic assurance (NIST AAL1)."@en ;
+         skos:definition "Basic confidence that the claimant controls an authenticator bound to the subscriber account, using single-factor or multi-factor authentication (NIST AAL1)."@en ;
          skos:inScheme ucm:AuthenticatorAssuranceLevel ;
          skos:prefLabel "AAL1"@en ;
          skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
@@ -1919,7 +1922,7 @@ ucm:AAL1 rdf:type owl:NamedIndividual ,
 ucm:AAL2 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "2"^^xsd:integer ;
-         skos:definition "Multi-factor authentication with high confidence (NIST AAL2)."@en ;
+         skos:definition "High confidence from proof of possession and control of two distinct authentication factors. Verifiers must offer at least one phishing-resistant option (NIST AAL2)."@en ;
          skos:inScheme ucm:AuthenticatorAssuranceLevel ;
          skos:prefLabel "AAL2"@en ;
          skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
@@ -1929,7 +1932,7 @@ ucm:AAL2 rdf:type owl:NamedIndividual ,
 ucm:AAL3 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "3"^^xsd:integer ;
-         skos:definition "Multi-factor authentication with a hardware-based, phishing-resistant authenticator (NIST AAL3)."@en ;
+         skos:definition "Very high confidence from a phishing-resistant cryptographic authenticator with a non-exportable private key; syncable authenticators are not allowed (NIST AAL3)."@en ;
          skos:inScheme ucm:AuthenticatorAssuranceLevel ;
          skos:prefLabel "AAL3"@en ;
          skos:topConceptOf ucm:AuthenticatorAssuranceLevel .
@@ -1942,8 +1945,7 @@ ucm:FederationAssuranceLevel rdf:type owl:NamedIndividual ,
                              dcterms:description "How strongly was the identity assertion protected?"@en ;
                              dcterms:publisher "MDIX"@en ;
                              dcterms:title "UCM Federation Assurance Level"@en ;
-                             skos:definition "NIST SP 800-63C-4 federation assurance levels."@en ;
-                             skos:editorialNote "Definitions to be checked against SP 800-63C-4."@en ;
+                             skos:definition "NIST SP 800-63C-4 federation assurance levels (section 2)."@en ;
                              skos:hasTopConcept ucm:FAL1 ,
                                                 ucm:FAL2 ,
                                                 ucm:FAL3 ;
@@ -1954,7 +1956,7 @@ ucm:FederationAssuranceLevel rdf:type owl:NamedIndividual ,
 ucm:FAL1 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "1"^^xsd:integer ;
-         skos:definition "A signed assertion from the identity provider (NIST FAL1)."@en ;
+         skos:definition "Basic protection: the identity provider signs the assertion with approved cryptography and restricts its audience to a specific relying party or set of relying parties (NIST FAL1)."@en ;
          skos:inScheme ucm:FederationAssuranceLevel ;
          skos:prefLabel "FAL1"@en ;
          skos:topConceptOf ucm:FederationAssuranceLevel .
@@ -1964,7 +1966,7 @@ ucm:FAL1 rdf:type owl:NamedIndividual ,
 ucm:FAL2 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "2"^^xsd:integer ;
-         skos:definition "An assertion protected against injection and bound to the relying party (NIST FAL2)."@en ;
+         skos:definition "High protection: the assertion is strongly protected from injection attacks and audience-restricted to a single relying party, under a pre-established trust agreement (NIST FAL2)."@en ;
          skos:inScheme ucm:FederationAssuranceLevel ;
          skos:prefLabel "FAL2"@en ;
          skos:topConceptOf ucm:FederationAssuranceLevel .
@@ -1974,7 +1976,7 @@ ucm:FAL2 rdf:type owl:NamedIndividual ,
 ucm:FAL3 rdf:type owl:NamedIndividual ,
                   skos:Concept ;
          ucm:assuranceRank "3"^^xsd:integer ;
-         skos:definition "An assertion bound to an authenticator the subscriber holds (NIST FAL3)."@en ;
+         skos:definition "Very high protection: the relying party also verifies that the subscriber controls an authenticator, named in a holder-of-key assertion or bound to the account, which guards against a compromised identity provider (NIST FAL3)."@en ;
          skos:inScheme ucm:FederationAssuranceLevel ;
          skos:prefLabel "FAL3"@en ;
          skos:topConceptOf ucm:FederationAssuranceLevel .
